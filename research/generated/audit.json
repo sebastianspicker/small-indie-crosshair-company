@@ -1,0 +1,1927 @@
+{
+  "scope": "Source-model comparisons only; zero in-game observations.",
+  "cases": 56,
+  "counts": {
+    "round_scaled": {
+      "length_disagreements": 17,
+      "thickness_disagreements": 15,
+      "any_dimension_disagreements": 22
+    },
+    "fixed_2x": {
+      "length_disagreements": 28,
+      "thickness_disagreements": 22,
+      "any_dimension_disagreements": 32
+    },
+    "hauptrolle_preview": {
+      "length_disagreements": 32,
+      "thickness_disagreements": 29,
+      "any_dimension_disagreements": 41
+    }
+  },
+  "rows": [
+    {
+      "player": "donk",
+      "date": "2026-08-31",
+      "height": 720,
+      "size": 1,
+      "thickness": 1,
+      "gap": -4,
+      "old": {
+        "model": "legacy-static-kz-f32-v1",
+        "height": 720,
+        "scale": 1.5,
+        "length": 1,
+        "width": 1,
+        "gapOffset": 0,
+        "near": 0,
+        "far": 1,
+        "interval": 1,
+        "minimumBranch": false
+      },
+      "alternatives": {
+        "round_scaled": [
+          2,
+          2
+        ],
+        "fixed_2x": [
+          2,
+          2
+        ],
+        "hauptrolle_preview": [
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "player": "donk",
+      "date": "2026-08-31",
+      "height": 768,
+      "size": 1,
+      "thickness": 1,
+      "gap": -4,
+      "old": {
+        "model": "legacy-static-kz-f32-v1",
+        "height": 768,
+        "scale": 1.600000023841858,
+        "length": 1,
+        "width": 1,
+        "gapOffset": 0,
+        "near": 0,
+        "far": 1,
+        "interval": 1,
+        "minimumBranch": false
+      },
+      "alternatives": {
+        "round_scaled": [
+          2,
+          2
+        ],
+        "fixed_2x": [
+          2,
+          2
+        ],
+        "hauptrolle_preview": [
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "player": "donk",
+      "date": "2026-08-31",
+      "height": 960,
+      "size": 1,
+      "thickness": 1,
+      "gap": -4,
+      "old": {
+        "model": "legacy-static-kz-f32-v1",
+        "height": 960,
+        "scale": 2,
+        "length": 2,
+        "width": 2,
+        "gapOffset": 0,
+        "near": 1,
+        "far": 2,
+        "interval": 3,
+        "minimumBranch": false
+      },
+      "alternatives": {
+        "round_scaled": [
+          2,
+          2
+        ],
+        "fixed_2x": [
+          2,
+          2
+        ],
+        "hauptrolle_preview": [
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "player": "donk",
+      "date": "2026-08-31",
+      "height": 1024,
+      "size": 1,
+      "thickness": 1,
+      "gap": -4,
+      "old": {
+        "model": "legacy-static-kz-f32-v1",
+        "height": 1024,
+        "scale": 2.133333444595337,
+        "length": 2,
+        "width": 2,
+        "gapOffset": 0,
+        "near": 1,
+        "far": 2,
+        "interval": 3,
+        "minimumBranch": false
+      },
+      "alternatives": {
+        "round_scaled": [
+          2,
+          2
+        ],
+        "fixed_2x": [
+          2,
+          2
+        ],
+        "hauptrolle_preview": [
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "player": "donk",
+      "date": "2026-08-31",
+      "height": 1080,
+      "size": 1,
+      "thickness": 1,
+      "gap": -4,
+      "old": {
+        "model": "legacy-static-kz-f32-v1",
+        "height": 1080,
+        "scale": 2.25,
+        "length": 2,
+        "width": 2,
+        "gapOffset": 0,
+        "near": 1,
+        "far": 2,
+        "interval": 3,
+        "minimumBranch": false
+      },
+      "alternatives": {
+        "round_scaled": [
+          2,
+          2
+        ],
+        "fixed_2x": [
+          2,
+          2
+        ],
+        "hauptrolle_preview": [
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "player": "donk",
+      "date": "2026-08-31",
+      "height": 1440,
+      "size": 1,
+      "thickness": 1,
+      "gap": -4,
+      "old": {
+        "model": "legacy-static-kz-f32-v1",
+        "height": 1440,
+        "scale": 3,
+        "length": 3,
+        "width": 3,
+        "gapOffset": 0,
+        "near": 1,
+        "far": 2,
+        "interval": 3,
+        "minimumBranch": false
+      },
+      "alternatives": {
+        "round_scaled": [
+          3,
+          3
+        ],
+        "fixed_2x": [
+          2,
+          2
+        ],
+        "hauptrolle_preview": [
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "player": "donk",
+      "date": "2026-08-31",
+      "height": 2160,
+      "size": 1,
+      "thickness": 1,
+      "gap": -4,
+      "old": {
+        "model": "legacy-static-kz-f32-v1",
+        "height": 2160,
+        "scale": 4.5,
+        "length": 4,
+        "width": 4,
+        "gapOffset": 0,
+        "near": 2,
+        "far": 3,
+        "interval": 5,
+        "minimumBranch": false
+      },
+      "alternatives": {
+        "round_scaled": [
+          5,
+          5
+        ],
+        "fixed_2x": [
+          2,
+          2
+        ],
+        "hauptrolle_preview": [
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "player": "ZywOo",
+      "date": "2026-09-04",
+      "height": 720,
+      "size": 2,
+      "thickness": 0,
+      "gap": -3,
+      "old": {
+        "model": "legacy-static-kz-f32-v1",
+        "height": 720,
+        "scale": 1.5,
+        "length": 3,
+        "width": 1,
+        "gapOffset": 1,
+        "near": 1,
+        "far": 2,
+        "interval": 3,
+        "minimumBranch": true
+      },
+      "alternatives": {
+        "round_scaled": [
+          3,
+          1
+        ],
+        "fixed_2x": [
+          4,
+          1
+        ],
+        "hauptrolle_preview": [
+          4,
+          0
+        ]
+      }
+    },
+    {
+      "player": "ZywOo",
+      "date": "2026-09-04",
+      "height": 768,
+      "size": 2,
+      "thickness": 0,
+      "gap": -3,
+      "old": {
+        "model": "legacy-static-kz-f32-v1",
+        "height": 768,
+        "scale": 1.600000023841858,
+        "length": 3,
+        "width": 1,
+        "gapOffset": 1,
+        "near": 1,
+        "far": 2,
+        "interval": 3,
+        "minimumBranch": true
+      },
+      "alternatives": {
+        "round_scaled": [
+          3,
+          1
+        ],
+        "fixed_2x": [
+          4,
+          1
+        ],
+        "hauptrolle_preview": [
+          4,
+          0
+        ]
+      }
+    },
+    {
+      "player": "ZywOo",
+      "date": "2026-09-04",
+      "height": 960,
+      "size": 2,
+      "thickness": 0,
+      "gap": -3,
+      "old": {
+        "model": "legacy-static-kz-f32-v1",
+        "height": 960,
+        "scale": 2,
+        "length": 4,
+        "width": 1,
+        "gapOffset": 1,
+        "near": 1,
+        "far": 2,
+        "interval": 3,
+        "minimumBranch": true
+      },
+      "alternatives": {
+        "round_scaled": [
+          4,
+          1
+        ],
+        "fixed_2x": [
+          4,
+          1
+        ],
+        "hauptrolle_preview": [
+          4,
+          0
+        ]
+      }
+    },
+    {
+      "player": "ZywOo",
+      "date": "2026-09-04",
+      "height": 1024,
+      "size": 2,
+      "thickness": 0,
+      "gap": -3,
+      "old": {
+        "model": "legacy-static-kz-f32-v1",
+        "height": 1024,
+        "scale": 2.133333444595337,
+        "length": 4,
+        "width": 1,
+        "gapOffset": 1,
+        "near": 1,
+        "far": 2,
+        "interval": 3,
+        "minimumBranch": true
+      },
+      "alternatives": {
+        "round_scaled": [
+          4,
+          1
+        ],
+        "fixed_2x": [
+          4,
+          1
+        ],
+        "hauptrolle_preview": [
+          4,
+          0
+        ]
+      }
+    },
+    {
+      "player": "ZywOo",
+      "date": "2026-09-04",
+      "height": 1080,
+      "size": 2,
+      "thickness": 0,
+      "gap": -3,
+      "old": {
+        "model": "legacy-static-kz-f32-v1",
+        "height": 1080,
+        "scale": 2.25,
+        "length": 4,
+        "width": 1,
+        "gapOffset": 1,
+        "near": 1,
+        "far": 2,
+        "interval": 3,
+        "minimumBranch": true
+      },
+      "alternatives": {
+        "round_scaled": [
+          5,
+          1
+        ],
+        "fixed_2x": [
+          4,
+          1
+        ],
+        "hauptrolle_preview": [
+          4,
+          0
+        ]
+      }
+    },
+    {
+      "player": "ZywOo",
+      "date": "2026-09-04",
+      "height": 1440,
+      "size": 2,
+      "thickness": 0,
+      "gap": -3,
+      "old": {
+        "model": "legacy-static-kz-f32-v1",
+        "height": 1440,
+        "scale": 3,
+        "length": 6,
+        "width": 1,
+        "gapOffset": 1,
+        "near": 1,
+        "far": 2,
+        "interval": 3,
+        "minimumBranch": true
+      },
+      "alternatives": {
+        "round_scaled": [
+          6,
+          1
+        ],
+        "fixed_2x": [
+          4,
+          1
+        ],
+        "hauptrolle_preview": [
+          4,
+          0
+        ]
+      }
+    },
+    {
+      "player": "ZywOo",
+      "date": "2026-09-04",
+      "height": 2160,
+      "size": 2,
+      "thickness": 0,
+      "gap": -3,
+      "old": {
+        "model": "legacy-static-kz-f32-v1",
+        "height": 2160,
+        "scale": 4.5,
+        "length": 9,
+        "width": 1,
+        "gapOffset": 1,
+        "near": 1,
+        "far": 2,
+        "interval": 3,
+        "minimumBranch": true
+      },
+      "alternatives": {
+        "round_scaled": [
+          9,
+          1
+        ],
+        "fixed_2x": [
+          4,
+          1
+        ],
+        "hauptrolle_preview": [
+          4,
+          0
+        ]
+      }
+    },
+    {
+      "player": "s1mple",
+      "date": "2026-05-21",
+      "height": 720,
+      "size": 1,
+      "thickness": 1,
+      "gap": -4.5,
+      "old": {
+        "model": "legacy-static-kz-f32-v1",
+        "height": 720,
+        "scale": 1.5,
+        "length": 1,
+        "width": 1,
+        "gapOffset": 0,
+        "near": 0,
+        "far": 1,
+        "interval": 1,
+        "minimumBranch": false
+      },
+      "alternatives": {
+        "round_scaled": [
+          2,
+          2
+        ],
+        "fixed_2x": [
+          2,
+          2
+        ],
+        "hauptrolle_preview": [
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "player": "s1mple",
+      "date": "2026-05-21",
+      "height": 768,
+      "size": 1,
+      "thickness": 1,
+      "gap": -4.5,
+      "old": {
+        "model": "legacy-static-kz-f32-v1",
+        "height": 768,
+        "scale": 1.600000023841858,
+        "length": 1,
+        "width": 1,
+        "gapOffset": 0,
+        "near": 0,
+        "far": 1,
+        "interval": 1,
+        "minimumBranch": false
+      },
+      "alternatives": {
+        "round_scaled": [
+          2,
+          2
+        ],
+        "fixed_2x": [
+          2,
+          2
+        ],
+        "hauptrolle_preview": [
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "player": "s1mple",
+      "date": "2026-05-21",
+      "height": 960,
+      "size": 1,
+      "thickness": 1,
+      "gap": -4.5,
+      "old": {
+        "model": "legacy-static-kz-f32-v1",
+        "height": 960,
+        "scale": 2,
+        "length": 2,
+        "width": 2,
+        "gapOffset": 0,
+        "near": 1,
+        "far": 2,
+        "interval": 3,
+        "minimumBranch": false
+      },
+      "alternatives": {
+        "round_scaled": [
+          2,
+          2
+        ],
+        "fixed_2x": [
+          2,
+          2
+        ],
+        "hauptrolle_preview": [
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "player": "s1mple",
+      "date": "2026-05-21",
+      "height": 1024,
+      "size": 1,
+      "thickness": 1,
+      "gap": -4.5,
+      "old": {
+        "model": "legacy-static-kz-f32-v1",
+        "height": 1024,
+        "scale": 2.133333444595337,
+        "length": 2,
+        "width": 2,
+        "gapOffset": 0,
+        "near": 1,
+        "far": 2,
+        "interval": 3,
+        "minimumBranch": false
+      },
+      "alternatives": {
+        "round_scaled": [
+          2,
+          2
+        ],
+        "fixed_2x": [
+          2,
+          2
+        ],
+        "hauptrolle_preview": [
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "player": "s1mple",
+      "date": "2026-05-21",
+      "height": 1080,
+      "size": 1,
+      "thickness": 1,
+      "gap": -4.5,
+      "old": {
+        "model": "legacy-static-kz-f32-v1",
+        "height": 1080,
+        "scale": 2.25,
+        "length": 2,
+        "width": 2,
+        "gapOffset": 0,
+        "near": 1,
+        "far": 2,
+        "interval": 3,
+        "minimumBranch": false
+      },
+      "alternatives": {
+        "round_scaled": [
+          2,
+          2
+        ],
+        "fixed_2x": [
+          2,
+          2
+        ],
+        "hauptrolle_preview": [
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "player": "s1mple",
+      "date": "2026-05-21",
+      "height": 1440,
+      "size": 1,
+      "thickness": 1,
+      "gap": -4.5,
+      "old": {
+        "model": "legacy-static-kz-f32-v1",
+        "height": 1440,
+        "scale": 3,
+        "length": 3,
+        "width": 3,
+        "gapOffset": 0,
+        "near": 1,
+        "far": 2,
+        "interval": 3,
+        "minimumBranch": false
+      },
+      "alternatives": {
+        "round_scaled": [
+          3,
+          3
+        ],
+        "fixed_2x": [
+          2,
+          2
+        ],
+        "hauptrolle_preview": [
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "player": "s1mple",
+      "date": "2026-05-21",
+      "height": 2160,
+      "size": 1,
+      "thickness": 1,
+      "gap": -4.5,
+      "old": {
+        "model": "legacy-static-kz-f32-v1",
+        "height": 2160,
+        "scale": 4.5,
+        "length": 4,
+        "width": 4,
+        "gapOffset": 0,
+        "near": 2,
+        "far": 3,
+        "interval": 5,
+        "minimumBranch": false
+      },
+      "alternatives": {
+        "round_scaled": [
+          5,
+          5
+        ],
+        "fixed_2x": [
+          2,
+          2
+        ],
+        "hauptrolle_preview": [
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "player": "NiKo",
+      "date": "2026-09-04",
+      "height": 720,
+      "size": 0,
+      "thickness": 2,
+      "gap": -4,
+      "old": {
+        "model": "legacy-static-kz-f32-v1",
+        "height": 720,
+        "scale": 1.5,
+        "length": 0,
+        "width": 3,
+        "gapOffset": 0,
+        "near": 1,
+        "far": 2,
+        "interval": null,
+        "minimumBranch": false
+      },
+      "alternatives": {
+        "round_scaled": [
+          0,
+          3
+        ],
+        "fixed_2x": [
+          0,
+          4
+        ],
+        "hauptrolle_preview": [
+          0,
+          4
+        ]
+      }
+    },
+    {
+      "player": "NiKo",
+      "date": "2026-09-04",
+      "height": 768,
+      "size": 0,
+      "thickness": 2,
+      "gap": -4,
+      "old": {
+        "model": "legacy-static-kz-f32-v1",
+        "height": 768,
+        "scale": 1.600000023841858,
+        "length": 0,
+        "width": 3,
+        "gapOffset": 0,
+        "near": 1,
+        "far": 2,
+        "interval": null,
+        "minimumBranch": false
+      },
+      "alternatives": {
+        "round_scaled": [
+          0,
+          3
+        ],
+        "fixed_2x": [
+          0,
+          4
+        ],
+        "hauptrolle_preview": [
+          0,
+          4
+        ]
+      }
+    },
+    {
+      "player": "NiKo",
+      "date": "2026-09-04",
+      "height": 960,
+      "size": 0,
+      "thickness": 2,
+      "gap": -4,
+      "old": {
+        "model": "legacy-static-kz-f32-v1",
+        "height": 960,
+        "scale": 2,
+        "length": 0,
+        "width": 4,
+        "gapOffset": 0,
+        "near": 2,
+        "far": 3,
+        "interval": null,
+        "minimumBranch": false
+      },
+      "alternatives": {
+        "round_scaled": [
+          0,
+          4
+        ],
+        "fixed_2x": [
+          0,
+          4
+        ],
+        "hauptrolle_preview": [
+          0,
+          4
+        ]
+      }
+    },
+    {
+      "player": "NiKo",
+      "date": "2026-09-04",
+      "height": 1024,
+      "size": 0,
+      "thickness": 2,
+      "gap": -4,
+      "old": {
+        "model": "legacy-static-kz-f32-v1",
+        "height": 1024,
+        "scale": 2.133333444595337,
+        "length": 0,
+        "width": 4,
+        "gapOffset": 0,
+        "near": 2,
+        "far": 3,
+        "interval": null,
+        "minimumBranch": false
+      },
+      "alternatives": {
+        "round_scaled": [
+          0,
+          4
+        ],
+        "fixed_2x": [
+          0,
+          4
+        ],
+        "hauptrolle_preview": [
+          0,
+          4
+        ]
+      }
+    },
+    {
+      "player": "NiKo",
+      "date": "2026-09-04",
+      "height": 1080,
+      "size": 0,
+      "thickness": 2,
+      "gap": -4,
+      "old": {
+        "model": "legacy-static-kz-f32-v1",
+        "height": 1080,
+        "scale": 2.25,
+        "length": 0,
+        "width": 4,
+        "gapOffset": 0,
+        "near": 2,
+        "far": 3,
+        "interval": null,
+        "minimumBranch": false
+      },
+      "alternatives": {
+        "round_scaled": [
+          0,
+          5
+        ],
+        "fixed_2x": [
+          0,
+          4
+        ],
+        "hauptrolle_preview": [
+          0,
+          4
+        ]
+      }
+    },
+    {
+      "player": "NiKo",
+      "date": "2026-09-04",
+      "height": 1440,
+      "size": 0,
+      "thickness": 2,
+      "gap": -4,
+      "old": {
+        "model": "legacy-static-kz-f32-v1",
+        "height": 1440,
+        "scale": 3,
+        "length": 0,
+        "width": 6,
+        "gapOffset": 0,
+        "near": 3,
+        "far": 4,
+        "interval": null,
+        "minimumBranch": false
+      },
+      "alternatives": {
+        "round_scaled": [
+          0,
+          6
+        ],
+        "fixed_2x": [
+          0,
+          4
+        ],
+        "hauptrolle_preview": [
+          0,
+          4
+        ]
+      }
+    },
+    {
+      "player": "NiKo",
+      "date": "2026-09-04",
+      "height": 2160,
+      "size": 0,
+      "thickness": 2,
+      "gap": -4,
+      "old": {
+        "model": "legacy-static-kz-f32-v1",
+        "height": 2160,
+        "scale": 4.5,
+        "length": 0,
+        "width": 9,
+        "gapOffset": 0,
+        "near": 4,
+        "far": 5,
+        "interval": null,
+        "minimumBranch": false
+      },
+      "alternatives": {
+        "round_scaled": [
+          0,
+          9
+        ],
+        "fixed_2x": [
+          0,
+          4
+        ],
+        "hauptrolle_preview": [
+          0,
+          4
+        ]
+      }
+    },
+    {
+      "player": "m0NESY",
+      "date": "2026-09-04",
+      "height": 720,
+      "size": 1,
+      "thickness": 1,
+      "gap": -4,
+      "old": {
+        "model": "legacy-static-kz-f32-v1",
+        "height": 720,
+        "scale": 1.5,
+        "length": 1,
+        "width": 1,
+        "gapOffset": 0,
+        "near": 0,
+        "far": 1,
+        "interval": 1,
+        "minimumBranch": false
+      },
+      "alternatives": {
+        "round_scaled": [
+          2,
+          2
+        ],
+        "fixed_2x": [
+          2,
+          2
+        ],
+        "hauptrolle_preview": [
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "player": "m0NESY",
+      "date": "2026-09-04",
+      "height": 768,
+      "size": 1,
+      "thickness": 1,
+      "gap": -4,
+      "old": {
+        "model": "legacy-static-kz-f32-v1",
+        "height": 768,
+        "scale": 1.600000023841858,
+        "length": 1,
+        "width": 1,
+        "gapOffset": 0,
+        "near": 0,
+        "far": 1,
+        "interval": 1,
+        "minimumBranch": false
+      },
+      "alternatives": {
+        "round_scaled": [
+          2,
+          2
+        ],
+        "fixed_2x": [
+          2,
+          2
+        ],
+        "hauptrolle_preview": [
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "player": "m0NESY",
+      "date": "2026-09-04",
+      "height": 960,
+      "size": 1,
+      "thickness": 1,
+      "gap": -4,
+      "old": {
+        "model": "legacy-static-kz-f32-v1",
+        "height": 960,
+        "scale": 2,
+        "length": 2,
+        "width": 2,
+        "gapOffset": 0,
+        "near": 1,
+        "far": 2,
+        "interval": 3,
+        "minimumBranch": false
+      },
+      "alternatives": {
+        "round_scaled": [
+          2,
+          2
+        ],
+        "fixed_2x": [
+          2,
+          2
+        ],
+        "hauptrolle_preview": [
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "player": "m0NESY",
+      "date": "2026-09-04",
+      "height": 1024,
+      "size": 1,
+      "thickness": 1,
+      "gap": -4,
+      "old": {
+        "model": "legacy-static-kz-f32-v1",
+        "height": 1024,
+        "scale": 2.133333444595337,
+        "length": 2,
+        "width": 2,
+        "gapOffset": 0,
+        "near": 1,
+        "far": 2,
+        "interval": 3,
+        "minimumBranch": false
+      },
+      "alternatives": {
+        "round_scaled": [
+          2,
+          2
+        ],
+        "fixed_2x": [
+          2,
+          2
+        ],
+        "hauptrolle_preview": [
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "player": "m0NESY",
+      "date": "2026-09-04",
+      "height": 1080,
+      "size": 1,
+      "thickness": 1,
+      "gap": -4,
+      "old": {
+        "model": "legacy-static-kz-f32-v1",
+        "height": 1080,
+        "scale": 2.25,
+        "length": 2,
+        "width": 2,
+        "gapOffset": 0,
+        "near": 1,
+        "far": 2,
+        "interval": 3,
+        "minimumBranch": false
+      },
+      "alternatives": {
+        "round_scaled": [
+          2,
+          2
+        ],
+        "fixed_2x": [
+          2,
+          2
+        ],
+        "hauptrolle_preview": [
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "player": "m0NESY",
+      "date": "2026-09-04",
+      "height": 1440,
+      "size": 1,
+      "thickness": 1,
+      "gap": -4,
+      "old": {
+        "model": "legacy-static-kz-f32-v1",
+        "height": 1440,
+        "scale": 3,
+        "length": 3,
+        "width": 3,
+        "gapOffset": 0,
+        "near": 1,
+        "far": 2,
+        "interval": 3,
+        "minimumBranch": false
+      },
+      "alternatives": {
+        "round_scaled": [
+          3,
+          3
+        ],
+        "fixed_2x": [
+          2,
+          2
+        ],
+        "hauptrolle_preview": [
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "player": "m0NESY",
+      "date": "2026-09-04",
+      "height": 2160,
+      "size": 1,
+      "thickness": 1,
+      "gap": -4,
+      "old": {
+        "model": "legacy-static-kz-f32-v1",
+        "height": 2160,
+        "scale": 4.5,
+        "length": 4,
+        "width": 4,
+        "gapOffset": 0,
+        "near": 2,
+        "far": 3,
+        "interval": 5,
+        "minimumBranch": false
+      },
+      "alternatives": {
+        "round_scaled": [
+          5,
+          5
+        ],
+        "fixed_2x": [
+          2,
+          2
+        ],
+        "hauptrolle_preview": [
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "player": "ropz",
+      "date": "2026-09-04",
+      "height": 720,
+      "size": 2,
+      "thickness": 0.5,
+      "gap": -3,
+      "old": {
+        "model": "legacy-static-kz-f32-v1",
+        "height": 720,
+        "scale": 1.5,
+        "length": 3,
+        "width": 1,
+        "gapOffset": 1,
+        "near": 1,
+        "far": 2,
+        "interval": 3,
+        "minimumBranch": false
+      },
+      "alternatives": {
+        "round_scaled": [
+          3,
+          1
+        ],
+        "fixed_2x": [
+          4,
+          1
+        ],
+        "hauptrolle_preview": [
+          4,
+          1
+        ]
+      }
+    },
+    {
+      "player": "ropz",
+      "date": "2026-09-04",
+      "height": 768,
+      "size": 2,
+      "thickness": 0.5,
+      "gap": -3,
+      "old": {
+        "model": "legacy-static-kz-f32-v1",
+        "height": 768,
+        "scale": 1.600000023841858,
+        "length": 3,
+        "width": 1,
+        "gapOffset": 1,
+        "near": 1,
+        "far": 2,
+        "interval": 3,
+        "minimumBranch": false
+      },
+      "alternatives": {
+        "round_scaled": [
+          3,
+          1
+        ],
+        "fixed_2x": [
+          4,
+          1
+        ],
+        "hauptrolle_preview": [
+          4,
+          1
+        ]
+      }
+    },
+    {
+      "player": "ropz",
+      "date": "2026-09-04",
+      "height": 960,
+      "size": 2,
+      "thickness": 0.5,
+      "gap": -3,
+      "old": {
+        "model": "legacy-static-kz-f32-v1",
+        "height": 960,
+        "scale": 2,
+        "length": 4,
+        "width": 1,
+        "gapOffset": 1,
+        "near": 1,
+        "far": 2,
+        "interval": 3,
+        "minimumBranch": false
+      },
+      "alternatives": {
+        "round_scaled": [
+          4,
+          1
+        ],
+        "fixed_2x": [
+          4,
+          1
+        ],
+        "hauptrolle_preview": [
+          4,
+          1
+        ]
+      }
+    },
+    {
+      "player": "ropz",
+      "date": "2026-09-04",
+      "height": 1024,
+      "size": 2,
+      "thickness": 0.5,
+      "gap": -3,
+      "old": {
+        "model": "legacy-static-kz-f32-v1",
+        "height": 1024,
+        "scale": 2.133333444595337,
+        "length": 4,
+        "width": 1,
+        "gapOffset": 1,
+        "near": 1,
+        "far": 2,
+        "interval": 3,
+        "minimumBranch": false
+      },
+      "alternatives": {
+        "round_scaled": [
+          4,
+          1
+        ],
+        "fixed_2x": [
+          4,
+          1
+        ],
+        "hauptrolle_preview": [
+          4,
+          1
+        ]
+      }
+    },
+    {
+      "player": "ropz",
+      "date": "2026-09-04",
+      "height": 1080,
+      "size": 2,
+      "thickness": 0.5,
+      "gap": -3,
+      "old": {
+        "model": "legacy-static-kz-f32-v1",
+        "height": 1080,
+        "scale": 2.25,
+        "length": 4,
+        "width": 1,
+        "gapOffset": 1,
+        "near": 1,
+        "far": 2,
+        "interval": 3,
+        "minimumBranch": false
+      },
+      "alternatives": {
+        "round_scaled": [
+          5,
+          1
+        ],
+        "fixed_2x": [
+          4,
+          1
+        ],
+        "hauptrolle_preview": [
+          4,
+          1
+        ]
+      }
+    },
+    {
+      "player": "ropz",
+      "date": "2026-09-04",
+      "height": 1440,
+      "size": 2,
+      "thickness": 0.5,
+      "gap": -3,
+      "old": {
+        "model": "legacy-static-kz-f32-v1",
+        "height": 1440,
+        "scale": 3,
+        "length": 6,
+        "width": 1,
+        "gapOffset": 1,
+        "near": 1,
+        "far": 2,
+        "interval": 3,
+        "minimumBranch": false
+      },
+      "alternatives": {
+        "round_scaled": [
+          6,
+          2
+        ],
+        "fixed_2x": [
+          4,
+          1
+        ],
+        "hauptrolle_preview": [
+          4,
+          1
+        ]
+      }
+    },
+    {
+      "player": "ropz",
+      "date": "2026-09-04",
+      "height": 2160,
+      "size": 2,
+      "thickness": 0.5,
+      "gap": -3,
+      "old": {
+        "model": "legacy-static-kz-f32-v1",
+        "height": 2160,
+        "scale": 4.5,
+        "length": 9,
+        "width": 2,
+        "gapOffset": 1,
+        "near": 2,
+        "far": 3,
+        "interval": 5,
+        "minimumBranch": false
+      },
+      "alternatives": {
+        "round_scaled": [
+          9,
+          2
+        ],
+        "fixed_2x": [
+          4,
+          1
+        ],
+        "hauptrolle_preview": [
+          4,
+          1
+        ]
+      }
+    },
+    {
+      "player": "XANTARES",
+      "date": "2026-09-20",
+      "height": 720,
+      "size": 3,
+      "thickness": 0.5,
+      "gap": 0,
+      "old": {
+        "model": "legacy-static-kz-f32-v1",
+        "height": 720,
+        "scale": 1.5,
+        "length": 4,
+        "width": 1,
+        "gapOffset": 4,
+        "near": 4,
+        "far": 5,
+        "interval": 9,
+        "minimumBranch": false
+      },
+      "alternatives": {
+        "round_scaled": [
+          5,
+          1
+        ],
+        "fixed_2x": [
+          6,
+          1
+        ],
+        "hauptrolle_preview": [
+          7,
+          1
+        ]
+      }
+    },
+    {
+      "player": "XANTARES",
+      "date": "2026-09-20",
+      "height": 768,
+      "size": 3,
+      "thickness": 0.5,
+      "gap": 0,
+      "old": {
+        "model": "legacy-static-kz-f32-v1",
+        "height": 768,
+        "scale": 1.600000023841858,
+        "length": 4,
+        "width": 1,
+        "gapOffset": 4,
+        "near": 4,
+        "far": 5,
+        "interval": 9,
+        "minimumBranch": false
+      },
+      "alternatives": {
+        "round_scaled": [
+          5,
+          1
+        ],
+        "fixed_2x": [
+          6,
+          1
+        ],
+        "hauptrolle_preview": [
+          7,
+          1
+        ]
+      }
+    },
+    {
+      "player": "XANTARES",
+      "date": "2026-09-20",
+      "height": 960,
+      "size": 3,
+      "thickness": 0.5,
+      "gap": 0,
+      "old": {
+        "model": "legacy-static-kz-f32-v1",
+        "height": 960,
+        "scale": 2,
+        "length": 6,
+        "width": 1,
+        "gapOffset": 4,
+        "near": 4,
+        "far": 5,
+        "interval": 9,
+        "minimumBranch": false
+      },
+      "alternatives": {
+        "round_scaled": [
+          6,
+          1
+        ],
+        "fixed_2x": [
+          6,
+          1
+        ],
+        "hauptrolle_preview": [
+          7,
+          1
+        ]
+      }
+    },
+    {
+      "player": "XANTARES",
+      "date": "2026-09-20",
+      "height": 1024,
+      "size": 3,
+      "thickness": 0.5,
+      "gap": 0,
+      "old": {
+        "model": "legacy-static-kz-f32-v1",
+        "height": 1024,
+        "scale": 2.133333444595337,
+        "length": 6,
+        "width": 1,
+        "gapOffset": 4,
+        "near": 4,
+        "far": 5,
+        "interval": 9,
+        "minimumBranch": false
+      },
+      "alternatives": {
+        "round_scaled": [
+          6,
+          1
+        ],
+        "fixed_2x": [
+          6,
+          1
+        ],
+        "hauptrolle_preview": [
+          7,
+          1
+        ]
+      }
+    },
+    {
+      "player": "XANTARES",
+      "date": "2026-09-20",
+      "height": 1080,
+      "size": 3,
+      "thickness": 0.5,
+      "gap": 0,
+      "old": {
+        "model": "legacy-static-kz-f32-v1",
+        "height": 1080,
+        "scale": 2.25,
+        "length": 6,
+        "width": 1,
+        "gapOffset": 4,
+        "near": 4,
+        "far": 5,
+        "interval": 9,
+        "minimumBranch": false
+      },
+      "alternatives": {
+        "round_scaled": [
+          7,
+          1
+        ],
+        "fixed_2x": [
+          6,
+          1
+        ],
+        "hauptrolle_preview": [
+          7,
+          1
+        ]
+      }
+    },
+    {
+      "player": "XANTARES",
+      "date": "2026-09-20",
+      "height": 1440,
+      "size": 3,
+      "thickness": 0.5,
+      "gap": 0,
+      "old": {
+        "model": "legacy-static-kz-f32-v1",
+        "height": 1440,
+        "scale": 3,
+        "length": 9,
+        "width": 1,
+        "gapOffset": 4,
+        "near": 4,
+        "far": 5,
+        "interval": 9,
+        "minimumBranch": false
+      },
+      "alternatives": {
+        "round_scaled": [
+          9,
+          2
+        ],
+        "fixed_2x": [
+          6,
+          1
+        ],
+        "hauptrolle_preview": [
+          7,
+          1
+        ]
+      }
+    },
+    {
+      "player": "XANTARES",
+      "date": "2026-09-20",
+      "height": 2160,
+      "size": 3,
+      "thickness": 0.5,
+      "gap": 0,
+      "old": {
+        "model": "legacy-static-kz-f32-v1",
+        "height": 2160,
+        "scale": 4.5,
+        "length": 13,
+        "width": 2,
+        "gapOffset": 4,
+        "near": 5,
+        "far": 6,
+        "interval": 11,
+        "minimumBranch": false
+      },
+      "alternatives": {
+        "round_scaled": [
+          14,
+          2
+        ],
+        "fixed_2x": [
+          6,
+          1
+        ],
+        "hauptrolle_preview": [
+          7,
+          1
+        ]
+      }
+    },
+    {
+      "player": "karrigan",
+      "date": "2026-08-27",
+      "height": 720,
+      "size": 1.5,
+      "thickness": 1,
+      "gap": -3,
+      "old": {
+        "model": "legacy-static-kz-f32-v1",
+        "height": 720,
+        "scale": 1.5,
+        "length": 2,
+        "width": 1,
+        "gapOffset": 1,
+        "near": 1,
+        "far": 2,
+        "interval": 3,
+        "minimumBranch": false
+      },
+      "alternatives": {
+        "round_scaled": [
+          2,
+          2
+        ],
+        "fixed_2x": [
+          3,
+          2
+        ],
+        "hauptrolle_preview": [
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "player": "karrigan",
+      "date": "2026-08-27",
+      "height": 768,
+      "size": 1.5,
+      "thickness": 1,
+      "gap": -3,
+      "old": {
+        "model": "legacy-static-kz-f32-v1",
+        "height": 768,
+        "scale": 1.600000023841858,
+        "length": 2,
+        "width": 1,
+        "gapOffset": 1,
+        "near": 1,
+        "far": 2,
+        "interval": 3,
+        "minimumBranch": false
+      },
+      "alternatives": {
+        "round_scaled": [
+          2,
+          2
+        ],
+        "fixed_2x": [
+          3,
+          2
+        ],
+        "hauptrolle_preview": [
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "player": "karrigan",
+      "date": "2026-08-27",
+      "height": 960,
+      "size": 1.5,
+      "thickness": 1,
+      "gap": -3,
+      "old": {
+        "model": "legacy-static-kz-f32-v1",
+        "height": 960,
+        "scale": 2,
+        "length": 3,
+        "width": 2,
+        "gapOffset": 1,
+        "near": 2,
+        "far": 3,
+        "interval": 5,
+        "minimumBranch": false
+      },
+      "alternatives": {
+        "round_scaled": [
+          3,
+          2
+        ],
+        "fixed_2x": [
+          3,
+          2
+        ],
+        "hauptrolle_preview": [
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "player": "karrigan",
+      "date": "2026-08-27",
+      "height": 1024,
+      "size": 1.5,
+      "thickness": 1,
+      "gap": -3,
+      "old": {
+        "model": "legacy-static-kz-f32-v1",
+        "height": 1024,
+        "scale": 2.133333444595337,
+        "length": 3,
+        "width": 2,
+        "gapOffset": 1,
+        "near": 2,
+        "far": 3,
+        "interval": 5,
+        "minimumBranch": false
+      },
+      "alternatives": {
+        "round_scaled": [
+          3,
+          2
+        ],
+        "fixed_2x": [
+          3,
+          2
+        ],
+        "hauptrolle_preview": [
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "player": "karrigan",
+      "date": "2026-08-27",
+      "height": 1080,
+      "size": 1.5,
+      "thickness": 1,
+      "gap": -3,
+      "old": {
+        "model": "legacy-static-kz-f32-v1",
+        "height": 1080,
+        "scale": 2.25,
+        "length": 3,
+        "width": 2,
+        "gapOffset": 1,
+        "near": 2,
+        "far": 3,
+        "interval": 5,
+        "minimumBranch": false
+      },
+      "alternatives": {
+        "round_scaled": [
+          3,
+          2
+        ],
+        "fixed_2x": [
+          3,
+          2
+        ],
+        "hauptrolle_preview": [
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "player": "karrigan",
+      "date": "2026-08-27",
+      "height": 1440,
+      "size": 1.5,
+      "thickness": 1,
+      "gap": -3,
+      "old": {
+        "model": "legacy-static-kz-f32-v1",
+        "height": 1440,
+        "scale": 3,
+        "length": 4,
+        "width": 3,
+        "gapOffset": 1,
+        "near": 2,
+        "far": 3,
+        "interval": 5,
+        "minimumBranch": false
+      },
+      "alternatives": {
+        "round_scaled": [
+          5,
+          3
+        ],
+        "fixed_2x": [
+          3,
+          2
+        ],
+        "hauptrolle_preview": [
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "player": "karrigan",
+      "date": "2026-08-27",
+      "height": 2160,
+      "size": 1.5,
+      "thickness": 1,
+      "gap": -3,
+      "old": {
+        "model": "legacy-static-kz-f32-v1",
+        "height": 2160,
+        "scale": 4.5,
+        "length": 6,
+        "width": 4,
+        "gapOffset": 1,
+        "near": 3,
+        "far": 4,
+        "interval": 7,
+        "minimumBranch": false
+      },
+      "alternatives": {
+        "round_scaled": [
+          7,
+          5
+        ],
+        "fixed_2x": [
+          3,
+          2
+        ],
+        "hauptrolle_preview": [
+          2,
+          2
+        ]
+      }
+    }
+  ]
+}

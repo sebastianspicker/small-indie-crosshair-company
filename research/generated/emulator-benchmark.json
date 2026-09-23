@@ -1,0 +1,19 @@
+{
+  "schema": "sicc-emulator-benchmark-v1",
+  "runtime": "v26.9.0",
+  "platform": "darwin",
+  "cpu": "Apple M4",
+  "samples": 40,
+  "iterationsPerEmulatorSample": 2000,
+  "emulator": {
+    "meanUs": 0.4446973875000005,
+    "p50Us": 0.4137605000000022
+  },
+  "exact": {
+    "p50Ms": 1.1305835000000002,
+    "meanMs": 0.9779863750000001
+  },
+  "speedRatio": 2542.3659589185218,
+  "scope": "Single local Node process, speed only. The learned emulator is research-only and is not on the runtime path. No accuracy or native claim; its exact-tuple fidelity is recorded in data/quant-emulator.json.",
+  "nativeEvidence": false
+}

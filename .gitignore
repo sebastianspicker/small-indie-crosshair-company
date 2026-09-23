@@ -1,0 +1,39 @@
+# Local dependencies and generated builds
+node_modules/
+dist/
+.notebook-tools/
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+
+# Credentials and machine-local configuration
+.env
+.env.*
+!.env.example
+!.env.*.example
+.npmrc
+*.pem
+*.key
+*.p12
+*.pfx
+credentials.json
+secrets.json
+
+# Test output (README screenshots in docs/screenshots stay tracked)
+coverage/
+.nyc_output/
+test-results/
+playwright-report/
+artifacts/
+*.log
+
+# Editor and OS files
+.DS_Store
+._*
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+*~

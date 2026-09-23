@@ -1,0 +1,281 @@
+{
+  "schema": "sicc-decision-study-v1",
+  "generatedBy": "scripts/decision-study.mjs",
+  "snapshot": "2026-09-23",
+  "targetBuild": "2000914",
+  "inputs": {
+    "corpusRecords": 138,
+    "eligibleRecords": 133,
+    "skippedRecords": [
+      {
+        "id": "pro-026",
+        "player": "dgt",
+        "reason": "Unsupported legacy color preset 0."
+      },
+      {
+        "id": "pro-064",
+        "player": "sFade8",
+        "reason": "Unsupported legacy color preset 7."
+      }
+    ],
+    "eligibleGeometryGroups": 48,
+    "heights": [
+      720,
+      1080,
+      1440,
+      2160
+    ],
+    "rules": [
+      "expected",
+      "worst",
+      "cvar"
+    ],
+    "caseLimit": null,
+    "scheduledCases": 532
+  },
+  "cases": 532,
+  "agreement": {
+    "allRulesAgree": 24,
+    "anyDisagreement": 508,
+    "disagreementRate": 0.9548872180451128,
+    "pairwiseChosenDifferent": {
+      "expected-worst": 502,
+      "expected-cvar": 381,
+      "worst-cvar": 362
+    }
+  },
+  "chosenWorstCaseLoss": {
+    "expected": {
+      "mean": 0.8140362719008549,
+      "max": 1,
+      "min": 0
+    },
+    "worst": {
+      "mean": 0.645193215801509,
+      "max": 1,
+      "min": 0
+    },
+    "cvar": {
+      "mean": 0.7100773404421828,
+      "max": 1,
+      "min": 0
+    }
+  },
+  "chosenExpectedLoss": {
+    "expected": {
+      "mean": 0.4141463564722352,
+      "max": 0.7856697442716754,
+      "min": 0
+    },
+    "worst": {
+      "mean": 0.5087066821011083,
+      "max": 0.8121693121693119,
+      "min": 0
+    },
+    "cvar": {
+      "mean": 0.46741196422111186,
+      "max": 0.8597963764630427,
+      "min": 0
+    }
+  },
+  "worstCaseRegret": {
+    "expected": {
+      "mean": 0.16971388499373502,
+      "max": 0.4444444444444444,
+      "min": 0
+    },
+    "worst": {
+      "mean": 0.0008708288943904741,
+      "max": 0.08630952380952384,
+      "min": 0
+    },
+    "cvar": {
+      "mean": 0.06575495353506272,
+      "max": 0.4444444444444444,
+      "min": 0
+    }
+  },
+  "disagreementExamples": [
+    {
+      "id": "pro-001",
+      "player": "donk",
+      "height": 720,
+      "chosen": {
+        "expected": "1/0/0@720",
+        "worst": "2/0/0@720",
+        "cvar": "2/0/0@720"
+      },
+      "worstCaseLoss": {
+        "expected": 1,
+        "worst": 0.6,
+        "cvar": 0.6
+      }
+    },
+    {
+      "id": "pro-001",
+      "player": "donk",
+      "height": 1080,
+      "chosen": {
+        "expected": "3/2/0@1080",
+        "worst": "3/1/0@1080",
+        "cvar": "3/2/0@1080"
+      },
+      "worstCaseLoss": {
+        "expected": 0.8125,
+        "worst": 0.6666666666666667,
+        "cvar": 0.8125
+      }
+    },
+    {
+      "id": "pro-001",
+      "player": "donk",
+      "height": 1440,
+      "chosen": {
+        "expected": "3/3/0@1440",
+        "worst": "4/1/0@1440",
+        "cvar": "4/2/0@1440"
+      },
+      "worstCaseLoss": {
+        "expected": 0.8888888888888888,
+        "worst": 0.7560975609756098,
+        "cvar": 0.7761194029850746
+      }
+    },
+    {
+      "id": "pro-001",
+      "player": "donk",
+      "height": 2160,
+      "chosen": {
+        "expected": "3/2/0@2160",
+        "worst": "4/2/0@2160",
+        "cvar": "6/2/0@2160"
+      },
+      "worstCaseLoss": {
+        "expected": 0.9473684210526316,
+        "worst": 0.8421052631578947,
+        "cvar": 0.8928571428571429
+      }
+    },
+    {
+      "id": "pro-002",
+      "player": "ZywOo",
+      "height": 720,
+      "chosen": {
+        "expected": "3/0/1@720",
+        "worst": "3/0/2@720",
+        "cvar": "3/0/1@720"
+      },
+      "worstCaseLoss": {
+        "expected": 0.8461538461538461,
+        "worst": 0.75,
+        "cvar": 0.8461538461538461
+      }
+    },
+    {
+      "id": "pro-002",
+      "player": "ZywOo",
+      "height": 1080,
+      "chosen": {
+        "expected": "3/0/1@1080",
+        "worst": "4/0/0@1080",
+        "cvar": "4/0/0@1080"
+      },
+      "worstCaseLoss": {
+        "expected": 0.6666666666666667,
+        "worst": 0.5,
+        "cvar": 0.5
+      }
+    },
+    {
+      "id": "pro-002",
+      "player": "ZywOo",
+      "height": 1440,
+      "chosen": {
+        "expected": "4/0/1@1440",
+        "worst": "4/0/0@1440",
+        "cvar": "4/0/0@1440"
+      },
+      "worstCaseLoss": {
+        "expected": 0.6666666666666667,
+        "worst": 0.5238095238095238,
+        "cvar": 0.5238095238095238
+      }
+    },
+    {
+      "id": "pro-002",
+      "player": "ZywOo",
+      "height": 2160,
+      "chosen": {
+        "expected": "4/0/0@2160",
+        "worst": "5/0/0@2160",
+        "cvar": "5/0/0@2160"
+      },
+      "worstCaseLoss": {
+        "expected": 0.6551724137931034,
+        "worst": 0.6,
+        "cvar": 0.6
+      }
+    },
+    {
+      "id": "pro-003",
+      "player": "m0NESY",
+      "height": 720,
+      "chosen": {
+        "expected": "1/0/0@720",
+        "worst": "2/0/0@720",
+        "cvar": "2/0/0@720"
+      },
+      "worstCaseLoss": {
+        "expected": 1,
+        "worst": 0.6,
+        "cvar": 0.6
+      }
+    },
+    {
+      "id": "pro-003",
+      "player": "m0NESY",
+      "height": 1080,
+      "chosen": {
+        "expected": "3/2/0@1080",
+        "worst": "3/1/0@1080",
+        "cvar": "3/2/0@1080"
+      },
+      "worstCaseLoss": {
+        "expected": 0.8125,
+        "worst": 0.6666666666666667,
+        "cvar": 0.8125
+      }
+    },
+    {
+      "id": "pro-003",
+      "player": "m0NESY",
+      "height": 1440,
+      "chosen": {
+        "expected": "3/3/0@1440",
+        "worst": "4/1/0@1440",
+        "cvar": "4/2/0@1440"
+      },
+      "worstCaseLoss": {
+        "expected": 0.8888888888888888,
+        "worst": 0.7560975609756098,
+        "cvar": 0.7761194029850746
+      }
+    },
+    {
+      "id": "pro-003",
+      "player": "m0NESY",
+      "height": 2160,
+      "chosen": {
+        "expected": "3/2/0@2160",
+        "worst": "4/2/0@2160",
+        "cvar": "6/2/0@2160"
+      },
+      "worstCaseLoss": {
+        "expected": 0.9473684210526316,
+        "worst": 0.8421052631578947,
+        "cvar": 0.8928571428571429
+      }
+    }
+  ],
+  "scope": "Source-derived old targets scored under 27 declared renderer hypotheses with prior-only weights. Agreement and regret describe the declared objective rules, not native CS2 rendering accuracy."
+}
