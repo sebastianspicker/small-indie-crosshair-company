@@ -5,6 +5,7 @@
 Convert old CS2 crosshair settings into proposed new settings, compare the pixels,
 and export a config. Runs in your browser; no account, backend, or npm install.
 
+[Try the live demo](https://sebastianspicker.github.io/small-indie-crosshair-company/) ·
 [Run locally](#run-locally) · [Screenshot tour](#screenshot-tour) ·
 [Documentation](docs/README.md) · [GitHub Pages setup](docs/engineering/github-pages.md)
 
