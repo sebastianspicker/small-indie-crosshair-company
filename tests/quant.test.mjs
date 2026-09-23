@@ -46,7 +46,7 @@ test('experiment chooser returns a disclosed bounded disagreement design',()=>{c
 test('automatic visual search is bounded, traces residuals and never learns from itself',()=>{const r=infer({settings,records});assert.equal(r.models.length,27);assert.ok(r.candidates.length<=r.search.maxCandidates);assert.equal(r.search.nativeEvidenceUpdatedBySyntheticLoop,false);assert.ok(r.models.every(m=>m.refinement.length<=3));assert.equal(r.confidence.nativeMatchProbability,null);assert.match(exportQuantCFG(r),/CONDITIONAL CANDIDATE/);});
 test('manual scenario selection keeps renderer and candidate coherent',()=>{const r=infer({settings,selectedModelId:'authored:trunc:opening'});assert.equal(r.renderer.id,'authored:trunc:opening');assert.ok(r.chosen.proposedBy.includes(r.renderer.id));});
 test('unsupported static scope blocks configuration export',()=>{for(const more of [{style:5},{weapon_gap:true}])assert.throws(()=>exportQuantCFG(infer({settings:{...settings,...more}})));});
-test('large synthetic target uses full-domain loss rather than preview clipping',()=>{const r=infer({settings:{...settings,size:1000}});assert.ok(r.convertedFit.iou>0&&r.convertedFit.iou<1);assert.equal(r.chosen.exactMass,0);assert.ok(r.warnings.some(x=>x.includes('preview crops')));});
+test('large synthetic target uses full-domain loss rather than preview clipping',()=>{const r=infer({settings:{...settings,size:1000}});assert.ok(r.convertedFit.iou>0&&r.convertedFit.iou<1);assert.equal(r.chosen.exactMass,0);assert.ok(r.warnings.some(x=>x.text.includes('preview crops')));});
 test('screenshot screen-rescaling is rejected rather than silently changing evidence',()=>{const g=legacyGeometry(settings,1080),mask=raster(g,settings,129);assert.throws(()=>infer({settings,options:{oldHeight:1080,currentHeight:1440,goal:'screen'},targetOverride:g,targetMask:mask}),/Image targets/);});
 test('PNG bomb dimensions are rejected before decoding',()=>{const x=new Uint8Array(24);x.set([137,80,78,71,13,10,26,10]);x.set([73,72,68,82],12);const d=new DataView(x.buffer);d.setUint32(16,100000);d.setUint32(20,100000);assert.throws(()=>pngDimensions(x),/safety limit/);assert.throws(()=>pngDimensions(new Uint8Array(24)),/PNG/);});
 test('old screenshot inference recovers simple synthetic core and non-unique cvar intervals',()=>{const g={length:4,width:2,near:1,far:2},mask=raster(g,{},129);const r=analyzeScreenshot({data:rgbaMask(mask),side:129,seed:[0,255,0],height:1080});assert.equal(r.templateIou,1);assert.deepEqual(r.geometry,g);assert.ok(r.buckets.size.upper>r.buckets.size.lower);assert.match(r.confidenceType,/NOT/);});
@@ -62,14 +62,14 @@ test('measurement key is invariant to JSON key order and unused metadata',()=>{c
 test('positive legacy thickness resolved to the zero branch is disclosed',()=>{
   const r=infer({settings:{...settings,thickness:.5},options:{oldHeight:1080,currentHeight:2160,authoredHeight:1080,goal:'pixels'}});
   assert.equal(r.chosen.native.thickness,0);
-  assert.ok(r.warnings.some(w=>/zero-thickness branch/.test(w)));
+  assert.ok(r.warnings.some(w=>/zero-thickness branch/.test(w.text)));
   assert.match(exportQuantCFG(r),/zero-thickness branch/);
 });
 test('zero-branch warning tracks the chosen branch and skips a literal old zero',()=>{
   const literal=infer({settings:{...settings,thickness:0},options:{oldHeight:1080,currentHeight:2160,authoredHeight:1080,goal:'pixels'}});
   assert.equal(literal.chosen.native.thickness,0);
-  assert.ok(!literal.warnings.some(w=>/zero-thickness branch/.test(w)));
+  assert.ok(!literal.warnings.some(w=>/zero-thickness branch/.test(w.text)));
   const positive=infer({settings:{...settings,thickness:1},options:{oldHeight:1080,currentHeight:1080,authoredHeight:1080,goal:'pixels'}});
   assert.ok(positive.chosen.native.thickness>0);
-  assert.ok(!positive.warnings.some(w=>/zero-thickness branch/.test(w)));
+  assert.ok(!positive.warnings.some(w=>/zero-thickness branch/.test(w.text)));
 });

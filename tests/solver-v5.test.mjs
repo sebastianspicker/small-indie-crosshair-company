@@ -155,7 +155,7 @@ test('outlier evidence never turns normalized relative weights into native corre
  assert.equal(p.allModelConflict,true);assert.equal(p.nativeMatchProbability,null);
 });
 test('export sanitizes comments and validates all command values',()=>{
- const report=infer({settings});report.warnings=['first\nquit\r\nexec evil.cfg\u2028bind f quit'];
+ const report=infer({settings});report.warnings=[{code:'injected',text:'first\nquit\r\nexec evil.cfg\u2028bind f quit'}];
  const cfg=exportQuantCFG(report);assert.ok(!cfg.split('\n').some(x=>/^(quit|exec|bind)\b/.test(x)));
  assert.throws(()=>exportQuantCFG({...report,chosen:{...report.chosen,native:{...report.chosen.native,length:'1;quit'}}}));
 });
@@ -164,4 +164,11 @@ test('native pure-dot path rejects an unexplained noisy mask, just like the bar 
  const mask=raster({length:0,width:4,near:0,far:0},{dot:true},129);
  for(let y=10;y<15;y++)for(let x=10;x<15;x++)mask.data[y*129+x]=1;
  assert.throws(()=>measureNativeMask(mask),/90%/);
+});
+test('default automatic tuple is locked and every report warns that gap scaling is unresolved',()=>{
+ const settings={...DEFAULT_SETTINGS,size:2,thickness:0,gap:-4,style:4,weapon_gap:false,outline:false};
+ const report=infer({settings,options:{oldHeight:1080,currentHeight:1080,goal:'pixels'}});
+ assert.deepEqual(report.chosen.native,{length:4,thickness:0,gap:0,authoredHeight:1080});
+ assert.ok(report.warnings.some(w=>/Gap scaling is not stated in the build 2000914/.test(w.text)));
+ assert.ok(report.warnings.some(w=>w.code==='gap-scale-unresolved'));
 });
