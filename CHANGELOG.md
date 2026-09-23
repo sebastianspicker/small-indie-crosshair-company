@@ -39,6 +39,32 @@
 - Add chapter 11 and the formula-history corrections C05 (bounded search is not
   globally optimal; opt-in certificate) and C06 (emulator capacity change,
   fingerprint move, ranker/sensitivity results). Version stays 0.3.0.
+- Add `lib/cvar-inventory.js`, a frozen data table for the build 2000914 crosshair
+  cvars, styles, hidden leftovers and removed names, plus `NATIVE_RANGES` in
+  `lib/native-settings.js` as the one source of the export ranges.
+- Add `lib/quant/structural.js` and `lib/migration.js`: an explicit gap-scale rival
+  (`same-as-length` vs `unscaled`) and named `pixelCopy` / `rename` candidates. The
+  24-hypothesis structural family is offline only (`npm run study:structural`); the
+  default `infer()` tuple, `quant-static-v5` and the 27-model worker search are
+  unchanged.
+- Add a closed residual modulator (`lib/quant/modulator.js`,
+  `npm run modulator:train`). It returns a zero delta with reason
+  `closed-no-native-pairs`, is not imported by inference, and its gate cannot open
+  in v1 because no reviewed-registry provenance value is defined.
+- Warn on every automatic report that build 2000914 does not state gap scaling, and
+  surface an unscaled-gap rival note in the Simple and Expert views. Lock the default
+  tuple for the size-2 fixture in a regression test.
+- Harden imports and exports: reject new-build cvars in the legacy CFG importer with a
+  dedicated message, test that exports never emit removed or hidden legacy commands,
+  cap worker payloads at 1 MiB, and scan `lib/` as well as `app/` for `eval`,
+  `new Function` and `.innerHTML =` assignment.
+- Point the shipped inverse at `NATIVE_RANGES` so cvar bounds cannot drift from the
+  export validator; the default tuple is unchanged.
+- Let the Expert view list the rename, pixel-copy and unscaled structural rivals as
+  read-only rows; none of them replaces `infer().chosen`.
+- Add a pure modulation contract (`lib/quant/modulation-contract.js`) that rejects any
+  delta with a component outside ±2 and any delta that increases geometry loss; it has
+  no weights and is not imported by inference.
 
 ## 0.3.0 — 2026-09-23
 

@@ -43,6 +43,17 @@ connects authored height to size edits and describes resolution-scaled length/th
 callbacks, a global 720p reference, or a new share-code serializer. This is game-derived
 data in a tracker, not Valve-published renderer source.
 
+**Re-read on 2026-09-23.** The same pinned dump was re-read for the v0.4
+conversion plan. The crosshair grep found `cl_crosshairgap`, `cl_crosshairusealpha`,
+`cl_crosshaircolor` (preset index), `cl_crosshair_outlinethickness`,
+`cl_crosshairgap_useweaponvalue` and `cl_fixedcrosshairgap` **absent**, while the
+hidden `cl_crosshairsize` (3.9), `cl_crosshairthickness` (0.6) and
+`cl_crosshairalpha` (200) are still listed. The gap description reads “Offset added to
+the gap between the crosshair center and the bars” and does **not** say gap scales,
+although length and thickness do. The re-read still does not support a quantizer, a gap
+origin, a migration callback or a share-code serializer. The machine-readable table is
+[`lib/cvar-inventory.js`](../../lib/cvar-inventory.js).
+
 ## S04 New crosshair UI
 
 Same pinned build,
@@ -134,4 +145,8 @@ without modifying the archived record.
 | New quantizer is truncation or nearest | Rival hypotheses | Selectable `rounding`; scaled-boundary tests |
 | Browser fixed ×2 is not universal | S01/S06 plus computation | `runAudit`; 32/56 mismatch result |
 | Measured affine fit parameters | User-entered or synthetic data only | `fitAffine`; scope and residual checks |
+| Gap scaling is unresolved on build 2000914 | S03 re-read; dump omits a scaling sentence | `structural.js` `gapScale`; `gap-scale-unresolved` warning |
+| Structural gap-scale rival is not the default | This plan; zero native pairs | `enumerateReducedFamily`; `structural-study.mjs` |
+| Pixel-copy and rename candidates disagree | S01 + S03 recomputation | `migration.js`; `tests/structural.test.mjs` |
+| Residual modulation stays closed | Zero reviewed native pairs | `modulator.js`; `train-residual-modulator.mjs` |
 | Exact game compatibility | No shipped evidence | No production claim or native-verified fixture |

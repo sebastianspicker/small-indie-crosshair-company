@@ -15,7 +15,10 @@ verified native renderer. No original old/new game capture pairs are included.
 - **Run or publish it:** [local and static hosting](engineering/deployment.md),
   [GitHub Pages](engineering/github-pages.md).
 - **Change the code:** [contributing](../CONTRIBUTING.md),
-  [architecture](engineering/v0.3-architecture.md), [testing](engineering/testing.md).
+  [architecture](engineering/v0.3-architecture.md), [testing](engineering/testing.md),
+  [v0.4 improvement plan](engineering/v0.4-conversion-improvement-plan.md)
+  (gap-scale rival, closed residual modulator, inventory facts). The plan describes
+  offline research helpers; the shipped `quant-static-v5` default tuple is unchanged.
 - **Supply evidence:** [measurement policy](evidence/measurement-policy.md) and
   [calibration protocol](math/03-calibration-protocol.md).
 

@@ -200,6 +200,32 @@ mapping. For a two-pixel-wide donk-style fixture, the alternatives suggest gap z
 one respectively while targeting the same old inner edge. A native gap-zero screenshot
 at that effective width can discriminate them.
 
+### Gap scale is a separate hypothesis
+
+The dump states that length and thickness scale with resolution. It does **not** state
+that gap scales. The old painter never height-scaled gap either, so the `Q(rg)` above
+is itself a hypothesis with a rival `Q(g)`. Write `r_g` for the gap ratio: it equals the
+length ratio `r` under `same-as-length` and one under `unscaled`.
+
+A stored `length 9 / thickness 2 / gap 1` at authored height 1080 predicts, at current
+height 2160, width four and near four with `same-as-length`, but near **three** with
+`unscaled`. The two nears differ by one pixel. At current = authored height 1080 the
+length ratio is one and the two scales **agree** (`r_g = 1` either way); agreement there
+is non-identifying and must not be read as confirmation of scaling. Only a cross-height
+capture can separate the rivals, and none is shipped. The shipped default tuple is
+unchanged and every automatic report warns that the scale is unresolved; see
+[the v0.4 plan](../engineering/v0.4-conversion-improvement-plan.md) §2.4 and §2.7.
+
+### The old `+4` is already in the painter
+
+The frozen old painter computes `gapOffset = trunc(gap + 4)` in `lib/legacy.js`, before
+any new-cvar search. `renameCandidate` truncates the raw old console gap, so it **drops**
+that `+4`. `pixelCopyCandidate` copies the rendered offset, which **already includes** it,
+and the pixel-matching structural inverse recovers it. For the `size 3.9 / thickness 0.6 /
+gap 0` fixture at 1080, rename gives gap 0 while pixel copy and `invertStructural` give
+gap 4. `biasGap` stays 0: the `+4` lives in the frozen old painter, so fitting it as a bias
+would count the offset twice.
+
 ## 6. Measured affine gap model
 
 With scoped observations, use

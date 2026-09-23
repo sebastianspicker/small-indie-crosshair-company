@@ -348,3 +348,32 @@ alone. Both flag the declared quantizer, not native renderer fragility.
 **Disposition:** accepted as measured negative/advisory results. None of it is
 wired into inference; the exact solver remains authoritative; the project ships
 zero native capture pairs and no native claim is made. Full account in chapter 10.
+
+## C07 — Gap scale is an unstated axiom; v0.4 records the rival (2026-09-23)
+
+The 2026-09-22 update made length and thickness resolution scaled in the build
+2000914 dump, but the `cl_crosshair_gap` description does **not** state scaling.
+Every one of the 27 `quant-static-v5` ids nonetheless multiplies gap by the same
+ratio `r` it applies to length and thickness. That was an unstated axiom of the
+whole shipped family, not a fact read from the dump. The frozen old painter never
+height-scaled gap, so a converter that does can be right only if Valve changed the
+rule.
+
+**What v0.4 adds:** an explicit structural hypothesis family
+([`lib/quant/structural.js`](../../lib/quant/structural.js)) in which
+`gapScale ∈ {same-as-length, unscaled}` is a named rival, plus an offline census
+([`scripts/structural-study.mjs`](../../scripts/structural-study.mjs)) of where the
+rivals disagree. At an authored height of 1080 and a current height of 2160 the two
+predict nears four and three respectively for a stored `length 9 / thickness 2 /
+gap 1`; at 1080/1080 they agree, so same-height tests cannot identify the scale. The
+shipped `infer()` default tuple is **unchanged**. Every automatic report now warns
+that the scale is unresolved, and the modulator that could one day adjust the tuple
+stays closed (`closed-no-native-pairs`).
+
+**Not claimed:** a measured native renderer, a selected gap scale, or a migration
+callback. Opening the gate needs reviewed native pairs; the plan defines the
+threshold and deliberately defines no reviewed-registry provenance value.
+
+**Disposition:** the rival is recorded and off the default path; the default tuple
+and `quant-static-v5` are frozen. Full account in the
+[v0.4 plan](../engineering/v0.4-conversion-improvement-plan.md).

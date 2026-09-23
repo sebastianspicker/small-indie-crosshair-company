@@ -3,12 +3,15 @@
 Target inventory: build 2000914, pinned in [S03](source-ledger.md#s03-new-build-inventory).
 This is a snapshot, not a promise that these names/ranges will remain unchanged.
 The name mapping does not by itself establish a pixel conversion.
+The machine-readable source of truth for the ranges, defaults, hidden leftovers,
+removed names and styles is [`lib/cvar-inventory.js`](../../lib/cvar-inventory.js);
+this document quotes it and must not become a second copy.
 
 | Purpose | Old setting | New setting / treatment |
 |---|---|---|
-| Arm length | `cl_crosshairsize` | `cl_crosshair_length`, 0–255 |
-| Thickness | `cl_crosshairthickness` | `cl_crosshair_thickness`, 0–31, described minimum one pixel |
-| Gap | `cl_crosshairgap` | `cl_crosshair_gap`, 0–128; baseline unresolved |
+| Arm length | `cl_crosshairsize` | `cl_crosshair_length`, 0–255, dump says scaled |
+| Thickness | `cl_crosshairthickness` | `cl_crosshair_thickness`, 0–31, dump says scaled, minimum one pixel |
+| Gap | `cl_crosshairgap` | `cl_crosshair_gap`, 0–128; the dump does **not** say it scales, so baseline and scaling are unresolved |
 | Opacity | `cl_crosshairalpha` + `cl_crosshairusealpha` | `cl_crosshaircolor_a`, 0–255; resolve old enabled/fallback behavior |
 | Color preset | `cl_crosshaircolor` | Resolve old preset to RGB before export |
 | RGB components | `cl_crosshaircolor_r/g/b` | Same component names, 0–255 |
@@ -20,25 +23,39 @@ The name mapping does not by itself establish a pixel conversion.
 | Weapon-dependent gap | `cl_crosshairgap_useweaponvalue` | No standalone equivalent found; conversion blocked |
 | Authored resolution | No equivalent in earlier inventory | `cl_crosshair_screen_height`, minimum 240 |
 
-The old size, thickness and alpha variables still appear hidden in the new inventory.
-Existence does not prove that assigning them updates the new settings or migration
-state correctly. Their native callbacks were not recovered. Export uses the new names
-and avoids mixing hidden legacy geometry into the same command block.
+### Names absent from the 2000914 dump
+
+A grep of `cl_crosshair` / `cl_fixedcrosshair` over the full `convars.txt` did not
+find these names. Absence is a snapshot fact, not a promise about later builds:
+
+- `cl_crosshairgap` — replaced in name by `cl_crosshair_gap`, and the range changed
+  from a signed raw offset to 0–128.
+- `cl_crosshairusealpha`
+- `cl_crosshaircolor` — the preset index; the RGB components remain.
+- `cl_crosshair_outlinethickness`
+- `cl_crosshairgap_useweaponvalue`
+- `cl_fixedcrosshairgap`
+
+The old size, thickness and alpha variables still appear **hidden** in the new inventory
+(`cl_crosshairsize` 3.9, `cl_crosshairthickness` 0.6, `cl_crosshairalpha` 200). Existence
+does not prove that assigning them updates the new settings or migration state correctly.
+Their native callbacks were not recovered. Export uses the new names and avoids mixing
+hidden legacy geometry into the same command block.
 
 ## Style identifiers are not timeless semantics
 
 The new inventory enumerates:
 
-| ID | New described style | Implemented here |
-|---:|---|---|
-| 0 | Dynamic Cross | No |
-| 1 | Dynamic Circle | No |
-| 2 | Dynamic Cross (Legacy) | No time-varying model; conversion blocked |
-| 3 | Static Circle | No |
-| 4 | Static Cross | Yes, conditional static geometry |
-| 5 | Static Cross (Shot Feedback) | No firing-feedback model; conversion blocked |
-| 6 | Dot Only | Not substituted for old style-4 dot construction |
-| 7 | Dynamic Quad | No |
+| ID | New described style | Tracks weapon inaccuracy | Implemented here |
+|---:|---|---|---|
+| 0 | Dynamic Cross | Yes | No |
+| 1 | Dynamic Circle | Yes | No |
+| 2 | Dynamic Cross (Legacy) | No time model | No; do not treat as the old classic |
+| 3 | Static Circle | No | No |
+| 4 | Static Cross | No | Yes, conditional static geometry |
+| 5 | Static Cross (Shot Feedback) | Firing feedback, not modeled | No |
+| 6 | Dot Only | No | Not substituted for old style-4 dot construction |
+| 7 | Dynamic Quad (new default) | Yes | No |
 
 The earlier dump describes old disabled/reassigned style meanings for some of these
 identifiers. Do not preserve an integer and assume the semantics survived. The generated

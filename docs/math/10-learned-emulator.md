@@ -253,6 +253,16 @@ No ML claim is made about improving the conversion. The artifact exists so that
 the experiment, its numbers and its rejection are inspectable rather than
 assumed.
 
+Residual modulation is a separate, also-closed idea. A later patch could add a
+bounded (±2 pixel) correction on top of the exact solver once reviewed native
+captures exist. The v0.4 plan specifies it, `lib/quant/modulator.js` returns a
+zero delta with reason `closed-no-native-pairs`, and it is **not** imported by
+`lib/quant/inference.js`. It is not a second emulator and is not trained on
+solver labels; its artifact records `trainedOnSolverLabels: false`. The
+bounded-delta rule itself is a pure predicate in
+`lib/quant/modulation-contract.js`: it has no weights and is not imported by
+inference either.
+
 ## 9. Why repository-only data cannot identify the native renderer
 
 Fidelity to the solver is not a path to renderer truth. The project ships zero
