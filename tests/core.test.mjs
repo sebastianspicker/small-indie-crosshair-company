@@ -4,6 +4,7 @@ import { readFile } from 'node:fs/promises';
 import { legacyGeometry as geom } from '../lib/legacy.js';
 import { decodeLegacy,encodeLegacy } from '../lib/sharecode.js';
 import { convert,predictedGeometry,exportCFG,rgba } from '../lib/conversion.js';
+import { nativeCommands } from '../lib/native-settings.js';
 import { runAudit } from '../lib/audit.js';
 import { fitAffine,inverseAffine,validateMeasurement } from '../lib/calibration.js';
 import { raster,compareMasks,rectangles } from '../lib/raster.js';
@@ -52,7 +53,7 @@ test('export uses new variable names, alpha and last authored height',()=>{const
 test('export rejects native invalid integers instead of injecting',()=>{assert.throws(()=>exportCFG(convert(cfg),cfg,{length:'1;quit',thickness:1,gap:0,authoredHeight:1080}));assert.throws(()=>exportCFG(convert(cfg),cfg,{length:1.5,thickness:1,gap:0,authoredHeight:1080}));});
 test('preset color and alpha-disabled fallback resolved',()=>{assert.deepEqual(rgba({...cfg,color:1,alpha_enabled:false}),{rgb:[50,250,50],alpha:200});assert.throws(()=>rgba({...cfg,color:5,rgb:[-1,2,3]}));});
 test('allowed CFG parsed without running commands',()=>{const r=parseLegacyCFG('cl_crosshairsize "1.5"; cl_crosshairgap -3\n// comment\ncl_crosshairdot 1');assert.equal(r.config.size,1.5);assert.equal(r.config.dot,true);});
-for(const payload of ['exec evil','bind x "quit"','cl_crosshairsize 2; quit','<script>alert(1)</script>','cl_crosshairsize NaN','cl_crosshairdot 2'])test(`reject non-data CFG: ${payload}`,()=>assert.throws(()=>parseLegacyCFG(payload)));
+for(const payload of ['exec evil','bind x "quit"','connect 1.2.3.4:27015','alias mine "quit"','host_writeconfig','cl_crosshairsize 2; quit','<script>alert(1)</script>','cl_crosshairsize NaN','cl_crosshairsize "abc"','cl_crosshairdot 2'])test(`reject non-data CFG: ${payload}`,()=>assert.throws(()=>parseLegacyCFG(payload)));
 test('duplicate assignments are reported',()=>assert.equal(parseLegacyCFG('cl_crosshairgap -3;cl_crosshairgap -2').notes.length,1));
 test('affine calibration recovers synthetic slope and intercept',()=>{const f=fitAffine([{setting:0,pixels:1},{setting:2,pixels:3},{setting:4,pixels:5}]);assert.equal(f.slope,1);assert.equal(f.intercept,1);assert.equal(f.maxResidual,0);assert.equal(inverseAffine(f,2).raw,1);assert.match(f.status,/not-renderer-verification/);});
 test('fit rejects underdetermined, nonpositive and nonfinite inputs',()=>{
@@ -78,4 +79,21 @@ test('measured gap fit is not silently quantized a second time',()=>{
 });
 test('export and legacy encoder reject non-boolean flags',()=>{
   assert.throws(()=>encodeLegacy({...cfg,dot:'true'}));assert.throws(()=>exportCFG(convert(cfg),{...cfg,recoil:'1;quit'}));
+});
+const REMOVED_EXPORT_TOKENS=['cl_crosshairsize','cl_crosshairthickness','cl_crosshairalpha','cl_crosshairgap','cl_crosshairusealpha','exec','bind','connect','host_writeconfig'];
+test('exports never emit removed or hidden legacy commands and keep the new gap name',()=>{
+  const r=convert(cfg),outputs=[exportCFG(r,cfg),nativeCommands(cfg,r.native).join('\n')];
+  for(const out of outputs){
+    for(const token of REMOVED_EXPORT_TOKENS)
+      assert.ok(!new RegExp(`(?:^|\\s)${token}(?:\\s|$)`,'m').test(out),`export emitted removed token ${token}`);
+    assert.ok(!/(?:^|\s)cl_crosshaircolor\s+\d/m.test(out),'export emitted the removed color preset index');
+    assert.match(out,/(?:^|\s)cl_crosshair_gap \d/m);
+  }
+});
+test('new-build cvars are rejected by the legacy importer with a dedicated message',()=>{
+  for(const name of ['cl_crosshair_length','cl_crosshair_thickness','cl_crosshair_gap','cl_crosshair_screen_height'])
+    assert.throws(()=>parseLegacyCFG(`${name} 3`),/New-build cvars cannot be imported as legacy settings/);
+  assert.throws(()=>parseLegacyCFG('cl_crosshair_length abc'),/New-build cvars cannot be imported as legacy settings/);
+  const legacy=parseLegacyCFG('cl_crosshairsize 2\ncl_crosshairthickness 1\ncl_crosshairgap -3');
+  assert.equal(legacy.config.size,2);assert.equal(legacy.config.gap,-3);
 });
