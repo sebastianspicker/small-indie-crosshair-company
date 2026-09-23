@@ -18,7 +18,13 @@ The Node suite covers binary32 arithmetic, inverse search, legal ranges, literal
 zero, both inner edges, rendering, code/CFG parsing, measurement provenance,
 calibration/holdout separation, worker queues, exports, and server responses.
 Shape tests compare analytical unions against dense pixel masks. Inverse tests
-compare selected values against finite-domain oracles.
+compare selected values against finite-domain oracles. Certification tests check
+the declared objective, the CVaR reference and the exhaustive oracle; preimage
+tests compare complete equivalence classes against a reduced-box brute force;
+partition and experiment tests recompute prediction partitions from `forward`;
+ranker tests check shortlist determinism, exact verification and fail-closed
+parsing; sensitivity tests check analytic margins and the fail-closed fragility
+parser.
 
 The Python reproduction checks the archive's hashes, runs its 21 checks, reproduces
 its stored output, and compares 56 JS/Python cases. The larger study uses 135
@@ -48,6 +54,43 @@ reproduces the declared automatic solver — and **not** game accuracy. The
 project ships zero native capture pairs, so no native accuracy test exists and
 the artifact records `speedGate: "closed-not-exact-equivalent"`. A passing
 emulator test therefore says the learned model matches our equations, not CS2.
+
+## Certification, partition and capture studies
+
+Four research-only scripts produce the versioned artifacts in
+`research/generated/`. They are deterministic and offline; none of them runs CS2
+or observes a capture:
+
+```sh
+npm run certify:inverse      # research/generated/inverse-certification.json
+npm run study:decision       # research/generated/decision-study.json
+npm run study:partition      # research/generated/model-partition.json
+npm run study:discriminating # research/generated/discriminating-set.json
+npm run bench:ranker         # research/generated/ranker-benchmark.json
+```
+
+- `tests/certify.test.mjs` checks the declared objective (including a hand-built
+  CVaR reference), the exhaustive oracle on a tiny window, and the certificate
+  methods. `tests/certification-runtime.test.mjs` checks the opt-in
+  `infer({ certify: true })` path and that the default path makes no global
+  claim.
+- `tests/preimage.test.mjs` checks `exactPreimage` against a reduced-box brute
+  force, the pure-dot gap range and the literal-zero restriction.
+- `tests/decision.test.mjs` checks the `expected`/`worst`/`cvar` rules and the
+  weighted CVaR helper.
+- `tests/partition.test.mjs` and `tests/experiments.test.mjs` check behavioural
+  equivalence and the greedy `discriminatingSet` against recomputed partitions.
+- `tests/ranker.test.mjs` checks the learned shortlist, exact `selectVerified`,
+  `coverageAtK` / `compareToSolver`, and fail-closed parsing.
+- `tests/sensitivity.test.mjs` checks analytic boundary margins and the fragility
+  model parser.
+
+Each artifact states its own scope and refuses to claim native accuracy: the
+certificate is about the declared loss, the partition is over a finite sampled
+domain, the discriminating set is a capture **plan**, and the ranker/fragility
+layers distil the declared solver. The shell-monotone certificate is conditional
+on a documented, spot-checked monotonicity assumption, not a proof. See
+[chapter 11](../math/11-certified-inverse-and-capture-plan.md).
 
 ## Browser checks
 
@@ -110,6 +153,20 @@ npm run bench:emulator
 
 It reports speed only. The learned model is not on the runtime path and its
 fidelity ceiling is recorded in `data/quant-emulator.json`; see chapter 10.
+
+The learned shortlist plus exact verification has its own honest comparison
+against the exact solver:
+
+```sh
+npm run bench:ranker
+```
+
+It writes `research/generated/ranker-benchmark.json`, reports shortlist coverage,
+the verified-vs-solver loss gap (including losses), the p50 speed ratio and the
+advisory sensitivity layers. The artifact records the result as
+`NEGATIVE (fidelity)` because coverage is not 100%; see chapter 10. The committed
+prediction-only `bench:emulator` figure predates the current artifact's capacity
+revision, so re-run it before quoting it.
 
 This times the inference core in Node. Compare runs on the same machine, with the
 same inputs and warmup. It does not measure browser responsiveness or game FPS.

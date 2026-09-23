@@ -11,7 +11,7 @@ export class ResearchWorker {
 
   call(type, payload, transfer = []) {
     if (this.closed) return Promise.reject(new Error('Research worker is closed. Reload to restart.'));
-    if (!['init', 'infer', 'screenshot', 'native-screenshot'].includes(type)) return Promise.reject(new Error('Unknown worker operation.'));
+    if (!['init', 'infer', 'screenshot', 'native-screenshot', 'discriminating'].includes(type)) return Promise.reject(new Error('Unknown worker operation.'));
     if (type === 'infer') this.discardQueuedInference();
     if (this.queue.length >= 8) return Promise.reject(new Error('Worker queue is full; finish the current image analysis first.'));
     return new Promise((resolve, reject) => {

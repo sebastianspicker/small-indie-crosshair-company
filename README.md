@@ -88,13 +88,22 @@ You can inspect a single model or rank settings across them. Imported native
 measurements can inform model weights within their recorded scope.
 
 A **mask match** measures overlap under a chosen model. **Model agreement** depends
-on the chosen models and their weights. Neither is a measured chance of success
-in CS2; `nativeMatchProbability` remains `null`. The corpus supplies realistic
-old inputs, not observations of the new renderer.
+on the chosen models and their weights. A decision rule (`expected`, `worst`, or
+`cvar`) chooses a tuple under that loss; different rules often choose different
+natives. Neither is a measured chance of success in CS2; `nativeMatchProbability`
+remains `null`. The corpus supplies realistic old inputs, not observations of the
+new renderer.
+
+An **opt-in** certificate (`infer({ certify: true })`) can certify the chosen tuple
+as the best available under the declared loss, or refuse to claim it. It is a claim
+about the declared objective, not about Valve's renderer, and the default path is
+unchanged. A synthetic **capture plan** lists the two crosshairs whose predictions
+would separate the 27 hypotheses; it is a plan, not measurements.
 
 See the [evidence definitions](docs/README.md#evidence-labels),
-[solver derivation](docs/math/09-solver-and-integrity.md), and
-[formula history](docs/research/formula-evolution.md) for details.
+[the solver derivation](docs/math/09-solver-and-integrity.md),
+[the certified inverse and capture plan](docs/math/11-certified-inverse-and-capture-plan.md),
+and [formula history](docs/research/formula-evolution.md) for details.
 
 ## GitHub Pages demo
 
@@ -119,6 +128,11 @@ verification, and builds have no third-party package dependencies.
 npm run verify              # syntax, research, tests, archive parity, static build
 npm run bench:quant         # local solver timing
 npm run bench:emulator      # learned-vs-exact timing (research only)
+npm run bench:ranker        # learned shortlist + exact verification (research only)
+npm run certify:inverse     # certify/refuse the declared optimum per corpus case
+npm run study:decision      # compare the expected/worst/cvar decision rules
+npm run study:partition     # behavioural partition of the 27 hypotheses
+npm run study:discriminating # two-design separating capture plan
 npm run research:quant      # regenerate the corpus study
 npm run research:reproduce  # verify archive hashes and JS/Python parity
 npm run emulator:train      # retrain the research-only learned emulator
@@ -126,7 +140,14 @@ npm run emulator:train      # retrain the research-only learned emulator
 
 The learned emulator is a research artifact only. It is trained offline on labels
 from the declared solver, and it measures fidelity to that solver, not accuracy
-in CS2. It is not part of the app's conversion path.
+in CS2. A capacity revision raised its held-out full-tuple fidelity from about
+11.6% to about 35.7%; the gain came from capacity, not from the 7 extra declared
+features, which were neutral-to-slightly-negative in ablation. Its learned ranker
+still lost to the exact solver on 13 of 125 samples, and its learned fragility
+classifier was weak (0.736 vs a 0.704 majority baseline), so none of it is part of
+the app's conversion path. See
+[chapter 10](docs/math/10-learned-emulator.md) and
+[chapter 11](docs/math/11-certified-inverse-and-capture-plan.md).
 
 Optional browser checks and screenshot capture are described in
 [testing](docs/engineering/testing.md). For changes and review guidance, see

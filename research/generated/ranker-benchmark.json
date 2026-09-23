@@ -1,0 +1,362 @@
+{
+  "schema": "sicc-ranker-benchmark-v1",
+  "snapshot": "2026-09-23",
+  "seed": 23092030,
+  "runtime": "v26.9.0",
+  "platform": "darwin",
+  "cpu": "Apple M4",
+  "modelKind": {
+    "artifact": "boosted-trees",
+    "maxDepth": 3,
+    "rounds": 120,
+    "learningRate": 0.2
+  },
+  "artifactFingerprint": 137061144,
+  "counts": {
+    "settingsPool": 615,
+    "testSettings": 125,
+    "trainSettings": 490,
+    "testSamples": 125,
+    "trainSamples": 490,
+    "excludedTest": 0,
+    "excludedTrain": 0
+  },
+  "coverage": {
+    "8": {
+      "K": 8,
+      "count": 125,
+      "covered": 77,
+      "coverage": 0.616,
+      "perCoordinate": {
+        "length": 0.888,
+        "thickness": 0.952,
+        "gap": 0.912
+      },
+      "scope": "Containment diagnostic: fraction of samples whose exact declared-solver tuple appears in the learned shortlist at size K. Not accuracy, and NOT native CS2 evidence."
+    },
+    "16": {
+      "K": 16,
+      "count": 125,
+      "covered": 91,
+      "coverage": 0.728,
+      "perCoordinate": {
+        "length": 0.912,
+        "thickness": 0.96,
+        "gap": 0.912
+      },
+      "scope": "Containment diagnostic: fraction of samples whose exact declared-solver tuple appears in the learned shortlist at size K. Not accuracy, and NOT native CS2 evidence."
+    },
+    "32": {
+      "K": 32,
+      "count": 125,
+      "covered": 106,
+      "coverage": 0.848,
+      "perCoordinate": {
+        "length": 0.936,
+        "thickness": 0.976,
+        "gap": 0.968
+      },
+      "scope": "Containment diagnostic: fraction of samples whose exact declared-solver tuple appears in the learned shortlist at size K. Not accuracy, and NOT native CS2 evidence."
+    },
+    "64": {
+      "K": 64,
+      "count": 125,
+      "covered": 114,
+      "coverage": 0.912,
+      "perCoordinate": {
+        "length": 0.992,
+        "thickness": 0.976,
+        "gap": 0.968
+      },
+      "scope": "Containment diagnostic: fraction of samples whose exact declared-solver tuple appears in the learned shortlist at size K. Not accuracy, and NOT native CS2 evidence."
+    }
+  },
+  "coverageSummary": {
+    "8": 0.616,
+    "16": 0.728,
+    "32": 0.848,
+    "64": 0.912
+  },
+  "verifiedVsSolver": {
+    "32": {
+      "K": 32,
+      "count": 125,
+      "matched": 98,
+      "worse": 13,
+      "better": 14,
+      "tupleMatch": 93,
+      "meanGap": 0.00088602095677426,
+      "meanAbsGap": 0.003011568979136842,
+      "maxGap": 0.10630172477107636,
+      "minGap": -0.025634800552673254,
+      "maxAbsGap": 0.10630172477107636,
+      "worstRegressions": [
+        {
+          "gap": 0.10630172477107636,
+          "verified": {
+            "length": 4,
+            "thickness": 2,
+            "gap": 11,
+            "authoredHeight": 2160
+          },
+          "solver": {
+            "length": 3,
+            "thickness": 3,
+            "gap": 13,
+            "authoredHeight": 2160
+          }
+        },
+        {
+          "gap": 0.050784824232593895,
+          "verified": {
+            "length": 6,
+            "thickness": 2,
+            "gap": 7,
+            "authoredHeight": 2160
+          },
+          "solver": {
+            "length": 5,
+            "thickness": 2,
+            "gap": 6,
+            "authoredHeight": 2160
+          }
+        },
+        {
+          "gap": 0.018437701024103248,
+          "verified": {
+            "length": 7,
+            "thickness": 9,
+            "gap": 2,
+            "authoredHeight": 2160
+          },
+          "solver": {
+            "length": 9,
+            "thickness": 8,
+            "gap": 0,
+            "authoredHeight": 2160
+          }
+        }
+      ],
+      "bestImprovements": [
+        {
+          "gap": -0.025634800552673254,
+          "verified": {
+            "length": 11,
+            "thickness": 9,
+            "gap": 0,
+            "authoredHeight": 1440
+          },
+          "solver": {
+            "length": 11,
+            "thickness": 10,
+            "gap": 0,
+            "authoredHeight": 1440
+          }
+        },
+        {
+          "gap": -0.025308641975308466,
+          "verified": {
+            "length": 2,
+            "thickness": 2,
+            "gap": 0,
+            "authoredHeight": 2160
+          },
+          "solver": {
+            "length": 0,
+            "thickness": 4,
+            "gap": 0,
+            "authoredHeight": 2160
+          }
+        },
+        {
+          "gap": -0.012733012661929444,
+          "verified": {
+            "length": 12,
+            "thickness": 7,
+            "gap": 2,
+            "authoredHeight": 1080
+          },
+          "solver": {
+            "length": 11,
+            "thickness": 7,
+            "gap": 2,
+            "authoredHeight": 1080
+          }
+        }
+      ],
+      "scope": "Verified shortlist loss minus the declared solver chosen loss under the same declared objective. Negative is better. Distils the declared solver only; NOT native CS2 evidence."
+    },
+    "64": {
+      "K": 64,
+      "count": 125,
+      "matched": 97,
+      "worse": 9,
+      "better": 19,
+      "tupleMatch": 92,
+      "meanGap": -0.00025659949660815194,
+      "meanAbsGap": 0.0029804805817120394,
+      "maxGap": 0.09324850014682673,
+      "minGap": -0.029664649247536812,
+      "maxAbsGap": 0.09324850014682673,
+      "worstRegressions": [
+        {
+          "gap": 0.09324850014682673,
+          "verified": {
+            "length": 2,
+            "thickness": 1,
+            "gap": 8,
+            "authoredHeight": 2160
+          },
+          "solver": {
+            "length": 3,
+            "thickness": 3,
+            "gap": 13,
+            "authoredHeight": 2160
+          }
+        },
+        {
+          "gap": 0.02978781525951335,
+          "verified": {
+            "length": 5,
+            "thickness": 2,
+            "gap": 7,
+            "authoredHeight": 2160
+          },
+          "solver": {
+            "length": 5,
+            "thickness": 2,
+            "gap": 6,
+            "authoredHeight": 2160
+          }
+        },
+        {
+          "gap": 0.00938668968635692,
+          "verified": {
+            "length": 2,
+            "thickness": 9,
+            "gap": 2,
+            "authoredHeight": 1080
+          },
+          "solver": {
+            "length": 2,
+            "thickness": 9,
+            "gap": 6,
+            "authoredHeight": 1080
+          }
+        }
+      ],
+      "bestImprovements": [
+        {
+          "gap": -0.029664649247536812,
+          "verified": {
+            "length": 8,
+            "thickness": 6,
+            "gap": 0,
+            "authoredHeight": 1080
+          },
+          "solver": {
+            "length": 6,
+            "thickness": 5,
+            "gap": 0,
+            "authoredHeight": 1080
+          }
+        },
+        {
+          "gap": -0.025634800552673254,
+          "verified": {
+            "length": 11,
+            "thickness": 9,
+            "gap": 0,
+            "authoredHeight": 1440
+          },
+          "solver": {
+            "length": 11,
+            "thickness": 10,
+            "gap": 0,
+            "authoredHeight": 1440
+          }
+        },
+        {
+          "gap": -0.025308641975308466,
+          "verified": {
+            "length": 2,
+            "thickness": 2,
+            "gap": 0,
+            "authoredHeight": 2160
+          },
+          "solver": {
+            "length": 0,
+            "thickness": 4,
+            "gap": 0,
+            "authoredHeight": 2160
+          }
+        }
+      ],
+      "scope": "Verified shortlist loss minus the declared solver chosen loss under the same declared objective. Negative is better. Distils the declared solver only; NOT native CS2 evidence."
+    }
+  },
+  "timing": {
+    "samples": 125,
+    "repeatsPerSample": 3,
+    "learnedShortlistUs": {
+      "p50": 24.54166666666424,
+      "p95": 29.005533333338462
+    },
+    "verifiedShortlistUs": {
+      "p50": 221.13866666669915,
+      "p95": 250.49179999994823
+    },
+    "exactInferMs": {
+      "p50": 1.4711660000000393,
+      "p95": 2.0053245999999945
+    },
+    "verifiedSpeedRatioP50": 6.652685494470241
+  },
+  "analyticAdvisory": {
+    "levels": {
+      "low": 14,
+      "medium": 40,
+      "high": 71
+    },
+    "fractions": {
+      "low": 0.112,
+      "medium": 0.32,
+      "high": 0.568
+    },
+    "meanNearestMargin": 0.11404444444444438,
+    "minNearestMargin": 0,
+    "exactNearestBoundarySamples": 68,
+    "note": "Analytic layer only. Integer legacy values also sit on trunc/ceil integer boundaries by construction and are reported as a structural reason without raising the level, so this is a conservative-but-discriminating advisory.",
+    "scope": "Advisory only: flags boundary fragility of the DECLARED quant solver and (optionally) learned emulator/solver disagreement. It does NOT measure native renderer fragility or CS2 rendering risk. The analytic layer is a declared-math diagnostic; the learned layer distils the declared solver."
+  },
+  "fragility": {
+    "mode": "trained",
+    "schema": "sicc-fragility-v1",
+    "kind": "boosted-logistic-stumps",
+    "config": {
+      "rounds": 40,
+      "learningRate": 0.2,
+      "maxDepth": 1,
+      "seed": 23092031
+    },
+    "trainSamples": 490,
+    "testSamples": 125,
+    "trainMismatchRate": 0.6530612244897959,
+    "testMismatchRate": 0.704,
+    "accuracyAt0_5": 0.736,
+    "majorityBaselineAccuracy": 0.704,
+    "meanPredicted": 0.6630116774789641,
+    "meanPredictedWhenMismatch": 0.6863062350411673,
+    "meanPredictedWhenMatch": 0.6076084054391289,
+    "scope": "Advisory only: flags boundary fragility of the DECLARED quant solver and (optionally) learned emulator/solver disagreement. It does NOT measure native renderer fragility or CS2 rendering risk. The analytic layer is a declared-math diagnostic; the learned layer distils the declared solver."
+  },
+  "scope": "Learned shortlist + exact verification over the DECLARED solver decision loss. The emulator only proposes candidates; the returned tuple is the exact argmin of the caller-supplied declared loss over the shortlist. Coverage and loss gaps are measured against the declared solver only. NOT native CS2 evidence.",
+  "honesty": {
+    "labels": "exact declared solver (infer) output; no native captures exist in this repository",
+    "nativeEvidence": false,
+    "rankerGuarantee": "never worse than the best candidate inside the learned shortlist under the declared loss; not global optimality, not native correctness",
+    "speedGate": "unchanged: closed-not-exact-equivalent for replacing the solver, because coverage is not 100%"
+  },
+  "verdict": "NEGATIVE (fidelity): the verified shortlist lost to the declared solver on 13/125 samples (max gap 0.10630172477107636); coverage at K=32 is 84.8%. Faster but not interchangeable. The learned fragility layer is weak (holdout accuracy 0.736 vs majority baseline 0.704); the analytic advisory stands alone. Solver fidelity only; NOT native CS2 evidence.",
+  "durationMs": 1278.0632500000002
+}

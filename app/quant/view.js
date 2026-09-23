@@ -80,7 +80,8 @@ function appearanceControls() {
       option('pixels', 'Crosshair size in game pixels'), option('screen', 'Proportion of the screen')),
     el('div', { class: 'input-grid' }, field('q-color', 'Color', 'color', { value: '#00ff00' }), field('q-alpha', 'Opacity', 'number', { min: 0, max: 255, value: 255 })),
     el('label', { for: 'q-decision' }, 'When models disagree'), el('select', { id: 'q-decision' },
-      option('expected', 'Lowest weighted mismatch'), option('worst', 'Limit the largest mismatch')),
+      option('expected', 'Lowest weighted mismatch'), option('worst', 'Limit the largest mismatch'),
+      option('cvar', 'Limit weighted worst tail (CVaR)')),
     el('p', { class: 'small' }, 'These choices compare our models. They do not predict which one CS2 uses.'));
 }
 
@@ -114,7 +115,10 @@ function feedbackPanel() {
       el('button', { id: 'q-clear-measurements', class: 'button ghost' }, 'Reset session evidence')),
     status('q-evidence-status'), el('h3', {}, 'A useful next screenshot'),
     el('p', { class: 'small' }, 'These settings make our models disagree most in the preview. A real capture could help tell them apart.'),
-    el('pre', { id: 'q-experiment', class: 'formula' }));
+    el('pre', { id: 'q-experiment', class: 'formula' }),
+    el('h3', {}, 'Discriminating capture set'),
+    el('p', { class: 'small' }, 'Loaded when this panel is first opened. Each design separates declared model predictions; the whole set is a capture plan, not a measurement.'),
+    el('pre', { id: 'q-discriminating', class: 'formula' }));
 }
 
 function resultsPanel() {
@@ -128,7 +132,10 @@ function resultsPanel() {
     detail('q-derivation-panel', 'Pixel measurements and differences', el('div', { id: 'q-derivation' }), docLink('math/09-solver-and-integrity.md', 'How the values are calculated')),
     status('q-status'), el('div', { id: 'q-warnings', class: 'warnings', role: 'alert' }), previewPanel(),
     detail('q-scenarios', 'Compare all 27 models', el('div', { id: 'q-model-table' })),
-    detail('q-trace-panel', 'Search details and uncertainty', el('div', { id: 'q-trace' }),
+    detail('q-trace-panel', 'Search details and uncertainty',
+      el('label', { class: 'check' }, el('input', { id: 'q-certify', type: 'checkbox' }), 'Certify global optimum (slower)'),
+      el('p', { id: 'q-certify-note', class: 'small' }),
+      el('div', { id: 'q-trace' }),
       el('button', { id: 'q-download-report', class: 'button secondary', disabled: true }, 'Download research JSON')),
     detail('q-commands-panel', 'Console commands', el('textarea', { id: 'q-cfg', rows: 8, readonly: 'readonly', spellcheck: false, 'aria-label': 'New cvar commands' })),
     feedbackPanel());

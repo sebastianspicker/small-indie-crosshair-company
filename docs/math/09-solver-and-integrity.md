@@ -53,6 +53,12 @@ small scalar evaluations per renderer before reuse. Width values that quantize t
 
 The finite enumeration proves a **global minimum of the declared geometry objective on the declared integer domain**: every possible width/gap branch was evaluated, and length was minimized independently. The implementation compares computed losses strictly before using the ideal-value preference for exact ties; a small real loss difference must not be rounded into a tie. It does not prove global binary-mask optimality. In the report, `inverseCertificate.stage` is `initial-geometry-inverse`; the certificate contains the initialization tuple, prediction, objective minimum and branch counts. Subsequent visual refinement can change the tuple, so the certificate is never silently reattached to that final tuple as though it certified the new objective.
 
+### Complete integer preimages
+
+The geometry inverse is many-to-one: several legal integer tuples can forward-render exactly the same `{length, width, near, far}` geometry. `solveInverse` returns one minimum per hypothesis; the runtime also exposes `exactPreimage`, which returns the **whole finite equivalence class** for one hypothesis as a union of integer boxes (`lengths` and `gaps` run-length intervals per reachable thickness). The exported report carries a `preimage` block: the hypothesis id, completeness, the exact count, whether near/far were constrained, a bounded deterministic sample of at most 64 tuples, and its scope.
+
+Two honest readings follow. First, an empty preimage is possible even for a target that looks reachable: quantised scaling can skip a rendered dimension, so a target reachable under one hypothesis can have no exact integer preimage under another. Second, a pure-dot target has zero length, which leaves the near/far edges unconstrained, so every legal gap is an exact match rather than a single value. The preimage is exact on the declared integer domain under one hypothesis; it is not native validation. See [chapter 11](11-certified-inverse-and-capture-plan.md) for worked cases.
+
 ### Counterexample that motivated the joint solve
 
 At height 2160, old size 2, thickness 0.5 and gap −7 reconstruct to length 9, width 2, near edge −2 and far edge −1. Under the authored-height/truncation/thickness-relative hypothesis at the same height, the old width-first initialization uses new width 2 and gap 0. Its predicted edges are 1 and 2. The edge contribution is 18.
@@ -126,16 +132,24 @@ Each scenario starts from its certified geometry inverse. A maximum of two neigh
 
 Initial proposals are deduplicated by native tuple only for evaluation cost. Their original model associations, initialization certificates and paths remain separate. Selecting a particular renderer retrieves that renderer's own proposal and trace; it must not retrieve the trace of another renderer that happened to propose identical numbers.
 
-Automatic selection scores each tuple under all 27 scenarios. It offers two declared policies:
+Automatic selection scores each tuple under all 27 scenarios. It offers three declared policies:
 
 \[
 R_{\pi}(v)=\sum_m\pi_m\ell_m(v),
 \qquad R_{\max}(v)=\max_m\ell_m(v).
 \]
 
-The first minimizes expected mismatch under the explicit prior or conditional weights. The second minimizes the worst mismatch across the enumerated scenarios. Neither is equivalent to maximizing one selected preview's overlap. A sensible ensemble compromise may therefore retain a visible residual under the selected display hypothesis.
+The first minimizes expected mismatch under the explicit prior or conditional weights. The second minimizes the worst mismatch across the enumerated scenarios. A third rule, `cvar`, minimizes a prior-free weighted conditional value-at-risk at level `alpha = 0.5`: the declared scenario losses are sorted from worst to best, the worst half of the declared weight is taken, and those losses are averaged by their mass. It is a risk-averse declared rule over the same 27 scores, not a fitted risk model and not a confidence level. None is equivalent to maximizing one selected preview's overlap. A sensible ensemble compromise may therefore retain a visible residual under the selected display hypothesis.
 
 The best initial proposal receives up to two additional neighborhood passes against the aggregate decision objective. Each pass checks the 26 adjacent tuples. When that local search would stop, the solver also checks two length values at a distance of two. The extra length values can cross a one-cell quantization plateau: an adjacent length can score worse even when the next one scores better. The probe occurs once, after the ordinary local path has been evaluated. There are at most 27 initial tuples plus 26 checks in each pass plus two length probes, or 81 evaluated tuples before duplicate elimination. Both decision traces are monotone under their own objective. The report names this search policy and calls the result the best evaluated candidate, never a global visual optimum.
+
+### Certified global expansion (opt-in)
+
+That bounded search is not guaranteed to be the declared optimum. `infer({ certify: true })` runs an opt-in certified expansion over the ranking pool (`certifiedExpansion` in `lib/quant/certify.js`). It sweeps Chebyshev shells around the current best: a strictly better cell moves the best and restarts, and a full shell that is strictly worse certifies `shell-monotone` under a documented monotonicity assumption; a degenerate domain is enumerated instead (`domain-exhaustive`); the zero floor is reported as `loss-zero`; and any budget or radius exhaustion is reported as `unproven`, which by construction makes no global claim. When a global claim is made, it is a claim about the *declared* loss on the declared integer domain under the enumerated 27 hypotheses, never about the renderer.
+
+The assumption behind `shell-monotone` — that the declared loss cannot decrease once every rendered geometric distance strictly grows from the best cell — is **documented and spot-checked, not proved**. It is checked offline against exhaustive enumeration on a bounded sub-domain probe; the corpus study found no assumption failures on its six probes, but that is not a proof over the full domain. The exported report carries the outcome as `decision.certificate` (method, global flag, best tuple and loss, evaluated-cell count, shell margin, and a scope string). The default path is unchanged: without `certify: true`, `decision.certificate.method` is `not-evaluated` (or `loss-zero` when the chosen tuple already attains the zero floor) and the search policy remains `bounded-neighborhood-plus-length-two-v1`. The opt-in path sets the policy to `bounded-neighborhood-plus-certified-expansion-v2`. Chapter 11 records the measured consequence: the shipped bounded search missed the certified optimum in 114 of 1064 corpus cases, concentrated under the worst-case rule.
+
+The exported research report schema is now `sicc-quant-report-v4`; it carries `decision.certificate`, the `decision.rule` (now including `cvar`), and the `preimage` block, while the default automatic model remains `quant-static-v5`.
 
 For example, the old settings `size=3`, literal-zero thickness and `gap=-1` at height 720 produce a best initial automatic tuple with length 4 under the equal prior. Its expected shape loss is about 0.40171. The two-cell length proposal 6 reduces that declared loss to about 0.39658 while preserving thickness zero. This is a synthetic historical-target comparison, not a native accuracy measurement. The case is a regression test; the wider search cannot increase the chosen decision loss because it retains the previous candidate as an option.
 
@@ -198,10 +212,17 @@ What did not change is the evidentiary boundary. Software tests establish implem
 
 The exact finite-domain inverse remains the runtime path. A dependency-free
 learned distillation of that inverse was trained, measured and rejected as a
-substitute: it reproduced the exact solver's tuple only about 11.6% of the time,
-so the artifact records a closed speed gate and is not wired into the app. It
-also distills the declared solver rather than observing the game, so it adds no
-native evidence. The experiment and its numbers are documented in
-[chapter 10](10-learned-emulator.md).
+substitute: an earlier revision reproduced the exact solver's tuple only about
+11.6% of the time, and a capacity revision raised that to about 35.7%, still far
+from interchangeable, so the artifact records a closed speed gate and is not
+wired into the app. A learned shortlist with exact verification was also measured
+and rejected as a drop-in (it lost to the solver on 13 of 125 samples), and a
+learned fragility classifier was weak (0.736 accuracy against a 0.704 majority
+baseline). All of it distills the declared solver rather than observing the game,
+so none of it adds native evidence. A separate opt-in layer certifies the chosen
+tuple against the *declared* decision loss without changing the default path. The
+experiments and their numbers are documented in
+[chapter 10](10-learned-emulator.md) and
+[chapter 11](11-certified-inverse-and-capture-plan.md).
 
-Relevant implementation modules are `lib/quant/inverse.js`, `visual.js`, `selection.js`, `evidence.js`, `observations.js`, `lib/pixel-shape.js` and the screenshot component extractor. Regression tests are in `tests/solver-v5.test.mjs` and `tests/worker-client.test.mjs`. The fixed source/data provenance remains in the [source ledger](../research/quant-sources.md) and [formula history](../research/formula-evolution.md).
+Relevant implementation modules are `lib/quant/inverse.js`, `certify.js`, `selection.js`, `partition.js`, `experiments.js`, `ranker.js`, `sensitivity.js`, `visual.js`, `evidence.js`, `observations.js`, `lib/pixel-shape.js` and the screenshot component extractor. Regression tests are in `tests/solver-v5.test.mjs`, `tests/certify.test.mjs`, `tests/certification-runtime.test.mjs`, `tests/decision.test.mjs`, `tests/preimage.test.mjs`, `tests/partition.test.mjs`, `tests/experiments.test.mjs`, `tests/ranker.test.mjs`, `tests/sensitivity.test.mjs` and `tests/worker-client.test.mjs`. The fixed source/data provenance remains in the [source ledger](../research/quant-sources.md) and [formula history](../research/formula-evolution.md).

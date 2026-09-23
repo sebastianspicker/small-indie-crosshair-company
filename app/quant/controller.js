@@ -3,7 +3,7 @@ import { DEFAULT_SETTINGS, parseLegacyCFG } from '../../lib/cfg.js';
 import { rgba } from '../../lib/conversion.js';
 import { copy, download } from '../dom.js';
 import { exportQuantCFG } from '../../lib/quant/export.js';
-import { clearResult, renderResult, renderPreviews, renderDerivation, renderScenarios, renderTrace, renderSimple } from './presentation.js';
+import { clearResult, renderResult, renderPreviews, renderDerivation, renderScenarios, renderTrace, renderSimple, renderDiscriminating } from './presentation.js';
 import { bindSources, fillPresets } from './sources.js';
 import { bindFeedback } from './feedback.js';
 import { toggleMode } from '../mode.js';
@@ -12,7 +12,8 @@ const SETTING_KEYS = Object.keys(DEFAULT_SETTINGS);
 export class QuantController {
   constructor(view, worker, records, meta) {
     Object.assign(this, { view, worker, records, meta, generation: 0, closed: false, timer: null,
-      importTimer: null, frame: null, dirtyDetails: new Set(), listeners: new AbortController() });
+      importTimer: null, frame: null, dirtyDetails: new Set(), listeners: new AbortController(),
+      discriminating: null, discriminatingPending: null });
     this.state = { settings: {}, result: null, measurements: [], targetOverride: null, targetMask: null, screenshotMeta: null, source: null };
   }
   get(id) { return this.view.get(id); }
@@ -29,9 +30,9 @@ export class QuantController {
   }
 
   bindOutput() {
-    for (const id of ['q-model', 'q-decision', 'q-goal']) this.on(id, 'change', () => this.schedule());
+    for (const id of ['q-model', 'q-decision', 'q-goal', 'q-certify']) this.on(id, 'change', () => this.schedule());
     for (const id of ['q-zoom', 'q-grid', 'q-difference']) this.on(id, 'change', () => this.refresh());
-    for (const id of ['q-scenarios', 'q-trace-panel', 'q-derivation-panel']) this.on(id, 'toggle', () => this.renderDetails());
+    for (const id of ['q-scenarios', 'q-trace-panel', 'q-derivation-panel', 'q-feedback']) this.on(id, 'toggle', () => this.renderDetails());
     this.on('q-copy', 'click', () => copy(this.get('q-cfg').value, this.get('q-status')));
     this.on('q-download-cfg', 'click', () => { if (this.state.result) download('small-indie-crosshair.cfg', exportQuantCFG(this.state.result), 'text/plain'); });
     this.on('q-download-report', 'click', () => {
@@ -86,12 +87,13 @@ export class QuantController {
   async analyze() {
     const ticket = this.generation;
     try {
-      this.get('q-model').options[0].textContent = this.get('q-decision').value === 'worst'
-        ? 'Automatic · limit largest mismatch' : 'Automatic · lowest weighted mismatch';
+      const decision = this.get('q-decision').value;
+      const labels = { worst: 'Automatic · limit largest mismatch', cvar: 'Automatic · limit weighted worst tail (CVaR)' };
+      this.get('q-model').options[0].textContent = labels[decision] ?? 'Automatic · lowest weighted mismatch';
       this.state.settings = this.readSettings();
       const report = await this.worker.call('infer', { settings: this.state.settings, options: this.options(),
         measurements: this.state.measurements, targetOverride: this.state.targetOverride, targetMask: this.state.targetMask,
-        selectedModelId: this.get('q-model').value || null, decision: this.get('q-decision').value });
+        selectedModelId: this.get('q-model').value || null, decision, certify: this.get('q-certify').checked });
       if (ticket !== this.generation || this.closed) return;
       this.state.result = report; this.dirtyDetails.clear();
       renderResult(this.view, report); this.refresh(); this.renderDetails();
@@ -108,10 +110,34 @@ export class QuantController {
       'q-scenarios': () => renderScenarios(this.view, r, id => { this.get('q-model').value = id; this.schedule(); }),
       'q-trace-panel': () => renderTrace(this.view, r, this.state.screenshotMeta),
       'q-derivation-panel': () => renderDerivation(this.view, r),
+      'q-feedback': () => { this.loadDiscriminating(); },
     };
     for (const [id, render] of Object.entries(renders)) {
       if (!this.get(id).open || this.dirtyDetails.has(id)) continue;
       render(); this.dirtyDetails.add(id);
+    }
+  }
+
+  /** Bounded and lazy: only runs while the feedback panel is open, and only once per
+   * posterior-weight signature. A stale request is dropped by the generation ticket. */
+  async loadDiscriminating() {
+    const r = this.state.result;
+    if (!r || !this.get('q-feedback').open) return;
+    const signature = r.posterior.weights.map(w => w.toPrecision(10)).join(',');
+    if (this.discriminating?.signature === signature) return;
+    if (this.discriminatingPending === signature) return;
+    this.discriminatingPending = signature;
+    const ticket = this.generation, output = this.get('q-discriminating');
+    output.textContent = 'Computing a discriminating capture plan…';
+    try {
+      const set = await this.worker.call('discriminating', { measurements: this.state.measurements });
+      if (ticket !== this.generation || this.closed) return;
+      this.discriminating = { signature, set };
+      renderDiscriminating(this.view, set);
+    } catch (error) {
+      if (ticket === this.generation && !this.closed) output.textContent = `No discriminating set: ${error.message}`;
+    } finally {
+      if (this.discriminatingPending === signature) this.discriminatingPending = null;
     }
   }
 

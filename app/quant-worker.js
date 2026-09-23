@@ -1,4 +1,6 @@
 import { infer } from '../lib/quant/inference.js';
+import { posterior } from '../lib/quant/evidence.js';
+import { discriminatingSet } from '../lib/quant/experiments.js';
 import { analyzeScreenshot, analyzeNativeScreenshot } from '../lib/quant/screenshot.js';
 let records = null;
 const operations = {
@@ -9,6 +11,10 @@ const operations = {
     return { ready: true };
   },
   infer(payload) { return infer({ ...payload, records }); },
+  discriminating(payload) {
+    const state = posterior(payload?.measurements ?? []);
+    return discriminatingSet({ state, size: 4 });
+  },
   screenshot: analyzeScreenshot,
   'native-screenshot': analyzeNativeScreenshot,
 };

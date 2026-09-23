@@ -32,6 +32,10 @@ test('committed artifact parses and the parser is fail-closed', () => {
   assert.throws(() => parseEmulator({ ...clone(), version: 'wrong' }), /version/);
   assert.throws(() => parseEmulator({ ...clone(), featureNames: [...EMULATOR_FEATURE_NAMES, 'extra'] }), /feature/);
   assert.throws(() => parseEmulator({ ...clone(), bounds: { length: [1, 2], thickness: [0, 31], gap: [0, 128] } }), /bounds/);
+  assert.throws(() => parseEmulator({ ...clone(), maxDepth: 0 }), /depth/);
+  assert.throws(() => parseEmulator({ ...clone(), maxDepth: 1 }), /model/);
+  assert.throws(() => parseEmulator({ ...clone(), model: 'deep-magic' }), /model/);
+  assert.throws(() => parseEmulator({ ...clone(), notes: 42 }), /notes/);
   const bad = clone(); bad.outputs.length.stumps[0].left = NaN;
   assert.throws(() => parseEmulator(bad), /finite/);
   const badForward = clone(); badForward.forward.outputs.width.base = Infinity;

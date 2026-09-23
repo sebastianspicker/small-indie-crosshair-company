@@ -22,7 +22,34 @@ cannot silently flow into a native validation claim.
 | `converter.js` | Load the corpus, start the worker, and connect the converter UI |
 | `corpus.js` (app) | Paginated corpus and group-aware results; no model fitting in the UI |
 | `emulator.js` (research-only) | Dependency-free learned inverse/forward emulators; not in the runtime inference path |
+| `ranker.js` (research-only) | Learned shortlist plus exact verification of the declared loss; not in the runtime inference path |
+| `sensitivity.js` (research-only) | Analytic boundary-margin advisory and an optional learned fragility classifier |
 | `train-quant-emulator.mjs` (research-only) | Deterministic offline training of the emulator artifact from solver labels |
+
+The certification, decision, partition and capture-plan modules are also
+dependency-free and browser-import-safe, but only `certify.js` and `selection.js`
+sit on the runtime path (through `lib/quant/inference.js`). The certificate is
+opt-in (`infer({ certify: true })`); the default search is unchanged.
+
+| Module | Responsibility |
+|---|---|
+| `certify.js` | Declared-loss objective, exhaustive oracle, and Chebyshev-shell certificates |
+| `selection.js` | Decision rules (`expected`, `worst`, `cvar`), weighted CVaR, candidate ranking |
+| `partition.js` | Behavioural equivalence classes of the 27 hypotheses over a finite domain |
+| `experiments.js` | Active-experiment heuristic and greedy `discriminatingSet` capture plan |
+
+The research-only scripts and their versioned outputs are:
+
+| Script (`npm run`) | Generated artifact |
+|---|---|
+| `scripts/certify-inverse.mjs` (`certify:inverse`) | `research/generated/inverse-certification.json` |
+| `scripts/decision-study.mjs` (`study:decision`) | `research/generated/decision-study.json` |
+| `scripts/model-partition.mjs` (`study:partition`) | `research/generated/model-partition.json` |
+| `scripts/discriminating-set.mjs` (`study:discriminating`) | `research/generated/discriminating-set.json` |
+| `scripts/benchmark-ranker.mjs` (`bench:ranker`) | `research/generated/ranker-benchmark.json` |
+
+None of these scripts runs CS2 or reads a capture. They certify or compare the
+project's own declared solver; see chapter 11.
 
 `lib/quant/emulator.js` and `scripts/train-quant-emulator.mjs` are research
 only. They are invoked by `npm run emulator:train` to regenerate
@@ -94,7 +121,7 @@ unbounded main-thread production solver.
 
 ## Readable mathematics without runtime dependencies
 
-`docs/notebook.html` contains all ten chapters with native static MathML.
+`docs/notebook.html` contains all eleven chapters with native static MathML.
 `scripts/notebook.mjs` renders the project's bounded Markdown subset and
 uses a checked-in, content-addressed equation cache. Builds fail on missing
 or invalid equation entries rather than silently displaying stale formulas.

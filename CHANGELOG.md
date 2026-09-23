@@ -15,8 +15,30 @@
   **Advanced** Expert mode; mode is DOM-only with no persistence.
 - Add a dependency-free learned-emulator research artifact (`npm run emulator:train`).
   It distills the declared solver on self-generated labels, records
-  `speedGate: "closed-not-exact-equivalent"` at ~11.6% held-out exact-tuple fidelity,
-  ships zero native evidence, and is not wired into the app or its Simple view.
+  `speedGate: "closed-not-exact-equivalent"`, ships zero native evidence, and is
+  not wired into the app or its Simple view.
+- Raise the learned inverse to a depth-3 boosted-tree block over 26 declared
+  features; held-out full-tuple fidelity rises from ~11.6% to ~35.7% (new artifact
+  fingerprint `137061144`). Record honestly that the 7 added features were
+  neutral-to-slightly-negative in ablation and the gain came from capacity.
+- Add an opt-in certified-global expansion (`infer({ certify: true })`) for the
+  declared decision loss; the default bounded search and its outputs are unchanged.
+  Document the `shell-monotone` certificate as conditional on a documented,
+  spot-checked (not proved) monotonicity assumption.
+- Add the `cvar` decision rule alongside `expected` and `worst`, `decision.certificate`,
+  and `exactPreimage` (complete integer equivalence classes, including empty
+  classes and pure-dot plateaus); bump the research report schema to
+  `sicc-quant-report-v4`.
+- Add the learned-shortlist ranker (exact verification over the declared loss;
+  coverage at K=32 is 84.8% and it lost to the solver on 13/125 samples, so it is
+  not wired into inference) and the sensitivity layer (analytic boundary margins
+  plus a weak learned classifier, 0.736 vs 0.704 majority).
+- Add the model-family behavioural partition (27/27 distinct over a declared finite
+  sample) and a two-design discriminating capture plan; both are synthetic and not
+  native evidence.
+- Add chapter 11 and the formula-history corrections C05 (bounded search is not
+  globally optimal; opt-in certificate) and C06 (emulator capacity change,
+  fingerprint move, ranker/sensitivity results). Version stays 0.3.0.
 
 ## 0.3.0 — 2026-09-23
 

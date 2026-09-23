@@ -23,10 +23,21 @@ import {
 const startedAt = performance.now();
 const SNAPSHOT = '2026-09-23';
 const SEED = 23092026;
-const ROUNDS = 60;
 const LEARNING_RATE = 0.2;
 const SAMPLE_BUDGET = 5000;
 const BOUNDS = { length: [0, 255], thickness: [0, 31], gap: [0, 128] };
+const NOTES = 'Declared-math additions (7 residue, boundary-distance and legacy-parity features appended to the 19 declared features) were neutral-to-slightly-negative at matched capacity in a held-out ablation; the held-out exact-tuple gain comes from the depth-3 boosted-tree capacity block. Capacity was selected on a group-disjoint validation fold carved from training samples; the held-out test split was not used for selection. Solver fidelity only; NOT native CS2 renderer accuracy.';
+
+// Pre-declared capacity grid for the inverse emulator. Selection uses a group-disjoint
+// validation fold carved from the TRAINING samples only; the held-out test split is
+// never consulted here, so the committed test metrics stay an honest held-out estimate.
+const CONFIGS = [
+  { maxDepth: 1, rounds: 60, learningRate: 0.2 },
+  { maxDepth: 2, rounds: 60, learningRate: 0.2 },
+  { maxDepth: 2, rounds: 120, learningRate: 0.2 },
+  { maxDepth: 3, rounds: 60, learningRate: 0.2 },
+  { maxDepth: 3, rounds: 120, learningRate: 0.2 },
+];
 
 const HEIGHTS = [720, 768, 960, 1080, 1440, 2160];
 const PAIRS = [
@@ -92,7 +103,27 @@ const isTest = sample => hash(signature(sample.settings)) % 5 === 0;
 const trainSamples = samples.filter(sample => !isTest(sample));
 const testSamples = samples.filter(isTest);
 
-const artifact = trainEmulator(trainSamples, { rounds: ROUNDS, learningRate: LEARNING_RATE, seed: SEED });
+// Validation fold for capacity selection, group-disjoint from settings and taken only
+// from the training side. `% 5 === 0` remains the untouched held-out test rule.
+const isValidation = sample => hash(signature(sample.settings)) % 5 === 1;
+const selectSamples = trainSamples.filter(sample => !isValidation(sample));
+const validationSamples = trainSamples.filter(isValidation);
+const combinedMae = evaluated => (evaluated.lengthMae + evaluated.thicknessMae + evaluated.gapMae) / 3;
+let chosen = null;
+const trials = [];
+for (const config of CONFIGS) {
+  const candidate = trainEmulator(selectSamples, { ...config, seed: SEED });
+  const validation = evaluateEmulator(candidate, validationSamples);
+  trials.push({ ...config, exactTupleRate: validation.exactTupleRate, combinedMae: combinedMae(validation) });
+  const tie = chosen && validation.exactTupleRate === chosen.validation.exactTupleRate;
+  const better = !chosen
+    || validation.exactTupleRate > chosen.validation.exactTupleRate
+    || (tie && combinedMae(validation) < combinedMae(chosen.validation))
+    || (tie && combinedMae(validation) === combinedMae(chosen.validation) && config.rounds < chosen.config.rounds);
+  if (better) chosen = { config, validation };
+}
+
+const artifact = trainEmulator(trainSamples, { ...chosen.config, seed: SEED });
 const metrics = { ...evaluateEmulator(artifact, testSamples), testSamples: testSamples.length };
 
 const FL = [0, 1, 2, 3, 4, 6, 9], FT = [0, 1, 2, 3, 5], FG = [0, 1, 2, 4, 8];
@@ -112,7 +143,8 @@ const forwardModel = trainForwardEmulator(forwardTrain, { rounds: 60, learningRa
 
 const full = {
   schema: EMULATOR_SCHEMA, version: EMULATOR_VERSION, snapshot: SNAPSHOT, seed: SEED,
-  featureNames: [...EMULATOR_FEATURE_NAMES], learningRate: LEARNING_RATE, rounds: ROUNDS, bounds: BOUNDS,
+  featureNames: [...EMULATOR_FEATURE_NAMES], learningRate: artifact.learningRate, rounds: artifact.rounds,
+  maxDepth: artifact.maxDepth, model: artifact.model, bounds: BOUNDS, notes: NOTES,
   outputs: artifact.outputs,
   training: { samples: samples.length, settings: new Set(samples.map(s => signature(s.settings))).size,
     trainSamples: trainSamples.length, testSamples: testSamples.length, excluded,
@@ -131,7 +163,10 @@ full.fingerprint = emulatorFingerprint(full);
 
 await writeFile(new URL('../data/quant-emulator.json', import.meta.url), `${JSON.stringify(full, null, 2)}\n`);
 console.log(JSON.stringify({
-  schema: full.schema, counts: full.training, metrics: full.metrics,
+  schema: full.schema, counts: full.training,
+  model: { kind: full.model, maxDepth: full.maxDepth, rounds: full.rounds, learningRate: full.learningRate },
+  selection: { method: 'group-disjoint validation fold (hash(signature)%5===1) from training samples', chosen: chosen.config, trials },
+  metrics: full.metrics,
   forwardMetrics: full.forward.metrics, fingerprint: full.fingerprint,
   durationMs: performance.now() - startedAt,
 }, null, 2));

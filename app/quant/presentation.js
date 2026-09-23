@@ -15,7 +15,8 @@ export function clearResult(view, state = 'pending', message = 'Calculating…')
   get('q-cfg').value = '';
   for (const id of ['q-copy', 'q-download-cfg', 'q-download-report']) get(id).disabled = true;
   root.querySelectorAll('#q-values-table td').forEach(node => { node.textContent = '—'; });
-  for (const id of ['q-confidence', 'q-target-line', 'q-warnings', 'q-derivation', 'q-model-table', 'q-trace']) get(id).replaceChildren();
+  for (const id of ['q-confidence', 'q-target-line', 'q-warnings', 'q-derivation', 'q-model-table', 'q-trace', 'q-certify-note']) get(id).replaceChildren();
+  get('q-discriminating').textContent = '';
   for (const id of ['old', 'naive', 'converted']) {
     get(`q-${id}-values`).textContent = '';
     get(`q-${id}-note`).textContent = state === 'error' ? 'Input not accepted.' : 'Waiting for valid input.';
@@ -93,9 +94,24 @@ export function renderSimple(view, report) {
   get('qs-copy').disabled = blocked; get('qs-download').disabled = blocked;
 }
 
+const CERTIFICATE_METHOD_NOTES = {
+  'loss-zero': 'The chosen native already attains the zero floor of the declared loss',
+  'shell-monotone': 'shell-monotone is a conditional, assumption-scoped global claim: the loss is assumed not to decrease once every rendered geometric distance strictly grows from the best cell (spot-checked offline, not proved)',
+  'domain-exhaustive': 'domain-exhaustive enumerates a scoped sub-domain rather than the full declared domain',
+  unproven: 'unproven means no global claim: a remote or non-monotone optimum could not be excluded',
+  'not-evaluated': 'not-evaluated means no global claim: the default bounded search does not enumerate the declared domain',
+};
+
+function renderCertificate(view, r) {
+  const c = r.decision.certificate;
+  const method = CERTIFICATE_METHOD_NOTES[c.method] ?? String(c.method);
+  view.get('q-certify-note').textContent =
+    `Certificate for the declared loss: method ${c.method}; global ${c.global ? 'yes' : 'no'}; improved on the bounded best ${c.improved ? 'yes' : 'no'}. ${method}. Scope: ${c.scope}`;
+}
+
 export function renderResult(view, r) {
   const { get, root } = view;
-  renderValues(view, r); renderSimple(view, r); renderMetrics(view, r); previewLabels(view, r);
+  renderValues(view, r); renderSimple(view, r); renderMetrics(view, r); previewLabels(view, r); renderCertificate(view, r);
   get('q-cfg').value = r.blockers.length ? '' : exportQuantCFG(r);
   get('q-copy').disabled = get('q-download-cfg').disabled = Boolean(r.blockers.length);
   get('q-download-report').disabled = false;
@@ -118,6 +134,7 @@ export function renderDerivation(view, r) {
     el('p', { class: 'formula equation-line' }, `r = ${r.options.currentHeight} / ${r.renderer.scale === 'authored' ? n.authoredHeight : r.renderer.scale === 'reference1080' ? 1080 : 720} = ${fmt(ratio)}; Q = ${r.renderer.rounding}`),
     table(['Dimension', 'Target px', 'Model px', 'Residual px', 'New value'], rows),
     el('p', { class: 'small' }, `Preview far edge: ${fmt(drawingEdges(g).far)} px. Even-width synthetic bars omit the extra center pixel. Formula offsets above are retained for the inverse calculation; uploaded pixels are unchanged.`),
+    el('p', { class: 'small' }, `Exact preimage: ${r.preimage.count} native tuple${r.preimage.count === 1 ? '' : 's'} render the target exactly under the selected ${modelName(r.renderer)} simulation${r.preimage.constrainedNearFar ? '' : ' (near/far equality is unconstrained because the target length is 0)'}. That exactness is under the selected simulation only, not a native CS2 measurement.`),
     el('p', { class: 'small' }, 'Thickness and gap are solved together. The search details show later refinements; all values here come from the selected model, not a game measurement.'));
 }
 
@@ -130,9 +147,25 @@ export function renderScenarios(view, r, onSelect) {
         el('td', {}, el('button', { class: 'text-button', 'aria-label': 'Inspect ' + m.id, onclick: () => onSelect(m.id) }, 'Inspect'))))))));
 }
 
+export function renderDiscriminating(view, set) {
+  const lines = [
+    `Weighted hypothesis pairs separated: ${set.weightedCovered.toFixed(4)} of ${set.weightedTotal.toFixed(4)}` +
+      (set.separatesAll ? ' — all weighted pairs.' : ` — ${set.unseparatedPairs.length} pair(s) remain.`),
+  ];
+  set.designs.forEach((design, index) => {
+    const n = design.native;
+    const groups = design.partition.map(group => group.map(i => i + 1).join(',')).join(' | ');
+    lines.push(`${index + 1}. length ${n.length} / thickness ${n.thickness} / gap ${n.gap} · authored ${n.authoredHeight} · screen ${design.currentHeight}` +
+      `\n   separates ${design.coveredPairs} new weighted pair(s) · ${design.outcomes} outcome(s), model numbers: ${groups}`);
+  });
+  if (!set.designs.length) lines.push('No candidate design separates any weighted pair: the current weights concentrate on indistinguishable models.');
+  lines.push(`Scope: ${set.scope}`);
+  view.get('q-discriminating').textContent = lines.join('\n');
+}
+
 export function renderTrace(view, r, screenshotMeta) {
   view.get('q-trace').replaceChildren(el('pre', { class: 'formula' }, JSON.stringify({
-    decision: r.decision, search: r.search, traceModel: r.chosen.traceModelId, iterations: r.chosen.trace,
+    decision: r.decision, search: r.search, preimage: r.preimage, traceModel: r.chosen.traceModelId, iterations: r.chosen.trace,
     inverseCertificate: r.chosen.inverseCertificate, rendering: r.rendering, nativeValidation: r.posterior.validation,
     noiseAssumptions: r.posterior.noiseModel, originalBuckets: screenshotMeta?.buckets ?? null,
   }, null, 2)));
