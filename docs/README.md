@@ -1,8 +1,8 @@
 # Documentation
 
-This project converts crosshair settings under explicit renderer assumptions.
-The docs explain those assumptions, how to reproduce the results, and what
-measurements would be needed to check them in CS2.
+This project converts crosshair settings under stated renderer assumptions.
+These docs describe the models, how to reproduce the results, and what evidence
+would be needed to check them in CS2.
 
 Snapshot: **2026-09-23**, target build **2000914**. The automatic converter uses
 `quant-static-v5`; the manual lab uses `conditional-static-v4`. Neither is a
@@ -10,12 +10,12 @@ verified native renderer. No original old/new game capture pairs are included.
 
 ## Start here
 
-- **Use the app:** [README and screenshot tour](../README.md).
+- **Use the app:** [live demo](https://sebastianspicker.github.io/small-indie-crosshair-company/) and [screenshot tour](../README.md#screenshot-tour).
 - **Understand a result:** [conversion and identifiability](math/02-conversion-and-identifiability.md).
 - **Run or publish it:** [local and static hosting](engineering/deployment.md),
   [GitHub Pages](engineering/github-pages.md).
 - **Change the code:** [contributing](../CONTRIBUTING.md),
-  [current architecture](engineering/v0.3-architecture.md), [testing](engineering/testing.md).
+  [architecture](engineering/v0.3-architecture.md), [testing](engineering/testing.md).
 - **Supply evidence:** [measurement policy](evidence/measurement-policy.md) and
   [calibration protocol](math/03-calibration-protocol.md).
 

@@ -2,7 +2,9 @@
 
 **Implementation:** `quant-static-v5`, release 0.3.0. **Native renderer evidence shipped:** zero capture pairs. This chapter updates the algorithmic details in chapters 05–07 without replacing their original derivations or promoting a hypothetical renderer into an observed game implementation. The corpus, historical binary32 arithmetic, 27-model family and target build remain unchanged.
 
-The changes are mathematical as well as architectural: optimize dependent variables together; keep numerical certificates distinct from visual search; score the entire visible shape instead of whichever part fits on a preview; use one canonical observation per capture; and make uncertainty robust to a grossly inconsistent measurement. None of these improvements increases native sample size.
+Version 5 jointly searches thickness and gap, then refines the preview separately.
+It scores the full visible shape, counts each capture once, and limits the effect of
+outlier measurements. These changes do not add native game captures.
 
 ## 1. Separate the objects being estimated
 
