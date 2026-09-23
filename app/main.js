@@ -13,7 +13,7 @@ async function initialize(name) {
         return pending.get(name);
     const task = (async () => {
         if (name === 'quant')
-            quant = await (await import('./quant.js')).initQuant();
+            quant = await (await import('./converter.js')).initQuant();
         if (name === 'corpus')
             await (await import('./corpus.js')).initCorpus();
         if (name === 'research')

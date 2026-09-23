@@ -19,7 +19,7 @@ cannot silently flow into a native validation claim.
 | `screenshot.js` | Bounded segmentation; old template search; independent native component extraction |
 | `quant-worker.js` | Browser worker message boundary and transferable image masks |
 | `worker-client.js` | Request IDs, deadlines, error handling and disposal |
-| `quant.js` | Import UI, three-way comparison, evidence feedback and export |
+| `converter.js` | Load the corpus, start the worker, and connect the converter UI |
 | `corpus.js` (app) | Paginated corpus and group-aware results; no model fitting in the UI |
 
 Static source facts live in `research/corpus/`. `scripts/corpus.mjs`

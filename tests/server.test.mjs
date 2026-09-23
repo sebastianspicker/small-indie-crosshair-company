@@ -52,6 +52,11 @@ test('HTTP JSON fixture matches source payload',async()=>{
 test('HTTP module has correct MIME type',async()=>{
   const res=await fetch(base+'/lib/legacy.js');assert.equal(res.status,200);assert.match(res.headers.get('content-type'),/text\/javascript/);
 });
+test('converter entry uses a URL that avoids the ad-block rule',async()=>{
+  const main=await(await fetch(base+'/app/main.js')).text();assert.match(main,/import\('\.\/converter\.js'\)/);assert.doesNotMatch(main,/quant\.js/);
+  const entry=await fetch(base+'/app/converter.js');assert.equal(entry.status,200);assert.match(entry.headers.get('content-type'),/text\/javascript/);
+  assert.equal((await fetch(base+'/app/quant.js')).status,404);
+});
 test('HTTP styles are served without API dependencies',async()=>{
   const res=await fetch(base+'/app/styles.css');assert.equal(res.status,200);assert.match(res.headers.get('content-type'),/text\/css/);
 });
