@@ -1,0 +1,43 @@
+{
+  "schema": "sicc-residual-modulator-v1",
+  "version": "residual-modulator-v1",
+  "weights": null,
+  "speedGate": "closed-no-native-pairs",
+  "nativeEvidence": false,
+  "trainedOnSolverLabels": false,
+  "deltaClip": 2,
+  "reviewedRegistryProvenance": null,
+  "eligible": false,
+  "gateReasons": [
+    "fewer than 40 reviewed native pairs",
+    "fewer than 24 distinct old-setting signatures",
+    "fewer than 3 distinct current heights",
+    "no pair with a current height different from its authored height",
+    "no pair with a current height equal to its authored height",
+    "no odd rendered width",
+    "no even rendered width",
+    "no literal zero thickness",
+    "no positive thickness",
+    "no negative old gap",
+    "no nonnegative old gap",
+    "build id does not match the declared model build 2000914",
+    "provenance is not a reviewed-registry value (this plan defines none)"
+  ],
+  "counts": {
+    "pairs": 0,
+    "signatures": 0,
+    "currentHeights": 0,
+    "heightDiffersFromAuthored": false,
+    "heightEqualsAuthored": false,
+    "oddWidths": false,
+    "evenWidths": false,
+    "literalZeroThickness": false,
+    "positiveThickness": false,
+    "negativeOldGap": false,
+    "nonnegativeOldGap": false,
+    "correctBuild": false,
+    "reviewedProvenance": false
+  },
+  "generatedFrom": "research/measurements/index.json",
+  "interpretation": "Closed by construction. The residual modulator returns a zero delta and is not imported by inference; the exact solver remains authoritative."
+}

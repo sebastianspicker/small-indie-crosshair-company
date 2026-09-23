@@ -1,0 +1,16 @@
+{
+  "schema": "sicc-modulator-features-v1",
+  "weights": null,
+  "trainedOnSolverLabels": false,
+  "speedGate": "closed-no-native-pairs",
+  "allowedFeatures": [
+    "old.size", "old.thickness", "old.gap",
+    "oldHeight", "currentHeight", "authoredHeight",
+    "vPhi.length", "vPhi.thickness", "vPhi.gap"
+  ],
+  "forbidden": [
+    "native-cvar-label",
+    "hash-of-native-cvar-label",
+    "rendered-pixels-of-the-answer"
+  ]
+}
