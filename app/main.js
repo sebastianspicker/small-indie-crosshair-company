@@ -49,7 +49,7 @@ async function route() {
     }
     catch (error) {
         $('boot-error').hidden = false;
-        $('boot-error').replaceChildren(el('h2', {}, 'This research surface could not start.'), el('p', {}, error.message), el('p', {}, 'Serve the files over HTTP(S). The converter uses an ES-module Web Worker; allow worker-src self. Other navigation links remain available.'));
+        $('boot-error').replaceChildren(el('h2', {}, 'The converter could not start.'), el('p', {}, error.message), el('p', {}, 'Serve the files over HTTP(S). The converter uses a web worker; allow worker-src self. Other navigation links remain available.'));
     }
 }
 window.addEventListener('hashchange', route);

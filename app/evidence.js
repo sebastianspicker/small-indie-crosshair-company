@@ -2,7 +2,7 @@ import { $,el,heading,table,download,docLink } from './dom.js';
 import { runAudit } from '../lib/audit.js';
 export function initEvidence(presets) {
   const root=$('evidence');let audit=runAudit(presets);
-  root.append(heading('Evidence, with the labels left on.','Re-run the original numerical experiment in this browser. No native screenshots are bundled as proof.'));
+  root.append(heading('Archive audit','Re-run the original numerical experiment in this browser. The archive contains no native game screenshots.'));
   const stats=el('div',{class:'evidence-stats'},...[[String(audit.cases),'source-model cases'],['8','dated legacy codes'],['7','controlled heights'],['0','native captures shipped']].map(([v,l])=>el('div',{},el('strong',{},v),el('span',{},l))));
   root.append(stats,el('p',{class:'disclosure'},'These are eight presets × seven controlled test heights, not each player’s actual display settings. Dates and associations were reported by xhair.pro in the supplied archive; this project did not reparse the demos.'));
   const summary=el('article',{class:'math-sheet'},el('h2',{},'Compare the shortcuts'));

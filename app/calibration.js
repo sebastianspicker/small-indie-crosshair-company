@@ -6,7 +6,7 @@ const input=(id,value,attrs={})=>el('input',{id,type:'number',value,...attrs});
 function field(label,id,control){return el('div',{},el('label',{for:id},label),control);}
 export function initCalibration(editor) {
   const root=$('calibration');let fit=null,lastDataset=null,provenance='user-entered',image=null,imageMeta=null,picks=[];
-  root.append(heading('Measure first. Believe later.','Record native pixel measurements under fixed conditions. Fit an explicit model and keep an independent holdout.'));
+  root.append(heading('Measure a screenshot','Record the capture conditions, fit a model, and reserve separate images to check it.'));
   root.append(el('p',{class:'disclosure'},'No sample values below are native measurements. “Load synthetic example” demonstrates the workflow only. Uploaded PNGs stay in this tab; their pixels are not sent to a server.'));
   const scope=el('article',{class:'math-sheet'},el('h2',{},'01 · Lock the measurement conditions'),
     el('div',{class:'input-grid four'},

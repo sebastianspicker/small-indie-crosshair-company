@@ -2,17 +2,12 @@
 
 ## Unreleased
 
-- Fix right/bottom arm placement for even-width previews. Version the shared raster
-  convention and keep measured pixels intact; overlap scores use the corrected cells.
-
-- Probe two-cell length changes when local search stalls, improving a documented
-  synthetic conversion case while keeping the automatic search bounded.
-- Compare inverse losses strictly before tie-breaking, so the minimum certificate
-  does not hide smaller errors inside a numerical tolerance.
-- Cache canonical model lookup and avoid duplicate validation in forward evaluation.
-- Shorten website copy and documentation; add a reproducible README screenshot tour.
-- Exclude local credentials and tooling from Git and static build output; add build
-  filter tests, a pull request template, and clearer Pages setup instructions.
+- Correct even-width preview alignment while preserving measured image pixels.
+- Keep the automatic search bounded and prefer the lower pixel error before applying
+  tie-break rules.
+- Cache repeated model lookups and remove duplicate input validation.
+- Simplify the app and docs; add a reproducible README screenshot tour.
+- Keep local files and credentials out of Git and the Pages build.
 
 ## 0.3.0 — 2026-09-23
 
@@ -50,7 +45,7 @@
 
 ## 0.1.0 — 2026-09-23
 
-Initial repository release, **Four lines. One research department.**
+Initial repository release.
 
 - Runnable zero-dependency local static generator, legacy-v1 code/CFG imports,
   native candidate editing, CFG and mathematical report exports.

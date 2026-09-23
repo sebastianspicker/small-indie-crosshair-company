@@ -2,7 +2,7 @@
   "name": "small-indie-crosshair-company",
   "version": "0.3.0",
   "private": true,
-  "description": "Four lines. One research department. A local CS2 crosshair generator and evidence-led conversion lab.",
+  "description": "Local CS2 crosshair converter with pixel previews and reproducible research.",
   "type": "module",
   "license": "MIT",
   "engines": {

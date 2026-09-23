@@ -3,7 +3,7 @@ import { resolve, extname, sep, relative } from 'node:path';
 const MIME = { '.html':'text/html', '.js':'text/javascript', '.mjs':'text/javascript', '.css':'text/css', '.svg':'image/svg+xml',
   '.json':'application/json', '.md':'text/plain', '.csv':'text/csv', '.tsv':'text/tab-separated-values', '.txt':'text/plain',
   '.py':'text/plain', '.png':'image/png', '.ico':'image/x-icon' };
-const DOCUMENTS = new Set(['index.html','README.md','LICENSE','THIRD_PARTY_NOTICES.md','CHANGELOG.md','CONTRIBUTING.md','AGENTS.md','SECURITY.md']);
+const DOCUMENTS = new Set(['index.html','README.md','LICENSE','THIRD_PARTY_NOTICES.md','CHANGELOG.md','CONTRIBUTING.md','SECURITY.md']);
 const isPublic = path => DOCUMENTS.has(path) || /^(?:app|lib|data|public|docs|research|licenses)\//.test(path);
 export const HEADERS = Object.freeze({
   'Content-Security-Policy': "default-src 'none'; script-src 'self'; worker-src 'self'; style-src 'self'; img-src 'self' blob: data:; connect-src 'self'; font-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",

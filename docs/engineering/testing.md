@@ -75,7 +75,7 @@ committing them; do not include personal imported files or measurements.
 npm run bench:quant
 ```
 
-The [paired polish benchmark](../../research/generated/solver-polish-benchmark.json) records five alternating baseline/final runs against the supplied v0.3.0 ZIP: median core time fell from 2.030 ms to 1.376 ms on the recorded machine.
+The [paired benchmark](../../research/generated/solver-polish-benchmark.json) compares five alternating runs against the supplied v0.3.0 source archive.
 
 This times the inference core in Node. Compare runs on the same machine, with the
 same inputs and warmup. It does not measure browser responsiveness or game FPS.
@@ -86,28 +86,6 @@ node scripts/benchmark-compare.mjs /path/to/baseline
 node scripts/compare-inverse.mjs /path/to/baseline
 ```
 
-## Release records
-
-Keep past results as records of the code and environment they tested:
-
-| Record | Scope |
-| --- | --- |
-| [Current polish checks](polish-verification.json) | 212 Node tests; 48 converter and 37 manual checks over HTTP, plus the local Pages subpath |
-| [Original verification](verification.json) | Initial manual lab and archive |
-| [Quantitative extension](quant-verification.json) | v0.2 corpus and automatic converter |
-| [v0.3 verification](v0.3-verification.json) | Joint solver and evidence integrity changes |
-
-Current changes require a fresh run. A local pass does not establish that GitHub
-Actions or Pages has run. Native old/new game captures, a full accessibility audit,
-and a multi-browser compatibility matrix remain outside these checks.
-
-## Even-width alignment follow-up
-
-`illustrative-parity-v2` removes the extra right/bottom pixel for even integer
-widths. Literal-mask regressions cover symmetry, analytical/dense agreement,
-asymmetric uploaded pixels, and independent calibration/holdout edges. The 48
-converter and 37 manual browser checks pass over HTTP. A focused Chromium check
-also verified all three canvases have mirror symmetry at 1×, 6×, and 16× zoom.
-README screenshots were refreshed. These checks concern the illustrative renderer,
-not native CS2 validation. The earlier polish timings and counts remain historical
-records for the prior placement convention.
+CI runs `npm run verify` on Node.js 22 and 24 for pushes and pull requests. Browser
+checks are optional and described above. No automated check here runs CS2; preview
+agreement only describes the selected mathematical model.

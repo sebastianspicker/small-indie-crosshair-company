@@ -1,9 +1,7 @@
 # Small Indie Crosshair Company
 
-**Four lines. One research department.**
-
-Convert old CS2 crosshair settings into proposed new settings, compare the pixels,
-and export a config. Runs in your browser; no account, backend, or npm install.
+Convert old CS2 crosshair settings, compare pixel previews, and export proposed
+settings. The app runs in your browser without an account or backend.
 
 [Try the live demo](https://sebastianspicker.github.io/small-indie-crosshair-company/) ·
 [Run locally](#run-locally) · [Screenshot tour](#screenshot-tour) ·
@@ -93,9 +91,9 @@ See the [evidence definitions](docs/README.md#evidence-labels),
 
 ## GitHub Pages demo
 
-The included [Pages workflow](.github/workflows/pages.yml) verifies the project
-and deploys `dist/`. It supports repository subpaths without changing asset URLs.
-A public demo URL will be added here after a successful deployment.
+The [live demo](https://sebastianspicker.github.io/small-indie-crosshair-company/)
+is built and deployed by the [Pages workflow](.github/workflows/pages.yml). It
+supports repository subpaths without changing asset URLs.
 
 Follow the [deployment guide](docs/engineering/github-pages.md) to connect a
 repository and enable Pages. To preview the same static build locally:
