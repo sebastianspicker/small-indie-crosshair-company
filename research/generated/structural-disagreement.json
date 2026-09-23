@@ -1,0 +1,306 @@
+{
+  "version": "structural-study-v1",
+  "nativeEvidence": false,
+  "build": "2000914",
+  "reducedHypotheses": 24,
+  "eligibleRecords": 135,
+  "heights": [
+    720,
+    768,
+    960,
+    1024,
+    1080,
+    1440,
+    2160
+  ],
+  "authoredHeightsProbed": [
+    1080,
+    720,
+    768,
+    960,
+    1024,
+    1080,
+    1440,
+    2160
+  ],
+  "sameHeight": {
+    "cells": 945,
+    "comparisons": 3780,
+    "disagreements": 0,
+    "examples": []
+  },
+  "crossHeight": {
+    "cells": 810,
+    "comparisons": 3240,
+    "disagreements": 137,
+    "examples": [
+      {
+        "pair": "authored|trunc|thickness-half",
+        "record": "pro-002",
+        "player": "ZywOo",
+        "height": 2160,
+        "authoredHeight": 1080,
+        "ratio": 2,
+        "scaledNear": 0,
+        "unscaledNear": 1
+      },
+      {
+        "pair": "authored|trunc|center",
+        "record": "pro-002",
+        "player": "ZywOo",
+        "height": 2160,
+        "authoredHeight": 1080,
+        "ratio": 2,
+        "scaledNear": 0,
+        "unscaledNear": 1
+      },
+      {
+        "pair": "authored|nearest|thickness-half",
+        "record": "pro-002",
+        "player": "ZywOo",
+        "height": 2160,
+        "authoredHeight": 1080,
+        "ratio": 2,
+        "scaledNear": 0,
+        "unscaledNear": 1
+      },
+      {
+        "pair": "authored|nearest|center",
+        "record": "pro-002",
+        "player": "ZywOo",
+        "height": 2160,
+        "authoredHeight": 1080,
+        "ratio": 2,
+        "scaledNear": 0,
+        "unscaledNear": 1
+      },
+      {
+        "pair": "authored|trunc|thickness-half",
+        "record": "pro-011",
+        "player": "Magnojez",
+        "height": 2160,
+        "authoredHeight": 1080,
+        "ratio": 2,
+        "scaledNear": 0,
+        "unscaledNear": 1
+      }
+    ]
+  },
+  "sameHeightIncludingFixedReference": {
+    "cells": 2835,
+    "comparisons": 11340,
+    "disagreements": 1006,
+    "note": "Includes fixed-reference hypotheses (1080/720) that keep scaling even when currentHeight === authoredHeight, so this grouped count is not the guaranteed-zero case; see sameHeight."
+  },
+  "crossHeightIncludingFixedReference": {
+    "cells": 2430,
+    "comparisons": 9720,
+    "disagreements": 1006
+  },
+  "buckets": {
+    "sameHeightAuthored": {
+      "cells": 945,
+      "comparisons": 3780,
+      "disagreements": 0,
+      "examples": []
+    },
+    "crossHeightAuthored": {
+      "cells": 810,
+      "comparisons": 3240,
+      "disagreements": 137,
+      "examples": [
+        {
+          "pair": "authored|trunc|thickness-half",
+          "record": "pro-002",
+          "player": "ZywOo",
+          "height": 2160,
+          "authoredHeight": 1080,
+          "ratio": 2,
+          "scaledNear": 0,
+          "unscaledNear": 1
+        },
+        {
+          "pair": "authored|trunc|center",
+          "record": "pro-002",
+          "player": "ZywOo",
+          "height": 2160,
+          "authoredHeight": 1080,
+          "ratio": 2,
+          "scaledNear": 0,
+          "unscaledNear": 1
+        },
+        {
+          "pair": "authored|nearest|thickness-half",
+          "record": "pro-002",
+          "player": "ZywOo",
+          "height": 2160,
+          "authoredHeight": 1080,
+          "ratio": 2,
+          "scaledNear": 0,
+          "unscaledNear": 1
+        },
+        {
+          "pair": "authored|nearest|center",
+          "record": "pro-002",
+          "player": "ZywOo",
+          "height": 2160,
+          "authoredHeight": 1080,
+          "ratio": 2,
+          "scaledNear": 0,
+          "unscaledNear": 1
+        },
+        {
+          "pair": "authored|trunc|thickness-half",
+          "record": "pro-011",
+          "player": "Magnojez",
+          "height": 2160,
+          "authoredHeight": 1080,
+          "ratio": 2,
+          "scaledNear": 0,
+          "unscaledNear": 1
+        }
+      ]
+    },
+    "sameHeightFixedRef": {
+      "cells": 1890,
+      "comparisons": 7560,
+      "disagreements": 1006,
+      "examples": [
+        {
+          "pair": "720|nearest|center",
+          "record": "pro-001",
+          "player": "donk",
+          "height": 1080,
+          "authoredHeight": 1080,
+          "ratio": 1.5,
+          "scaledNear": 2,
+          "unscaledNear": 1
+        },
+        {
+          "pair": "720|trunc|center",
+          "record": "pro-001",
+          "player": "donk",
+          "height": 1440,
+          "authoredHeight": 1440,
+          "ratio": 2,
+          "scaledNear": 0,
+          "unscaledNear": 1
+        },
+        {
+          "pair": "720|nearest|center",
+          "record": "pro-001",
+          "player": "donk",
+          "height": 1440,
+          "authoredHeight": 1440,
+          "ratio": 2,
+          "scaledNear": 0,
+          "unscaledNear": 1
+        },
+        {
+          "pair": "720|trunc|thickness-half",
+          "record": "pro-001",
+          "player": "donk",
+          "height": 2160,
+          "authoredHeight": 2160,
+          "ratio": 3,
+          "scaledNear": 1,
+          "unscaledNear": 2
+        },
+        {
+          "pair": "720|trunc|center",
+          "record": "pro-001",
+          "player": "donk",
+          "height": 2160,
+          "authoredHeight": 2160,
+          "ratio": 3,
+          "scaledNear": 3,
+          "unscaledNear": 2
+        }
+      ]
+    },
+    "crossHeightFixedRef": {
+      "cells": 1620,
+      "comparisons": 6480,
+      "disagreements": 869,
+      "examples": [
+        {
+          "pair": "720|trunc|center",
+          "record": "pro-001",
+          "player": "donk",
+          "height": 1440,
+          "authoredHeight": 1080,
+          "ratio": 2,
+          "scaledNear": 0,
+          "unscaledNear": 1
+        },
+        {
+          "pair": "720|nearest|center",
+          "record": "pro-001",
+          "player": "donk",
+          "height": 1440,
+          "authoredHeight": 1080,
+          "ratio": 2,
+          "scaledNear": 0,
+          "unscaledNear": 1
+        },
+        {
+          "pair": "720|trunc|thickness-half",
+          "record": "pro-001",
+          "player": "donk",
+          "height": 2160,
+          "authoredHeight": 1080,
+          "ratio": 3,
+          "scaledNear": 1,
+          "unscaledNear": 2
+        },
+        {
+          "pair": "720|trunc|center",
+          "record": "pro-001",
+          "player": "donk",
+          "height": 2160,
+          "authoredHeight": 1080,
+          "ratio": 3,
+          "scaledNear": 3,
+          "unscaledNear": 2
+        },
+        {
+          "pair": "720|nearest|thickness-half",
+          "record": "pro-001",
+          "player": "donk",
+          "height": 2160,
+          "authoredHeight": 1080,
+          "ratio": 3,
+          "scaledNear": 1,
+          "unscaledNear": 2
+        }
+      ]
+    }
+  },
+  "zeroWhenRatioIsOne": true,
+  "comparisonsAtRatioOne": 5400,
+  "disagreementsAtRatioOne": 0,
+  "discriminatingExample": {
+    "role": "synthetic-disagreement",
+    "stored": {
+      "length": 9,
+      "thickness": 2,
+      "gap": 1,
+      "authoredHeight": 1080
+    },
+    "currentHeight": 2160,
+    "sameAsLength": {
+      "length": 18,
+      "width": 4,
+      "near": 4,
+      "far": 5
+    },
+    "unscaled": {
+      "length": 18,
+      "width": 4,
+      "near": 3,
+      "far": 4
+    },
+    "note": "Synthetic fixture from the v0.4 plan §2.6. Not a game capture and not a native observation."
+  },
+  "interpretation": "A disagreement census under the declared structural family. It neither selects a gap scale nor measures CS2. Agreement at length ratio 1 is non-identifying; the cross-height varied-reference buckets are where a native capture could separate the families."
+}

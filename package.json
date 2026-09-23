@@ -25,9 +25,11 @@
     "bench:ranker": "node scripts/benchmark-ranker.mjs",
     "certify:inverse": "node scripts/certify-inverse.mjs",
     "study:decision": "node scripts/decision-study.mjs",
+    "study:structural": "node scripts/structural-study.mjs",
     "study:partition": "node scripts/model-partition.mjs",
     "study:discriminating": "node scripts/discriminating-set.mjs",
     "emulator:train": "node scripts/train-quant-emulator.mjs",
+    "modulator:train": "node scripts/train-residual-modulator.mjs",
     "bench:emulator": "node scripts/benchmark-emulator.mjs",
     "test:quant-browser": "python3 tests/quant_browser.py",
     "audit:complexity": "node --expose-internals scripts/complexity.mjs"
