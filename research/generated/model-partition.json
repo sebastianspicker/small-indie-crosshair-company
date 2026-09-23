@@ -1,0 +1,426 @@
+{
+  "schema": "sicc-model-partition-v1",
+  "domain": {
+    "natives": 34560,
+    "heights": [
+      720,
+      768,
+      960,
+      1080,
+      1440,
+      2160
+    ],
+    "description": "SAMPLED domain: length 0..255 (all integers), thickness {0,1,2,3,5}, gap {0,1,2,3,4,7,16,64,128}, authoredHeight {720,1080,2160}, render height {720,768,960,1080,1440,2160}; every native tuple is rendered at every height. This is a finite sample of the legal integer settings, not an exhaustive proof over all real-valued settings or an observation of the native game."
+  },
+  "distinct": 27,
+  "total": 27,
+  "groups": [
+    {
+      "id": "authored:trunc:thickness",
+      "members": [
+        "authored:trunc:thickness"
+      ],
+      "witness": {
+        "native": {
+          "length": 0,
+          "thickness": 0,
+          "gap": 0,
+          "authoredHeight": 720
+        },
+        "height": 720
+      }
+    },
+    {
+      "id": "authored:trunc:center",
+      "members": [
+        "authored:trunc:center"
+      ],
+      "witness": {
+        "native": {
+          "length": 0,
+          "thickness": 0,
+          "gap": 0,
+          "authoredHeight": 720
+        },
+        "height": 720
+      }
+    },
+    {
+      "id": "authored:trunc:opening",
+      "members": [
+        "authored:trunc:opening"
+      ],
+      "witness": {
+        "native": {
+          "length": 0,
+          "thickness": 0,
+          "gap": 0,
+          "authoredHeight": 720
+        },
+        "height": 720
+      }
+    },
+    {
+      "id": "authored:nearest:thickness",
+      "members": [
+        "authored:nearest:thickness"
+      ],
+      "witness": {
+        "native": {
+          "length": 0,
+          "thickness": 0,
+          "gap": 0,
+          "authoredHeight": 720
+        },
+        "height": 720
+      }
+    },
+    {
+      "id": "authored:nearest:center",
+      "members": [
+        "authored:nearest:center"
+      ],
+      "witness": {
+        "native": {
+          "length": 0,
+          "thickness": 0,
+          "gap": 0,
+          "authoredHeight": 720
+        },
+        "height": 720
+      }
+    },
+    {
+      "id": "authored:nearest:opening",
+      "members": [
+        "authored:nearest:opening"
+      ],
+      "witness": {
+        "native": {
+          "length": 0,
+          "thickness": 0,
+          "gap": 0,
+          "authoredHeight": 720
+        },
+        "height": 720
+      }
+    },
+    {
+      "id": "authored:ceil:thickness",
+      "members": [
+        "authored:ceil:thickness"
+      ],
+      "witness": {
+        "native": {
+          "length": 0,
+          "thickness": 0,
+          "gap": 0,
+          "authoredHeight": 720
+        },
+        "height": 720
+      }
+    },
+    {
+      "id": "authored:ceil:center",
+      "members": [
+        "authored:ceil:center"
+      ],
+      "witness": {
+        "native": {
+          "length": 0,
+          "thickness": 0,
+          "gap": 0,
+          "authoredHeight": 720
+        },
+        "height": 720
+      }
+    },
+    {
+      "id": "authored:ceil:opening",
+      "members": [
+        "authored:ceil:opening"
+      ],
+      "witness": {
+        "native": {
+          "length": 0,
+          "thickness": 0,
+          "gap": 0,
+          "authoredHeight": 720
+        },
+        "height": 720
+      }
+    },
+    {
+      "id": "reference1080:trunc:thickness",
+      "members": [
+        "reference1080:trunc:thickness"
+      ],
+      "witness": {
+        "native": {
+          "length": 0,
+          "thickness": 0,
+          "gap": 0,
+          "authoredHeight": 720
+        },
+        "height": 720
+      }
+    },
+    {
+      "id": "reference1080:trunc:center",
+      "members": [
+        "reference1080:trunc:center"
+      ],
+      "witness": {
+        "native": {
+          "length": 0,
+          "thickness": 0,
+          "gap": 0,
+          "authoredHeight": 720
+        },
+        "height": 720
+      }
+    },
+    {
+      "id": "reference1080:trunc:opening",
+      "members": [
+        "reference1080:trunc:opening"
+      ],
+      "witness": {
+        "native": {
+          "length": 0,
+          "thickness": 0,
+          "gap": 0,
+          "authoredHeight": 720
+        },
+        "height": 720
+      }
+    },
+    {
+      "id": "reference1080:nearest:thickness",
+      "members": [
+        "reference1080:nearest:thickness"
+      ],
+      "witness": {
+        "native": {
+          "length": 0,
+          "thickness": 0,
+          "gap": 0,
+          "authoredHeight": 720
+        },
+        "height": 720
+      }
+    },
+    {
+      "id": "reference1080:nearest:center",
+      "members": [
+        "reference1080:nearest:center"
+      ],
+      "witness": {
+        "native": {
+          "length": 0,
+          "thickness": 0,
+          "gap": 0,
+          "authoredHeight": 720
+        },
+        "height": 720
+      }
+    },
+    {
+      "id": "reference1080:nearest:opening",
+      "members": [
+        "reference1080:nearest:opening"
+      ],
+      "witness": {
+        "native": {
+          "length": 0,
+          "thickness": 0,
+          "gap": 0,
+          "authoredHeight": 720
+        },
+        "height": 720
+      }
+    },
+    {
+      "id": "reference1080:ceil:thickness",
+      "members": [
+        "reference1080:ceil:thickness"
+      ],
+      "witness": {
+        "native": {
+          "length": 0,
+          "thickness": 0,
+          "gap": 0,
+          "authoredHeight": 720
+        },
+        "height": 720
+      }
+    },
+    {
+      "id": "reference1080:ceil:center",
+      "members": [
+        "reference1080:ceil:center"
+      ],
+      "witness": {
+        "native": {
+          "length": 0,
+          "thickness": 0,
+          "gap": 0,
+          "authoredHeight": 720
+        },
+        "height": 720
+      }
+    },
+    {
+      "id": "reference1080:ceil:opening",
+      "members": [
+        "reference1080:ceil:opening"
+      ],
+      "witness": {
+        "native": {
+          "length": 0,
+          "thickness": 0,
+          "gap": 0,
+          "authoredHeight": 720
+        },
+        "height": 720
+      }
+    },
+    {
+      "id": "reference720:trunc:thickness",
+      "members": [
+        "reference720:trunc:thickness"
+      ],
+      "witness": {
+        "native": {
+          "length": 0,
+          "thickness": 0,
+          "gap": 0,
+          "authoredHeight": 720
+        },
+        "height": 720
+      }
+    },
+    {
+      "id": "reference720:trunc:center",
+      "members": [
+        "reference720:trunc:center"
+      ],
+      "witness": {
+        "native": {
+          "length": 0,
+          "thickness": 0,
+          "gap": 0,
+          "authoredHeight": 720
+        },
+        "height": 720
+      }
+    },
+    {
+      "id": "reference720:trunc:opening",
+      "members": [
+        "reference720:trunc:opening"
+      ],
+      "witness": {
+        "native": {
+          "length": 0,
+          "thickness": 0,
+          "gap": 0,
+          "authoredHeight": 720
+        },
+        "height": 720
+      }
+    },
+    {
+      "id": "reference720:nearest:thickness",
+      "members": [
+        "reference720:nearest:thickness"
+      ],
+      "witness": {
+        "native": {
+          "length": 0,
+          "thickness": 0,
+          "gap": 0,
+          "authoredHeight": 720
+        },
+        "height": 720
+      }
+    },
+    {
+      "id": "reference720:nearest:center",
+      "members": [
+        "reference720:nearest:center"
+      ],
+      "witness": {
+        "native": {
+          "length": 0,
+          "thickness": 0,
+          "gap": 0,
+          "authoredHeight": 720
+        },
+        "height": 720
+      }
+    },
+    {
+      "id": "reference720:nearest:opening",
+      "members": [
+        "reference720:nearest:opening"
+      ],
+      "witness": {
+        "native": {
+          "length": 0,
+          "thickness": 0,
+          "gap": 0,
+          "authoredHeight": 720
+        },
+        "height": 720
+      }
+    },
+    {
+      "id": "reference720:ceil:thickness",
+      "members": [
+        "reference720:ceil:thickness"
+      ],
+      "witness": {
+        "native": {
+          "length": 0,
+          "thickness": 0,
+          "gap": 0,
+          "authoredHeight": 720
+        },
+        "height": 720
+      }
+    },
+    {
+      "id": "reference720:ceil:center",
+      "members": [
+        "reference720:ceil:center"
+      ],
+      "witness": {
+        "native": {
+          "length": 0,
+          "thickness": 0,
+          "gap": 0,
+          "authoredHeight": 720
+        },
+        "height": 720
+      }
+    },
+    {
+      "id": "reference720:ceil:opening",
+      "members": [
+        "reference720:ceil:opening"
+      ],
+      "witness": {
+        "native": {
+          "length": 0,
+          "thickness": 0,
+          "gap": 0,
+          "authoredHeight": 720
+        },
+        "height": 720
+      }
+    }
+  ],
+  "pairsChecked": 351,
+  "scope": "Behavioural equivalence over a declared finite sample of the legal settings. Two models are called indistinguishable here when they render the same geometry on every sampled cell. Equal geometry on the sample is not a proof over all real-valued settings, and the partition makes no claim about which hypothesis the native game uses."
+}

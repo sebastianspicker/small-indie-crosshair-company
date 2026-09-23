@@ -1,0 +1,178 @@
+{
+  "schema": "sicc-discriminating-set-v1",
+  "prior": {
+    "mode": "prior-only-sensitivity",
+    "entropyBits": 4.754887502163471,
+    "weights": [
+      0.037037037037037035,
+      0.037037037037037035,
+      0.037037037037037035,
+      0.037037037037037035,
+      0.037037037037037035,
+      0.037037037037037035,
+      0.037037037037037035,
+      0.037037037037037035,
+      0.037037037037037035,
+      0.037037037037037035,
+      0.037037037037037035,
+      0.037037037037037035,
+      0.037037037037037035,
+      0.037037037037037035,
+      0.037037037037037035,
+      0.037037037037037035,
+      0.037037037037037035,
+      0.037037037037037035,
+      0.037037037037037035,
+      0.037037037037037035,
+      0.037037037037037035,
+      0.037037037037037035,
+      0.037037037037037035,
+      0.037037037037037035,
+      0.037037037037037035,
+      0.037037037037037035,
+      0.037037037037037035
+    ]
+  },
+  "modelCount": 27,
+  "totalPairs": 351,
+  "weightedTotal": 12.999999999999925,
+  "weightedCovered": 12.999999999999932,
+  "smallestSeparatingSize": 2,
+  "sizeUsed": 2,
+  "separatesAll": true,
+  "unseparatedPairs": [],
+  "candidateCount": 2304,
+  "designs": [
+    {
+      "order": 1,
+      "native": {
+        "length": 8,
+        "thickness": 3,
+        "gap": 0,
+        "authoredHeight": 720
+      },
+      "currentHeight": 768,
+      "separatedPairs": 342,
+      "newlyCoveredPairs": 342,
+      "newWeightedCoverage": 12.666666666666599,
+      "outcomes": 18,
+      "groups": [
+        [
+          "authored:trunc:thickness",
+          "reference720:trunc:thickness"
+        ],
+        [
+          "authored:trunc:center",
+          "reference720:trunc:center"
+        ],
+        [
+          "authored:trunc:opening",
+          "reference720:trunc:opening"
+        ],
+        [
+          "authored:nearest:thickness",
+          "reference720:nearest:thickness"
+        ],
+        [
+          "authored:nearest:center",
+          "reference720:nearest:center"
+        ],
+        [
+          "authored:nearest:opening",
+          "reference720:nearest:opening"
+        ],
+        [
+          "authored:ceil:thickness",
+          "reference720:ceil:thickness"
+        ],
+        [
+          "authored:ceil:center",
+          "reference720:ceil:center"
+        ],
+        [
+          "authored:ceil:opening",
+          "reference720:ceil:opening"
+        ],
+        [
+          "reference1080:trunc:thickness"
+        ],
+        [
+          "reference1080:trunc:center"
+        ],
+        [
+          "reference1080:trunc:opening"
+        ],
+        [
+          "reference1080:nearest:thickness"
+        ],
+        [
+          "reference1080:nearest:center"
+        ],
+        [
+          "reference1080:nearest:opening"
+        ],
+        [
+          "reference1080:ceil:thickness"
+        ],
+        [
+          "reference1080:ceil:center"
+        ],
+        [
+          "reference1080:ceil:opening"
+        ]
+      ]
+    },
+    {
+      "order": 2,
+      "native": {
+        "length": 3,
+        "thickness": 1,
+        "gap": 0,
+        "authoredHeight": 1080
+      },
+      "currentHeight": 720,
+      "separatedPairs": 252,
+      "newlyCoveredPairs": 9,
+      "newWeightedCoverage": 0.3333333333333333,
+      "outcomes": 4,
+      "groups": [
+        [
+          "authored:trunc:thickness",
+          "authored:trunc:center",
+          "authored:nearest:thickness",
+          "authored:nearest:center",
+          "authored:ceil:thickness",
+          "authored:ceil:center",
+          "reference1080:trunc:thickness",
+          "reference1080:trunc:center",
+          "reference1080:nearest:thickness",
+          "reference1080:nearest:center",
+          "reference1080:ceil:thickness",
+          "reference1080:ceil:center"
+        ],
+        [
+          "authored:trunc:opening",
+          "authored:nearest:opening",
+          "authored:ceil:opening",
+          "reference1080:trunc:opening",
+          "reference1080:nearest:opening",
+          "reference1080:ceil:opening"
+        ],
+        [
+          "reference720:trunc:thickness",
+          "reference720:trunc:center",
+          "reference720:nearest:thickness",
+          "reference720:nearest:center",
+          "reference720:ceil:thickness",
+          "reference720:ceil:center"
+        ],
+        [
+          "reference720:trunc:opening",
+          "reference720:nearest:opening",
+          "reference720:ceil:opening"
+        ]
+      ]
+    }
+  ],
+  "scope": "Synthetic prediction partitions of the declared 27-hypothesis family under a uniform prior. These are a capture PLAN, not measurements: perfect synthetic separation does not prove native correctness, and renderers outside the family are not considered."
+}

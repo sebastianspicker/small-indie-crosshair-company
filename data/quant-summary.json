@@ -1,0 +1,902 @@
+{
+  "schema": "sicc-quant-study-v2",
+  "dataset": {
+    "schema": "sicc-corpus-v2",
+    "snapshot": "2026-09-23",
+    "sourceArchiveGitBlob": "210e17ca65ca68bd906774f4b332fe40f8487cef",
+    "archiveTranscriptionVerified": true,
+    "records": 138,
+    "players": 106,
+    "uniqueCodes": 119,
+    "uniqueGeometrySignatures": 50,
+    "datedRecords": 8,
+    "staticSupported": 135,
+    "heights": [
+      720,
+      768,
+      960,
+      1024,
+      1080,
+      1440,
+      2160
+    ],
+    "sha256": "dec874ec4fcd369b6ddc48e0c7dd445e1cdd4871a40239623e649c6c57a0833a",
+    "nativeCapturePairs": 0,
+    "sourceProviders": 2,
+    "independenceWarning": "The archive and live index share an upstream. A code is not an independent renderer observation. Controlled heights are NOT reported pro-player resolutions."
+  },
+  "eligibleRows": 945,
+  "excludedRecords": [
+    {
+      "id": "pro-009",
+      "player": "flameZ",
+      "style": 5,
+      "weapon_gap": false
+    },
+    {
+      "id": "pro-058",
+      "player": "Twistzz",
+      "style": 4,
+      "weapon_gap": true
+    },
+    {
+      "id": "pro-112",
+      "player": "Twistzz",
+      "style": 4,
+      "weapon_gap": true
+    }
+  ],
+  "eligibleGeometrySignatures": 48,
+  "ablations": [
+    {
+      "name": "source_f32",
+      "rows": 945,
+      "lengthExact": 945,
+      "widthExact": 945,
+      "nearExact": 945,
+      "allExact": 945,
+      "microExact": 1,
+      "rmse": 0,
+      "clusterStability": {
+        "mean": 1,
+        "lower": 1,
+        "upper": 1,
+        "clusters": 48,
+        "repeats": 2000,
+        "seed": 23092026,
+        "interpretation": "Descriptive cluster-resampling stability interval; not game-correctness confidence."
+      },
+      "byHeight": [
+        {
+          "height": 720,
+          "total": 135,
+          "exact": 135
+        },
+        {
+          "height": 768,
+          "total": 135,
+          "exact": 135
+        },
+        {
+          "height": 960,
+          "total": 135,
+          "exact": 135
+        },
+        {
+          "height": 1024,
+          "total": 135,
+          "exact": 135
+        },
+        {
+          "height": 1080,
+          "total": 135,
+          "exact": 135
+        },
+        {
+          "height": 1440,
+          "total": 135,
+          "exact": 135
+        },
+        {
+          "height": 2160,
+          "total": 135,
+          "exact": 135
+        }
+      ]
+    },
+    {
+      "name": "round_scaled",
+      "rows": 945,
+      "lengthExact": 601,
+      "widthExact": 658,
+      "nearExact": 755,
+      "allExact": 539,
+      "microExact": 0.5703703703703704,
+      "rmse": 0.5381397181597201,
+      "clusterStability": {
+        "mean": 0.5238095238095237,
+        "lower": 0.4642857142857142,
+        "upper": 0.5804315476190475,
+        "clusters": 48,
+        "repeats": 2000,
+        "seed": 23092026,
+        "interpretation": "Descriptive cluster-resampling stability interval; not game-correctness confidence."
+      },
+      "byHeight": [
+        {
+          "height": 720,
+          "total": 135,
+          "exact": 32
+        },
+        {
+          "height": 768,
+          "total": 135,
+          "exact": 36
+        },
+        {
+          "height": 960,
+          "total": 135,
+          "exact": 126
+        },
+        {
+          "height": 1024,
+          "total": 135,
+          "exact": 126
+        },
+        {
+          "height": 1080,
+          "total": 135,
+          "exact": 94
+        },
+        {
+          "height": 1440,
+          "total": 135,
+          "exact": 98
+        },
+        {
+          "height": 2160,
+          "total": 135,
+          "exact": 27
+        }
+      ]
+    },
+    {
+      "name": "fixed_2x",
+      "rows": 945,
+      "lengthExact": 427,
+      "widthExact": 571,
+      "nearExact": 657,
+      "allExact": 411,
+      "microExact": 0.43492063492063493,
+      "rmse": 1.0392644258018329,
+      "clusterStability": {
+        "mean": 0.44642857142857145,
+        "lower": 0.4195684523809522,
+        "upper": 0.48214285714285693,
+        "clusters": 48,
+        "repeats": 2000,
+        "seed": 23092026,
+        "interpretation": "Descriptive cluster-resampling stability interval; not game-correctness confidence."
+      },
+      "byHeight": [
+        {
+          "height": 720,
+          "total": 135,
+          "exact": 5
+        },
+        {
+          "height": 768,
+          "total": 135,
+          "exact": 7
+        },
+        {
+          "height": 960,
+          "total": 135,
+          "exact": 135
+        },
+        {
+          "height": 1024,
+          "total": 135,
+          "exact": 134
+        },
+        {
+          "height": 1080,
+          "total": 135,
+          "exact": 127
+        },
+        {
+          "height": 1440,
+          "total": 135,
+          "exact": 2
+        },
+        {
+          "height": 2160,
+          "total": 135,
+          "exact": 1
+        }
+      ]
+    },
+    {
+      "name": "historical_preview",
+      "rows": 945,
+      "lengthExact": 381,
+      "widthExact": 321,
+      "nearExact": 657,
+      "allExact": 257,
+      "microExact": 0.27195767195767195,
+      "rmse": 1.1030884972676636,
+      "clusterStability": {
+        "mean": 0.13095238095238096,
+        "lower": 0.08035714285714284,
+        "upper": 0.1875,
+        "clusters": 48,
+        "repeats": 2000,
+        "seed": 23092026,
+        "interpretation": "Descriptive cluster-resampling stability interval; not game-correctness confidence."
+      },
+      "byHeight": [
+        {
+          "height": 720,
+          "total": 135,
+          "exact": 0
+        },
+        {
+          "height": 768,
+          "total": 135,
+          "exact": 0
+        },
+        {
+          "height": 960,
+          "total": 135,
+          "exact": 86
+        },
+        {
+          "height": 1024,
+          "total": 135,
+          "exact": 86
+        },
+        {
+          "height": 1080,
+          "total": 135,
+          "exact": 85
+        },
+        {
+          "height": 1440,
+          "total": 135,
+          "exact": 0
+        },
+        {
+          "height": 2160,
+          "total": 135,
+          "exact": 0
+        }
+      ]
+    },
+    {
+      "name": "ridge_group_cv",
+      "rows": 945,
+      "lengthExact": 926,
+      "widthExact": 845,
+      "nearExact": 862,
+      "allExact": 755,
+      "microExact": 0.798941798941799,
+      "rmse": 0.27086640009779733,
+      "clusterStability": {
+        "mean": 0.7172619047619048,
+        "lower": 0.6398809523809524,
+        "upper": 0.7916666666666666,
+        "clusters": 48,
+        "repeats": 2000,
+        "seed": 23092026,
+        "interpretation": "Descriptive cluster-resampling stability interval; not game-correctness confidence."
+      },
+      "byHeight": [
+        {
+          "height": 720,
+          "total": 135,
+          "exact": 122
+        },
+        {
+          "height": 768,
+          "total": 135,
+          "exact": 58
+        },
+        {
+          "height": 960,
+          "total": 135,
+          "exact": 109
+        },
+        {
+          "height": 1024,
+          "total": 135,
+          "exact": 111
+        },
+        {
+          "height": 1080,
+          "total": 135,
+          "exact": 122
+        },
+        {
+          "height": 1440,
+          "total": 135,
+          "exact": 120
+        },
+        {
+          "height": 2160,
+          "total": 135,
+          "exact": 113
+        }
+      ]
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "authored:trunc:thickness",
+      "scale": "authored",
+      "rounding": "trunc",
+      "gap": "thickness",
+      "testedGeometryHeightCells": 336,
+      "exactUnderOwnGeometryModel": 322,
+      "idealOutsideRange": 14,
+      "evidence": "synthetic inversion self-consistency only; not model selection or native validation"
+    },
+    {
+      "id": "authored:trunc:center",
+      "scale": "authored",
+      "rounding": "trunc",
+      "gap": "center",
+      "testedGeometryHeightCells": 336,
+      "exactUnderOwnGeometryModel": 324,
+      "idealOutsideRange": 12,
+      "evidence": "synthetic inversion self-consistency only; not model selection or native validation"
+    },
+    {
+      "id": "authored:trunc:opening",
+      "scale": "authored",
+      "rounding": "trunc",
+      "gap": "opening",
+      "testedGeometryHeightCells": 336,
+      "exactUnderOwnGeometryModel": 324,
+      "idealOutsideRange": 12,
+      "evidence": "synthetic inversion self-consistency only; not model selection or native validation"
+    },
+    {
+      "id": "authored:nearest:thickness",
+      "scale": "authored",
+      "rounding": "nearest",
+      "gap": "thickness",
+      "testedGeometryHeightCells": 336,
+      "exactUnderOwnGeometryModel": 322,
+      "idealOutsideRange": 14,
+      "evidence": "synthetic inversion self-consistency only; not model selection or native validation"
+    },
+    {
+      "id": "authored:nearest:center",
+      "scale": "authored",
+      "rounding": "nearest",
+      "gap": "center",
+      "testedGeometryHeightCells": 336,
+      "exactUnderOwnGeometryModel": 324,
+      "idealOutsideRange": 12,
+      "evidence": "synthetic inversion self-consistency only; not model selection or native validation"
+    },
+    {
+      "id": "authored:nearest:opening",
+      "scale": "authored",
+      "rounding": "nearest",
+      "gap": "opening",
+      "testedGeometryHeightCells": 336,
+      "exactUnderOwnGeometryModel": 324,
+      "idealOutsideRange": 12,
+      "evidence": "synthetic inversion self-consistency only; not model selection or native validation"
+    },
+    {
+      "id": "authored:ceil:thickness",
+      "scale": "authored",
+      "rounding": "ceil",
+      "gap": "thickness",
+      "testedGeometryHeightCells": 336,
+      "exactUnderOwnGeometryModel": 322,
+      "idealOutsideRange": 14,
+      "evidence": "synthetic inversion self-consistency only; not model selection or native validation"
+    },
+    {
+      "id": "authored:ceil:center",
+      "scale": "authored",
+      "rounding": "ceil",
+      "gap": "center",
+      "testedGeometryHeightCells": 336,
+      "exactUnderOwnGeometryModel": 324,
+      "idealOutsideRange": 12,
+      "evidence": "synthetic inversion self-consistency only; not model selection or native validation"
+    },
+    {
+      "id": "authored:ceil:opening",
+      "scale": "authored",
+      "rounding": "ceil",
+      "gap": "opening",
+      "testedGeometryHeightCells": 336,
+      "exactUnderOwnGeometryModel": 324,
+      "idealOutsideRange": 12,
+      "evidence": "synthetic inversion self-consistency only; not model selection or native validation"
+    },
+    {
+      "id": "reference1080:trunc:thickness",
+      "scale": "reference1080",
+      "rounding": "trunc",
+      "gap": "thickness",
+      "testedGeometryHeightCells": 336,
+      "exactUnderOwnGeometryModel": 265,
+      "idealOutsideRange": 14,
+      "evidence": "synthetic inversion self-consistency only; not model selection or native validation"
+    },
+    {
+      "id": "reference1080:trunc:center",
+      "scale": "reference1080",
+      "rounding": "trunc",
+      "gap": "center",
+      "testedGeometryHeightCells": 336,
+      "exactUnderOwnGeometryModel": 267,
+      "idealOutsideRange": 12,
+      "evidence": "synthetic inversion self-consistency only; not model selection or native validation"
+    },
+    {
+      "id": "reference1080:trunc:opening",
+      "scale": "reference1080",
+      "rounding": "trunc",
+      "gap": "opening",
+      "testedGeometryHeightCells": 336,
+      "exactUnderOwnGeometryModel": 240,
+      "idealOutsideRange": 12,
+      "evidence": "synthetic inversion self-consistency only; not model selection or native validation"
+    },
+    {
+      "id": "reference1080:nearest:thickness",
+      "scale": "reference1080",
+      "rounding": "nearest",
+      "gap": "thickness",
+      "testedGeometryHeightCells": 336,
+      "exactUnderOwnGeometryModel": 273,
+      "idealOutsideRange": 14,
+      "evidence": "synthetic inversion self-consistency only; not model selection or native validation"
+    },
+    {
+      "id": "reference1080:nearest:center",
+      "scale": "reference1080",
+      "rounding": "nearest",
+      "gap": "center",
+      "testedGeometryHeightCells": 336,
+      "exactUnderOwnGeometryModel": 271,
+      "idealOutsideRange": 12,
+      "evidence": "synthetic inversion self-consistency only; not model selection or native validation"
+    },
+    {
+      "id": "reference1080:nearest:opening",
+      "scale": "reference1080",
+      "rounding": "nearest",
+      "gap": "opening",
+      "testedGeometryHeightCells": 336,
+      "exactUnderOwnGeometryModel": 260,
+      "idealOutsideRange": 12,
+      "evidence": "synthetic inversion self-consistency only; not model selection or native validation"
+    },
+    {
+      "id": "reference1080:ceil:thickness",
+      "scale": "reference1080",
+      "rounding": "ceil",
+      "gap": "thickness",
+      "testedGeometryHeightCells": 336,
+      "exactUnderOwnGeometryModel": 273,
+      "idealOutsideRange": 14,
+      "evidence": "synthetic inversion self-consistency only; not model selection or native validation"
+    },
+    {
+      "id": "reference1080:ceil:center",
+      "scale": "reference1080",
+      "rounding": "ceil",
+      "gap": "center",
+      "testedGeometryHeightCells": 336,
+      "exactUnderOwnGeometryModel": 267,
+      "idealOutsideRange": 12,
+      "evidence": "synthetic inversion self-consistency only; not model selection or native validation"
+    },
+    {
+      "id": "reference1080:ceil:opening",
+      "scale": "reference1080",
+      "rounding": "ceil",
+      "gap": "opening",
+      "testedGeometryHeightCells": 336,
+      "exactUnderOwnGeometryModel": 259,
+      "idealOutsideRange": 12,
+      "evidence": "synthetic inversion self-consistency only; not model selection or native validation"
+    },
+    {
+      "id": "reference720:trunc:thickness",
+      "scale": "reference720",
+      "rounding": "trunc",
+      "gap": "thickness",
+      "testedGeometryHeightCells": 336,
+      "exactUnderOwnGeometryModel": 197,
+      "idealOutsideRange": 14,
+      "evidence": "synthetic inversion self-consistency only; not model selection or native validation"
+    },
+    {
+      "id": "reference720:trunc:center",
+      "scale": "reference720",
+      "rounding": "trunc",
+      "gap": "center",
+      "testedGeometryHeightCells": 336,
+      "exactUnderOwnGeometryModel": 192,
+      "idealOutsideRange": 12,
+      "evidence": "synthetic inversion self-consistency only; not model selection or native validation"
+    },
+    {
+      "id": "reference720:trunc:opening",
+      "scale": "reference720",
+      "rounding": "trunc",
+      "gap": "opening",
+      "testedGeometryHeightCells": 336,
+      "exactUnderOwnGeometryModel": 157,
+      "idealOutsideRange": 12,
+      "evidence": "synthetic inversion self-consistency only; not model selection or native validation"
+    },
+    {
+      "id": "reference720:nearest:thickness",
+      "scale": "reference720",
+      "rounding": "nearest",
+      "gap": "thickness",
+      "testedGeometryHeightCells": 336,
+      "exactUnderOwnGeometryModel": 163,
+      "idealOutsideRange": 14,
+      "evidence": "synthetic inversion self-consistency only; not model selection or native validation"
+    },
+    {
+      "id": "reference720:nearest:center",
+      "scale": "reference720",
+      "rounding": "nearest",
+      "gap": "center",
+      "testedGeometryHeightCells": 336,
+      "exactUnderOwnGeometryModel": 152,
+      "idealOutsideRange": 12,
+      "evidence": "synthetic inversion self-consistency only; not model selection or native validation"
+    },
+    {
+      "id": "reference720:nearest:opening",
+      "scale": "reference720",
+      "rounding": "nearest",
+      "gap": "opening",
+      "testedGeometryHeightCells": 336,
+      "exactUnderOwnGeometryModel": 166,
+      "idealOutsideRange": 12,
+      "evidence": "synthetic inversion self-consistency only; not model selection or native validation"
+    },
+    {
+      "id": "reference720:ceil:thickness",
+      "scale": "reference720",
+      "rounding": "ceil",
+      "gap": "thickness",
+      "testedGeometryHeightCells": 336,
+      "exactUnderOwnGeometryModel": 142,
+      "idealOutsideRange": 14,
+      "evidence": "synthetic inversion self-consistency only; not model selection or native validation"
+    },
+    {
+      "id": "reference720:ceil:center",
+      "scale": "reference720",
+      "rounding": "ceil",
+      "gap": "center",
+      "testedGeometryHeightCells": 336,
+      "exactUnderOwnGeometryModel": 123,
+      "idealOutsideRange": 12,
+      "evidence": "synthetic inversion self-consistency only; not model selection or native validation"
+    },
+    {
+      "id": "reference720:ceil:opening",
+      "scale": "reference720",
+      "rounding": "ceil",
+      "gap": "opening",
+      "testedGeometryHeightCells": 336,
+      "exactUnderOwnGeometryModel": 151,
+      "idealOutsideRange": 12,
+      "evidence": "synthetic inversion self-consistency only; not model selection or native validation"
+    }
+  ],
+  "folds": [
+    {
+      "fold": 0,
+      "trainRows": 868,
+      "testRows": 77,
+      "trainSignatures": [
+        "1|1|-4.5|0|0|4|0",
+        "1|1|-4|0|0|4|0",
+        "2|1|-6|0|0|4|0",
+        "2|0.5|-3|0|0|4|0",
+        "1.5|0|-4|0|0|4|0",
+        "2|0|-3|0|0|4|0",
+        "1|1.5|-4|0|0|4|0",
+        "1.5|0.6|-3|0|0|4|0",
+        "1|0|-3|0|0|4|0",
+        "1|0|-4|0|0|4|0",
+        "2|1|-3|0|0|4|0",
+        "2|0.6|-2.2|0|0|4|0",
+        "2|0|-2|0|0|4|0",
+        "1|1|-4|1|0|4|0",
+        "1|0.1|-4|0|0|4|0",
+        "1.5|1|-6|0|0|4|0",
+        "3|0.5|0|0|0|4|0",
+        "2|0|-2.5|0|0|4|0",
+        "3|0|-1|0|0|4|0",
+        "1|0|-3|1|0|4|0",
+        "1|0.9|-3.5|0|0|4|0",
+        "1|0.1|-3.9|1|0|4|0",
+        "2|1|-4|0|0|4|0",
+        "0|0|-3|1|0|4|0",
+        "1.9|0.1|-2.1|0|0|4|0",
+        "1.5|1|-3|0|0|4|0",
+        "1.5|0|-1.5|0|0|4|0",
+        "1|1|-3|0|0|4|0",
+        "1.2|0.9|-4.5|1|0|4|0",
+        "1|0.5|-3|0|0|4|0",
+        "1.5|1|-4|0|0|4|0",
+        "1|0.9|-4|0|0|4|0",
+        "2.5|0.6|-2|0|0|4|0",
+        "0.7|0.5|-3.5|1|0|4|0",
+        "0.8|0.8|-3.8|0|0|4|0",
+        "2.5|1|-3|0|0|4|0",
+        "1.3|1.4|-2.7|0|0|4|0",
+        "0.5|0|-3|0|0|4|0",
+        "2.5|0.1|-2.5|0|0|4|0"
+      ],
+      "testSignatures": [
+        "1.5|0|-3|0|0|4|0",
+        "2|1|-2|0|0|4|0",
+        "0.9|0.9|-4.2|0|0|4|0",
+        "1.2|1|-3.2|0|0|4|0",
+        "2|0|-4|0|0|4|0",
+        "1.4|1|-4|0|0|4|0",
+        "1|1|-3.1|0|0|4|0",
+        "0|2|-4|1|0|4|0",
+        "0.3|0.9|-4|0|0|4|0"
+      ],
+      "lambda": 0.01
+    },
+    {
+      "fold": 1,
+      "trainRows": 399,
+      "testRows": 546,
+      "trainSignatures": [
+        "1|1|-4.5|0|0|4|0",
+        "1.5|0|-3|0|0|4|0",
+        "2|1|-6|0|0|4|0",
+        "2|0|-3|0|0|4|0",
+        "2|1|-2|0|0|4|0",
+        "1|1.5|-4|0|0|4|0",
+        "1.5|0.6|-3|0|0|4|0",
+        "1|0|-3|0|0|4|0",
+        "0.9|0.9|-4.2|0|0|4|0",
+        "1|0|-4|0|0|4|0",
+        "2|1|-3|0|0|4|0",
+        "2|0.6|-2.2|0|0|4|0",
+        "2|0|-2|0|0|4|0",
+        "1|0.1|-4|0|0|4|0",
+        "1.5|1|-6|0|0|4|0",
+        "3|0.5|0|0|0|4|0",
+        "2|0|-2.5|0|0|4|0",
+        "1|0|-3|1|0|4|0",
+        "1|0.1|-3.9|1|0|4|0",
+        "2|1|-4|0|0|4|0",
+        "0|0|-3|1|0|4|0",
+        "1.9|0.1|-2.1|0|0|4|0",
+        "1.2|1|-3.2|0|0|4|0",
+        "1.5|0|-1.5|0|0|4|0",
+        "1|0.5|-3|0|0|4|0",
+        "1.5|1|-4|0|0|4|0",
+        "2.5|0.6|-2|0|0|4|0",
+        "2|0|-4|0|0|4|0",
+        "1.4|1|-4|0|0|4|0",
+        "2.5|1|-3|0|0|4|0",
+        "1|1|-3.1|0|0|4|0",
+        "0|2|-4|1|0|4|0",
+        "0.3|0.9|-4|0|0|4|0",
+        "2.5|0.1|-2.5|0|0|4|0"
+      ],
+      "testSignatures": [
+        "1|1|-4|0|0|4|0",
+        "2|0.5|-3|0|0|4|0",
+        "1.5|0|-4|0|0|4|0",
+        "1|1|-4|1|0|4|0",
+        "3|0|-1|0|0|4|0",
+        "1|0.9|-3.5|0|0|4|0",
+        "1.5|1|-3|0|0|4|0",
+        "1|1|-3|0|0|4|0",
+        "1.2|0.9|-4.5|1|0|4|0",
+        "1|0.9|-4|0|0|4|0",
+        "0.7|0.5|-3.5|1|0|4|0",
+        "0.8|0.8|-3.8|0|0|4|0",
+        "1.3|1.4|-2.7|0|0|4|0",
+        "0.5|0|-3|0|0|4|0"
+      ],
+      "lambda": 0.01
+    },
+    {
+      "fold": 2,
+      "trainRows": 875,
+      "testRows": 70,
+      "trainSignatures": [
+        "1|1|-4.5|0|0|4|0",
+        "1.5|0|-3|0|0|4|0",
+        "1|1|-4|0|0|4|0",
+        "2|1|-6|0|0|4|0",
+        "2|0.5|-3|0|0|4|0",
+        "1.5|0|-4|0|0|4|0",
+        "2|0|-3|0|0|4|0",
+        "2|1|-2|0|0|4|0",
+        "1|1.5|-4|0|0|4|0",
+        "1.5|0.6|-3|0|0|4|0",
+        "0.9|0.9|-4.2|0|0|4|0",
+        "1|0|-4|0|0|4|0",
+        "2|1|-3|0|0|4|0",
+        "2|0.6|-2.2|0|0|4|0",
+        "2|0|-2|0|0|4|0",
+        "1|1|-4|1|0|4|0",
+        "1|0.1|-4|0|0|4|0",
+        "3|0.5|0|0|0|4|0",
+        "3|0|-1|0|0|4|0",
+        "1|0.9|-3.5|0|0|4|0",
+        "1|0.1|-3.9|1|0|4|0",
+        "2|1|-4|0|0|4|0",
+        "1.9|0.1|-2.1|0|0|4|0",
+        "1.2|1|-3.2|0|0|4|0",
+        "1.5|1|-3|0|0|4|0",
+        "1|1|-3|0|0|4|0",
+        "1.2|0.9|-4.5|1|0|4|0",
+        "1.5|1|-4|0|0|4|0",
+        "1|0.9|-4|0|0|4|0",
+        "0.7|0.5|-3.5|1|0|4|0",
+        "0.8|0.8|-3.8|0|0|4|0",
+        "2|0|-4|0|0|4|0",
+        "1.4|1|-4|0|0|4|0",
+        "1|1|-3.1|0|0|4|0",
+        "1.3|1.4|-2.7|0|0|4|0",
+        "0|2|-4|1|0|4|0",
+        "0.3|0.9|-4|0|0|4|0",
+        "0.5|0|-3|0|0|4|0",
+        "2.5|0.1|-2.5|0|0|4|0"
+      ],
+      "testSignatures": [
+        "1|0|-3|0|0|4|0",
+        "1.5|1|-6|0|0|4|0",
+        "2|0|-2.5|0|0|4|0",
+        "1|0|-3|1|0|4|0",
+        "0|0|-3|1|0|4|0",
+        "1.5|0|-1.5|0|0|4|0",
+        "1|0.5|-3|0|0|4|0",
+        "2.5|0.6|-2|0|0|4|0",
+        "2.5|1|-3|0|0|4|0"
+      ],
+      "lambda": 0.01
+    },
+    {
+      "fold": 3,
+      "trainRows": 777,
+      "testRows": 168,
+      "trainSignatures": [
+        "1|1|-4.5|0|0|4|0",
+        "1.5|0|-3|0|0|4|0",
+        "1|1|-4|0|0|4|0",
+        "2|1|-6|0|0|4|0",
+        "2|0.5|-3|0|0|4|0",
+        "1.5|0|-4|0|0|4|0",
+        "2|1|-2|0|0|4|0",
+        "1|0|-3|0|0|4|0",
+        "0.9|0.9|-4.2|0|0|4|0",
+        "2|0.6|-2.2|0|0|4|0",
+        "2|0|-2|0|0|4|0",
+        "1|1|-4|1|0|4|0",
+        "1.5|1|-6|0|0|4|0",
+        "2|0|-2.5|0|0|4|0",
+        "3|0|-1|0|0|4|0",
+        "1|0|-3|1|0|4|0",
+        "1|0.9|-3.5|0|0|4|0",
+        "1|0.1|-3.9|1|0|4|0",
+        "0|0|-3|1|0|4|0",
+        "1.2|1|-3.2|0|0|4|0",
+        "1.5|1|-3|0|0|4|0",
+        "1.5|0|-1.5|0|0|4|0",
+        "1|1|-3|0|0|4|0",
+        "1.2|0.9|-4.5|1|0|4|0",
+        "1|0.5|-3|0|0|4|0",
+        "1.5|1|-4|0|0|4|0",
+        "1|0.9|-4|0|0|4|0",
+        "2.5|0.6|-2|0|0|4|0",
+        "0.7|0.5|-3.5|1|0|4|0",
+        "0.8|0.8|-3.8|0|0|4|0",
+        "2|0|-4|0|0|4|0",
+        "1.4|1|-4|0|0|4|0",
+        "2.5|1|-3|0|0|4|0",
+        "1|1|-3.1|0|0|4|0",
+        "1.3|1.4|-2.7|0|0|4|0",
+        "0|2|-4|1|0|4|0",
+        "0.3|0.9|-4|0|0|4|0",
+        "0.5|0|-3|0|0|4|0"
+      ],
+      "testSignatures": [
+        "2|0|-3|0|0|4|0",
+        "1|1.5|-4|0|0|4|0",
+        "1.5|0.6|-3|0|0|4|0",
+        "1|0|-4|0|0|4|0",
+        "2|1|-3|0|0|4|0",
+        "1|0.1|-4|0|0|4|0",
+        "3|0.5|0|0|0|4|0",
+        "2|1|-4|0|0|4|0",
+        "1.9|0.1|-2.1|0|0|4|0",
+        "2.5|0.1|-2.5|0|0|4|0"
+      ],
+      "lambda": 0.01
+    },
+    {
+      "fold": 4,
+      "trainRows": 861,
+      "testRows": 84,
+      "trainSignatures": [
+        "1.5|0|-3|0|0|4|0",
+        "1|1|-4|0|0|4|0",
+        "2|0.5|-3|0|0|4|0",
+        "1.5|0|-4|0|0|4|0",
+        "2|0|-3|0|0|4|0",
+        "2|1|-2|0|0|4|0",
+        "1|1.5|-4|0|0|4|0",
+        "1.5|0.6|-3|0|0|4|0",
+        "1|0|-3|0|0|4|0",
+        "0.9|0.9|-4.2|0|0|4|0",
+        "1|0|-4|0|0|4|0",
+        "2|1|-3|0|0|4|0",
+        "1|1|-4|1|0|4|0",
+        "1|0.1|-4|0|0|4|0",
+        "1.5|1|-6|0|0|4|0",
+        "3|0.5|0|0|0|4|0",
+        "2|0|-2.5|0|0|4|0",
+        "3|0|-1|0|0|4|0",
+        "1|0|-3|1|0|4|0",
+        "1|0.9|-3.5|0|0|4|0",
+        "2|1|-4|0|0|4|0",
+        "0|0|-3|1|0|4|0",
+        "1.9|0.1|-2.1|0|0|4|0",
+        "1.2|1|-3.2|0|0|4|0",
+        "1.5|1|-3|0|0|4|0",
+        "1.5|0|-1.5|0|0|4|0",
+        "1|1|-3|0|0|4|0",
+        "1.2|0.9|-4.5|1|0|4|0",
+        "1|0.5|-3|0|0|4|0",
+        "1|0.9|-4|0|0|4|0",
+        "2.5|0.6|-2|0|0|4|0",
+        "0.7|0.5|-3.5|1|0|4|0",
+        "0.8|0.8|-3.8|0|0|4|0",
+        "2|0|-4|0|0|4|0",
+        "1.4|1|-4|0|0|4|0",
+        "2.5|1|-3|0|0|4|0",
+        "1|1|-3.1|0|0|4|0",
+        "1.3|1.4|-2.7|0|0|4|0",
+        "0|2|-4|1|0|4|0",
+        "0.3|0.9|-4|0|0|4|0",
+        "0.5|0|-3|0|0|4|0",
+        "2.5|0.1|-2.5|0|0|4|0"
+      ],
+      "testSignatures": [
+        "1|1|-4.5|0|0|4|0",
+        "2|1|-6|0|0|4|0",
+        "2|0.6|-2.2|0|0|4|0",
+        "2|0|-2|0|0|4|0",
+        "1|0.1|-3.9|1|0|4|0",
+        "1.5|1|-4|0|0|4|0"
+      ],
+      "lambda": 0.01
+    }
+  ],
+  "nativeEvidence": {
+    "calibrationCaptures": 0,
+    "holdoutCaptures": 0,
+    "actualConversionAccuracy": null
+  },
+  "interpretation": "Every target in this corpus study is a source-derived legacy prediction. Cross-validation and bootstrap describe that benchmark, not undisclosed new-client rendering."
+}
