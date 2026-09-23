@@ -3,6 +3,7 @@ import { paintQuant } from '../quant-preview.js';
 import { rgba } from '../../lib/conversion.js';
 import { scaleOf } from '../../lib/quant/renderer.js';
 import { exportQuantCFG } from '../../lib/quant/export.js';
+import { rivalSummary } from '../../lib/migration.js';
 import { modelName } from './view.js';
 import { drawingEdges } from '../../lib/raster.js';
 export const percent = value => value == null ? 'Undefined' : `${(100 * value).toFixed(1)}%`;
@@ -72,7 +73,7 @@ function previewLabels(view, r) {
   get('q-old-note').textContent = r.targetKind === 'image-derived' ? 'Measured from the image; the old settings may have more than one answer.' : 'Reconstructed from the old settings.';
   get('q-naive-note').textContent = `${percent(r.naiveFit.iou)} overlap in the preview. Copied with new integer limits.`;
   get('q-converted-note').textContent = `${percent(r.convertedFit.iou)} overlap in the selected model.`;
-  get('q-renderer-note').textContent = `New preview model: ${modelName(r.renderer)}. Difference colors: light = shared, amber = extra, blue = missing. Outlines are excluded.`;
+  get('q-renderer-note').textContent = `New preview model: ${modelName(r.renderer)}. Difference colors: light = shared, amber = extra, blue = missing. Outlines are excluded. The build 2000914 dump does not state that gap scales, so an unscaled-gap rival exists and is not selected by this model.`;
 }
 
 export function renderSimple(view, report) {
@@ -84,8 +85,11 @@ export function renderSimple(view, report) {
   const flags = [s.dot ? 'center dot' : 'no center dot', s.t_style ? 'T shape' : 'cross', s.outline ? 'outline' : 'no outline',
     s.recoil ? 'follow recoil (not simulated)' : 'static'];
   get('qs-flags').textContent = `${flags.join(' · ')} · rgba(${c.rgb.join(', ')}, ${c.alpha})`;
-  const relevant = report.warnings.filter(w => /conflict|cropped|large shape|No visible|outline replacement|zero-thickness/.test(w));
-  get('qs-note').textContent = relevant[0] ?? 'Conditional preview under the selected model.';
+  const warningText = report.warnings.map(w => typeof w === 'string' ? w : w.text);
+  const gapScale = warningText.find(w => /Gap scaling is not stated in the build 2000914/.test(w));
+  const relevant = warningText.filter(w => /conflict|cropped|large shape|No visible|outline replacement|zero-thickness/.test(w));
+  get('qs-note').textContent = [gapScale, relevant[0]].filter(Boolean).join(' ')
+    || 'Conditional preview under the selected model.';
   const zoom = Number(get('q-zoom').value);
   paintQuant(get('qs-old-canvas'), report.target, s, c, zoom, null, { grid: true });
   paintQuant(get('qs-new-canvas'), report.converted, s, c, zoom, null, { grid: true });
@@ -116,7 +120,8 @@ export function renderResult(view, r) {
   get('q-copy').disabled = get('q-download-cfg').disabled = Boolean(r.blockers.length);
   get('q-download-report').disabled = false;
   get('q-status').textContent = r.blockers.length ? 'No export until the issues below are resolved.' : 'Settings ready to copy or download.';
-  const relevant = r.warnings.filter(w => /conflict|cropped|large shape|No visible|outline replacement|zero-thickness/.test(w));
+  const warningText = r.warnings.map(w => typeof w === 'string' ? w : w.text);
+  const relevant = warningText.filter(w => /conflict|cropped|large shape|No visible|outline replacement|zero-thickness/.test(w));
   if (!get('q-model').value && r.convertedFit.iou !== 1) relevant.unshift('The automatic choice balances several models. Open the pixel measurements to see where this preview differs.');
   get('q-warnings').replaceChildren(...[...r.blockers, ...relevant].map(w => el('p', {}, w)));
   const e = r.experiment;
@@ -130,12 +135,17 @@ export function renderDerivation(view, r) {
     ['Length', t.length, g.length, n.length], ['Thickness', t.width, g.width, n.thickness],
     ['Near inner edge · formula', t.near, g.near, n.gap], ['Far inner edge · formula', t.far, g.far, n.gap],
   ].map(([label, target, predicted, value]) => [label, fmt(target), fmt(predicted), fmt(predicted - target), fmt(value)]);
+  const rivals = rivalSummary(r.settings, r.options, n).map(row => {
+    const native = row.native ?? row;
+    return el('p', { class: 'small' }, `Rival · ${row.kind}: length ${native.length} / thickness ${native.thickness} / gap ${native.gap} · ${row.status}. Display only; it does not change the exported values.`);
+  });
   view.get('q-derivation').replaceChildren(
     el('p', { class: 'formula equation-line' }, `r = ${r.options.currentHeight} / ${r.renderer.scale === 'authored' ? n.authoredHeight : r.renderer.scale === 'reference1080' ? 1080 : 720} = ${fmt(ratio)}; Q = ${r.renderer.rounding}`),
     table(['Dimension', 'Target px', 'Model px', 'Residual px', 'New value'], rows),
     el('p', { class: 'small' }, `Preview far edge: ${fmt(drawingEdges(g).far)} px. Even-width synthetic bars omit the extra center pixel. Formula offsets above are retained for the inverse calculation; uploaded pixels are unchanged.`),
     el('p', { class: 'small' }, `Exact preimage: ${r.preimage.count} native tuple${r.preimage.count === 1 ? '' : 's'} render the target exactly under the selected ${modelName(r.renderer)} simulation${r.preimage.constrainedNearFar ? '' : ' (near/far equality is unconstrained because the target length is 0)'}. That exactness is under the selected simulation only, not a native CS2 measurement.`),
-    el('p', { class: 'small' }, 'Thickness and gap are solved together. The search details show later refinements; all values here come from the selected model, not a game measurement.'));
+    el('p', { class: 'small' }, 'Thickness and gap are solved together. The search details show later refinements; all values here come from the selected model, not a game measurement.'),
+    ...rivals);
 }
 
 export function renderScenarios(view, r, onSelect) {
