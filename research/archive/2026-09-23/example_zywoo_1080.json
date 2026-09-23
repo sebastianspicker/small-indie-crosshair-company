@@ -1,0 +1,58 @@
+{
+  "legacy_config": {
+    "code": "CSGO-hzGdv-OVFPn-OarUo-OSZCY-wwXsO",
+    "version": 1,
+    "size": 2.0,
+    "thickness": 0.0,
+    "gap": -3.0,
+    "dot": false,
+    "style": 4,
+    "outline": false,
+    "outline_width": 1.0,
+    "alpha_enabled": true,
+    "alpha": 255,
+    "color": 1,
+    "rgb": [
+      0,
+      0,
+      0
+    ],
+    "weapon_gap": false,
+    "recoil": false,
+    "t_style": false,
+    "fixed_gap": -2.0
+  },
+  "legacy_target": {
+    "height": 1080,
+    "input_size": 2.0,
+    "input_thickness": 0.0,
+    "input_gap": -3.0,
+    "arm_length_px": 4,
+    "thickness_px": 1,
+    "gap_offset_px": 1,
+    "near_inner_offset_px": 1,
+    "far_inner_offset_px": 2,
+    "opposing_arm_interval_px": 3,
+    "dot_side_px_if_enabled": 1
+  },
+  "post_update_candidates": {
+    "status": "CONDITIONAL: not validated in the September 23 CS2 client",
+    "authored_height": 1080,
+    "length_candidate": 4,
+    "thickness_candidate": 0,
+    "positive_thickness_same_resolution_alternative": 1,
+    "zero_thickness_note": "Literal zero preserves the documented one-pixel-minimum branch; positive 1 only matches it at the chosen reference height.",
+    "dimension_ranges_ok": true,
+    "gap_candidates": {
+      "same_thickness_relative_baseline": {
+        "value": 1.0,
+        "within_new_range": true
+      },
+      "zero_center_relative_baseline": {
+        "value": 1.0,
+        "within_new_range": true
+      }
+    },
+    "warning": "No silent clamping. Check pixel alignment, outline, and color separately. Do not equate a generator's normalized 720p values with native convars."
+  }
+}

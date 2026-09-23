@@ -1,0 +1,35 @@
+name: Scoped native measurement
+description: Submit real observations that discriminate rendering hypotheses.
+title: '[measurement] '
+body:
+  - type: markdown
+    attributes:
+      value: Do not submit synthetic examples as native evidence. Remove personal information from captures.
+  - type: textarea
+    id: scope
+    attributes:
+      label: Exact experiment scope
+      description: Build, full resolution, authored height, rendered thickness, style, outline/recoil, weapon and stance.
+    validations:
+      required: true
+  - type: textarea
+    id: values
+    attributes:
+      label: Settings and measured pixel boundaries
+      description: Include near and far edges, units, rounding convention and exported measurement JSON.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Capture provenance and integrity
+      description: Original-scale lossless captures, hashes, cell/boundary convention and how evidence was obtained.
+    validations:
+      required: true
+  - type: textarea
+    id: holdouts
+    attributes:
+      label: Independent holdouts and limitations
+      description: Which points were not used for fitting? Which competing hypotheses are ruled out?
+    validations:
+      required: true

@@ -1,0 +1,6755 @@
+{
+  "schema": "sicc-source-complexity-v1",
+  "parser": "Node bundled Acorn 8.14.1",
+  "runtime": "v22.16.0",
+  "definition": "Per-function 1 + if/conditional/loop/catch/logical/switch-case/optional branches. Nested functions excluded from parent. AST decision-count proxy, not a full control-flow graph proof. Counts can increase when new safety and research functionality is added; splitting functions reduces local decision burden, not overall mathematical uncertainty.",
+  "results": [
+    {
+      "root": "v0.2.0",
+      "functionCount": 477,
+      "totalDecisions": 776,
+      "maximum": 34,
+      "functionsAbove20": 4,
+      "p95": 9,
+      "functions": [
+        {
+          "file": "lib/conversion.js",
+          "line": 50,
+          "name": "convert",
+          "complexity": 34
+        },
+        {
+          "file": "lib/quant/screenshot.js",
+          "line": 124,
+          "name": "measureNativeMask",
+          "complexity": 34
+        },
+        {
+          "file": "app/editor.js",
+          "line": 24,
+          "name": "render",
+          "complexity": 30
+        },
+        {
+          "file": "lib/quant/evidence.js",
+          "line": 6,
+          "name": "validateMeasurements",
+          "complexity": 27
+        },
+        {
+          "file": "lib/quant/inference.js",
+          "line": 24,
+          "name": "refineVisual",
+          "complexity": 18
+        },
+        {
+          "file": "lib/quant/screenshot.js",
+          "line": 93,
+          "name": "analyzeScreenshot",
+          "complexity": 18
+        },
+        {
+          "file": "app/calibration.js",
+          "line": 77,
+          "name": "<callback>",
+          "complexity": 17
+        },
+        {
+          "file": "app/preview.js",
+          "line": 2,
+          "name": "paint",
+          "complexity": 17
+        },
+        {
+          "file": "lib/quant/inference.js",
+          "line": 52,
+          "name": "infer",
+          "complexity": 17
+        },
+        {
+          "file": "lib/quant/regression.js",
+          "line": 3,
+          "name": "ridgeFit",
+          "complexity": 17
+        },
+        {
+          "file": "scripts/serve.mjs",
+          "line": 13,
+          "name": "<callback>",
+          "complexity": 17
+        },
+        {
+          "file": "lib/quant/screenshot.js",
+          "line": 170,
+          "name": "analyzeNativeScreenshot",
+          "complexity": 15
+        },
+        {
+          "file": "app/quant-preview.js",
+          "line": 2,
+          "name": "paintQuant",
+          "complexity": 14
+        },
+        {
+          "file": "lib/calibration.js",
+          "line": 28,
+          "name": "validateMeasurement",
+          "complexity": 14
+        },
+        {
+          "file": "lib/cfg.js",
+          "line": 16,
+          "name": "parseLegacyCFG",
+          "complexity": 14
+        },
+        {
+          "file": "lib/quant/screenshot.js",
+          "line": 54,
+          "name": "fitMask",
+          "complexity": 14
+        },
+        {
+          "file": "lib/sharecode.js",
+          "line": 40,
+          "name": "encodeLegacy",
+          "complexity": 13
+        },
+        {
+          "file": "scripts/notebook.mjs",
+          "line": 8,
+          "name": "chapterHTML",
+          "complexity": 13
+        },
+        {
+          "file": "app/editor.js",
+          "line": 110,
+          "name": "applyCalibration",
+          "complexity": 12
+        },
+        {
+          "file": "app/quant.js",
+          "line": 53,
+          "name": "analyze",
+          "complexity": 11
+        },
+        {
+          "file": "lib/quant/screenshot.js",
+          "line": 14,
+          "name": "automaticColor",
+          "complexity": 11
+        },
+        {
+          "file": "app/quant-worker.js",
+          "line": 4,
+          "name": "<callback>",
+          "complexity": 10
+        },
+        {
+          "file": "lib/quant/inference.js",
+          "line": 6,
+          "name": "visualContext",
+          "complexity": 10
+        },
+        {
+          "file": "lib/quant/screenshot.js",
+          "line": 4,
+          "name": "pngDimensions",
+          "complexity": 10
+        },
+        {
+          "file": "app/image-input.js",
+          "line": 3,
+          "name": "imageInput",
+          "complexity": 9
+        },
+        {
+          "file": "lib/calibration.js",
+          "line": 3,
+          "name": "fitAffine",
+          "complexity": 9
+        },
+        {
+          "file": "lib/quant/statistics.js",
+          "line": 28,
+          "name": "wilson",
+          "complexity": 9
+        },
+        {
+          "file": "lib/sharecode.js",
+          "line": 6,
+          "name": "decodeLegacy",
+          "complexity": 9
+        },
+        {
+          "file": "app/calibration.js",
+          "line": 67,
+          "name": "<callback>",
+          "complexity": 8
+        },
+        {
+          "file": "app/calibration.js",
+          "line": 89,
+          "name": "<callback>",
+          "complexity": 8
+        },
+        {
+          "file": "app/dom.js",
+          "line": 2,
+          "name": "el",
+          "complexity": 8
+        },
+        {
+          "file": "app/image-input.js",
+          "line": 37,
+          "name": "analyze",
+          "complexity": 8
+        },
+        {
+          "file": "lib/raster.js",
+          "line": 12,
+          "name": "raster",
+          "complexity": 8
+        },
+        {
+          "file": "app/editor.js",
+          "line": 9,
+          "name": "initEditor",
+          "complexity": 7
+        },
+        {
+          "file": "app/image-input.js",
+          "line": 23,
+          "name": "draw",
+          "complexity": 7
+        },
+        {
+          "file": "app/main.js",
+          "line": 14,
+          "name": "<callback>",
+          "complexity": 7
+        },
+        {
+          "file": "lib/conversion.js",
+          "line": 39,
+          "name": "solve",
+          "complexity": 7
+        },
+        {
+          "file": "lib/quant/screenshot.js",
+          "line": 29,
+          "name": "segment",
+          "complexity": 7
+        },
+        {
+          "file": "scripts/check.mjs",
+          "line": 8,
+          "name": "walk",
+          "complexity": 7
+        },
+        {
+          "file": "app/corpus.js",
+          "line": 12,
+          "name": "<callback>",
+          "complexity": 6
+        },
+        {
+          "file": "lib/conversion.js",
+          "line": 24,
+          "name": "predictedGeometry",
+          "complexity": 6
+        },
+        {
+          "file": "lib/quant/models.js",
+          "line": 26,
+          "name": "scope",
+          "complexity": 6
+        },
+        {
+          "file": "lib/quant/models.js",
+          "line": 34,
+          "name": "targetGeometry",
+          "complexity": 6
+        },
+        {
+          "file": "lib/quant/models.js",
+          "line": 43,
+          "name": "bestInteger",
+          "complexity": 6
+        },
+        {
+          "file": "lib/quant/models.js",
+          "line": 54,
+          "name": "solveInverse",
+          "complexity": 6
+        },
+        {
+          "file": "lib/validation.js",
+          "line": 27,
+          "name": "schemaObject",
+          "complexity": 6
+        },
+        {
+          "file": "scripts/notebook.mjs",
+          "line": 10,
+          "name": "<callback>",
+          "complexity": 6
+        },
+        {
+          "file": "app/calibration.js",
+          "line": 56,
+          "name": "<callback>",
+          "complexity": 5
+        },
+        {
+          "file": "app/corpus.js",
+          "line": 25,
+          "name": "<callback>",
+          "complexity": 5
+        },
+        {
+          "file": "app/image-input.js",
+          "line": 64,
+          "name": "<callback>",
+          "complexity": 5
+        },
+        {
+          "file": "app/main.js",
+          "line": 32,
+          "name": "route",
+          "complexity": 5
+        },
+        {
+          "file": "app/main.js",
+          "line": 46,
+          "name": "<callback>",
+          "complexity": 5
+        },
+        {
+          "file": "app/quant.js",
+          "line": 72,
+          "name": "<callback>",
+          "complexity": 5
+        },
+        {
+          "file": "lib/audit.js",
+          "line": 4,
+          "name": "runAudit",
+          "complexity": 5
+        },
+        {
+          "file": "lib/conversion.js",
+          "line": 95,
+          "name": "rgba",
+          "complexity": 5
+        },
+        {
+          "file": "lib/conversion.js",
+          "line": 103,
+          "name": "exportCFG",
+          "complexity": 5
+        },
+        {
+          "file": "lib/quant/inference.js",
+          "line": 11,
+          "name": "score",
+          "complexity": 5
+        },
+        {
+          "file": "lib/quant/screenshot.js",
+          "line": 82,
+          "name": "<callback>",
+          "complexity": 5
+        },
+        {
+          "file": "lib/validation.js",
+          "line": 2,
+          "name": "finite",
+          "complexity": 5
+        },
+        {
+          "file": "scripts/quant-study.mjs",
+          "line": 52,
+          "name": "<callback>",
+          "complexity": 5
+        },
+        {
+          "file": "app/calibration.js",
+          "line": 7,
+          "name": "initCalibration",
+          "complexity": 4
+        },
+        {
+          "file": "app/calibration.js",
+          "line": 66,
+          "name": "<callback>",
+          "complexity": 4
+        },
+        {
+          "file": "app/quant.js",
+          "line": 15,
+          "name": "initQuant",
+          "complexity": 4
+        },
+        {
+          "file": "app/quant.js",
+          "line": 98,
+          "name": "importText",
+          "complexity": 4
+        },
+        {
+          "file": "app/quant.js",
+          "line": 157,
+          "name": "<callback>",
+          "complexity": 4
+        },
+        {
+          "file": "app/quant.js",
+          "line": 176,
+          "name": "<callback>",
+          "complexity": 4
+        },
+        {
+          "file": "app/research.js",
+          "line": 41,
+          "name": "update",
+          "complexity": 4
+        },
+        {
+          "file": "lib/quant/evidence.js",
+          "line": 38,
+          "name": "grouped",
+          "complexity": 4
+        },
+        {
+          "file": "lib/quant/evidence.js",
+          "line": 56,
+          "name": "posterior",
+          "complexity": 4
+        },
+        {
+          "file": "lib/quant/evidence.js",
+          "line": 60,
+          "name": "deduplicate",
+          "complexity": 4
+        },
+        {
+          "file": "lib/quant/evidence.js",
+          "line": 102,
+          "name": "proposeExperiment",
+          "complexity": 4
+        },
+        {
+          "file": "lib/quant/inference.js",
+          "line": 82,
+          "name": "<callback>",
+          "complexity": 4
+        },
+        {
+          "file": "lib/quant/models.js",
+          "line": 16,
+          "name": "forward",
+          "complexity": 4
+        },
+        {
+          "file": "lib/quant/screenshot.js",
+          "line": 85,
+          "name": "legacyBuckets",
+          "complexity": 4
+        },
+        {
+          "file": "lib/quant/statistics.js",
+          "line": 16,
+          "name": "clusterBootstrap",
+          "complexity": 4
+        },
+        {
+          "file": "lib/raster.js",
+          "line": 2,
+          "name": "rectangles",
+          "complexity": 4
+        },
+        {
+          "file": "lib/raster.js",
+          "line": 21,
+          "name": "<callback>",
+          "complexity": 4
+        },
+        {
+          "file": "lib/raster.js",
+          "line": 23,
+          "name": "compareMasks",
+          "complexity": 4
+        },
+        {
+          "file": "scripts/notebook.mjs",
+          "line": 12,
+          "name": "href",
+          "complexity": 4
+        },
+        {
+          "file": "scripts/quant-study.mjs",
+          "line": 32,
+          "name": "<callback>",
+          "complexity": 4
+        },
+        {
+          "file": "app/calibration.js",
+          "line": 30,
+          "name": "invalidate",
+          "complexity": 3
+        },
+        {
+          "file": "app/calibration.js",
+          "line": 72,
+          "name": "drawCrop",
+          "complexity": 3
+        },
+        {
+          "file": "app/dom.js",
+          "line": 11,
+          "name": "<callback>",
+          "complexity": 3
+        },
+        {
+          "file": "app/editor.js",
+          "line": 14,
+          "name": "reflectLegacy",
+          "complexity": 3
+        },
+        {
+          "file": "app/editor.js",
+          "line": 69,
+          "name": "<callback>",
+          "complexity": 3
+        },
+        {
+          "file": "app/image-input.js",
+          "line": 61,
+          "name": "<callback>",
+          "complexity": 3
+        },
+        {
+          "file": "app/quant.js",
+          "line": 47,
+          "name": "renderPreviews",
+          "complexity": 3
+        },
+        {
+          "file": "app/quant.js",
+          "line": 51,
+          "name": "provenance",
+          "complexity": 3
+        },
+        {
+          "file": "app/worker-client.js",
+          "line": 7,
+          "name": "<callback>",
+          "complexity": 3
+        },
+        {
+          "file": "lib/conversion.js",
+          "line": 9,
+          "name": "validateModel",
+          "complexity": 3
+        },
+        {
+          "file": "lib/quant/corpus.js",
+          "line": 4,
+          "name": "groupedCorpus",
+          "complexity": 3
+        },
+        {
+          "file": "lib/quant/evidence.js",
+          "line": 42,
+          "name": "<callback>",
+          "complexity": 3
+        },
+        {
+          "file": "lib/quant/inference.js",
+          "line": 69,
+          "name": "<callback>",
+          "complexity": 3
+        },
+        {
+          "file": "lib/quant/inference.js",
+          "line": 74,
+          "name": "<callback>",
+          "complexity": 3
+        },
+        {
+          "file": "lib/quant/models.js",
+          "line": 12,
+          "name": "Q",
+          "complexity": 3
+        },
+        {
+          "file": "lib/quant/models.js",
+          "line": 15,
+          "name": "scaleOf",
+          "complexity": 3
+        },
+        {
+          "file": "lib/quant/models.js",
+          "line": 78,
+          "name": "unsupported",
+          "complexity": 3
+        },
+        {
+          "file": "lib/quant/screenshot.js",
+          "line": 45,
+          "name": "summed",
+          "complexity": 3
+        },
+        {
+          "file": "lib/quant/screenshot.js",
+          "line": 53,
+          "name": "integralSum",
+          "complexity": 3
+        },
+        {
+          "file": "lib/quant/screenshot.js",
+          "line": 151,
+          "name": "<callback>",
+          "complexity": 3
+        },
+        {
+          "file": "lib/raster.js",
+          "line": 26,
+          "name": "<callback>",
+          "complexity": 3
+        },
+        {
+          "file": "lib/validation.js",
+          "line": 17,
+          "name": "text",
+          "complexity": 3
+        },
+        {
+          "file": "lib/validation.js",
+          "line": 21,
+          "name": "decimal",
+          "complexity": 3
+        },
+        {
+          "file": "scripts/build.mjs",
+          "line": 13,
+          "name": "walk",
+          "complexity": 3
+        },
+        {
+          "file": "scripts/notebook-cache.mjs",
+          "line": 24,
+          "name": "<callback>",
+          "complexity": 3
+        },
+        {
+          "file": "scripts/notebook.mjs",
+          "line": 29,
+          "name": "<callback>",
+          "complexity": 3
+        },
+        {
+          "file": "app/calibration.js",
+          "line": 24,
+          "name": "addRow",
+          "complexity": 2
+        },
+        {
+          "file": "app/calibration.js",
+          "line": 64,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "app/calibration.js",
+          "line": 65,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "app/corpus.js",
+          "line": 4,
+          "name": "initCorpus",
+          "complexity": 2
+        },
+        {
+          "file": "app/corpus.js",
+          "line": 5,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "app/dom.js",
+          "line": 18,
+          "name": "copy",
+          "complexity": 2
+        },
+        {
+          "file": "app/dom.js",
+          "line": 25,
+          "name": "docLink",
+          "complexity": 2
+        },
+        {
+          "file": "app/dom.js",
+          "line": 30,
+          "name": "fmt",
+          "complexity": 2
+        },
+        {
+          "file": "app/editor.js",
+          "line": 23,
+          "name": "native",
+          "complexity": 2
+        },
+        {
+          "file": "app/editor.js",
+          "line": 66,
+          "name": "edit",
+          "complexity": 2
+        },
+        {
+          "file": "app/editor.js",
+          "line": 76,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "app/editor.js",
+          "line": 84,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "app/editor.js",
+          "line": 94,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "app/editor.js",
+          "line": 95,
+          "name": "setMode",
+          "complexity": 2
+        },
+        {
+          "file": "app/editor.js",
+          "line": 100,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "app/editor.js",
+          "line": 107,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "app/evidence.js",
+          "line": 21,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "app/image-input.js",
+          "line": 57,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "app/main.js",
+          "line": 5,
+          "name": "editorReady",
+          "complexity": 2
+        },
+        {
+          "file": "app/main.js",
+          "line": 7,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "app/main.js",
+          "line": 11,
+          "name": "initialize",
+          "complexity": 2
+        },
+        {
+          "file": "app/main.js",
+          "line": 36,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "app/preview.js",
+          "line": 19,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "app/quant.js",
+          "line": 11,
+          "name": "pct",
+          "complexity": 2
+        },
+        {
+          "file": "app/quant.js",
+          "line": 12,
+          "name": "fmt",
+          "complexity": 2
+        },
+        {
+          "file": "app/quant.js",
+          "line": 16,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "app/quant.js",
+          "line": 25,
+          "name": "fillPresets",
+          "complexity": 2
+        },
+        {
+          "file": "app/quant.js",
+          "line": 25,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "app/quant.js",
+          "line": 37,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "app/quant.js",
+          "line": 39,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "app/quant.js",
+          "line": 49,
+          "name": "setUI",
+          "complexity": 2
+        },
+        {
+          "file": "app/quant.js",
+          "line": 125,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "app/quant.js",
+          "line": 134,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "app/quant.js",
+          "line": 137,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "app/quant.js",
+          "line": 139,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "app/worker-client.js",
+          "line": 9,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "app/worker-client.js",
+          "line": 16,
+          "name": "close",
+          "complexity": 2
+        },
+        {
+          "file": "lib/calibration.js",
+          "line": 21,
+          "name": "inverseAffine",
+          "complexity": 2
+        },
+        {
+          "file": "lib/calibration.js",
+          "line": 24,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "lib/conversion.js",
+          "line": 16,
+          "name": "quantize",
+          "complexity": 2
+        },
+        {
+          "file": "lib/conversion.js",
+          "line": 69,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "lib/legacy.js",
+          "line": 8,
+          "name": "legacyGeometry",
+          "complexity": 2
+        },
+        {
+          "file": "lib/quant/corpus.js",
+          "line": 15,
+          "name": "localSupport",
+          "complexity": 2
+        },
+        {
+          "file": "lib/quant/corpus.js",
+          "line": 16,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "lib/quant/evidence.js",
+          "line": 79,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "lib/quant/evidence.js",
+          "line": 89,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "lib/quant/evidence.js",
+          "line": 108,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "lib/quant/evidence.js",
+          "line": 111,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "lib/quant/inference.js",
+          "line": 59,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "lib/quant/inference.js",
+          "line": 70,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "lib/quant/inference.js",
+          "line": 72,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "lib/quant/inference.js",
+          "line": 110,
+          "name": "exportQuantCFG",
+          "complexity": 2
+        },
+        {
+          "file": "lib/quant/models.js",
+          "line": 13,
+          "name": "getModel",
+          "complexity": 2
+        },
+        {
+          "file": "lib/quant/models.js",
+          "line": 65,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "lib/quant/models.js",
+          "line": 75,
+          "name": "geometryError",
+          "complexity": 2
+        },
+        {
+          "file": "lib/quant/screenshot.js",
+          "line": 148,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "lib/quant/screenshot.js",
+          "line": 148,
+          "name": "crossX",
+          "complexity": 2
+        },
+        {
+          "file": "lib/quant/screenshot.js",
+          "line": 148,
+          "name": "crossY",
+          "complexity": 2
+        },
+        {
+          "file": "lib/quant/screenshot.js",
+          "line": 149,
+          "name": "pick",
+          "complexity": 2
+        },
+        {
+          "file": "lib/quant/screenshot.js",
+          "line": 152,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "lib/quant/screenshot.js",
+          "line": 152,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "lib/quant/screenshot.js",
+          "line": 152,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "lib/quant/screenshot.js",
+          "line": 152,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "lib/quant/statistics.js",
+          "line": 2,
+          "name": "logSumExp",
+          "complexity": 2
+        },
+        {
+          "file": "lib/quant/statistics.js",
+          "line": 4,
+          "name": "normalizeLogs",
+          "complexity": 2
+        },
+        {
+          "file": "lib/quant/statistics.js",
+          "line": 6,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "lib/quant/statistics.js",
+          "line": 7,
+          "name": "mean",
+          "complexity": 2
+        },
+        {
+          "file": "lib/quant/statistics.js",
+          "line": 8,
+          "name": "quantile",
+          "complexity": 2
+        },
+        {
+          "file": "lib/quant/statistics.js",
+          "line": 11,
+          "name": "hash",
+          "complexity": 2
+        },
+        {
+          "file": "lib/quant/statistics.js",
+          "line": 36,
+          "name": "effectiveN",
+          "complexity": 2
+        },
+        {
+          "file": "lib/sharecode.js",
+          "line": 5,
+          "name": "signed",
+          "complexity": 2
+        },
+        {
+          "file": "lib/sharecode.js",
+          "line": 34,
+          "name": "tick",
+          "complexity": 2
+        },
+        {
+          "file": "lib/validation.js",
+          "line": 7,
+          "name": "integer",
+          "complexity": 2
+        },
+        {
+          "file": "lib/validation.js",
+          "line": 13,
+          "name": "bool",
+          "complexity": 2
+        },
+        {
+          "file": "lib/validation.js",
+          "line": 26,
+          "name": "cleanNumber",
+          "complexity": 2
+        },
+        {
+          "file": "scripts/benchmark-quant.mjs",
+          "line": 6,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "scripts/build.mjs",
+          "line": 10,
+          "name": "filter",
+          "complexity": 2
+        },
+        {
+          "file": "scripts/corpus.mjs",
+          "line": 7,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "scripts/corpus.mjs",
+          "line": 20,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "scripts/notebook.mjs",
+          "line": 16,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "scripts/notebook.mjs",
+          "line": 19,
+          "name": "flush",
+          "complexity": 2
+        },
+        {
+          "file": "scripts/notebook.mjs",
+          "line": 23,
+          "name": "closeList",
+          "complexity": 2
+        },
+        {
+          "file": "scripts/notebook.mjs",
+          "line": 27,
+          "name": "closeTable",
+          "complexity": 2
+        },
+        {
+          "file": "scripts/quant-study.mjs",
+          "line": 10,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "scripts/quant-study.mjs",
+          "line": 63,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "scripts/serve.mjs",
+          "line": 12,
+          "name": "isPublic",
+          "complexity": 2
+        },
+        {
+          "file": "app/calibration.js",
+          "line": 5,
+          "name": "input",
+          "complexity": 1
+        },
+        {
+          "file": "app/calibration.js",
+          "line": 6,
+          "name": "field",
+          "complexity": 1
+        },
+        {
+          "file": "app/calibration.js",
+          "line": 18,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/calibration.js",
+          "line": 27,
+          "name": "onClick",
+          "complexity": 1
+        },
+        {
+          "file": "app/calibration.js",
+          "line": 32,
+          "name": "onClick",
+          "complexity": 1
+        },
+        {
+          "file": "app/calibration.js",
+          "line": 33,
+          "name": "onClick",
+          "complexity": 1
+        },
+        {
+          "file": "app/calibration.js",
+          "line": 33,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/calibration.js",
+          "line": 51,
+          "name": "dataset",
+          "complexity": 1
+        },
+        {
+          "file": "app/calibration.js",
+          "line": 53,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/calibration.js",
+          "line": 60,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/calibration.js",
+          "line": 68,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/calibration.js",
+          "line": 83,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/calibration.js",
+          "line": 88,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/corpus.js",
+          "line": 2,
+          "name": "pct",
+          "complexity": 1
+        },
+        {
+          "file": "app/corpus.js",
+          "line": 9,
+          "name": "draw",
+          "complexity": 1
+        },
+        {
+          "file": "app/corpus.js",
+          "line": 10,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/corpus.js",
+          "line": 17,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/corpus.js",
+          "line": 18,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/corpus.js",
+          "line": 19,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/corpus.js",
+          "line": 22,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/corpus.js",
+          "line": 22,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/corpus.js",
+          "line": 22,
+          "name": "onclick",
+          "complexity": 1
+        },
+        {
+          "file": "app/corpus.js",
+          "line": 24,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/dom.js",
+          "line": 1,
+          "name": "$",
+          "complexity": 1
+        },
+        {
+          "file": "app/dom.js",
+          "line": 14,
+          "name": "download",
+          "complexity": 1
+        },
+        {
+          "file": "app/dom.js",
+          "line": 16,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/dom.js",
+          "line": 22,
+          "name": "heading",
+          "complexity": 1
+        },
+        {
+          "file": "app/dom.js",
+          "line": 26,
+          "name": "table",
+          "complexity": 1
+        },
+        {
+          "file": "app/dom.js",
+          "line": 27,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/dom.js",
+          "line": 28,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/dom.js",
+          "line": 28,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/editor.js",
+          "line": 17,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/editor.js",
+          "line": 19,
+          "name": "reflectSource",
+          "complexity": 1
+        },
+        {
+          "file": "app/editor.js",
+          "line": 20,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/editor.js",
+          "line": 45,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/editor.js",
+          "line": 51,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/editor.js",
+          "line": 51,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/editor.js",
+          "line": 53,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/editor.js",
+          "line": 65,
+          "name": "schedule",
+          "complexity": 1
+        },
+        {
+          "file": "app/editor.js",
+          "line": 67,
+          "name": "loadPreset",
+          "complexity": 1
+        },
+        {
+          "file": "app/editor.js",
+          "line": 67,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/editor.js",
+          "line": 75,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/editor.js",
+          "line": 75,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/editor.js",
+          "line": 76,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/editor.js",
+          "line": 80,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/editor.js",
+          "line": 80,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/editor.js",
+          "line": 81,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/editor.js",
+          "line": 81,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/editor.js",
+          "line": 82,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/editor.js",
+          "line": 82,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/editor.js",
+          "line": 83,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/editor.js",
+          "line": 83,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/editor.js",
+          "line": 84,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/editor.js",
+          "line": 87,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/editor.js",
+          "line": 88,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/editor.js",
+          "line": 88,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/editor.js",
+          "line": 89,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/editor.js",
+          "line": 89,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/editor.js",
+          "line": 89,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/editor.js",
+          "line": 90,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/editor.js",
+          "line": 90,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/editor.js",
+          "line": 91,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/editor.js",
+          "line": 92,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/editor.js",
+          "line": 93,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/editor.js",
+          "line": 96,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/editor.js",
+          "line": 97,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/editor.js",
+          "line": 98,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/editor.js",
+          "line": 99,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/evidence.js",
+          "line": 3,
+          "name": "initEvidence",
+          "complexity": 1
+        },
+        {
+          "file": "app/evidence.js",
+          "line": 6,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/evidence.js",
+          "line": 9,
+          "name": "renderSummary",
+          "complexity": 1
+        },
+        {
+          "file": "app/evidence.js",
+          "line": 10,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/evidence.js",
+          "line": 14,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/evidence.js",
+          "line": 16,
+          "name": "onClick",
+          "complexity": 1
+        },
+        {
+          "file": "app/evidence.js",
+          "line": 17,
+          "name": "onClick",
+          "complexity": 1
+        },
+        {
+          "file": "app/evidence.js",
+          "line": 20,
+          "name": "renderRows",
+          "complexity": 1
+        },
+        {
+          "file": "app/evidence.js",
+          "line": 21,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/image-input.js",
+          "line": 9,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/image-input.js",
+          "line": 18,
+          "name": "input",
+          "complexity": 1
+        },
+        {
+          "file": "app/image-input.js",
+          "line": 59,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/image-input.js",
+          "line": 62,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/image-input.js",
+          "line": 63,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant.js",
+          "line": 14,
+          "name": "modelName",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant.js",
+          "line": 23,
+          "name": "field",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant.js",
+          "line": 25,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant.js",
+          "line": 25,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant.js",
+          "line": 35,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant.js",
+          "line": 38,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant.js",
+          "line": 43,
+          "name": "onclick",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant.js",
+          "line": 43,
+          "name": "onclick",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant.js",
+          "line": 45,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant.js",
+          "line": 46,
+          "name": "options",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant.js",
+          "line": 50,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant.js",
+          "line": 51,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant.js",
+          "line": 52,
+          "name": "schedule",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant.js",
+          "line": 70,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant.js",
+          "line": 72,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant.js",
+          "line": 79,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant.js",
+          "line": 79,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant.js",
+          "line": 79,
+          "name": "onclick",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant.js",
+          "line": 97,
+          "name": "invalidate",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant.js",
+          "line": 114,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant.js",
+          "line": 117,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant.js",
+          "line": 121,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant.js",
+          "line": 125,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant.js",
+          "line": 132,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant.js",
+          "line": 132,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant.js",
+          "line": 133,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant.js",
+          "line": 136,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant.js",
+          "line": 141,
+          "name": "onAccept",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant.js",
+          "line": 162,
+          "name": "onAccept",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant.js",
+          "line": 190,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant.js",
+          "line": 195,
+          "name": "close",
+          "complexity": 1
+        },
+        {
+          "file": "app/research.js",
+          "line": 3,
+          "name": "initResearch",
+          "complexity": 1
+        },
+        {
+          "file": "app/research.js",
+          "line": 14,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/research.js",
+          "line": 26,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/worker-client.js",
+          "line": 3,
+          "name": "constructor",
+          "complexity": 1
+        },
+        {
+          "file": "app/worker-client.js",
+          "line": 15,
+          "name": "call",
+          "complexity": 1
+        },
+        {
+          "file": "app/worker-client.js",
+          "line": 15,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/worker-client.js",
+          "line": 15,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/audit.js",
+          "line": 5,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/calibration.js",
+          "line": 5,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/calibration.js",
+          "line": 6,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/calibration.js",
+          "line": 7,
+          "name": "mean",
+          "complexity": 1
+        },
+        {
+          "file": "lib/calibration.js",
+          "line": 7,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/calibration.js",
+          "line": 9,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/calibration.js",
+          "line": 10,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/calibration.js",
+          "line": 13,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/calibration.js",
+          "line": 14,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/calibration.js",
+          "line": 15,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/calibration.js",
+          "line": 16,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/calibration.js",
+          "line": 25,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/calibration.js",
+          "line": 38,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/cfg.js",
+          "line": 19,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/conversion.js",
+          "line": 20,
+          "name": "validateNative",
+          "complexity": 1
+        },
+        {
+          "file": "lib/conversion.js",
+          "line": 62,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/conversion.js",
+          "line": 65,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/conversion.js",
+          "line": 100,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/conversion.js",
+          "line": 115,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/conversion.js",
+          "line": 119,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/legacy.js",
+          "line": 27,
+          "name": "comparators",
+          "complexity": 1
+        },
+        {
+          "file": "lib/legacy.js",
+          "line": 29,
+          "name": "round",
+          "complexity": 1
+        },
+        {
+          "file": "lib/legacy.js",
+          "line": 38,
+          "name": "idealBucket",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/corpus.js",
+          "line": 3,
+          "name": "signature",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/corpus.js",
+          "line": 17,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/corpus.js",
+          "line": 17,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/corpus.js",
+          "line": 18,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/corpus.js",
+          "line": 18,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/corpus.js",
+          "line": 18,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/corpus.js",
+          "line": 18,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/evidence.js",
+          "line": 42,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/evidence.js",
+          "line": 58,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/evidence.js",
+          "line": 67,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/evidence.js",
+          "line": 72,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/evidence.js",
+          "line": 73,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/evidence.js",
+          "line": 74,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/evidence.js",
+          "line": 75,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/evidence.js",
+          "line": 79,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/evidence.js",
+          "line": 81,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/evidence.js",
+          "line": 85,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/evidence.js",
+          "line": 88,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/evidence.js",
+          "line": 89,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/evidence.js",
+          "line": 89,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/evidence.js",
+          "line": 90,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/evidence.js",
+          "line": 94,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/evidence.js",
+          "line": 97,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/evidence.js",
+          "line": 98,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/inference.js",
+          "line": 21,
+          "name": "size",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/inference.js",
+          "line": 67,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/inference.js",
+          "line": 68,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/inference.js",
+          "line": 71,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/inference.js",
+          "line": 83,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/inference.js",
+          "line": 84,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/inference.js",
+          "line": 84,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/inference.js",
+          "line": 84,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/inference.js",
+          "line": 101,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/inference.js",
+          "line": 106,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/inference.js",
+          "line": 107,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/inference.js",
+          "line": 121,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/inference.js",
+          "line": 121,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/models.js",
+          "line": 10,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/models.js",
+          "line": 10,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/models.js",
+          "line": 10,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/models.js",
+          "line": 13,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/models.js",
+          "line": 41,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/models.js",
+          "line": 56,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/models.js",
+          "line": 59,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/models.js",
+          "line": 63,
+          "name": "nearAt",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/models.js",
+          "line": 71,
+          "name": "naiveAssignment",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/models.js",
+          "line": 76,
+          "name": "nativeKey",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/models.js",
+          "line": 77,
+          "name": "geometryKey",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/regression.js",
+          "line": 2,
+          "name": "features",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/regression.js",
+          "line": 6,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/regression.js",
+          "line": 36,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/regression.js",
+          "line": 38,
+          "name": "predictLinear",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/regression.js",
+          "line": 38,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/screenshot.js",
+          "line": 5,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/screenshot.js",
+          "line": 23,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/screenshot.js",
+          "line": 27,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/screenshot.js",
+          "line": 27,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/screenshot.js",
+          "line": 32,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/screenshot.js",
+          "line": 52,
+          "name": "rectPixels",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/screenshot.js",
+          "line": 77,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/screenshot.js",
+          "line": 82,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/screenshot.js",
+          "line": 83,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/screenshot.js",
+          "line": 115,
+          "name": "mid",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/statistics.js",
+          "line": 3,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/statistics.js",
+          "line": 5,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/statistics.js",
+          "line": 6,
+          "name": "entropy",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/statistics.js",
+          "line": 7,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/statistics.js",
+          "line": 9,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/statistics.js",
+          "line": 10,
+          "name": "rng",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/statistics.js",
+          "line": 10,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/statistics.js",
+          "line": 36,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/statistics.js",
+          "line": 36,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/sharecode.js",
+          "line": 19,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/sharecode.js",
+          "line": 43,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/sharecode.js",
+          "line": 48,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/sharecode.js",
+          "line": 58,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/sharecode.js",
+          "line": 59,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/validation.js",
+          "line": 12,
+          "name": "height",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/audit.mjs",
+          "line": 9,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/build.mjs",
+          "line": 15,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/corpus.mjs",
+          "line": 6,
+          "name": "load",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/corpus.mjs",
+          "line": 7,
+          "name": "tsv",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/corpus.mjs",
+          "line": 9,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/corpus.mjs",
+          "line": 10,
+          "name": "blobOf",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/corpus.mjs",
+          "line": 12,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/corpus.mjs",
+          "line": 15,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/corpus.mjs",
+          "line": 16,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/corpus.mjs",
+          "line": 17,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/corpus.mjs",
+          "line": 18,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/corpus.mjs",
+          "line": 20,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/corpus.mjs",
+          "line": 20,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/corpus.mjs",
+          "line": 20,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/corpus.mjs",
+          "line": 20,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/notebook-source.mjs",
+          "line": 4,
+          "name": "key",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/notebook-source.mjs",
+          "line": 5,
+          "name": "chapters",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/notebook-source.mjs",
+          "line": 5,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/notebook-source.mjs",
+          "line": 5,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/notebook-source.mjs",
+          "line": 6,
+          "name": "mathTokens",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/notebook-source.mjs",
+          "line": 7,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/notebook-source.mjs",
+          "line": 7,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/notebook-source.mjs",
+          "line": 8,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/notebook-source.mjs",
+          "line": 8,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/notebook.mjs",
+          "line": 6,
+          "name": "escape",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/notebook.mjs",
+          "line": 12,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/notebook.mjs",
+          "line": 16,
+          "name": "inline",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/notebook.mjs",
+          "line": 16,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/notebook.mjs",
+          "line": 28,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/notebook.mjs",
+          "line": 28,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/notebook.mjs",
+          "line": 28,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/notebook.mjs",
+          "line": 29,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/notebook.mjs",
+          "line": 97,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/quant-study.mjs",
+          "line": 9,
+          "name": "read",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/quant-study.mjs",
+          "line": 14,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/quant-study.mjs",
+          "line": 19,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/quant-study.mjs",
+          "line": 19,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/quant-study.mjs",
+          "line": 22,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/quant-study.mjs",
+          "line": 22,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/quant-study.mjs",
+          "line": 23,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/quant-study.mjs",
+          "line": 23,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/quant-study.mjs",
+          "line": 25,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/quant-study.mjs",
+          "line": 30,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/quant-study.mjs",
+          "line": 30,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/quant-study.mjs",
+          "line": 36,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/quant-study.mjs",
+          "line": 41,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/quant-study.mjs",
+          "line": 47,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/quant-study.mjs",
+          "line": 48,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/quant-study.mjs",
+          "line": 48,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/quant-study.mjs",
+          "line": 60,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/quant-study.mjs",
+          "line": 63,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/quant-study.mjs",
+          "line": 63,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/quant-study.mjs",
+          "line": 63,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/quant-study.mjs",
+          "line": 64,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/quant-study.mjs",
+          "line": 68,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/quant-study.mjs",
+          "line": 69,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/quant-study.mjs",
+          "line": 69,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/quant-study.mjs",
+          "line": 69,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/quant-study.mjs",
+          "line": 69,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/quant-study.mjs",
+          "line": 71,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/serve.mjs",
+          "line": 21,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/serve.mjs",
+          "line": 30,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/serve.mjs",
+          "line": 31,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/serve.mjs",
+          "line": 31,
+          "name": "<callback>",
+          "complexity": 1
+        }
+      ]
+    },
+    {
+      "root": "v0.3.0",
+      "functionCount": 644,
+      "totalDecisions": 948,
+      "maximum": 20,
+      "functionsAbove20": 0,
+      "p95": 9,
+      "functions": [
+        {
+          "file": "lib/conversion.js",
+          "line": 59,
+          "name": "conversionMessages",
+          "complexity": 20
+        },
+        {
+          "file": "lib/quant/screenshot.js",
+          "line": 94,
+          "name": "analyzeScreenshot",
+          "complexity": 18
+        },
+        {
+          "file": "app/calibration.js",
+          "line": 77,
+          "name": "<callback>",
+          "complexity": 17
+        },
+        {
+          "file": "app/preview.js",
+          "line": 2,
+          "name": "paint",
+          "complexity": 17
+        },
+        {
+          "file": "lib/quant/regression.js",
+          "line": 3,
+          "name": "ridgeFit",
+          "complexity": 17
+        },
+        {
+          "file": "lib/quant/screenshot.js",
+          "line": 135,
+          "name": "analyzeNativeScreenshot",
+          "complexity": 15
+        },
+        {
+          "file": "lib/quant/visual.js",
+          "line": 24,
+          "name": "neighbors",
+          "complexity": 15
+        },
+        {
+          "file": "app/image/dialog.js",
+          "line": 11,
+          "name": "selection",
+          "complexity": 14
+        },
+        {
+          "file": "lib/calibration.js",
+          "line": 28,
+          "name": "validateMeasurement",
+          "complexity": 14
+        },
+        {
+          "file": "lib/cfg.js",
+          "line": 16,
+          "name": "parseLegacyCFG",
+          "complexity": 14
+        },
+        {
+          "file": "lib/quant/observations.js",
+          "line": 13,
+          "name": "canonicalRecord",
+          "complexity": 14
+        },
+        {
+          "file": "lib/quant/screenshot.js",
+          "line": 55,
+          "name": "fitMask",
+          "complexity": 14
+        },
+        {
+          "file": "lib/sharecode.js",
+          "line": 40,
+          "name": "encodeLegacy",
+          "complexity": 13
+        },
+        {
+          "file": "scripts/notebook.mjs",
+          "line": 8,
+          "name": "chapterHTML",
+          "complexity": 13
+        },
+        {
+          "file": "app/editor.js",
+          "line": 122,
+          "name": "applyCalibration",
+          "complexity": 12
+        },
+        {
+          "file": "lib/quant/selection.js",
+          "line": 66,
+          "name": "chosenCandidate",
+          "complexity": 12
+        },
+        {
+          "file": "scripts/http-policy.mjs",
+          "line": 19,
+          "name": "resolvePublic",
+          "complexity": 12
+        },
+        {
+          "file": "app/quant-preview.js",
+          "line": 23,
+          "name": "paintQuant",
+          "complexity": 11
+        },
+        {
+          "file": "lib/pixel-shape.js",
+          "line": 37,
+          "name": "validateMask",
+          "complexity": 11
+        },
+        {
+          "file": "lib/pixel-shape.js",
+          "line": 50,
+          "name": "compileMask",
+          "complexity": 11
+        },
+        {
+          "file": "lib/quant/screenshot.js",
+          "line": 15,
+          "name": "automaticColor",
+          "complexity": 11
+        },
+        {
+          "file": "lib/quant/screenshot.js",
+          "line": 125,
+          "name": "measureNativeMask",
+          "complexity": 11
+        },
+        {
+          "file": "scripts/complexity.mjs",
+          "line": 30,
+          "name": "visit",
+          "complexity": 11
+        },
+        {
+          "file": "app/editor.js",
+          "line": 48,
+          "name": "renderStatus",
+          "complexity": 10
+        },
+        {
+          "file": "app/quant/feedback.js",
+          "line": 24,
+          "name": "openImage",
+          "complexity": 10
+        },
+        {
+          "file": "lib/conversion.js",
+          "line": 80,
+          "name": "convert",
+          "complexity": 10
+        },
+        {
+          "file": "lib/quant/components.js",
+          "line": 41,
+          "name": "barGeometry",
+          "complexity": 10
+        },
+        {
+          "file": "lib/quant/screenshot.js",
+          "line": 5,
+          "name": "pngDimensions",
+          "complexity": 10
+        },
+        {
+          "file": "app/editor.js",
+          "line": 24,
+          "name": "validateInputs",
+          "complexity": 9
+        },
+        {
+          "file": "app/image/dialog.js",
+          "line": 32,
+          "name": "analyze",
+          "complexity": 9
+        },
+        {
+          "file": "app/quant-preview.js",
+          "line": 10,
+          "name": "drawCells",
+          "complexity": 9
+        },
+        {
+          "file": "app/quant-worker.js",
+          "line": 15,
+          "name": "<callback>",
+          "complexity": 9
+        },
+        {
+          "file": "lib/calibration.js",
+          "line": 3,
+          "name": "fitAffine",
+          "complexity": 9
+        },
+        {
+          "file": "lib/quant/observations.js",
+          "line": 38,
+          "name": "<callback>",
+          "complexity": 9
+        },
+        {
+          "file": "lib/quant/statistics.js",
+          "line": 28,
+          "name": "wilson",
+          "complexity": 9
+        },
+        {
+          "file": "lib/sharecode.js",
+          "line": 6,
+          "name": "decodeLegacy",
+          "complexity": 9
+        },
+        {
+          "file": "app/calibration.js",
+          "line": 67,
+          "name": "<callback>",
+          "complexity": 8
+        },
+        {
+          "file": "app/calibration.js",
+          "line": 89,
+          "name": "<callback>",
+          "complexity": 8
+        },
+        {
+          "file": "app/dom.js",
+          "line": 2,
+          "name": "el",
+          "complexity": 8
+        },
+        {
+          "file": "app/quant/controller.js",
+          "line": 64,
+          "name": "analyze",
+          "complexity": 8
+        },
+        {
+          "file": "lib/quant/components.js",
+          "line": 9,
+          "name": "flood",
+          "complexity": 8
+        },
+        {
+          "file": "lib/quant/inverse.js",
+          "line": 5,
+          "name": "bestInteger",
+          "complexity": 8
+        },
+        {
+          "file": "lib/quant/inverse.js",
+          "line": 39,
+          "name": "solveTarget",
+          "complexity": 8
+        },
+        {
+          "file": "lib/quant/selection.js",
+          "line": 41,
+          "name": "rankCandidates",
+          "complexity": 8
+        },
+        {
+          "file": "lib/raster.js",
+          "line": 12,
+          "name": "raster",
+          "complexity": 8
+        },
+        {
+          "file": "app/editor.js",
+          "line": 9,
+          "name": "initEditor",
+          "complexity": 7
+        },
+        {
+          "file": "app/main.js",
+          "line": 14,
+          "name": "<callback>",
+          "complexity": 7
+        },
+        {
+          "file": "app/worker-client.js",
+          "line": 41,
+          "name": "receive",
+          "complexity": 7
+        },
+        {
+          "file": "lib/conversion.js",
+          "line": 37,
+          "name": "solve",
+          "complexity": 7
+        },
+        {
+          "file": "lib/quant/inference.js",
+          "line": 13,
+          "name": "infer",
+          "complexity": 7
+        },
+        {
+          "file": "lib/quant/screenshot.js",
+          "line": 30,
+          "name": "segment",
+          "complexity": 7
+        },
+        {
+          "file": "lib/quant/visual.js",
+          "line": 8,
+          "name": "score",
+          "complexity": 7
+        },
+        {
+          "file": "lib/quant/visual.js",
+          "line": 42,
+          "name": "refineVisual",
+          "complexity": 7
+        },
+        {
+          "file": "scripts/check.mjs",
+          "line": 8,
+          "name": "walk",
+          "complexity": 7
+        },
+        {
+          "file": "app/corpus.js",
+          "line": 12,
+          "name": "<callback>",
+          "complexity": 6
+        },
+        {
+          "file": "app/editor.js",
+          "line": 31,
+          "name": "validateCalibration",
+          "complexity": 6
+        },
+        {
+          "file": "app/editor.js",
+          "line": 38,
+          "name": "renderCanvases",
+          "complexity": 6
+        },
+        {
+          "file": "app/image/dialog.js",
+          "line": 49,
+          "name": "pick",
+          "complexity": 6
+        },
+        {
+          "file": "app/image/dialog.js",
+          "line": 56,
+          "name": "accept",
+          "complexity": 6
+        },
+        {
+          "file": "app/image/dialog.js",
+          "line": 71,
+          "name": "open",
+          "complexity": 6
+        },
+        {
+          "file": "app/image-input.js",
+          "line": 6,
+          "name": "imageInput",
+          "complexity": 6
+        },
+        {
+          "file": "lib/conversion.js",
+          "line": 22,
+          "name": "predictedGeometry",
+          "complexity": 6
+        },
+        {
+          "file": "lib/conversion.js",
+          "line": 48,
+          "name": "conversionScope",
+          "complexity": 6
+        },
+        {
+          "file": "lib/pixel-shape.js",
+          "line": 81,
+          "name": "compareShapes",
+          "complexity": 6
+        },
+        {
+          "file": "lib/quant/export.js",
+          "line": 6,
+          "name": "exportQuantCFG",
+          "complexity": 6
+        },
+        {
+          "file": "lib/quant/renderer.js",
+          "line": 26,
+          "name": "scope",
+          "complexity": 6
+        },
+        {
+          "file": "lib/quant/renderer.js",
+          "line": 34,
+          "name": "targetGeometry",
+          "complexity": 6
+        },
+        {
+          "file": "lib/quant/report.js",
+          "line": 5,
+          "name": "warningsFor",
+          "complexity": 6
+        },
+        {
+          "file": "lib/quant/selection.js",
+          "line": 29,
+          "name": "<callback>",
+          "complexity": 6
+        },
+        {
+          "file": "lib/validation.js",
+          "line": 27,
+          "name": "schemaObject",
+          "complexity": 6
+        },
+        {
+          "file": "scripts/complexity.mjs",
+          "line": 13,
+          "name": "decisions",
+          "complexity": 6
+        },
+        {
+          "file": "scripts/notebook.mjs",
+          "line": 10,
+          "name": "<callback>",
+          "complexity": 6
+        },
+        {
+          "file": "app/calibration.js",
+          "line": 56,
+          "name": "<callback>",
+          "complexity": 5
+        },
+        {
+          "file": "app/corpus.js",
+          "line": 25,
+          "name": "<callback>",
+          "complexity": 5
+        },
+        {
+          "file": "app/main.js",
+          "line": 32,
+          "name": "route",
+          "complexity": 5
+        },
+        {
+          "file": "app/main.js",
+          "line": 46,
+          "name": "<callback>",
+          "complexity": 5
+        },
+        {
+          "file": "app/quant/controller.js",
+          "line": 82,
+          "name": "renderDetails",
+          "complexity": 5
+        },
+        {
+          "file": "app/quant/presentation.js",
+          "line": 9,
+          "name": "clearResult",
+          "complexity": 5
+        },
+        {
+          "file": "app/worker-client.js",
+          "line": 12,
+          "name": "call",
+          "complexity": 5
+        },
+        {
+          "file": "app/worker-client.js",
+          "line": 33,
+          "name": "pump",
+          "complexity": 5
+        },
+        {
+          "file": "lib/audit.js",
+          "line": 4,
+          "name": "runAudit",
+          "complexity": 5
+        },
+        {
+          "file": "lib/native-settings.js",
+          "line": 8,
+          "name": "rgba",
+          "complexity": 5
+        },
+        {
+          "file": "lib/quant/components.js",
+          "line": 3,
+          "name": "adjacent",
+          "complexity": 5
+        },
+        {
+          "file": "lib/quant/evidence.js",
+          "line": 16,
+          "name": "robustLogLikelihood",
+          "complexity": 5
+        },
+        {
+          "file": "lib/quant/screenshot.js",
+          "line": 83,
+          "name": "<callback>",
+          "complexity": 5
+        },
+        {
+          "file": "lib/validation.js",
+          "line": 2,
+          "name": "finite",
+          "complexity": 5
+        },
+        {
+          "file": "scripts/http-policy.mjs",
+          "line": 13,
+          "name": "validateRequest",
+          "complexity": 5
+        },
+        {
+          "file": "scripts/quant-study.mjs",
+          "line": 52,
+          "name": "<callback>",
+          "complexity": 5
+        },
+        {
+          "file": "scripts/serve.mjs",
+          "line": 10,
+          "name": "<callback>",
+          "complexity": 5
+        },
+        {
+          "file": "app/calibration.js",
+          "line": 7,
+          "name": "initCalibration",
+          "complexity": 4
+        },
+        {
+          "file": "app/calibration.js",
+          "line": 66,
+          "name": "<callback>",
+          "complexity": 4
+        },
+        {
+          "file": "app/image/dialog.js",
+          "line": 46,
+          "name": "updateAccept",
+          "complexity": 4
+        },
+        {
+          "file": "app/image/view.js",
+          "line": 3,
+          "name": "imageView",
+          "complexity": 4
+        },
+        {
+          "file": "app/quant/controller.js",
+          "line": 30,
+          "name": "bindOutput",
+          "complexity": 4
+        },
+        {
+          "file": "app/quant/feedback.js",
+          "line": 38,
+          "name": "loadEvidence",
+          "complexity": 4
+        },
+        {
+          "file": "app/quant/presentation.js",
+          "line": 45,
+          "name": "renderPreviews",
+          "complexity": 4
+        },
+        {
+          "file": "app/quant/presentation.js",
+          "line": 54,
+          "name": "previewLabels",
+          "complexity": 4
+        },
+        {
+          "file": "app/quant/presentation.js",
+          "line": 66,
+          "name": "renderResult",
+          "complexity": 4
+        },
+        {
+          "file": "app/quant/sources.js",
+          "line": 10,
+          "name": "usePreset",
+          "complexity": 4
+        },
+        {
+          "file": "app/quant/sources.js",
+          "line": 27,
+          "name": "bindSources",
+          "complexity": 4
+        },
+        {
+          "file": "app/quant/sources.js",
+          "line": 30,
+          "name": "<callback>",
+          "complexity": 4
+        },
+        {
+          "file": "app/quant-worker.js",
+          "line": 5,
+          "name": "init",
+          "complexity": 4
+        },
+        {
+          "file": "app/research.js",
+          "line": 43,
+          "name": "update",
+          "complexity": 4
+        },
+        {
+          "file": "app/worker-client.js",
+          "line": 56,
+          "name": "abort",
+          "complexity": 4
+        },
+        {
+          "file": "lib/conversion.js",
+          "line": 108,
+          "name": "exportCFG",
+          "complexity": 4
+        },
+        {
+          "file": "lib/pixel-shape.js",
+          "line": 6,
+          "name": "mergedIntervals",
+          "complexity": 4
+        },
+        {
+          "file": "lib/pixel-shape.js",
+          "line": 71,
+          "name": "intervalIntersection",
+          "complexity": 4
+        },
+        {
+          "file": "lib/quant/components.js",
+          "line": 21,
+          "name": "componentBounds",
+          "complexity": 4
+        },
+        {
+          "file": "lib/quant/experiments.js",
+          "line": 4,
+          "name": "makeDesigns",
+          "complexity": 4
+        },
+        {
+          "file": "lib/quant/experiments.js",
+          "line": 19,
+          "name": "proposeExperiment",
+          "complexity": 4
+        },
+        {
+          "file": "lib/quant/observations.js",
+          "line": 62,
+          "name": "grouped",
+          "complexity": 4
+        },
+        {
+          "file": "lib/quant/renderer.js",
+          "line": 16,
+          "name": "forward",
+          "complexity": 4
+        },
+        {
+          "file": "lib/quant/report.js",
+          "line": 24,
+          "name": "buildReport",
+          "complexity": 4
+        },
+        {
+          "file": "lib/quant/screenshot.js",
+          "line": 86,
+          "name": "legacyBuckets",
+          "complexity": 4
+        },
+        {
+          "file": "lib/quant/selection.js",
+          "line": 7,
+          "name": "<callback>",
+          "complexity": 4
+        },
+        {
+          "file": "lib/quant/statistics.js",
+          "line": 16,
+          "name": "clusterBootstrap",
+          "complexity": 4
+        },
+        {
+          "file": "lib/raster.js",
+          "line": 2,
+          "name": "rectangles",
+          "complexity": 4
+        },
+        {
+          "file": "lib/raster.js",
+          "line": 21,
+          "name": "<callback>",
+          "complexity": 4
+        },
+        {
+          "file": "lib/raster.js",
+          "line": 23,
+          "name": "compareMasks",
+          "complexity": 4
+        },
+        {
+          "file": "scripts/complexity.mjs",
+          "line": 12,
+          "name": "<callback>",
+          "complexity": 4
+        },
+        {
+          "file": "scripts/complexity.mjs",
+          "line": 24,
+          "name": "walk",
+          "complexity": 4
+        },
+        {
+          "file": "scripts/notebook.mjs",
+          "line": 12,
+          "name": "href",
+          "complexity": 4
+        },
+        {
+          "file": "scripts/quant-study.mjs",
+          "line": 32,
+          "name": "<callback>",
+          "complexity": 4
+        },
+        {
+          "file": "app/calibration.js",
+          "line": 30,
+          "name": "invalidate",
+          "complexity": 3
+        },
+        {
+          "file": "app/calibration.js",
+          "line": 72,
+          "name": "drawCrop",
+          "complexity": 3
+        },
+        {
+          "file": "app/dom.js",
+          "line": 11,
+          "name": "<callback>",
+          "complexity": 3
+        },
+        {
+          "file": "app/editor.js",
+          "line": 14,
+          "name": "reflectLegacy",
+          "complexity": 3
+        },
+        {
+          "file": "app/editor.js",
+          "line": 62,
+          "name": "render",
+          "complexity": 3
+        },
+        {
+          "file": "app/editor.js",
+          "line": 81,
+          "name": "<callback>",
+          "complexity": 3
+        },
+        {
+          "file": "app/image/dialog.js",
+          "line": 66,
+          "name": "close",
+          "complexity": 3
+        },
+        {
+          "file": "app/quant/controller.js",
+          "line": 96,
+          "name": "importText",
+          "complexity": 3
+        },
+        {
+          "file": "app/quant/controller.js",
+          "line": 107,
+          "name": "close",
+          "complexity": 3
+        },
+        {
+          "file": "app/quant/presentation.js",
+          "line": 81,
+          "name": "renderDerivation",
+          "complexity": 3
+        },
+        {
+          "file": "app/quant/presentation.js",
+          "line": 102,
+          "name": "renderTrace",
+          "complexity": 3
+        },
+        {
+          "file": "app/quant-preview.js",
+          "line": 3,
+          "name": "grid",
+          "complexity": 3
+        },
+        {
+          "file": "app/worker-client.js",
+          "line": 24,
+          "name": "discardQueuedInference",
+          "complexity": 3
+        },
+        {
+          "file": "app/worker-client.js",
+          "line": 49,
+          "name": "settle",
+          "complexity": 3
+        },
+        {
+          "file": "lib/conversion.js",
+          "line": 11,
+          "name": "validateModel",
+          "complexity": 3
+        },
+        {
+          "file": "lib/pixel-shape.js",
+          "line": 22,
+          "name": "compileShape",
+          "complexity": 3
+        },
+        {
+          "file": "lib/pixel-shape.js",
+          "line": 97,
+          "name": "<callback>",
+          "complexity": 3
+        },
+        {
+          "file": "lib/quant/components.js",
+          "line": 38,
+          "name": "<callback>",
+          "complexity": 3
+        },
+        {
+          "file": "lib/quant/corpus.js",
+          "line": 4,
+          "name": "groupedCorpus",
+          "complexity": 3
+        },
+        {
+          "file": "lib/quant/evidence.js",
+          "line": 26,
+          "name": "trainPosterior",
+          "complexity": 3
+        },
+        {
+          "file": "lib/quant/inverse.js",
+          "line": 18,
+          "name": "gapBranch",
+          "complexity": 3
+        },
+        {
+          "file": "lib/quant/inverse.js",
+          "line": 32,
+          "name": "betterJoint",
+          "complexity": 3
+        },
+        {
+          "file": "lib/quant/observations.js",
+          "line": 35,
+          "name": "validateMeasurements",
+          "complexity": 3
+        },
+        {
+          "file": "lib/quant/observations.js",
+          "line": 57,
+          "name": "linked",
+          "complexity": 3
+        },
+        {
+          "file": "lib/quant/renderer.js",
+          "line": 12,
+          "name": "Q",
+          "complexity": 3
+        },
+        {
+          "file": "lib/quant/renderer.js",
+          "line": 51,
+          "name": "unsupported",
+          "complexity": 3
+        },
+        {
+          "file": "lib/quant/screenshot.js",
+          "line": 46,
+          "name": "summed",
+          "complexity": 3
+        },
+        {
+          "file": "lib/quant/screenshot.js",
+          "line": 54,
+          "name": "integralSum",
+          "complexity": 3
+        },
+        {
+          "file": "lib/quant/selection.js",
+          "line": 33,
+          "name": "selectRenderer",
+          "complexity": 3
+        },
+        {
+          "file": "lib/quant/visual.js",
+          "line": 5,
+          "name": "visualContext",
+          "complexity": 3
+        },
+        {
+          "file": "lib/quant/visual.js",
+          "line": 35,
+          "name": "improves",
+          "complexity": 3
+        },
+        {
+          "file": "lib/raster.js",
+          "line": 26,
+          "name": "<callback>",
+          "complexity": 3
+        },
+        {
+          "file": "lib/validation.js",
+          "line": 17,
+          "name": "text",
+          "complexity": 3
+        },
+        {
+          "file": "lib/validation.js",
+          "line": 21,
+          "name": "decimal",
+          "complexity": 3
+        },
+        {
+          "file": "scripts/build.mjs",
+          "line": 13,
+          "name": "walk",
+          "complexity": 3
+        },
+        {
+          "file": "scripts/notebook-cache.mjs",
+          "line": 24,
+          "name": "<callback>",
+          "complexity": 3
+        },
+        {
+          "file": "scripts/notebook.mjs",
+          "line": 29,
+          "name": "<callback>",
+          "complexity": 3
+        },
+        {
+          "file": "app/calibration.js",
+          "line": 24,
+          "name": "addRow",
+          "complexity": 2
+        },
+        {
+          "file": "app/calibration.js",
+          "line": 64,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "app/calibration.js",
+          "line": 65,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "app/corpus.js",
+          "line": 4,
+          "name": "initCorpus",
+          "complexity": 2
+        },
+        {
+          "file": "app/corpus.js",
+          "line": 5,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "app/dom.js",
+          "line": 18,
+          "name": "copy",
+          "complexity": 2
+        },
+        {
+          "file": "app/dom.js",
+          "line": 25,
+          "name": "docLink",
+          "complexity": 2
+        },
+        {
+          "file": "app/dom.js",
+          "line": 30,
+          "name": "fmt",
+          "complexity": 2
+        },
+        {
+          "file": "app/editor.js",
+          "line": 23,
+          "name": "native",
+          "complexity": 2
+        },
+        {
+          "file": "app/editor.js",
+          "line": 78,
+          "name": "edit",
+          "complexity": 2
+        },
+        {
+          "file": "app/editor.js",
+          "line": 88,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "app/editor.js",
+          "line": 96,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "app/editor.js",
+          "line": 106,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "app/editor.js",
+          "line": 107,
+          "name": "setMode",
+          "complexity": 2
+        },
+        {
+          "file": "app/editor.js",
+          "line": 112,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "app/editor.js",
+          "line": 119,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "app/evidence.js",
+          "line": 21,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "app/image/dialog.js",
+          "line": 28,
+          "name": "changed",
+          "complexity": 2
+        },
+        {
+          "file": "app/main.js",
+          "line": 5,
+          "name": "editorReady",
+          "complexity": 2
+        },
+        {
+          "file": "app/main.js",
+          "line": 7,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "app/main.js",
+          "line": 11,
+          "name": "initialize",
+          "complexity": 2
+        },
+        {
+          "file": "app/main.js",
+          "line": 36,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "app/preview.js",
+          "line": 19,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "app/quant/controller.js",
+          "line": 35,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "app/quant/controller.js",
+          "line": 36,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "app/quant/controller.js",
+          "line": 43,
+          "name": "setSettings",
+          "complexity": 2
+        },
+        {
+          "file": "app/quant/controller.js",
+          "line": 44,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "app/quant/presentation.js",
+          "line": 7,
+          "name": "percent",
+          "complexity": 2
+        },
+        {
+          "file": "app/quant/presentation.js",
+          "line": 26,
+          "name": "renderValues",
+          "complexity": 2
+        },
+        {
+          "file": "app/quant/sources.js",
+          "line": 3,
+          "name": "fillPresets",
+          "complexity": 2
+        },
+        {
+          "file": "app/quant/sources.js",
+          "line": 6,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "app/quant/view.js",
+          "line": 53,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "app/quant/view.js",
+          "line": 60,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "app/quant.js",
+          "line": 6,
+          "name": "loadJSON",
+          "complexity": 2
+        },
+        {
+          "file": "app/quant.js",
+          "line": 12,
+          "name": "initQuant",
+          "complexity": 2
+        },
+        {
+          "file": "lib/calibration.js",
+          "line": 21,
+          "name": "inverseAffine",
+          "complexity": 2
+        },
+        {
+          "file": "lib/calibration.js",
+          "line": 24,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "lib/conversion.js",
+          "line": 18,
+          "name": "quantize",
+          "complexity": 2
+        },
+        {
+          "file": "lib/conversion.js",
+          "line": 94,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "lib/legacy.js",
+          "line": 8,
+          "name": "legacyGeometry",
+          "complexity": 2
+        },
+        {
+          "file": "lib/native-settings.js",
+          "line": 19,
+          "name": "nativeCommands",
+          "complexity": 2
+        },
+        {
+          "file": "lib/pixel-shape.js",
+          "line": 26,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "lib/pixel-shape.js",
+          "line": 31,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "lib/pixel-shape.js",
+          "line": 43,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "lib/pixel-shape.js",
+          "line": 97,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "lib/quant/components.js",
+          "line": 31,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "lib/quant/components.js",
+          "line": 32,
+          "name": "crossX",
+          "complexity": 2
+        },
+        {
+          "file": "lib/quant/components.js",
+          "line": 32,
+          "name": "crossY",
+          "complexity": 2
+        },
+        {
+          "file": "lib/quant/components.js",
+          "line": 33,
+          "name": "pick",
+          "complexity": 2
+        },
+        {
+          "file": "lib/quant/components.js",
+          "line": 38,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "lib/quant/components.js",
+          "line": 39,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "lib/quant/components.js",
+          "line": 39,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "lib/quant/components.js",
+          "line": 39,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "lib/quant/corpus.js",
+          "line": 15,
+          "name": "localSupport",
+          "complexity": 2
+        },
+        {
+          "file": "lib/quant/corpus.js",
+          "line": 16,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "lib/quant/evidence.js",
+          "line": 52,
+          "name": "posterior",
+          "complexity": 2
+        },
+        {
+          "file": "lib/quant/experiments.js",
+          "line": 8,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "lib/quant/inverse.js",
+          "line": 25,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "lib/quant/observations.js",
+          "line": 5,
+          "name": "activeFeatures",
+          "complexity": 2
+        },
+        {
+          "file": "lib/quant/observations.js",
+          "line": 7,
+          "name": "requiredText",
+          "complexity": 2
+        },
+        {
+          "file": "lib/quant/observations.js",
+          "line": 24,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "lib/quant/renderer.js",
+          "line": 13,
+          "name": "getModel",
+          "complexity": 2
+        },
+        {
+          "file": "lib/quant/renderer.js",
+          "line": 48,
+          "name": "geometryError",
+          "complexity": 2
+        },
+        {
+          "file": "lib/quant/selection.js",
+          "line": 5,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "lib/quant/selection.js",
+          "line": 21,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "lib/quant/selection.js",
+          "line": 22,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "lib/quant/selection.js",
+          "line": 27,
+          "name": "comparator",
+          "complexity": 2
+        },
+        {
+          "file": "lib/quant/selection.js",
+          "line": 44,
+          "name": "score",
+          "complexity": 2
+        },
+        {
+          "file": "lib/quant/statistics.js",
+          "line": 2,
+          "name": "logSumExp",
+          "complexity": 2
+        },
+        {
+          "file": "lib/quant/statistics.js",
+          "line": 4,
+          "name": "normalizeLogs",
+          "complexity": 2
+        },
+        {
+          "file": "lib/quant/statistics.js",
+          "line": 6,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "lib/quant/statistics.js",
+          "line": 7,
+          "name": "mean",
+          "complexity": 2
+        },
+        {
+          "file": "lib/quant/statistics.js",
+          "line": 8,
+          "name": "quantile",
+          "complexity": 2
+        },
+        {
+          "file": "lib/quant/statistics.js",
+          "line": 11,
+          "name": "hash",
+          "complexity": 2
+        },
+        {
+          "file": "lib/quant/statistics.js",
+          "line": 36,
+          "name": "effectiveN",
+          "complexity": 2
+        },
+        {
+          "file": "lib/sharecode.js",
+          "line": 5,
+          "name": "signed",
+          "complexity": 2
+        },
+        {
+          "file": "lib/sharecode.js",
+          "line": 34,
+          "name": "tick",
+          "complexity": 2
+        },
+        {
+          "file": "lib/validation.js",
+          "line": 7,
+          "name": "integer",
+          "complexity": 2
+        },
+        {
+          "file": "lib/validation.js",
+          "line": 13,
+          "name": "bool",
+          "complexity": 2
+        },
+        {
+          "file": "lib/validation.js",
+          "line": 26,
+          "name": "cleanNumber",
+          "complexity": 2
+        },
+        {
+          "file": "scripts/benchmark-quant.mjs",
+          "line": 6,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "scripts/build.mjs",
+          "line": 10,
+          "name": "filter",
+          "complexity": 2
+        },
+        {
+          "file": "scripts/compare-inverse.mjs",
+          "line": 11,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "scripts/complexity.mjs",
+          "line": 12,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "scripts/complexity.mjs",
+          "line": 22,
+          "name": "inventory",
+          "complexity": 2
+        },
+        {
+          "file": "scripts/corpus.mjs",
+          "line": 7,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "scripts/corpus.mjs",
+          "line": 20,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "scripts/http-policy.mjs",
+          "line": 7,
+          "name": "isPublic",
+          "complexity": 2
+        },
+        {
+          "file": "scripts/notebook.mjs",
+          "line": 16,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "scripts/notebook.mjs",
+          "line": 19,
+          "name": "flush",
+          "complexity": 2
+        },
+        {
+          "file": "scripts/notebook.mjs",
+          "line": 23,
+          "name": "closeList",
+          "complexity": 2
+        },
+        {
+          "file": "scripts/notebook.mjs",
+          "line": 27,
+          "name": "closeTable",
+          "complexity": 2
+        },
+        {
+          "file": "scripts/quant-study.mjs",
+          "line": 10,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "scripts/quant-study.mjs",
+          "line": 63,
+          "name": "<callback>",
+          "complexity": 2
+        },
+        {
+          "file": "app/calibration.js",
+          "line": 5,
+          "name": "input",
+          "complexity": 1
+        },
+        {
+          "file": "app/calibration.js",
+          "line": 6,
+          "name": "field",
+          "complexity": 1
+        },
+        {
+          "file": "app/calibration.js",
+          "line": 18,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/calibration.js",
+          "line": 27,
+          "name": "onClick",
+          "complexity": 1
+        },
+        {
+          "file": "app/calibration.js",
+          "line": 32,
+          "name": "onClick",
+          "complexity": 1
+        },
+        {
+          "file": "app/calibration.js",
+          "line": 33,
+          "name": "onClick",
+          "complexity": 1
+        },
+        {
+          "file": "app/calibration.js",
+          "line": 33,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/calibration.js",
+          "line": 51,
+          "name": "dataset",
+          "complexity": 1
+        },
+        {
+          "file": "app/calibration.js",
+          "line": 53,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/calibration.js",
+          "line": 60,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/calibration.js",
+          "line": 68,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/calibration.js",
+          "line": 83,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/calibration.js",
+          "line": 88,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/corpus.js",
+          "line": 2,
+          "name": "pct",
+          "complexity": 1
+        },
+        {
+          "file": "app/corpus.js",
+          "line": 9,
+          "name": "draw",
+          "complexity": 1
+        },
+        {
+          "file": "app/corpus.js",
+          "line": 10,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/corpus.js",
+          "line": 17,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/corpus.js",
+          "line": 18,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/corpus.js",
+          "line": 19,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/corpus.js",
+          "line": 22,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/corpus.js",
+          "line": 22,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/corpus.js",
+          "line": 22,
+          "name": "onclick",
+          "complexity": 1
+        },
+        {
+          "file": "app/corpus.js",
+          "line": 24,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/dom.js",
+          "line": 1,
+          "name": "$",
+          "complexity": 1
+        },
+        {
+          "file": "app/dom.js",
+          "line": 14,
+          "name": "download",
+          "complexity": 1
+        },
+        {
+          "file": "app/dom.js",
+          "line": 16,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/dom.js",
+          "line": 22,
+          "name": "heading",
+          "complexity": 1
+        },
+        {
+          "file": "app/dom.js",
+          "line": 26,
+          "name": "table",
+          "complexity": 1
+        },
+        {
+          "file": "app/dom.js",
+          "line": 27,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/dom.js",
+          "line": 28,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/dom.js",
+          "line": 28,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/editor.js",
+          "line": 17,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/editor.js",
+          "line": 19,
+          "name": "reflectSource",
+          "complexity": 1
+        },
+        {
+          "file": "app/editor.js",
+          "line": 20,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/editor.js",
+          "line": 46,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/editor.js",
+          "line": 54,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/editor.js",
+          "line": 54,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/editor.js",
+          "line": 56,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/editor.js",
+          "line": 77,
+          "name": "schedule",
+          "complexity": 1
+        },
+        {
+          "file": "app/editor.js",
+          "line": 79,
+          "name": "loadPreset",
+          "complexity": 1
+        },
+        {
+          "file": "app/editor.js",
+          "line": 79,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/editor.js",
+          "line": 87,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/editor.js",
+          "line": 87,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/editor.js",
+          "line": 88,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/editor.js",
+          "line": 92,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/editor.js",
+          "line": 92,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/editor.js",
+          "line": 93,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/editor.js",
+          "line": 93,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/editor.js",
+          "line": 94,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/editor.js",
+          "line": 94,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/editor.js",
+          "line": 95,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/editor.js",
+          "line": 95,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/editor.js",
+          "line": 96,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/editor.js",
+          "line": 99,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/editor.js",
+          "line": 100,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/editor.js",
+          "line": 100,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/editor.js",
+          "line": 101,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/editor.js",
+          "line": 101,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/editor.js",
+          "line": 101,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/editor.js",
+          "line": 102,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/editor.js",
+          "line": 102,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/editor.js",
+          "line": 103,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/editor.js",
+          "line": 104,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/editor.js",
+          "line": 105,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/editor.js",
+          "line": 108,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/editor.js",
+          "line": 109,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/editor.js",
+          "line": 110,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/editor.js",
+          "line": 111,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/evidence.js",
+          "line": 3,
+          "name": "initEvidence",
+          "complexity": 1
+        },
+        {
+          "file": "app/evidence.js",
+          "line": 6,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/evidence.js",
+          "line": 9,
+          "name": "renderSummary",
+          "complexity": 1
+        },
+        {
+          "file": "app/evidence.js",
+          "line": 10,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/evidence.js",
+          "line": 14,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/evidence.js",
+          "line": 16,
+          "name": "onClick",
+          "complexity": 1
+        },
+        {
+          "file": "app/evidence.js",
+          "line": 17,
+          "name": "onClick",
+          "complexity": 1
+        },
+        {
+          "file": "app/evidence.js",
+          "line": 20,
+          "name": "renderRows",
+          "complexity": 1
+        },
+        {
+          "file": "app/evidence.js",
+          "line": 21,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/image/dialog.js",
+          "line": 3,
+          "name": "constructor",
+          "complexity": 1
+        },
+        {
+          "file": "app/image/dialog.js",
+          "line": 7,
+          "name": "on",
+          "complexity": 1
+        },
+        {
+          "file": "app/image/dialog.js",
+          "line": 8,
+          "name": "invalidate",
+          "complexity": 1
+        },
+        {
+          "file": "app/image/dialog.js",
+          "line": 19,
+          "name": "draw",
+          "complexity": 1
+        },
+        {
+          "file": "app/image/dialog.js",
+          "line": 72,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/image/dialog.js",
+          "line": 73,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/image/dialog.js",
+          "line": 74,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/image/dialog.js",
+          "line": 75,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/image/dialog.js",
+          "line": 76,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/image/dialog.js",
+          "line": 76,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/image/dialog.js",
+          "line": 77,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/image/dialog.js",
+          "line": 77,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/image/dialog.js",
+          "line": 78,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/image/dialog.js",
+          "line": 79,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/image/view.js",
+          "line": 2,
+          "name": "field",
+          "complexity": 1
+        },
+        {
+          "file": "app/image-input.js",
+          "line": 11,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant/controller.js",
+          "line": 12,
+          "name": "constructor",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant/controller.js",
+          "line": 17,
+          "name": "get",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant/controller.js",
+          "line": 18,
+          "name": "on",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant/controller.js",
+          "line": 19,
+          "name": "options",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant/controller.js",
+          "line": 22,
+          "name": "start",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant/controller.js",
+          "line": 24,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant/controller.js",
+          "line": 24,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant/controller.js",
+          "line": 31,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant/controller.js",
+          "line": 32,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant/controller.js",
+          "line": 33,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant/controller.js",
+          "line": 34,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant/controller.js",
+          "line": 49,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant/controller.js",
+          "line": 52,
+          "name": "clearImageTarget",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant/controller.js",
+          "line": 53,
+          "name": "readSettings",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant/controller.js",
+          "line": 57,
+          "name": "invalidate",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant/controller.js",
+          "line": 61,
+          "name": "schedule",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant/controller.js",
+          "line": 61,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant/controller.js",
+          "line": 62,
+          "name": "fail",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant/controller.js",
+          "line": 80,
+          "name": "refresh",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant/controller.js",
+          "line": 86,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant/controller.js",
+          "line": 86,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant/controller.js",
+          "line": 87,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant/controller.js",
+          "line": 88,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant/feedback.js",
+          "line": 6,
+          "name": "acceptOld",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant/feedback.js",
+          "line": 16,
+          "name": "acceptNative",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant/feedback.js",
+          "line": 33,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant/feedback.js",
+          "line": 33,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant/feedback.js",
+          "line": 50,
+          "name": "bindFeedback",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant/feedback.js",
+          "line": 51,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant/feedback.js",
+          "line": 51,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant/feedback.js",
+          "line": 52,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant/feedback.js",
+          "line": 53,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant/feedback.js",
+          "line": 54,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant/presentation.js",
+          "line": 16,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant/presentation.js",
+          "line": 37,
+          "name": "renderMetrics",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant/presentation.js",
+          "line": 42,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant/presentation.js",
+          "line": 73,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant/presentation.js",
+          "line": 75,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant/presentation.js",
+          "line": 86,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant/presentation.js",
+          "line": 93,
+          "name": "renderScenarios",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant/presentation.js",
+          "line": 96,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant/presentation.js",
+          "line": 97,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant/presentation.js",
+          "line": 99,
+          "name": "onclick",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant/sources.js",
+          "line": 5,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant/sources.js",
+          "line": 7,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant/sources.js",
+          "line": 11,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant/sources.js",
+          "line": 21,
+          "name": "manualEdit",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant/sources.js",
+          "line": 28,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant/sources.js",
+          "line": 29,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant/sources.js",
+          "line": 29,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant/sources.js",
+          "line": 31,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant/sources.js",
+          "line": 32,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant/sources.js",
+          "line": 33,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant/sources.js",
+          "line": 34,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant/sources.js",
+          "line": 34,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant/sources.js",
+          "line": 35,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant/sources.js",
+          "line": 35,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant/sources.js",
+          "line": 36,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant/view.js",
+          "line": 6,
+          "name": "modelName",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant/view.js",
+          "line": 7,
+          "name": "detail",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant/view.js",
+          "line": 8,
+          "name": "field",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant/view.js",
+          "line": 9,
+          "name": "check",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant/view.js",
+          "line": 10,
+          "name": "option",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant/view.js",
+          "line": 11,
+          "name": "status",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant/view.js",
+          "line": 13,
+          "name": "sourcePanel",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant/view.js",
+          "line": 38,
+          "name": "appearanceControls",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant/view.js",
+          "line": 48,
+          "name": "valueTable",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant/view.js",
+          "line": 50,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant/view.js",
+          "line": 51,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant/view.js",
+          "line": 56,
+          "name": "previewPanel",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant/view.js",
+          "line": 61,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant/view.js",
+          "line": 69,
+          "name": "feedbackPanel",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant/view.js",
+          "line": 81,
+          "name": "resultsPanel",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant/view.js",
+          "line": 87,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant/view.js",
+          "line": 98,
+          "name": "createView",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant/view.js",
+          "line": 105,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant/view.js",
+          "line": 106,
+          "name": "get",
+          "complexity": 1
+        },
+        {
+          "file": "app/quant-worker.js",
+          "line": 11,
+          "name": "infer",
+          "complexity": 1
+        },
+        {
+          "file": "app/research.js",
+          "line": 3,
+          "name": "initResearch",
+          "complexity": 1
+        },
+        {
+          "file": "app/research.js",
+          "line": 15,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/research.js",
+          "line": 28,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/worker-client.js",
+          "line": 3,
+          "name": "constructor",
+          "complexity": 1
+        },
+        {
+          "file": "app/worker-client.js",
+          "line": 3,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/worker-client.js",
+          "line": 6,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/worker-client.js",
+          "line": 7,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/worker-client.js",
+          "line": 8,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/worker-client.js",
+          "line": 17,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/worker-client.js",
+          "line": 19,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "app/worker-client.js",
+          "line": 63,
+          "name": "close",
+          "complexity": 1
+        },
+        {
+          "file": "lib/audit.js",
+          "line": 5,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/calibration.js",
+          "line": 5,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/calibration.js",
+          "line": 6,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/calibration.js",
+          "line": 7,
+          "name": "mean",
+          "complexity": 1
+        },
+        {
+          "file": "lib/calibration.js",
+          "line": 7,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/calibration.js",
+          "line": 9,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/calibration.js",
+          "line": 10,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/calibration.js",
+          "line": 13,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/calibration.js",
+          "line": 14,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/calibration.js",
+          "line": 15,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/calibration.js",
+          "line": 16,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/calibration.js",
+          "line": 25,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/calibration.js",
+          "line": 38,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/cfg.js",
+          "line": 19,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/conversion.js",
+          "line": 86,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/conversion.js",
+          "line": 89,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/conversion.js",
+          "line": 117,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/legacy.js",
+          "line": 27,
+          "name": "comparators",
+          "complexity": 1
+        },
+        {
+          "file": "lib/legacy.js",
+          "line": 29,
+          "name": "round",
+          "complexity": 1
+        },
+        {
+          "file": "lib/legacy.js",
+          "line": 38,
+          "name": "idealBucket",
+          "complexity": 1
+        },
+        {
+          "file": "lib/native-settings.js",
+          "line": 3,
+          "name": "validateNative",
+          "complexity": 1
+        },
+        {
+          "file": "lib/native-settings.js",
+          "line": 13,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/native-settings.js",
+          "line": 17,
+          "name": "safeComment",
+          "complexity": 1
+        },
+        {
+          "file": "lib/native-settings.js",
+          "line": 25,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/pixel-shape.js",
+          "line": 8,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/pixel-shape.js",
+          "line": 16,
+          "name": "areaOf",
+          "complexity": 1
+        },
+        {
+          "file": "lib/pixel-shape.js",
+          "line": 17,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/pixel-shape.js",
+          "line": 18,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/pixel-shape.js",
+          "line": 23,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/pixel-shape.js",
+          "line": 27,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/pixel-shape.js",
+          "line": 27,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/pixel-shape.js",
+          "line": 31,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/pixel-shape.js",
+          "line": 95,
+          "name": "outsideFrame",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/components.js",
+          "line": 30,
+          "name": "axisComponents",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/corpus.js",
+          "line": 3,
+          "name": "signature",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/corpus.js",
+          "line": 17,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/corpus.js",
+          "line": 17,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/corpus.js",
+          "line": 18,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/corpus.js",
+          "line": 18,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/corpus.js",
+          "line": 18,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/corpus.js",
+          "line": 18,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/evidence.js",
+          "line": 10,
+          "name": "residualSquared",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/evidence.js",
+          "line": 12,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/evidence.js",
+          "line": 27,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/evidence.js",
+          "line": 30,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/evidence.js",
+          "line": 30,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/evidence.js",
+          "line": 32,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/evidence.js",
+          "line": 33,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/evidence.js",
+          "line": 39,
+          "name": "evaluateHoldouts",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/evidence.js",
+          "line": 41,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/evidence.js",
+          "line": 42,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/evidence.js",
+          "line": 42,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/evidence.js",
+          "line": 44,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/evidence.js",
+          "line": 46,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/evidence.js",
+          "line": 53,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/evidence.js",
+          "line": 54,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/evidence.js",
+          "line": 55,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/evidence.js",
+          "line": 56,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/evidence.js",
+          "line": 58,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/evidence.js",
+          "line": 63,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/evidence.js",
+          "line": 65,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/experiments.js",
+          "line": 23,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/experiments.js",
+          "line": 23,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/export.js",
+          "line": 19,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/inference.js",
+          "line": 24,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/inverse.js",
+          "line": 24,
+          "name": "nearAt",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/inverse.js",
+          "line": 41,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/inverse.js",
+          "line": 43,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/inverse.js",
+          "line": 65,
+          "name": "solveInverse",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/observations.js",
+          "line": 26,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/observations.js",
+          "line": 31,
+          "name": "readingKey",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/observations.js",
+          "line": 32,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/observations.js",
+          "line": 65,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/observations.js",
+          "line": 65,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/observations.js",
+          "line": 71,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/observations.js",
+          "line": 71,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/regression.js",
+          "line": 2,
+          "name": "features",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/regression.js",
+          "line": 6,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/regression.js",
+          "line": 36,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/regression.js",
+          "line": 38,
+          "name": "predictLinear",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/regression.js",
+          "line": 38,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/renderer.js",
+          "line": 10,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/renderer.js",
+          "line": 10,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/renderer.js",
+          "line": 10,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/renderer.js",
+          "line": 13,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/renderer.js",
+          "line": 15,
+          "name": "scaleOf",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/renderer.js",
+          "line": 41,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/renderer.js",
+          "line": 44,
+          "name": "naiveAssignment",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/renderer.js",
+          "line": 49,
+          "name": "nativeKey",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/renderer.js",
+          "line": 50,
+          "name": "geometryKey",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/report.js",
+          "line": 36,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/report.js",
+          "line": 39,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/report.js",
+          "line": 45,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/screenshot.js",
+          "line": 6,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/screenshot.js",
+          "line": 24,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/screenshot.js",
+          "line": 28,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/screenshot.js",
+          "line": 28,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/screenshot.js",
+          "line": 33,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/screenshot.js",
+          "line": 53,
+          "name": "rectPixels",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/screenshot.js",
+          "line": 78,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/screenshot.js",
+          "line": 83,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/screenshot.js",
+          "line": 84,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/screenshot.js",
+          "line": 116,
+          "name": "mid",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/selection.js",
+          "line": 4,
+          "name": "agreementByScale",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/selection.js",
+          "line": 16,
+          "name": "evaluate",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/selection.js",
+          "line": 17,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/selection.js",
+          "line": 18,
+          "name": "weighted",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/selection.js",
+          "line": 18,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/selection.js",
+          "line": 22,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/selection.js",
+          "line": 23,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/selection.js",
+          "line": 67,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/selection.js",
+          "line": 71,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/statistics.js",
+          "line": 3,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/statistics.js",
+          "line": 5,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/statistics.js",
+          "line": 6,
+          "name": "entropy",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/statistics.js",
+          "line": 7,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/statistics.js",
+          "line": 9,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/statistics.js",
+          "line": 10,
+          "name": "rng",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/statistics.js",
+          "line": 10,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/statistics.js",
+          "line": 36,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/statistics.js",
+          "line": 36,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/visual.js",
+          "line": 19,
+          "name": "size",
+          "complexity": 1
+        },
+        {
+          "file": "lib/quant/visual.js",
+          "line": 39,
+          "name": "point",
+          "complexity": 1
+        },
+        {
+          "file": "lib/sharecode.js",
+          "line": 19,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/sharecode.js",
+          "line": 43,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/sharecode.js",
+          "line": 48,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/sharecode.js",
+          "line": 58,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/sharecode.js",
+          "line": 59,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "lib/validation.js",
+          "line": 12,
+          "name": "height",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/audit.mjs",
+          "line": 9,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/benchmark-compare.mjs",
+          "line": 15,
+          "name": "summarize",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/benchmark-compare.mjs",
+          "line": 16,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/benchmark-compare.mjs",
+          "line": 16,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/benchmark-compare.mjs",
+          "line": 17,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/benchmark-compare.mjs",
+          "line": 17,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/benchmark-compare.mjs",
+          "line": 19,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/build.mjs",
+          "line": 15,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/complexity.mjs",
+          "line": 12,
+          "name": "children",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/complexity.mjs",
+          "line": 12,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/complexity.mjs",
+          "line": 39,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/complexity.mjs",
+          "line": 40,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/complexity.mjs",
+          "line": 40,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/complexity.mjs",
+          "line": 41,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/complexity.mjs",
+          "line": 42,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/complexity.mjs",
+          "line": 44,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/complexity.mjs",
+          "line": 47,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/corpus.mjs",
+          "line": 6,
+          "name": "load",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/corpus.mjs",
+          "line": 7,
+          "name": "tsv",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/corpus.mjs",
+          "line": 9,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/corpus.mjs",
+          "line": 10,
+          "name": "blobOf",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/corpus.mjs",
+          "line": 12,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/corpus.mjs",
+          "line": 15,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/corpus.mjs",
+          "line": 16,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/corpus.mjs",
+          "line": 17,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/corpus.mjs",
+          "line": 18,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/corpus.mjs",
+          "line": 20,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/corpus.mjs",
+          "line": 20,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/corpus.mjs",
+          "line": 20,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/corpus.mjs",
+          "line": 20,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/http-policy.mjs",
+          "line": 21,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/notebook-source.mjs",
+          "line": 4,
+          "name": "key",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/notebook-source.mjs",
+          "line": 5,
+          "name": "chapters",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/notebook-source.mjs",
+          "line": 5,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/notebook-source.mjs",
+          "line": 5,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/notebook-source.mjs",
+          "line": 6,
+          "name": "mathTokens",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/notebook-source.mjs",
+          "line": 7,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/notebook-source.mjs",
+          "line": 7,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/notebook-source.mjs",
+          "line": 8,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/notebook-source.mjs",
+          "line": 8,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/notebook.mjs",
+          "line": 6,
+          "name": "escape",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/notebook.mjs",
+          "line": 12,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/notebook.mjs",
+          "line": 16,
+          "name": "inline",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/notebook.mjs",
+          "line": 16,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/notebook.mjs",
+          "line": 28,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/notebook.mjs",
+          "line": 28,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/notebook.mjs",
+          "line": 28,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/notebook.mjs",
+          "line": 29,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/notebook.mjs",
+          "line": 97,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/quant-study.mjs",
+          "line": 9,
+          "name": "read",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/quant-study.mjs",
+          "line": 14,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/quant-study.mjs",
+          "line": 19,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/quant-study.mjs",
+          "line": 19,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/quant-study.mjs",
+          "line": 22,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/quant-study.mjs",
+          "line": 22,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/quant-study.mjs",
+          "line": 23,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/quant-study.mjs",
+          "line": 23,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/quant-study.mjs",
+          "line": 25,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/quant-study.mjs",
+          "line": 30,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/quant-study.mjs",
+          "line": 30,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/quant-study.mjs",
+          "line": 36,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/quant-study.mjs",
+          "line": 41,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/quant-study.mjs",
+          "line": 47,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/quant-study.mjs",
+          "line": 48,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/quant-study.mjs",
+          "line": 48,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/quant-study.mjs",
+          "line": 60,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/quant-study.mjs",
+          "line": 63,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/quant-study.mjs",
+          "line": 63,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/quant-study.mjs",
+          "line": 63,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/quant-study.mjs",
+          "line": 64,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/quant-study.mjs",
+          "line": 68,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/quant-study.mjs",
+          "line": 69,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/quant-study.mjs",
+          "line": 69,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/quant-study.mjs",
+          "line": 69,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/quant-study.mjs",
+          "line": 69,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/quant-study.mjs",
+          "line": 71,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/serve.mjs",
+          "line": 21,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/serve.mjs",
+          "line": 22,
+          "name": "<callback>",
+          "complexity": 1
+        },
+        {
+          "file": "scripts/serve.mjs",
+          "line": 22,
+          "name": "<callback>",
+          "complexity": 1
+        }
+      ]
+    }
+  ],
+  "baselineCommit": "fd02f98"
+}

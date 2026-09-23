@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Convert old CS2 crosshair settings, compare pixel previews, and inspect the math behind each proposed value.">
+  <meta name="color-scheme" content="dark">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; worker-src 'self'; style-src 'self'; img-src 'self' blob: data:; connect-src 'self'; font-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <meta name="referrer" content="no-referrer">
+  <title>Small Indie Crosshair Company — The crosshair lab</title>
+  <link rel="icon" href="./public/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./app/styles.css">
+  <link rel="stylesheet" href="./app/quant.css">
+  <script type="module" src="./app/main.js"></script>
+</head>
+<body>
+<a href="#main" class="skip">Skip to the lab</a>
+<header class="masthead">
+  <a class="brand" href="#quant" aria-label="Small Indie Crosshair Company home"><span class="brandmark" aria-hidden="true">⌖</span><span>SMALL INDIE<br><strong>CROSSHAIR COMPANY</strong></span></a>
+  <nav aria-label="Main navigation"><a href="#quant" data-route="quant">Convert</a><a href="#corpus" data-route="corpus">The study</a><a href="#research" data-route="research">Mathematics</a><a href="#workbench" data-route="workbench">Manual lab</a><a href="#calibration" data-route="calibration">Calibration</a></nav>
+  <span class="local-indicator"><span aria-hidden="true"></span> Local · no uploads</span>
+</header>
+<main id="main" tabindex="-1">
+  <div id="boot-error" role="alert" hidden></div>
+  <section id="quant" class="page-section" hidden></section>
+  <section id="corpus" class="page-section" hidden></section>
+  <section id="workbench" class="page-section">
+    <div class="page-heading"><div><h1>Four lines.<br><em>One research department.</em></h1><p>Try a crosshair, inspect its pixels, and take the settings with you.</p></div><aside class="build-note"><span>RESEARCH SNAPSHOT</span><strong>23 September 2026</strong><small>Target build 2000914<br>Native rendering not yet validated.</small></aside></div>
+    <div class="disclosure"><span class="notice-dot" aria-hidden="true"></span><p><strong>About these previews.</strong> The left shows reconstructed old geometry. The right shows a proposed new rendering. Neither is an in-game capture.</p><a href="#research">How the model works ↗</a></div>
+    <div class="workbench">
+      <aside class="editor-panel" aria-label="Crosshair controls">
+        <div class="panel-title"><span class="index">01</span><h2>The original</h2></div>
+        <div class="segmented" role="group" aria-label="Generator mode"><button id="mode-restore" class="active" aria-pressed="true">Restore legacy</button><button id="mode-design" aria-pressed="false">Design new</button></div>
+        <label for="preset">Dated pro preset</label><select id="preset"></select><p id="preset-source" class="small"></p>
+        <details class="import-box"><summary>Import legacy code or .cfg</summary><label for="legacy-import">Legacy v1 share code or assignments</label><textarea id="legacy-import" rows="3" maxlength="32768" placeholder="CSGO-xxxxx-xxxxx-xxxxx-xxxxx-xxxxx" spellcheck="false"></textarea><button id="import-legacy" class="button secondary">Load legacy settings</button><p id="import-status" class="small" role="status"></p></details>
+        <div class="input-grid triple">
+          <div><label for="old-size">Size</label><input id="old-size" type="number" min="0" max="10000" step="0.1" value="1"></div>
+          <div><label for="old-thickness">Thickness</label><input id="old-thickness" type="number" min="0" max="10000" step="0.1" value="1"></div>
+          <div><label for="old-gap">Gap</label><input id="old-gap" type="number" min="-10000" max="10000" step="0.1" value="-4"></div>
+        </div>
+        <div class="input-grid"><div><label for="old-height">Old game height</label><input id="old-height" type="number" min="240" max="16384" step="1" value="1080"></div><div><label for="current-height">Target game height</label><input id="current-height" type="number" min="240" max="16384" step="1" value="1080"></div></div>
+        <label for="match-goal">What should stay the same?</label><select id="match-goal"><option value="pixels">Number of game pixels</option><option value="screen">Proportion of the screen</option></select>
+        <div class="panel-divider"></div><div class="panel-title"><span class="index">02</span><h2>The hypothesis</h2></div>
+        <label for="gap-model">New gap zero point</label><select id="gap-model"><option value="thickness">Thickness-relative · original theory</option><option value="center">Center-relative · alternative</option><option value="measured">Measured affine · user input</option></select>
+        <div id="measured-fields" class="input-grid" hidden><div><label for="measured-base">Intercept B (px)</label><input id="measured-base" type="number" value="0" step="0.1"></div><div><label for="measured-step">Slope K (px/unit)</label><input id="measured-step" type="number" value="1" min="0.001" step="0.01"></div></div>
+        <div class="input-grid"><div><label for="rounding">New rounding</label><select id="rounding"><option value="trunc">Truncate</option><option value="nearest">Nearest · ties up</option></select></div><div><label for="authored-height">Authored height</label><input id="authored-height" type="number" value="1080" min="240" max="16384" step="1"></div></div>
+        <p class="small">Authored height and rounding are assumptions about the new renderer. Set them to match your measurements.</p>
+        <details><summary>Color & shape</summary>
+          <div class="input-grid"><div><label for="color">Custom color</label><input id="color" type="color" value="#32fa32"></div><div><label for="alpha">Opacity (0–255)</label><input id="alpha" type="number" value="255" min="0" max="255" step="1"></div></div>
+          <label class="check"><input id="dot" type="checkbox">Center dot</label><label class="check"><input id="t-style" type="checkbox">T-shaped crosshair</label><label class="check"><input id="outline" type="checkbox">Outline (preview approximation)</label><label class="check"><input id="recoil" type="checkbox">Follow recoil (not simulated)</label>
+        </details>
+        <button id="reset" class="button ghost">Reset to the selected preset</button>
+      </aside>
+      <div class="lab-panel">
+        <div class="preview-toolbar"><h2>Pixel preview</h2><div class="toolbar-group"><label for="zoom">Zoom</label><select id="zoom"><option value="4">4×</option><option value="8">8×</option><option value="12" selected>12×</option><option value="20">20×</option></select><label for="stretch">View</label><select id="stretch"><option value="1">Unstretched</option><option value="1.3333333333333333">4:3 → 16:9</option></select><label class="check"><input type="checkbox" id="grid" checked>Grid</label></div></div>
+        <div class="canvases"><figure><figcaption><span id="old-preview-title">Legacy reconstruction</span><span id="old-res-label">1080p</span></figcaption><canvas id="old-canvas" width="480" height="310" aria-label="Illustrative legacy crosshair geometry"></canvas><div class="canvas-caption">Source-derived dimensions · illustrative centering</div></figure><figure><figcaption><span>New candidate simulation</span><span class="assumption">Conditional</span></figcaption><canvas id="new-canvas" width="480" height="310" aria-label="Unverified new crosshair candidate simulation"></canvas><div class="canvas-caption" id="candidate-caption">Selected gap and rounding hypotheses</div></figure></div>
+        <div id="geometry-stats" class="metrics" aria-live="polite"></div>
+        <div class="comparison-line"><span id="match-status"></span><button id="difference-toggle" class="text-button" aria-pressed="false">Show mask difference</button></div>
+        <p class="small bench-note">Zoom and stretch change only this display. A preview match does not confirm how CS2 draws the crosshair.</p>
+        <div class="candidate-controls"><div class="section-heading"><div><span class="index">03</span><h2>Your candidate</h2></div><button id="use-conversion" class="text-button">Use calculated values</button></div><div class="input-grid triple"><div><label for="new-length">New length · 0–255</label><input type="number" id="new-length" min="0" max="255" step="1"></div><div><label for="new-thickness">New thickness · 0–31</label><input type="number" id="new-thickness" min="0" max="31" step="1"></div><div><label for="new-gap">New gap · 0–128</label><input type="number" id="new-gap" min="0" max="128" step="1"></div></div><p id="candidate-mode" class="small"></p></div>
+        <div id="warnings" class="warnings" aria-live="polite"></div>
+        <div class="export-box"><div class="section-heading"><div><span class="index">04</span><h2>Save your settings</h2></div><button id="copy-cfg" class="text-button">Copy commands</button></div><label for="cfg-output" class="sr-only">Candidate console configuration</label><textarea id="cfg-output" spellcheck="false" readonly rows="7"></textarea><div class="export-actions"><button id="download-cfg" class="button primary">Download candidate .cfg <span aria-hidden="true">↓</span></button><button id="download-report" class="button secondary">Download research report</button><button id="legacy-code" class="button ghost">Copy legacy v1 code</button></div><p id="export-status" role="status" class="small"></p></div>
+      </div>
+    </div>
+  </section>
+  <section id="research" class="page-section" hidden></section>
+  <section id="calibration" class="page-section" hidden></section>
+  <section id="evidence" class="page-section" hidden></section>
+</main>
+<footer><span>Small Indie Crosshair Company<br><a href="#evidence" data-route="evidence">Original 56-case archive</a></span><p>Volvo pls. Mind the pixels.</p><small>Independent parody project. Not affiliated with Valve or Volvo.<br>No game-process access, injection, account connection or automated aiming.</small></footer>
+<noscript><p class="disclosure">JavaScript is needed for the local calculator. The full derivation is in <a href="./docs/README.md">the research notebook</a>.</p></noscript>
+</body></html>

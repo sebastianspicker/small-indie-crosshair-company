@@ -1,0 +1,211 @@
+{
+  "schema": "sicc-inverse-regression-v1",
+  "uniqueGeometryGroups": 48,
+  "resolutionHeights": [
+    720,
+    768,
+    960,
+    1024,
+    1080,
+    1440,
+    2160
+  ],
+  "models": 27,
+  "cases": 9072,
+  "strictlyLowerGeometryLoss": 211,
+  "equalGeometryLoss": 8861,
+  "higherGeometryLoss": 0,
+  "examples": [
+    {
+      "signature": "2|1|-6|0|0|4|0",
+      "height": 960,
+      "model": "authored:trunc:thickness",
+      "before": 8,
+      "after": 3,
+      "old": {
+        "length": 4,
+        "thickness": 2,
+        "gap": 0,
+        "authoredHeight": 960
+      },
+      "new": {
+        "length": 4,
+        "thickness": 1,
+        "gap": 0,
+        "authoredHeight": 960
+      }
+    },
+    {
+      "signature": "2|1|-6|0|0|4|0",
+      "height": 960,
+      "model": "authored:nearest:thickness",
+      "before": 8,
+      "after": 3,
+      "old": {
+        "length": 4,
+        "thickness": 2,
+        "gap": 0,
+        "authoredHeight": 960
+      },
+      "new": {
+        "length": 4,
+        "thickness": 1,
+        "gap": 0,
+        "authoredHeight": 960
+      }
+    },
+    {
+      "signature": "2|1|-6|0|0|4|0",
+      "height": 960,
+      "model": "authored:ceil:thickness",
+      "before": 8,
+      "after": 3,
+      "old": {
+        "length": 4,
+        "thickness": 2,
+        "gap": 0,
+        "authoredHeight": 960
+      },
+      "new": {
+        "length": 4,
+        "thickness": 1,
+        "gap": 0,
+        "authoredHeight": 960
+      }
+    },
+    {
+      "signature": "2|1|-6|0|0|4|0",
+      "height": 960,
+      "model": "reference1080:trunc:thickness",
+      "before": 8,
+      "after": 3,
+      "old": {
+        "length": 5,
+        "thickness": 3,
+        "gap": 0,
+        "authoredHeight": 960
+      },
+      "new": {
+        "length": 5,
+        "thickness": 2,
+        "gap": 0,
+        "authoredHeight": 960
+      }
+    },
+    {
+      "signature": "2|1|-6|0|0|4|0",
+      "height": 960,
+      "model": "reference1080:nearest:thickness",
+      "before": 8,
+      "after": 3,
+      "old": {
+        "length": 4,
+        "thickness": 2,
+        "gap": 0,
+        "authoredHeight": 960
+      },
+      "new": {
+        "length": 4,
+        "thickness": 1,
+        "gap": 0,
+        "authoredHeight": 960
+      }
+    },
+    {
+      "signature": "2|1|-6|0|0|4|0",
+      "height": 960,
+      "model": "reference1080:ceil:thickness",
+      "before": 8,
+      "after": 3,
+      "old": {
+        "length": 4,
+        "thickness": 2,
+        "gap": 0,
+        "authoredHeight": 960
+      },
+      "new": {
+        "length": 4,
+        "thickness": 1,
+        "gap": 0,
+        "authoredHeight": 960
+      }
+    },
+    {
+      "signature": "2|1|-6|0|0|4|0",
+      "height": 960,
+      "model": "reference720:trunc:thickness",
+      "before": 8,
+      "after": 3,
+      "old": {
+        "length": 3,
+        "thickness": 2,
+        "gap": 0,
+        "authoredHeight": 960
+      },
+      "new": {
+        "length": 3,
+        "thickness": 1,
+        "gap": 0,
+        "authoredHeight": 960
+      }
+    },
+    {
+      "signature": "2|1|-6|0|0|4|0",
+      "height": 960,
+      "model": "reference720:ceil:thickness",
+      "before": 8,
+      "after": 3,
+      "old": {
+        "length": 3,
+        "thickness": 1,
+        "gap": 0,
+        "authoredHeight": 960
+      },
+      "new": {
+        "length": 3,
+        "thickness": 0,
+        "gap": 0,
+        "authoredHeight": 960
+      }
+    },
+    {
+      "signature": "2|1|-6|0|0|4|0",
+      "height": 1024,
+      "model": "authored:trunc:thickness",
+      "before": 8,
+      "after": 3,
+      "old": {
+        "length": 4,
+        "thickness": 2,
+        "gap": 0,
+        "authoredHeight": 1024
+      },
+      "new": {
+        "length": 4,
+        "thickness": 1,
+        "gap": 0,
+        "authoredHeight": 1024
+      }
+    },
+    {
+      "signature": "2|1|-6|0|0|4|0",
+      "height": 1024,
+      "model": "authored:nearest:thickness",
+      "before": 8,
+      "after": 3,
+      "old": {
+        "length": 4,
+        "thickness": 2,
+        "gap": 0,
+        "authoredHeight": 1024
+      },
+      "new": {
+        "length": 4,
+        "thickness": 1,
+        "gap": 0,
+        "authoredHeight": 1024
+      }
+    }
+  ],
+  "scope": "Source-derived old targets under 27 hypothetical new renderers. Initialization geometry loss only, not native accuracy or final visual loss."
+}

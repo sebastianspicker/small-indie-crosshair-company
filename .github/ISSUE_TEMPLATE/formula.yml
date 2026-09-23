@@ -1,0 +1,25 @@
+name: Formula correction
+description: Correct a model, derivation or implementation without erasing its history.
+title: '[math] '
+body:
+  - type: textarea
+    id: current
+    attributes:
+      label: Current model and counterexample
+      description: Model identifier, input, actual result and expected result.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence and derivation
+      description: Pinned source or scoped observation; distinguish native facts from assumptions.
+    validations:
+      required: true
+  - type: textarea
+    id: impact
+    attributes:
+      label: Regression and scope impact
+      description: Which fixtures, arithmetic boundaries, docs and competing models are affected?
+    validations:
+      required: true

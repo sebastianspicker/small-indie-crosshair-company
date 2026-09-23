@@ -1,0 +1,267 @@
+{
+  "release": "0.3.0",
+  "model": "quant-static-v5",
+  "manualModel": "conditional-static-v4",
+  "targetBuild": "2000914",
+  "researchSnapshot": "2026-09-23",
+  "softwareTests": {
+    "nodeTests": 207,
+    "nodePassed": 207,
+    "nodeFailed": 0,
+    "archivePythonChecks": 21,
+    "archiveUnchanged": true,
+    "originalCrossLanguageCasesEqual": 56,
+    "seededAnalyticalVsDenseShapePairs": 1000,
+    "seededJointInverseOracleScopes": 30
+  },
+  "inverseRegression": {
+    "schema": "sicc-inverse-regression-v1",
+    "uniqueGeometryGroups": 48,
+    "resolutionHeights": [
+      720,
+      768,
+      960,
+      1024,
+      1080,
+      1440,
+      2160
+    ],
+    "models": 27,
+    "cases": 9072,
+    "strictlyLowerGeometryLoss": 211,
+    "equalGeometryLoss": 8861,
+    "higherGeometryLoss": 0,
+    "scope": "Source-derived old targets under 27 hypothetical new renderers. Initialization geometry loss only, not native accuracy or final visual loss."
+  },
+  "performance": {
+    "schema": "sicc-paired-core-benchmark-v1",
+    "runtime": "v22.16.0",
+    "cpu": "AMD EPYC 9V74 80-Core Processor",
+    "versions": [
+      "0.2.0",
+      "0.3.0"
+    ],
+    "baseline": {
+      "trials": 5,
+      "casesPerTrial": 40,
+      "warmupsPerTrial": 5,
+      "medianOfRunP50Ms": 31.53487349999989,
+      "medianOfRunP95Ms": 63.72445244999989,
+      "runP50Ms": [
+        31.53487349999989,
+        31.137361000000055,
+        32.12039399999992,
+        31.501015000000052,
+        32.548016000000004
+      ],
+      "runP95Ms": [
+        64.09033145,
+        65.48331365000006,
+        63.72445244999989,
+        59.88803650000003,
+        61.14493299999998
+      ]
+    },
+    "current": {
+      "trials": 5,
+      "casesPerTrial": 40,
+      "warmupsPerTrial": 5,
+      "medianOfRunP50Ms": 4.4126104999999995,
+      "medianOfRunP95Ms": 6.6697671999999955,
+      "runP50Ms": [
+        4.628061500000001,
+        4.4126104999999995,
+        4.3413374999999945,
+        4.390877500000002,
+        4.445755999999989
+      ],
+      "runP95Ms": [
+        6.4988198499999985,
+        6.517918950000003,
+        8.338673850000001,
+        7.388878149999989,
+        6.6697671999999955
+      ]
+    },
+    "scope": "Five alternating-order paired Node process trials, identical 40-case schedule and five warmups. Core inference only, empty native evidence. No claim about browser latency, native accuracy or universal speed.",
+    "ratioOfMedianP50": 7.146534574035005
+  },
+  "complexity": {
+    "schema": "sicc-source-complexity-v1",
+    "parser": "Node bundled Acorn 8.14.1",
+    "runtime": "v22.16.0",
+    "definition": "Per-function 1 + if/conditional/loop/catch/logical/switch-case/optional branches. Nested functions excluded from parent. AST decision-count proxy, not a full control-flow graph proof. Counts can increase when new safety and research functionality is added; splitting functions reduces local decision burden, not overall mathematical uncertainty.",
+    "baselineCommit": "fd02f98"
+  },
+  "complexityComparison": [
+    {
+      "root": "v0.2.0",
+      "functionCount": 477,
+      "totalDecisions": 776,
+      "maximum": 34,
+      "functionsAbove20": 4,
+      "p95": 9
+    },
+    {
+      "root": "v0.3.0",
+      "functionCount": 644,
+      "totalDecisions": 948,
+      "maximum": 20,
+      "functionsAbove20": 0,
+      "p95": 9
+    }
+  ],
+  "browser": {
+    "method": "Python Playwright / system Chromium; Browser plugin unavailable.",
+    "transport": "In-memory application source with explicit worker and secure-hash adapters. Real localhost navigation failed with net::ERR_BLOCKED_BY_ADMINISTRATOR. No bypass attempted.",
+    "quantitativeChecks": {
+      "checks": 48,
+      "passed": [
+        "meaningful default view",
+        "three real preview canvases",
+        "106 named-player corpus exposed",
+        "native confidence explicitly unidentified",
+        "exactly 27 alternative renderer choices",
+        "worst-case decision policy selectable",
+        "numeric both-edge residuals are inspectable",
+        "old cvar import automatic",
+        "zero-thickness branch preserved",
+        "historical raw values shown",
+        "naive preview clamps negative new gap",
+        "arbitrary console commands rejected",
+        "invalid imported data disables configuration export",
+        "invalid imported data clears stale commands",
+        "legacy share code decoded",
+        "chosen formula changes gap",
+        "third gap inverse selectable",
+        "height-aware formula changes length",
+        "difference view responds",
+        "zoom responds",
+        "empty numeric value rejected",
+        "candidate CFG downloads",
+        "report contains full 27-model weights",
+        "report does not fabricate native probability",
+        "report exposes explicit stopping reason",
+        "27 rows are inspectable",
+        "study routes lazily",
+        "945-case numerical study exposed",
+        "study table uses actual computed 539 count",
+        "corpus search responds",
+        "corpus pagination works",
+        "new mathematical extension visible",
+        "native-MathML notebook links present",
+        "manual generator retained",
+        "affine calibration retained",
+        "old PNG fit is shown",
+        "editing crop invalidates accepted result",
+        "image becomes frozen measured target",
+        "non-unique old cvars disclosed",
+        "native capture needs explicit attestation",
+        "cancel does not add native evidence",
+        "synthetic measurement ignored by native posterior",
+        "evidence kind disclosed",
+        "no horizontal page overflow at 390",
+        "three previews retained at 390",
+        "no horizontal page overflow at 768",
+        "three previews retained at 768",
+        "no JavaScript page errors"
+      ],
+      "mode": "in-memory UI; worker transport adapted; SHA-256 bridge",
+      "browser": "system Chromium via Playwright; Browser plugin unavailable",
+      "errors": [],
+      "nativeGameValidation": false
+    },
+    "manualChecks": {
+      "mode": "in-memory-local-sources",
+      "checks": 37,
+      "passed": [
+        "boot completes",
+        "donk default candidate",
+        "zero-thickness fixture preserved",
+        "alternate gap hypothesis changes candidate",
+        "manual candidate updates commands",
+        "manual status disclosed",
+        "reset candidate restores formula",
+        "script injection rejected",
+        "data-only config imported",
+        "unrepresentable range disclosed",
+        "empty input disables export",
+        "empty input remains blocked after resize",
+        "candidate downloads as cfg",
+        "download carries model warning",
+        "math report contains provenance and residuals",
+        "math notebook visible",
+        "bucket explorer computes 9px",
+        "audit has 56 rows",
+        "audit filter has seven heights",
+        "audit recomputes locally",
+        "empty measurements not invented",
+        "synthetic example clearly labeled",
+        "affine fit computes expected intercept",
+        "measurement export cannot masquerade as native evidence",
+        "scoped gap fit applies in workbench",
+        "applied fit retains synthetic provenance",
+        "stale measured scope disables export",
+        "restoring scope allows export",
+        "empty native candidate fails closed after resize",
+        "invalid measurement provenance rejected",
+        "PNG dimensions inspected locally",
+        "pixel coordinates inspectable",
+        "mobile workbench has no page overflow",
+        "mobile research has no page overflow",
+        "mobile evidence has no page overflow",
+        "mobile calibration has no page overflow",
+        "no uncaught browser errors"
+      ],
+      "limitations": "In-memory mode does not validate HTTP navigation or CSP delivery. PNG fixture is synthetic. No CS2 client was run."
+    },
+    "notebook": {
+      "mode": "static notebook DOM/MathML via in-memory browser",
+      "expressions": 305,
+      "chapters": 9,
+      "widths": [
+        390,
+        1440
+      ],
+      "noHorizontalPageOverflow": true
+    },
+    "viewports": [
+      {
+        "width": 1440,
+        "height": 1050
+      },
+      {
+        "width": 768,
+        "height": 900
+      },
+      {
+        "width": 390,
+        "height": 900
+      }
+    ],
+    "visualInspection": [
+      "Value-table hierarchy and literal cvar casing",
+      "Alignment, subdued palette and control typography",
+      "Old/direct/converted preview synchronization",
+      "Progressive math/scenario/evidence controls",
+      "Mobile no-horizontal-overflow and notebook MathML readability"
+    ],
+    "notVerified": [
+      "Real browser worker startup",
+      "Browser enforcement of HTTP/meta CSP",
+      "Real browser WebCrypto transport",
+      "Native CS2 client output",
+      "Remote Pages deployment"
+    ]
+  },
+  "mathDocumentation": {
+    "chapters": 9,
+    "words": 16192,
+    "renderedExpressions": 305
+  },
+  "nativeEvidence": {
+    "capturePairs": 0,
+    "nativeCorrectnessProbability": null
+  },
+  "remotePublished": false
+}

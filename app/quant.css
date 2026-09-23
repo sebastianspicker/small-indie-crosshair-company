@@ -1,0 +1,162 @@
+/* Converter-specific layout. Extends the existing UI primitives; no framework or assets. */
+.masthead { min-height: 78px; padding-block: 15px; }
+.brandmark { font-size: 36px; color: var(--muted); }
+.masthead nav a { font-size: 12px; }
+.local-indicator span { display: none; }
+main { max-width: 1380px; padding-inline: 32px; }
+.calc-heading { display: flex; align-items: center; justify-content: space-between; padding: 30px 0 20px; gap: 24px; }
+.calc-heading h1 { font-size: 28px; line-height: 1.25; font-weight: 540; letter-spacing: -.8px; }
+.calc-heading p { font-size: 13px; margin-top: 8px; }
+.calc-heading .snapshot { font: 10px/1.8 var(--mono); text-align: right; margin: 0; }
+.evidence-note { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; padding: 12px 0; border-block: 1px solid var(--line); font-size: 11px; }
+.evidence-note p { color: var(--ink); }
+.evidence-note span { color: var(--muted); }
+.evidence-note a { color: var(--muted); white-space: nowrap; }
+.quant-layout { display: grid; grid-template-columns: 276px minmax(0, 1fr); gap: 36px; margin: 28px 0 0; align-items: start; }
+.quant-input { padding-right: 27px; border-right: 1px solid var(--line); min-width: 0; }
+.quant-input h2, .quant-output h2 { font-size: 16px; font-weight: 570; letter-spacing: -.2px; }
+.quant-input label { font-size: 11px; }
+.quant-input input, .quant-input select { font-size: 12px; }
+.quant-input>button { width: 100%; margin-top: 8px; }
+.quant-input>details { margin-block: 20px; }
+.quant-input>details select, .quant-input>details input[type=search] { margin-top: 10px; }
+.quant-input .input-grid { margin-top: 15px; gap: 10px; }
+.quant-input .input-grid.triple { gap: 7px; }
+.quant-input .input-grid.triple label { font-size: 10px; }
+.quant-input .input-grid.triple input { padding-inline: 9px; }
+.quant-input input[type=number] { font-size: 14px; }
+.quant-checks { display: flex; gap: 18px; }
+.quant-checks .check { margin-top: 12px; font-size: 11px; }
+.quant-input textarea { font-size: 11px; min-height: 77px; }
+.input-hint { font-size: 10px; line-height: 1.65; }
+.source-footnote { font-size: 10px; line-height: 1.8; margin-top: 24px; }
+#q-input-status:empty { display: none; }
+.quant-output { min-width: 0; }
+.result-heading { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 16px; }
+.result-heading .export-actions { margin: 0; flex-wrap: nowrap; gap: 8px; }
+.result-heading .button { font-size: 11px; padding: 8px 12px; min-height: 36px; }
+.button.primary { background: #d7dfcf; border-color: #d7dfcf; color: #171c16; }
+.button.primary:hover:not(:disabled) { background: #e6eddf; }
+.button.secondary { background: #22282a; }
+.quant-model-select { display: grid; grid-template-columns: 83px minmax(0, 1fr); align-items: center; gap: 14px; margin-bottom: 17px; }
+.quant-model-select label { margin: 0; font-size: 11px; }
+.quant-model-select select { min-height: 35px; font-size: 11px; padding-block: 6px; }
+.value-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+.value-table th, .value-table td { text-align: right; border-bottom: 1px solid var(--line); padding: 12px 10px; }
+.value-table th:first-child { text-align: left; width: 39%; padding-left: 0; }
+.value-table thead th { font-size: 10px; font-weight: 500; color: var(--muted); padding-top: 0; text-transform: none; letter-spacing: 0; }
+.value-table tbody th { font-size: 12px; color: var(--ink); font-weight: 500; }
+.value-table code { display: block; font: 10px/1.6 var(--mono); color: var(--muted); overflow-wrap: anywhere; }
+.value-table td { font: 22px/1.5 var(--mono); font-variant-numeric: tabular-nums; color: var(--muted); }
+.value-table .converted-value { color: var(--accent); background: #1c2420; }
+.target-line { font: 10px/1.8 var(--mono); margin-top: 12px; }
+#q-status { color: var(--muted); font: 10px/1.7 var(--mono); margin: 10px 0 16px; }
+.quant-output>.warnings { padding: 0; }
+.quant-output>.warnings p { font-size: 11px; margin-bottom: 10px; }
+.quant-output>details { padding-top: 13px; margin: 14px 0; border-top: 1px solid var(--line); }
+.quant-output summary { font-size: 12px; color: var(--ink); }
+.quant-output details .button { width: auto; }
+.quant-output details p { line-height: 1.75; }
+#q-derivation-panel { border: 0; margin-block: 10px 0; padding: 0; }
+#q-derivation-panel summary { color: var(--muted); font-size: 11px; }
+#q-derivation .equation-line { padding: 12px 0; margin: 0; background: none; }
+#q-derivation table { font-size: 11px; }
+.quant-output .formula { font: 11px/1.8 var(--mono); max-height: 360px; overflow: auto; white-space: pre-wrap; overflow-wrap: anywhere; }
+.quant-output .table-scroll { max-height: 400px; }
+.quant-output .table-scroll table { font-size: 11px; }
+.quant-output .table-scroll th, .quant-output .table-scroll td { padding: 10px 7px; }
+.quant-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 21px 0 10px; }
+.quant-toolbar h2 { font-size: 13px; }
+.quant-toolbar .check { font-size: 10px; margin: 0; gap: 5px; }
+.quant-toolbar .toolbar-group { gap: 13px; }
+.quant-toolbar select { min-height: 27px; font-size: 10px; }
+.quant-previews { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.quant-preview { background: #111416; border: 1px solid #2c3134; border-radius: 2px; overflow: hidden; }
+.quant-preview figcaption { padding: 11px 11px 0; font-size: 11px; display: flex; justify-content: space-between; color: var(--ink); }
+.preview-index { color: #899397; font: 9px var(--mono); }
+.quant-preview canvas { height: 140px; width: 100%; }
+.quant-values { font: 10px/1.6 var(--mono); padding: 0 11px 6px; overflow-wrap: anywhere; color: var(--ink); }
+.quant-preview .small { font-size: 10px; margin: 0; padding: 0 11px 11px; line-height: 1.6; }
+#q-renderer-note { font-size: 10px; margin: 10px 0 0; }
+.quant-metrics { display: grid; grid-template-columns: 1fr 1fr 1.15fr; gap: 18px; padding: 17px 0 6px; }
+.quant-metrics>div { display: flex; flex-direction: column; gap: 4px; }
+.quant-metrics span { font-size: 10px; color: var(--muted); }
+.quant-metrics strong { color: var(--ink); font: 17px/1.5 var(--mono); font-weight: 400; }
+.quant-metrics small { color: var(--muted); font-size: 9px; }
+.quant-output textarea { font-size: 11px; }
+#q-feedback h3 { margin-top: 18px; font-size: 13px; }
+#q-feedback p { margin-block: 12px; }
+#q-feedback input[type=file] { font-size: 10px; }
+.quant-output .export-actions { gap: 9px; }
+.image-dialog { border-radius: 4px; }
+#quant[data-busy=true] .preview-panel { opacity: .55; }
+#quant[data-result=error] #q-status { color: var(--amber); }
+footer { max-width: 1316px; padding: 22px 0; margin: 36px auto 0; font-size: 11px; }
+@media (max-width: 1100px) {
+  .quant-layout { grid-template-columns: 248px minmax(0, 1fr); gap: 24px; }
+  .quant-input { padding-right: 20px; }
+  .quant-previews { gap: 8px; }
+  .value-table th:first-child { width: 38%; }
+  .quant-values { font-size: 9px; }
+}
+@media (max-width: 820px) {
+  main { padding-inline: 22px; }
+  .quant-layout { grid-template-columns: 1fr; gap: 25px; }
+  .quant-input { border: 0; padding: 0 0 20px; border-bottom: 1px solid var(--line); }
+  .quant-input>details, .quant-input>p.source-footnote { margin-block: 13px; }
+  .quant-input .input-grid { margin-top: 10px; }
+  .quant-input>button { width: auto; min-width: 140px; }
+  .quant-input>textarea { min-height: 65px; }
+  .calc-heading { padding-top: 24px; }
+  .calc-heading h1 { font-size: 26px; }
+  .quant-preview canvas { height: 130px; }
+  .evidence-note { align-items: flex-start; }
+  footer { margin-inline: 22px; }
+}
+@media (max-width: 540px) {
+  main { padding-inline: 17px; }
+  .masthead { padding: 16px 17px 10px; gap: 13px; }
+  .masthead nav { gap: 17px; flex-wrap: wrap; }
+  .masthead nav a { padding: 4px 0; font-size: 10px; }
+  .calc-heading .snapshot { display: none; }
+  .calc-heading h1 { font-size: 25px; }
+  .calc-heading p { font-size: 12px; }
+  .evidence-note { display: block; font-size: 10px; line-height: 1.8; }
+  .evidence-note a { display: inline-block; margin-top: 5px; }
+  .quant-layout { margin-top: 20px; }
+  .result-heading { flex-wrap: wrap; margin-bottom: 14px; gap: 10px; }
+  .result-heading .export-actions { width: 100%; }
+  .result-heading .button { flex: 1; font-size: 11px; padding: 8px; }
+  .quant-model-select { grid-template-columns: 1fr; gap: 6px; }
+  .quant-model-select select { font-size: 10px; }
+  .value-table td { font-size: 20px; padding: 12px 6px; }
+  .value-table th:first-child { width: 38%; }
+  .value-table th { padding-inline: 5px; }
+  .value-table code { font-size: 8.5px; }
+  .value-table thead th { font-size: 9px; }
+  .value-table tbody th { font-size: 11px; }
+  .quant-toolbar { align-items: center; gap: 6px; }
+  .quant-toolbar h2 { font-size: 12px; }
+  .quant-toolbar .toolbar-group { gap: 7px; }
+  .quant-toolbar .check { font-size: 9px; gap: 3px; }
+  .quant-toolbar input[type=checkbox] { width: 13px; height: 13px; }
+  .quant-previews { gap: 6px; }
+  .quant-preview canvas { height: 110px; }
+  .quant-preview figcaption { font-size: 9px; padding: 9px 7px 0; }
+  .preview-index { display: none; }
+  .quant-values { font-size: 9px; padding-inline: 7px; }
+  .quant-preview .small { font-size: 9px; padding-inline: 7px; }
+  .quant-metrics { gap: 12px; grid-template-columns: 1fr 1fr; }
+  .quant-metrics>div:last-child { grid-column: 1 / -1; display: grid; grid-template-columns: 1fr auto; }
+  .quant-metrics>div:last-child strong { grid-column: 2; grid-row: 1 / 3; align-self: center; }
+  .quant-metrics strong { font-size: 16px; }
+  #q-feedback .input-grid { grid-template-columns: 1fr; }
+  .quant-output .table-scroll table { min-width: 480px; }
+  #q-derivation .table-scroll table { min-width: 365px; }
+}
+
+#q-values-table th code { text-transform: none; }
+
+/* Shared route headings retain a research-tool hierarchy rather than a marketing hero. */
+.page-heading h1 { font-size: clamp(28px, 3.4vw, 38px); line-height: 1.15; letter-spacing: -.03em; }
+.page-heading { margin-bottom: 30px; }
