@@ -50,6 +50,11 @@ export function initResearch() {
     ['New native pixel snapping / parity / migration','Unverified'],['Transverse centering in this preview','Illustrative convention'],
     ['Custom outline equivalence / dynamic motion','Outside the implemented equivalence claim'],
   ]),el('p',{},'A low test error only validates the thing the test observes. A code regression test cannot validate a renderer that was never executed.')));
+  root.append(el('section',{class:'math-sheet'},el('h2',{},'What machine learning can and cannot do here'),
+    el('p',{},'We trained a small dependency-free learned model to imitate the exact solver. Its labels are the solver’s own output, not game measurements. It is fast, but on held-out settings it reproduces the exact solver’s full tuple only about 11.6% of the time, so it is not wired into the app. The exact solver stays authoritative.'),
+    el('pre',{class:'formula'},'training: 5000 samples · 607 distinct legacy settings\nsplit: group-disjoint by setting signature → 3991 train / 1009 test\nexact full tuple: learned 0.11596 vs naive 0.03568\nexact per dimension: length 0.334 · thickness 0.589 · gap 0.403\nMAE (px): length 1.269 · thickness 0.667 · gap 1.062 vs naive 2.610\nforward surrogate held-out MAE: 0.392 / 0.286 / 0.540 / 0.540 px\nspeed: ~0.4 µs learned vs ~1.1 ms exact p50 (~2500×, npm run bench:emulator)\nprovenance.speedGate = "closed-not-exact-equivalent" · nativeEvidence = false'),
+    el('p',{},'Two things follow. First, a model trained on our equations can only measure fidelity to our equations; with zero old/new capture pairs it cannot show anything about Valve’s renderer. Second, speed is not enough. A result that is wrong on the full tuple most of the time is not a safe substitute for the exact inverse, so the learned pass and the forward surrogate are both left out of inference.'),
+    docLink('math/10-learned-emulator.md','10 · The learned emulator, its metrics and the closed speed gate')));
   root.append(el('div',{class:'reading-list'},el('h2',{},'The complete research notebook'),
     docLink('math/01-legacy-geometry.md','01 — Old geometry and binary32'),
     docLink('math/02-conversion-and-identifiability.md','02 — Conversion, inverse problems and zero thickness'),

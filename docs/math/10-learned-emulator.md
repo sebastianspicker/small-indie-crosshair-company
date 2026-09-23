@@ -1,0 +1,193 @@
+# 10 — A learned emulator: solver distillation and the closed speed gate
+
+**Implementation:** `quant-emulator-v1`, snapshot 2026-09-23. **Native renderer
+evidence shipped:** zero capture pairs. This chapter documents a dependency-free
+learned emulator that was trained, measured and then deliberately **not** wired
+into the application. It distills the project's own declared solver; it is not
+game data and it does not improve native accuracy. The corpus, historical
+binary32 arithmetic, 27-model family and target build are unchanged.
+
+The artifact is `data/quant-emulator.json`, its canonical fingerprint is
+`1027764490`, and it is trained by `scripts/train-quant-emulator.mjs`
+(`npm run emulator:train`). The math and parsing live in `lib/quant/emulator.js`.
+Every number below is reproducible from those files under Node.js 22.12+.
+
+## 1. What was learned, and what it is not
+
+The experiment asks a narrow question: can a small, dependency-free model
+approximate the project's exact automatic inverse well enough — and fast
+enough — to stand in for it? Two separate models were trained:
+
+- An **inverse emulator** that maps a legacy setting plus a conversion target to
+  the tuple the exact solver would return.
+- A **forward emulator** that maps a declared new tuple plus height and model to
+  the pixels the declared `forward()` renderer would draw.
+
+Both are pure functions of their artifact. Neither was trained on a CS2
+capture, and neither is exposed in the runtime inference path. The inverse
+emulator **distills the declared solver**: its labels are the solver's own
+output, so its ceiling is solver fidelity, not renderer truth. The forward
+emulator is a **research surrogate** for the declared renderer, evaluated
+offline only.
+
+This distinction is the point of the chapter. A model that reproduces the
+declared solver has learned the project's equations, not Valve's.
+
+## 2. Training-data provenance: labels from the declared solver
+
+Labels were generated in-repo, not observed:
+
+- For each candidate legacy setting and conversion target, the label is
+  `infer({ settings, options, records: [] }).chosen.native`. That is the same
+  exact automatic solver the app ships. No game process, screenshot or native
+  capture contributes to the label set.
+- The candidate grid combines real legacy parameter values from the corpus
+  (style 4, no weapon gap) with a deterministic synthetic grid of sizes,
+  thicknesses, gaps, dot/T flags, height pairs and goals. Heights are
+  `720, 768, 960, 1080, 1440, 2160`; the height pairs include same-height and
+  cross-height conversions; the goals are `pixels` and `screen`.
+- The grid is capped at 5000 samples and subsampled deterministically (sorted
+  keys, then a seeded Fisher-Yates shuffle). Training consumed **5000 samples
+  covering 607 distinct legacy setting signatures**, with **0 excluded** by the
+  solver's validation. The run is fully deterministic: fixed seeds, no clock
+  and no `Math.random` in the artifact.
+
+Because the labels are self-generated, the artifact can never certify anything
+about the native renderer. Its `provenance.labels` field says exactly this, and
+`provenance.nativeEvidence` is `false`.
+
+## 3. The group-disjoint split
+
+Held-out evaluation must not reward memorizing a specific setting. The split is
+therefore by **setting signature**, not by row:
+
+```text
+isTest(sample) = hash(signature(sample.settings)) % 5 === 0
+```
+
+Every conversion derived from the same legacy setting lands on the same side of
+the split. That produced **3991 training samples and 1009 held-out test
+samples** across 607 distinct settings. A setting whose signature hashes to a
+test bucket is absent from training entirely, so a copied lookup cannot inflate
+the test score. The split rule is recorded in the artifact's `training` block.
+
+## 4. Held-out fidelity metrics
+
+On the 1009 group-disjoint test samples the learned inverse reproduced the exact
+solver's full tuple only about **11.6%** of the time. That is the measured
+result and the reason the gate below is closed.
+
+| Quantity | Learned | Naive direct assignment |
+| --- | --- | --- |
+| Exact full tuple rate | 0.11596 (11.6%) | 0.03568 (3.57%) |
+| Exact length rate | 0.334 | — |
+| Exact thickness rate | 0.589 | — |
+| Exact gap rate | 0.403 | — |
+| Length MAE (px) | 1.269 | (see combined naive MAE) |
+| Thickness MAE (px) | 0.667 | (see combined naive MAE) |
+| Gap MAE (px) | 1.062 | (see combined naive MAE) |
+| Combined naive MAE (px) | — | 2.610 |
+
+The learned model beats the naive direct assignment on both exact-tuple rate and
+aggregate error, so it is a real regression fit rather than noise. It is still
+wrong on the full tuple roughly seven times out of eight. Per-dimension exact
+rates show why: length is the hardest coordinate (0.334), while thickness is
+recovered about 59% of the time. The MAE columns are mean absolute errors from
+`evaluateEmulator` in `lib/quant/emulator.js`; the naive baseline comes from the
+project's existing `naiveAssignment` helper and is included in the artifact as
+`naiveExactTupleRate` and `naiveMae`. These are fidelity numbers against the
+solver, not accuracy numbers against the game.
+
+## 5. The forward research surrogate
+
+The forward block learns the declared `forward()` renderer. The forward mapping
+is multiplicative in `size × ratio`, so a sum of depth-1 stumps is additive and
+cannot represent it; this block uses depth-3 boosted trees instead. On **2822
+held-out samples** (a height-1440 slice selected by `hash(forwardKey) % 5 === 0`)
+its mean absolute error is:
+
+| Output | Held-out MAE (px) |
+| --- | --- |
+| Length | 0.392 |
+| Width | 0.286 |
+| Near edge | 0.540 |
+| Far edge | 0.540 |
+
+All four are below one pixel. That makes the forward block useful for offline
+sensitivity experiments — exploring a declared model cheaply — but it remains a
+surrogate for a reconstruction the project already declares, not a discovery
+about Valve's renderer. It is not wired into inference.
+
+## 6. Measured speed and the speed gate
+
+The motivation for an emulator is speed. `npm run bench:emulator` compares the
+same samples against both paths. The measured single-call cost is:
+
+```text
+predictEmulator (learned):     ~0.4 µs mean   (npm run bench:emulator)
+exact infer core:              ~1.1 ms p50    (npm run bench:emulator)
+shipped inference benchmark:   ~1.4 ms p50    (npm run bench:quant, 40 cases)
+```
+
+The learned pass is therefore roughly **2500× faster** than the exact core on the
+same machine (about 0.43 µs versus about 1.08 ms p50 in the committed
+`npm run bench:emulator` run). That is a real, measured difference, not an
+estimate; it is also local empirical timing, not a deterministic CI figure or a
+latency promise, because timings vary with hardware and load.
+
+A speedup only matters if the fast path is interchangeable with the exact one.
+The artifact records:
+
+```text
+provenance.speedGate = "closed-not-exact-equivalent"
+```
+
+The gate is closed because the learned inverse reproduces the exact solver's
+tuple only about 11.6% of the time (section 4). A conversion tool cannot silently
+substitute a result that is wrong on the full tuple most of the time, however
+fast it is. Consequently:
+
+- The exact finite-domain solver remains authoritative. It is the only inverse
+  the app runs.
+- The learned inverse is **not wired into the app**, and the Simple view does
+  **not** show a learned estimate.
+- The forward surrogate is **not wired into inference** either.
+
+No ML claim is made about improving the conversion. The artifact exists so that
+the experiment, its numbers and its rejection are inspectable rather than
+assumed.
+
+## 7. Why repository-only data cannot identify the native renderer
+
+Fidelity to the solver is not a path to renderer truth. The project ships zero
+native old/new capture pairs, and no amount of self-generated labels changes
+that. This is the same identification boundary developed in
+[chapter 06](06-statistical-inference.md) and
+[chapter 02](02-conversion-and-identifiability.md): the 138-record corpus
+contains realistic **old** inputs and zero observed **new** outputs. A model
+trained on labels from the declared solver learns the declared equations; it
+cannot learn an equation the repository never observed. Adding more old codes,
+more synthetic grids or more training rounds fits the hypothesis better without
+touching the unknown.
+
+The forward surrogate sharpens the same point from the other side. It can
+approximate `forward()` to well under a pixel, yet `forward()` itself is one of
+27 competing hypotheses about the new renderer. A low error against a
+hypothesis is not evidence that the hypothesis is true.
+
+## 8. What would change this
+
+The gate would reopen only with **native captures** — original old/new game
+pairs, or direct measurements of the native renderer — with recorded conditions
+and provenance, reviewed under the project's evidence policy. Those labels, not
+solver labels, would let a learned model be scored against the renderer instead
+of against the project's own equations. Until such data exists, the learned
+emulator stays a documented research artifact: deterministic, fast, measured,
+and correctly left out of the conversion path.
+
+Relevant implementation modules are `lib/quant/emulator.js` and
+`scripts/train-quant-emulator.mjs`; the committed artifact is
+`data/quant-emulator.json`; regression coverage is `tests/emulator.test.mjs`.
+Source and evidence boundaries remain in the
+[source ledger](../research/quant-sources.md) and the
+[formula history](../research/formula-evolution.md).

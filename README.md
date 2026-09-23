@@ -25,6 +25,11 @@ npm run dev
 Open **http://127.0.0.1:4173**. Use a web server rather than opening `index.html`
 as a file: the app loads modules, local data, and a worker.
 
+The app opens in the **Simple** view, which keeps only the essential controls.
+Select **Advanced** in the masthead to open the full **Expert** lab with the
+27-model table, derivations, search trace, evidence and measurements. Mode is
+held only in the page, not saved to your device.
+
 1. Paste a legacy v1 share code or old `cl_crosshair...` settings. You can also
    enter values, choose a published preset, or measure an original PNG.
 2. Set the old and new game heights to the resolutions you actually used.
@@ -40,7 +45,9 @@ export uses cvar commands.
 ## Screenshot tour
 
 These are screenshots of the local app with bundled settings and synthetic
-previews. They are not captures from CS2.
+previews. They are not captures from CS2. The tour was captured in the **Expert**
+view; the app now opens in the **Simple** view, which you can expand with the
+masthead **Advanced** button.
 
 ### 1. Convert and compare
 
@@ -111,9 +118,15 @@ verification, and builds have no third-party package dependencies.
 ```sh
 npm run verify              # syntax, research, tests, archive parity, static build
 npm run bench:quant         # local solver timing
+npm run bench:emulator      # learned-vs-exact timing (research only)
 npm run research:quant      # regenerate the corpus study
 npm run research:reproduce  # verify archive hashes and JS/Python parity
+npm run emulator:train      # retrain the research-only learned emulator
 ```
+
+The learned emulator is a research artifact only. It is trained offline on labels
+from the declared solver, and it measures fidelity to that solver, not accuracy
+in CS2. It is not part of the app's conversion path.
 
 Optional browser checks and screenshot capture are described in
 [testing](docs/engineering/testing.md). For changes and review guidance, see

@@ -22,6 +22,8 @@
     "corpus:build": "node scripts/corpus.mjs",
     "research:quant": "node scripts/corpus.mjs && node scripts/quant-study.mjs",
     "bench:quant": "node scripts/benchmark-quant.mjs",
+    "emulator:train": "node scripts/train-quant-emulator.mjs",
+    "bench:emulator": "node scripts/benchmark-emulator.mjs",
     "test:quant-browser": "python3 tests/quant_browser.py",
     "audit:complexity": "node --expose-internals scripts/complexity.mjs"
   }

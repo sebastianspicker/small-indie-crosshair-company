@@ -3,9 +3,10 @@ import { DEFAULT_SETTINGS, parseLegacyCFG } from '../../lib/cfg.js';
 import { rgba } from '../../lib/conversion.js';
 import { copy, download } from '../dom.js';
 import { exportQuantCFG } from '../../lib/quant/export.js';
-import { clearResult, renderResult, renderPreviews, renderDerivation, renderScenarios, renderTrace } from './presentation.js';
+import { clearResult, renderResult, renderPreviews, renderDerivation, renderScenarios, renderTrace, renderSimple } from './presentation.js';
 import { bindSources, fillPresets } from './sources.js';
 import { bindFeedback } from './feedback.js';
+import { toggleMode } from '../mode.js';
 
 const SETTING_KEYS = Object.keys(DEFAULT_SETTINGS);
 export class QuantController {
@@ -20,7 +21,7 @@ export class QuantController {
     authoredHeight: this.get('q-new-height').valueAsNumber, goal: this.get('q-goal').value }; }
 
   start() {
-    fillPresets(this); bindSources(this); bindFeedback(this); this.bindOutput();
+    fillPresets(this); bindSources(this); bindFeedback(this); this.bindOutput(); this.bindSimple();
     this.observer = new ResizeObserver(() => { cancelAnimationFrame(this.frame); this.frame = requestAnimationFrame(() => this.refresh()); });
     this.observer.observe(this.view.root.querySelector('.quant-previews'));
     this.setSettings(this.records[0]); this.schedule();
@@ -40,6 +41,23 @@ export class QuantController {
     });
   }
 
+  bindSimple() {
+    const pairs = [
+      ['qs-size', 'q-size', 'input', 'value'], ['qs-thickness', 'q-thickness', 'input', 'value'], ['qs-gap', 'q-gap', 'input', 'value'],
+      ['qs-old-height', 'q-old-height', 'input', 'value'], ['qs-new-height', 'q-new-height', 'input', 'value'],
+      ['qs-goal', 'q-goal', 'change', 'value'], ['qs-color', 'q-color', 'input', 'value'], ['qs-alpha', 'q-alpha', 'input', 'value'],
+      ['qs-dot', 'q-dot', 'change', 'checked'], ['qs-t', 'q-t', 'change', 'checked'],
+    ];
+    for (const [from, to, event, prop] of pairs) this.on(from, event, () => {
+      this.get(to)[prop] = this.get(from)[prop];
+      this.get(to).dispatchEvent(new Event(event));
+    });
+    this.on('qs-load', 'click', () => { this.get('q-import').value = this.get('qs-import').value; this.importText(); });
+    this.on('qs-copy', 'click', () => copy(this.get('q-cfg').value, this.get('qs-status')));
+    this.on('qs-download', 'click', () => { if (this.state.result) download('small-indie-crosshair.cfg', exportQuantCFG(this.state.result), 'text/plain'); });
+    this.on('qs-advanced', 'click', () => toggleMode());
+  }
+
   setSettings(values) {
     this.state.settings = Object.fromEntries(SETTING_KEYS.map(key => [key, values[key] ?? DEFAULT_SETTINGS[key]]));
     this.clearImageTarget();
@@ -48,6 +66,10 @@ export class QuantController {
     const color = rgba(this.state.settings);
     this.get('q-color').value = '#' + color.rgb.map(v => v.toString(16).padStart(2, '0')).join('');
     this.get('q-alpha').value = color.alpha;
+    for (const id of ['size', 'thickness', 'gap', 'old-height', 'new-height', 'goal', 'color', 'alpha'])
+      this.get(`qs-${id}`).value = this.get(`q-${id}`).value;
+    this.get('qs-dot').checked = this.get('q-dot').checked;
+    this.get('qs-t').checked = this.get('q-t').checked;
   }
   clearImageTarget() { this.state.targetOverride = null; this.state.targetMask = null; this.state.screenshotMeta = null; }
   readSettings() {
@@ -77,7 +99,7 @@ export class QuantController {
       if (ticket === this.generation && !this.closed) this.fail(error);
     }
   }
-  refresh() { renderPreviews(this.view, this.state.result, this.state.targetMask); }
+  refresh() { renderPreviews(this.view, this.state.result, this.state.targetMask); renderSimple(this.view, this.state.result); }
 
   renderDetails() {
     const r = this.state.result;
@@ -99,9 +121,9 @@ export class QuantController {
       const text = this.get('q-import').value.trim();
       const values = text.startsWith('CSGO-') ? decodeLegacy(text) : parseLegacyCFG(text, this.state.settings).config;
       this.setSettings(values); this.state.source = { type: 'user-input' };
-      this.get('q-input-status').textContent = 'Old settings loaded.';
+      this.get('q-input-status').textContent = this.get('qs-input-status').textContent = 'Old settings loaded.';
       this.get('q-provenance').replaceChildren(); this.schedule();
-    } catch (error) { this.get('q-input-status').textContent = error.message; this.fail(error); }
+    } catch (error) { this.get('q-input-status').textContent = this.get('qs-input-status').textContent = error.message; this.fail(error); }
   }
 
   close() {

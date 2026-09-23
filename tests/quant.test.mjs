@@ -59,3 +59,17 @@ test('old minimum and negative gap buckets preserve truncation semantics',()=>{c
 test('domain coverage deduplicates old parameter signatures',()=>{const a=localSupport(settings,records),b=localSupport(settings,[...records,...records]);assert.equal(a.nearbyGeometryGroups,b.nearbyGeometryGroups);assert.equal(groupedCorpus(records).length,50);});
 test('deduplication preserves transitive dependence links before averaging',()=>{const x=observation(),y={...x,id:'renamed',captureGroup:'bridge'},z=observation({id:'other-image',captureGroup:'bridge',captureSha256:'b'.repeat(64)});const p=posterior([x,y,z]);assert.equal(p.calibrationGroups,1);assert.equal(p.duplicateNativeMeasurementsIgnored,1);});
 test('measurement key is invariant to JSON key order and unused metadata',()=>{const x=observation(),n=x.native,o=x.observed,y={...x,id:'json-order',native:{authoredHeight:n.authoredHeight,gap:n.gap,thickness:n.thickness,length:n.length},observed:{far:o.far,near:o.near,width:o.width,length:o.length,unused:'metadata'}};assert.deepEqual(posterior([x]).weights,posterior([x,y]).weights);assert.equal(posterior([x,y]).duplicateNativeMeasurementsIgnored,1);});
+test('positive legacy thickness resolved to the zero branch is disclosed',()=>{
+  const r=infer({settings:{...settings,thickness:.5},options:{oldHeight:1080,currentHeight:2160,authoredHeight:1080,goal:'pixels'}});
+  assert.equal(r.chosen.native.thickness,0);
+  assert.ok(r.warnings.some(w=>/zero-thickness branch/.test(w)));
+  assert.match(exportQuantCFG(r),/zero-thickness branch/);
+});
+test('zero-branch warning tracks the chosen branch and skips a literal old zero',()=>{
+  const literal=infer({settings:{...settings,thickness:0},options:{oldHeight:1080,currentHeight:2160,authoredHeight:1080,goal:'pixels'}});
+  assert.equal(literal.chosen.native.thickness,0);
+  assert.ok(!literal.warnings.some(w=>/zero-thickness branch/.test(w)));
+  const positive=infer({settings:{...settings,thickness:1},options:{oldHeight:1080,currentHeight:1080,authoredHeight:1080,goal:'pixels'}});
+  assert.ok(positive.chosen.native.thickness>0);
+  assert.ok(!positive.warnings.some(w=>/zero-thickness branch/.test(w)));
+});

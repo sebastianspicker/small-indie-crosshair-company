@@ -1,7 +1,7 @@
 # 02 — Conversion, inverse models and identifiability
 
 **Status:** proposed, conditional post-update conversion. **Native validation:** none.
-**Code:** `lib/conversion.js`, version `conditional-static-v3`.
+**Code:** `lib/conversion.js`, version `conditional-static-v4`.
 **Build inventory:** [S03](../research/source-ledger.md#s03-new-build-inventory).
 
 ## 1. Separate four coordinate systems

@@ -35,9 +35,14 @@ or read the source chapters on GitHub:
 | [07 — Image analysis](math/07-image-inverse-and-feedback.md) | What can a screenshot tell us? |
 | [08 — Corpus study](math/08-expanded-corpus-study.md) | What does the historical input benchmark measure? |
 | [09 — Current solver](math/09-solver-and-integrity.md) | How do joint search, shape loss, and evidence checks work? |
+| [10 — Learned emulator](math/10-learned-emulator.md) | Can a small learned model replace the exact solver, and why was it rejected? |
 
-Chapter 09 updates the earlier optimizer descriptions. Prior derivations remain
-available so changes can be traced through the [formula history](research/formula-evolution.md).
+Chapter 09 updates the earlier optimizer descriptions. Chapter 10 documents a
+dependency-free learned emulator that **distills the declared solver**; its labels
+are self-generated and it is **not native evidence**. It was measured, found to
+reproduce the exact solver's tuple only about 11.6% of the time, and left out of
+the conversion path. Prior derivations remain available so changes can be traced
+through the [formula history](research/formula-evolution.md).
 The [source ledger](research/quant-sources.md) records provenance and limitations.
 
 ## Evidence labels

@@ -21,6 +21,15 @@ cannot silently flow into a native validation claim.
 | `worker-client.js` | Request IDs, deadlines, error handling and disposal |
 | `converter.js` | Load the corpus, start the worker, and connect the converter UI |
 | `corpus.js` (app) | Paginated corpus and group-aware results; no model fitting in the UI |
+| `emulator.js` (research-only) | Dependency-free learned inverse/forward emulators; not in the runtime inference path |
+| `train-quant-emulator.mjs` (research-only) | Deterministic offline training of the emulator artifact from solver labels |
+
+`lib/quant/emulator.js` and `scripts/train-quant-emulator.mjs` are research
+only. They are invoked by `npm run emulator:train` to regenerate
+`data/quant-emulator.json`; the browser never loads them and the exact solver
+remains the sole runtime inverse. The artifact's `provenance.speedGate` is
+`closed-not-exact-equivalent`, so no learned estimate is shown in the app. See
+[chapter 10](../math/10-learned-emulator.md).
 
 Static source facts live in `research/corpus/`. `scripts/corpus.mjs`
 verifies the pinned archive transcription, checks every legacy checksum,
@@ -28,6 +37,20 @@ retains original date/resolution uncertainty, and produces versioned data.
 `scripts/quant-study.mjs` performs deterministic group-aware experiments.
 The immutable v0.1.0 archive and its independent Python reproduction remain
 separate.
+
+## Simple and Expert modes
+
+The converter UI has two modes on `<html data-mode="simple|expert">`, toggled by
+the masthead `Advanced` button and implemented in `app/mode.js`. **Simple is the
+default**: it offers a paste box or size/thickness/gap, old and new heights, a
+"what stays the same" goal, an appearance row, the proposed length/thickness/gap,
+two previews, and Copy/Download. The main nav shows only **Convert**. **Expert**
+exposes the full lab (27-model table, derivations, search trace, evidence and
+measurements); deep links to `#corpus`, `#research`, `#workbench`, `#calibration`
+or `#evidence` force Expert mode. Mode is stored only in the DOM, not in
+localStorage or IndexedDB, because the project promises no persistence. Existing
+element IDs and exports are unchanged, so the manual tool, expert routes and
+existing documentation remain valid.
 
 ## Responsiveness
 
@@ -71,7 +94,7 @@ unbounded main-thread production solver.
 
 ## Readable mathematics without runtime dependencies
 
-`docs/notebook.html` contains all nine chapters with native static MathML.
+`docs/notebook.html` contains all ten chapters with native static MathML.
 `scripts/notebook.mjs` renders the project's bounded Markdown subset and
 uses a checked-in, content-addressed equation cache. Builds fail on missing
 or invalid equation entries rather than silently displaying stale formulas.

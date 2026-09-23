@@ -109,6 +109,16 @@ Used to explain why synthetic old masks cannot supply guaranteed coverage
 for a different native-output population. No conformal method is currently
 implemented, calibrated or advertised as a product feature.
 
+## Q11 — Learned-emulator labels (self-generated, not a source)
+
+The learned emulator artifact `data/quant-emulator.json` has no external source.
+Its training labels are produced by this project's own declared automatic solver
+(`infer`) over a deterministic grid of legacy settings; its forward block learns
+the project's declared `forward()` renderer. It therefore distills the repository's
+hypotheses and is **not** an independent observation of the native renderer. The
+project ships zero native old/new capture pairs, so no emulator metric is native
+accuracy and `provenance.nativeEvidence` is `false`. See chapter 10.
+
 ## Rights and independence
 
 The new corpus is a transcription of factual associations (names, codes,

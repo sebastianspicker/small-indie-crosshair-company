@@ -24,7 +24,7 @@ For a new tuple, the declared legal integer domain is:
 \mathcal D=\{0,\ldots,255\}\times\{0,\ldots,31\}\times\{0,\ldots,128\}.
 \]
 
-These coordinates are new length, thickness and gap. The authored height is fixed during each solve. Literal old thickness zero restricts the thickness coordinate to zero for non-image inputs, preserving that semantic branch even when the requested screen-relative target conflicts with it. An inferred one-pixel image thickness is not evidence of a literal old zero, so image targets do not impose that restriction.
+These coordinates are new length, thickness and gap. The authored height is fixed during each solve. Literal old thickness zero restricts the thickness coordinate to zero for non-image inputs, preserving that semantic branch even when the requested screen-relative target conflicts with it. An inferred one-pixel image thickness is not evidence of a literal old zero, so image targets do not impose that restriction. When a positive old thickness is matched only by the stored zero at a large scale, the automatic report discloses the zero-thickness branch instead of exporting it silently (see the [formula history](../research/formula-evolution.md)).
 
 The historical renderer is still a source-based reconstruction; the 27 new renderers remain competing assumptions. Optimization answers what a declared model would require, not which model Valve uses.
 
@@ -195,5 +195,13 @@ This is not background research after a user closes the app. The worker is a loc
 The numerical inverse is more rigorous on its declared domain. Shape scoring is exact for the documented binary-cell model and independent of synthetic preview cropping. The statistical update is more resistant to outliers and duplicate/provenance mistakes. The UI makes raw settings, direct assignment, proposed values, modeled residuals and uncertainty easier to inspect.
 
 What did not change is the evidentiary boundary. Software tests establish implementation agreement with these definitions. Benchmarks measure this implementation on a particular machine. Neither is a CS2 capture. More precise mathematics can make uncertainty clearer; it cannot replace the missing native observations.
+
+The exact finite-domain inverse remains the runtime path. A dependency-free
+learned distillation of that inverse was trained, measured and rejected as a
+substitute: it reproduced the exact solver's tuple only about 11.6% of the time,
+so the artifact records a closed speed gate and is not wired into the app. It
+also distills the declared solver rather than observing the game, so it adds no
+native evidence. The experiment and its numbers are documented in
+[chapter 10](10-learned-emulator.md).
 
 Relevant implementation modules are `lib/quant/inverse.js`, `visual.js`, `selection.js`, `evidence.js`, `observations.js`, `lib/pixel-shape.js` and the screenshot component extractor. Regression tests are in `tests/solver-v5.test.mjs` and `tests/worker-client.test.mjs`. The fixed source/data provenance remains in the [source ledger](../research/quant-sources.md) and [formula history](../research/formula-evolution.md).

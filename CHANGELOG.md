@@ -8,6 +8,15 @@
 - Cache repeated model lookups and remove duplicate input validation.
 - Simplify the app and docs; add a reproducible README screenshot tour.
 - Keep local files and credentials out of Git and the Pages build.
+- Disclose when a positive legacy thickness resolves to the automatic zero-thickness
+  branch instead of silently exporting `cl_crosshair_thickness 0`.
+- Make **Simple** the default converter view (import, values, resolution, appearance,
+  proposed values, two previews, copy/download) and move the full lab behind an
+  **Advanced** Expert mode; mode is DOM-only with no persistence.
+- Add a dependency-free learned-emulator research artifact (`npm run emulator:train`).
+  It distills the declared solver on self-generated labels, records
+  `speedGate: "closed-not-exact-equivalent"` at ~11.6% held-out exact-tuple fidelity,
+  ships zero native evidence, and is not wired into the app or its Simple view.
 
 ## 0.3.0 — 2026-09-23
 

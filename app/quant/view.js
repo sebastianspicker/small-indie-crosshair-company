@@ -9,6 +9,45 @@ const field = (id, label, type, attrs = {}) => el('div', {}, el('label', { for: 
 const check = (id, label) => el('label', { class: 'check' }, el('input', { id, type: 'checkbox' }), label);
 const option = (value, name) => el('option', { value }, name);
 const status = id => el('p', { id, class: 'small', role: 'status' });
+const simpleField = (id, label, attrs) => el('div', {}, el('label', { for: id }, label), el('input', { id, ...attrs }));
+const simpleValue = (id, label) => el('div', {}, el('span', { class: 'simple-label' }, label), el('span', { id, class: 'simple-value' }, '—'));
+
+function simplePanel() {
+  return el('section', { id: 'quant-simple', class: 'quant-simple', 'aria-label': 'Simple crosshair conversion' },
+    el('div', { class: 'simple-intro' }, el('h2', {}, 'Convert a crosshair'),
+      el('p', { class: 'small' }, 'Paste an old code or edit the values. Advanced options open the full lab.')),
+    el('div', { class: 'simple-card' }, el('h3', {}, '1 · Import'),
+      el('label', { for: 'qs-import' }, 'Share code or console values'),
+      el('textarea', { id: 'qs-import', rows: 2, maxlength: 32768, spellcheck: false, placeholder: 'CSGO-… or cl_crosshairsize 2' }),
+      el('button', { id: 'qs-load', class: 'button secondary' }, 'Load crosshair'), status('qs-input-status')),
+    el('div', { class: 'simple-card' }, el('h3', {}, '2 · Values'),
+      el('div', { class: 'input-grid triple' },
+        simpleField('qs-size', 'Size', { type: 'number', min: 0, max: 10000, step: 'any' }),
+        simpleField('qs-thickness', 'Thickness', { type: 'number', min: 0, max: 10000, step: 'any' }),
+        simpleField('qs-gap', 'Gap', { type: 'number', min: -128, max: 128, step: 'any' }))),
+    el('div', { class: 'simple-card' }, el('h3', {}, '3 · Resolution'),
+      el('div', { class: 'input-grid' }, simpleField('qs-old-height', 'Old height · px', { type: 'number', min: 240, max: 16384, value: 1080 }),
+        simpleField('qs-new-height', 'New height · px', { type: 'number', min: 240, max: 16384, value: 1080 })),
+      el('label', { for: 'qs-goal' }, 'What should stay the same?'),
+      el('select', { id: 'qs-goal' }, option('pixels', 'Keep game-pixel size'), option('screen', 'Keep screen proportion'))),
+    el('div', { class: 'simple-card' }, el('h3', {}, '4 · Appearance'),
+      el('div', { class: 'input-grid' }, simpleField('qs-color', 'Color', { type: 'color', value: '#00ff00' }),
+        simpleField('qs-alpha', 'Opacity (0–255)', { type: 'number', min: 0, max: 255, step: 1, value: 255 })),
+      el('div', { class: 'simple-checks' }, el('label', { class: 'check', for: 'qs-dot' }, el('input', { id: 'qs-dot', type: 'checkbox' }), 'Center dot'),
+        el('label', { class: 'check', for: 'qs-t' }, el('input', { id: 'qs-t', type: 'checkbox' }), 'T shape'))),
+    el('div', { class: 'simple-card simple-output' }, el('h3', {}, '5 · Proposed values'),
+      el('div', { class: 'simple-values' }, simpleValue('qs-length', 'Length'), simpleValue('qs-out-thickness', 'Thickness'), simpleValue('qs-out-gap', 'Gap')),
+      el('p', { id: 'qs-flags', class: 'simple-flags' }), el('p', { id: 'qs-note', class: 'small' }), status('qs-status'),
+      el('div', { class: 'simple-previews' },
+        el('figure', { class: 'quant-preview' }, el('figcaption', {}, el('span', {}, 'Old target'), el('span', { class: 'preview-index' }, '01')),
+          el('canvas', { id: 'qs-old-canvas', role: 'img', 'aria-label': 'Historical reconstructed crosshair' })),
+        el('figure', { class: 'quant-preview' }, el('figcaption', {}, el('span', {}, 'Proposed values'), el('span', { class: 'preview-index' }, '02')),
+          el('canvas', { id: 'qs-new-canvas', role: 'img', 'aria-label': 'Proposed crosshair candidate simulation' }))),
+      el('div', { class: 'export-actions simple-actions' }, el('button', { id: 'qs-copy', class: 'button secondary', disabled: true }, 'Copy commands'),
+        el('button', { id: 'qs-download', class: 'button primary', disabled: true }, 'Download .cfg'),
+        el('button', { id: 'qs-advanced', class: 'button ghost' }, 'Advanced options'))),
+    el('p', { class: 'small simple-disclosure' }, 'Conditional preview: these simulations are not in-game captures, so a match here still needs a check in CS2.'));
+}
 
 function sourcePanel(meta) {
   return el('aside', { class: 'quant-input', 'aria-label': 'Legacy crosshair inputs' },
@@ -101,6 +140,7 @@ export function createView(root, meta) {
       el('p', { class: 'snapshot' }, `Build ${BUILD}`, el('br'), VERSION)),
     el('div', { class: 'evidence-note' }, el('p', {}, 'These previews use an unverified model of the new renderer. ', el('span', {}, 'A match here still needs a check in CS2.')),
       docLink('math/06-statistical-inference.md', 'What the evidence supports')),
+    simplePanel(),
     el('div', { class: 'quant-layout' }, sourcePanel(meta), resultsPanel()));
   const refs = Object.fromEntries([...root.querySelectorAll('[id]')].map(node => [node.id, node]));
   return { root, refs, get: id => refs[id] };

@@ -22,7 +22,7 @@ export async function copy(text,status) {
 export function heading(title,description) {
   return el('div',{class:'page-heading'},el('div',{},el('h1',{},title),el('p',{},description)));
 }
-export function docLink(path,label) {const chapter=/^math\/0([1-9])-/.exec(path);return el('a',{href:chapter?'./docs/notebook.html#chapter-'+chapter[1]:'./docs/'+path,target:'_blank',rel:'noopener noreferrer'},label+' ↗');}
+export function docLink(path,label) {const chapter=/^math\/(\d{2})-/.exec(path);return el('a',{href:chapter?'./docs/notebook.html#chapter-'+Number(chapter[1]):'./docs/'+path,target:'_blank',rel:'noopener noreferrer'},label+' ↗');}
 export function table(headers,rows) {
   return el('div',{class:'table-scroll'},el('table',{},el('thead',{},el('tr',{},headers.map(h=>el('th',{scope:'col'},h)))),
     el('tbody',{},rows.map(row=>el('tr',{},row.map(cell=>el('td',{},String(cell))))))));

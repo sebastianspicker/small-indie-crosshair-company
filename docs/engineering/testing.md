@@ -25,6 +25,30 @@ its stored output, and compares 56 JS/Python cases. The larger study uses 135
 eligible historical records at seven heights. These are numerical comparisons
 against declared models, not executions of the CS2 renderer.
 
+## Learned emulator
+
+`tests/emulator.test.mjs` covers the dependency-free emulator artifact. It reads
+the committed `data/quant-emulator.json` once, checks that the fail-closed parser
+rejects a wrong schema/version/feature order/bounds, verifies the canonical
+fingerprint, checks that prediction is deterministic and stays inside the native
+domain, and checks that the committed model beats the naive baseline on fresh
+solver labels. The forward-surrogate tests assert that the stored and fresh
+held-out mean absolute errors stay below one pixel.
+
+The artifact is regenerated offline by:
+
+```sh
+npm run emulator:train
+```
+
+Training is deterministic: fixed seeds, sorted and seeded subsampling, and no
+clock or `Math.random` in the artifact. Re-running it should reproduce the same
+fingerprint. Every number it reports is **solver fidelity** — how well the model
+reproduces the declared automatic solver — and **not** game accuracy. The
+project ships zero native capture pairs, so no native accuracy test exists and
+the artifact records `speedGate: "closed-not-exact-equivalent"`. A passing
+emulator test therefore says the learned model matches our equations, not CS2.
+
 ## Browser checks
 
 The optional harness uses Python Playwright and Chromium. Pillow supports the
@@ -76,6 +100,16 @@ npm run bench:quant
 ```
 
 The [paired benchmark](../../research/generated/solver-polish-benchmark.json) compares five alternating runs against the supplied v0.3.0 source archive.
+
+The research-only learned emulator has its own reproducible comparison against the
+exact core on identical samples:
+
+```sh
+npm run bench:emulator
+```
+
+It reports speed only. The learned model is not on the runtime path and its
+fidelity ceiling is recorded in `data/quant-emulator.json`; see chapter 10.
 
 This times the inference core in Node. Compare runs on the same machine, with the
 same inputs and warmup. It does not measure browser responsiveness or game FPS.

@@ -22,6 +22,15 @@ export function clearResult(view, state = 'pending', message = 'Calculating…')
     const canvas = get(`q-${id}-canvas`);
     canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
   }
+  for (const id of ['qs-length', 'qs-out-thickness', 'qs-out-gap']) get(id).textContent = '—';
+  get('qs-flags').textContent = '';
+  get('qs-note').textContent = state === 'error' ? 'Input not accepted.' : 'Waiting for valid input.';
+  get('qs-status').textContent = state === 'pending' || state === 'error' ? message : 'Waiting for valid input.';
+  get('qs-copy').disabled = get('qs-download').disabled = true;
+  for (const id of ['qs-old-canvas', 'qs-new-canvas']) {
+    const canvas = get(id);
+    canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
+  }
 }
 
 function renderValues(view, report) {
@@ -65,14 +74,33 @@ function previewLabels(view, r) {
   get('q-renderer-note').textContent = `New preview model: ${modelName(r.renderer)}. Difference colors: light = shared, amber = extra, blue = missing. Outlines are excluded.`;
 }
 
+export function renderSimple(view, report) {
+  if (!report) return;
+  const { get } = view, s = report.settings, n = report.chosen.native, c = rgba(s);
+  get('qs-length').textContent = fmt(n.length);
+  get('qs-out-thickness').textContent = fmt(n.thickness);
+  get('qs-out-gap').textContent = fmt(n.gap);
+  const flags = [s.dot ? 'center dot' : 'no center dot', s.t_style ? 'T shape' : 'cross', s.outline ? 'outline' : 'no outline',
+    s.recoil ? 'follow recoil (not simulated)' : 'static'];
+  get('qs-flags').textContent = `${flags.join(' · ')} · rgba(${c.rgb.join(', ')}, ${c.alpha})`;
+  const relevant = report.warnings.filter(w => /conflict|cropped|large shape|No visible|outline replacement|zero-thickness/.test(w));
+  get('qs-note').textContent = relevant[0] ?? 'Conditional preview under the selected model.';
+  const zoom = Number(get('q-zoom').value);
+  paintQuant(get('qs-old-canvas'), report.target, s, c, zoom, null, { grid: true });
+  paintQuant(get('qs-new-canvas'), report.converted, s, c, zoom, null, { grid: true });
+  const blocked = Boolean(report.blockers.length);
+  get('qs-status').textContent = blocked ? 'This candidate cannot be exported yet; open Advanced options to inspect.' : 'Settings ready to copy or download.';
+  get('qs-copy').disabled = blocked; get('qs-download').disabled = blocked;
+}
+
 export function renderResult(view, r) {
   const { get, root } = view;
-  renderValues(view, r); renderMetrics(view, r); previewLabels(view, r);
+  renderValues(view, r); renderSimple(view, r); renderMetrics(view, r); previewLabels(view, r);
   get('q-cfg').value = r.blockers.length ? '' : exportQuantCFG(r);
   get('q-copy').disabled = get('q-download-cfg').disabled = Boolean(r.blockers.length);
   get('q-download-report').disabled = false;
   get('q-status').textContent = r.blockers.length ? 'No export until the issues below are resolved.' : 'Settings ready to copy or download.';
-  const relevant = r.warnings.filter(w => /conflict|cropped|large shape|No visible|outline replacement/.test(w));
+  const relevant = r.warnings.filter(w => /conflict|cropped|large shape|No visible|outline replacement|zero-thickness/.test(w));
   if (!get('q-model').value && r.convertedFit.iou !== 1) relevant.unshift('The automatic choice balances several models. Open the pixel measurements to see where this preview differs.');
   get('q-warnings').replaceChildren(...[...r.blockers, ...relevant].map(w => el('p', {}, w)));
   const e = r.experiment;

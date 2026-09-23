@@ -1,7 +1,9 @@
 import { $, el } from './dom.js';
+import { setMode, initMode } from './mode.js';
 const routes = ['quant', 'corpus', 'research', 'workbench', 'calibration', 'evidence'];
+const expertRoutes = routes.filter(id => id !== 'quant');
 const pending = new Map();
-let editor, quant;
+let editor, quant, active = 'quant', sequence = 0;
 async function editorReady() {
     if (!pending.has('editor'))
         pending.set('editor', (async () => { const r = await fetch(new URL('../data/presets.json', import.meta.url)); if (!r.ok)
@@ -28,9 +30,20 @@ async function initialize(name) {
     pending.set(name, task);
     return task;
 }
-let sequence = 0;
+function onModeChange(mode) {
+    if (mode === 'simple' && expertRoutes.includes(active)) {
+        location.hash = '#quant';
+        return;
+    }
+    if (active === 'quant')
+        quant?.refresh();
+}
+initMode(onModeChange);
 async function route() {
-    const ticket = ++sequence, requested = location.hash.slice(1), active = routes.includes(requested) ? requested : 'quant';
+    const ticket = ++sequence, requested = location.hash.slice(1);
+    active = routes.includes(requested) ? requested : 'quant';
+    if (expertRoutes.includes(active))
+        setMode('expert');
     for (const id of routes)
         $(id).hidden = id !== active;
     document.querySelectorAll('[data-route]').forEach(a => { if (a.dataset.route === active)
