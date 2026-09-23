@@ -3,6 +3,7 @@ import { DEFAULT_SETTINGS, parseLegacyCFG } from '../../lib/cfg.js';
 import { rgba } from '../../lib/conversion.js';
 import { copy, download } from '../dom.js';
 import { exportQuantCFG } from '../../lib/quant/export.js';
+import { resolveModelChoice } from '../../lib/quant/selection.js';
 import { clearResult, renderResult, renderPreviews, renderDerivation, renderScenarios, renderTrace, renderSimple, renderDiscriminating } from './presentation.js';
 import { bindSources, fillPresets } from './sources.js';
 import { bindFeedback } from './feedback.js';
@@ -87,13 +88,17 @@ export class QuantController {
   async analyze() {
     const ticket = this.generation;
     try {
-      const decision = this.get('q-decision').value;
+      const decision = this.get('q-decision').value, hasEvidence = this.state.measurements.length > 0;
       const labels = { worst: 'Automatic · limit largest mismatch', cvar: 'Automatic · limit weighted worst tail (CVaR)' };
-      this.get('q-model').options[0].textContent = labels[decision] ?? 'Automatic · lowest weighted mismatch';
+      const select = this.get('q-model');
+      select.options[0].textContent = hasEvidence ? 'Automatic · evidence-weighted hedge' : 'Automatic · authored model (pixel-exact)';
+      select.options[1].textContent = labels[decision] ?? 'Automatic · weighted model hedge';
       this.state.settings = this.readSettings();
+      const selectedModelId = resolveModelChoice({ request: select.value, hasEvidence });
+      this.view.root.dataset.strategy = selectedModelId ? 'model' : 'hedge';
       const report = await this.worker.call('infer', { settings: this.state.settings, options: this.options(),
         measurements: this.state.measurements, targetOverride: this.state.targetOverride, targetMask: this.state.targetMask,
-        selectedModelId: this.get('q-model').value || null, decision, certify: this.get('q-certify').checked });
+        selectedModelId, decision, certify: this.get('q-certify').checked });
       if (ticket !== this.generation || this.closed) return;
       this.state.result = report; this.dirtyDetails.clear();
       renderResult(this.view, report); this.refresh(); this.renderDetails();

@@ -122,7 +122,7 @@ export function renderResult(view, r) {
   get('q-status').textContent = r.blockers.length ? 'No export until the issues below are resolved.' : 'Settings ready to copy or download.';
   const warningText = r.warnings.map(w => typeof w === 'string' ? w : w.text);
   const relevant = warningText.filter(w => /conflict|cropped|large shape|No visible|outline replacement|zero-thickness/.test(w));
-  if (!get('q-model').value && r.convertedFit.iou !== 1) relevant.unshift('The automatic choice balances several models. Open the pixel measurements to see where this preview differs.');
+  if (root.dataset.strategy === 'hedge' && r.convertedFit.iou !== 1) relevant.unshift('The automatic choice balances several models. Open the pixel measurements to see where this preview differs.');
   get('q-warnings').replaceChildren(...[...r.blockers, ...relevant].map(w => el('p', {}, w)));
   const e = r.experiment;
   get('q-experiment').textContent = `Game height ${e.currentHeight} · disagreement ${e.disagreementBits.toFixed(3)} bits\ncl_crosshair_length ${e.native.length}\ncl_crosshair_thickness ${e.native.thickness}\ncl_crosshair_gap ${e.native.gap}\ncl_crosshair_screen_height ${e.native.authoredHeight}`;

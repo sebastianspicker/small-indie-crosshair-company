@@ -1,5 +1,6 @@
 import { el, docLink } from '../dom.js';
 import { MODELS, BUILD, VERSION } from '../../lib/quant/renderer.js';
+import { HEDGE_MODEL } from '../../lib/quant/selection.js';
 
 export const labels = { authored: 'Authored height', reference1080: '1080 reference', reference720: '720 reference',
   thickness: 'Thickness-relative', center: 'Center-relative', opening: 'Full opening' };
@@ -127,7 +128,8 @@ function resultsPanel() {
       el('div', { class: 'export-actions' }, el('button', { id: 'q-copy', class: 'button secondary', disabled: true }, 'Copy commands'),
         el('button', { id: 'q-download-cfg', class: 'button primary', disabled: true }, 'Download .cfg'))),
     el('div', { class: 'quant-model-select' }, el('label', { for: 'q-model' }, 'Rendering model'),
-      el('select', { id: 'q-model' }, option('', 'Automatic · lowest weighted mismatch'), ...MODELS.map(m => option(m.id, modelName(m))))),
+      el('select', { id: 'q-model' }, option('', 'Automatic · authored model (pixel-exact)'), option(HEDGE_MODEL, 'Automatic · weighted model hedge'), ...MODELS.map(m => option(m.id, modelName(m))))),
+    el('p', { class: 'small' }, "Without native measurements the automatic choice is the authored model's pixel-exact inverse. Adding measurements, or choosing the weighted hedge, lets the 27 models disagree."),
     valueTable(), el('p', { id: 'q-target-line', class: 'target-line' }),
     detail('q-derivation-panel', 'Pixel measurements and differences', el('div', { id: 'q-derivation' }), docLink('math/09-solver-and-integrity.md', 'How the values are calculated')),
     status('q-status'), el('div', { id: 'q-warnings', class: 'warnings', role: 'alert' }), previewPanel(),

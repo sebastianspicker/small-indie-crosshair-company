@@ -109,3 +109,41 @@ A new code can use a similar textual prefix while having a different representat
 The repository intentionally does not guess a new code layout or claim current-format
 serialization support. Export a native `.cfg` and use the game's own sharing UI for any
 new-format code until that representation is independently specified and tested.
+
+## Post-update evidence fixes the gap sign and the shipped default
+
+Re-read 2026-09-23. The build 2000914 dump still gives `cl_crosshair_gap 4`
+(`min: 0, max: 128`), and the post-update community confirms the new variable cannot be
+set negative — the top feedback request is literally "please allow negative crosshair
+gaps again". So the new gap is a **non-negative integer**, exactly as
+[`lib/native-settings.js`](../../lib/native-settings.js) assumes. Two consequences:
+
+- The external `Horizzon1/cs2-crosshair-migrator` reconstruction clamps the new gap to
+  -50…50. That signed clamp lies outside the build's range and is not a valid target, so
+  the migrator was treated as a second community reconstruction rather than evidence and
+  no code was copied from it.
+- A published post-update pro-settings round-up that reports `cl_crosshair_gap -9` or
+  `-7` is inconsistent with the dump and the community behavior; those entries are not
+  treated as reference outputs. A reconstructed negative old offset stays
+  unrepresentable: [`pixelCopyCandidate`](../../lib/migration.js) clamps it to 0 and
+  discloses the residual.
+
+The same round-up anchors the renderer. donk, m0NESY and s1mple share the old crosshair
+size 1 / thickness 1 / gap -4, whose frozen old pixels at 1080 are length 2 / thickness 2
+/ gap 0; the published new settings are length 2 / thickness 2 / gap 0. The `authored`
+model's own inverse reproduces that tuple, and the real gap 0 selects the `thickness` gap
+formula (center gives 1, opening gives 3). Across the 137 published static style-4
+records, the weighted 27-model hedge instead changes the authored length in 88 cases and
+carries a nonzero geometric residual in 93, versus 5 for the authored inverse.
+
+The app's automatic choice therefore ships the authored model's pixel-exact inverse when
+there are no native measurements, matching the dump's `cl_crosshair_screen_height`
+mechanism. The weighted hedge stays available as an explicit option ("weighted model
+hedge") and is used automatically once measurement evidence exists. This is an
+application default only: [`infer()`](../../lib/quant/inference.js), the bounded search,
+the declared losses and the trained artifacts are unchanged, and the default is
+reversible from the same control.
+
+The published settings are a consumer-facing reference, not a native capture pair. Zero
+native old/new capture pairs still exist; the choice is conditional on the dump and the
+published settings.
