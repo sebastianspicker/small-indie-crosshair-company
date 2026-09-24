@@ -1,6 +1,6 @@
 # 04 — Synthetic rendering, pixel metrics and visual limitations
 
-**Code:** `lib/raster.js` and `app/preview.js`.
+**Code:** `lib/geometry/raster.js` and `app/manual/preview.js`.
 **Status:** a deterministic explanatory raster, not the native CS2 renderer.
 
 ## 1. Why there is a renderer in a math project

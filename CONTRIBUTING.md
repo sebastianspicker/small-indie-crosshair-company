@@ -14,9 +14,11 @@ npm run verify
 ```
 
 For UI changes, also run the [browser checks](docs/engineering/testing.md).
-`lib/` contains pure model functions; `app/` handles the DOM and worker;
-`scripts/` contains local tooling. Keep imports as validated data, and keep the
-app usable without accounts, remote services, or persistence.
+See [architecture](docs/engineering/architecture.md) for where code belongs:
+`lib/` is the pure, layered domain, `app/` handles the DOM and worker,
+`research/` holds research-only code and pipelines, and `scripts/` holds repository
+tooling. Keep imports as validated data, and keep the app usable without accounts,
+remote services, or persistence.
 
 ## Before opening a pull request
 

@@ -1,7 +1,7 @@
 # 02 — Conversion, inverse models and identifiability
 
 **Status:** proposed, conditional post-update conversion. **Native validation:** none.
-**Code:** `lib/conversion.js`, version `conditional-static-v4`.
+**Code:** `lib/manual/conversion.js`, version `conditional-static-v4`.
 **Build inventory:** [S03](../research/source-ledger.md#s03-new-build-inventory).
 
 ## 1. Separate four coordinate systems
@@ -214,11 +214,11 @@ length ratio is one and the two scales **agree** (`r_g = 1` either way); agreeme
 is non-identifying and must not be read as confirmation of scaling. Only a cross-height
 capture can separate the rivals, and none is shipped. The shipped default tuple is
 unchanged and every automatic report warns that the scale is unresolved; see
-[the v0.4 plan](../engineering/v0.4-conversion-improvement-plan.md) §2.4 and §2.7.
+[the v0.4 plan](../engineering/archive/v0.4-conversion-improvement-plan.md) §2.4 and §2.7.
 
 ### The old `+4` is already in the painter
 
-The frozen old painter computes `gapOffset = trunc(gap + 4)` in `lib/legacy.js`, before
+The frozen old painter computes `gapOffset = trunc(gap + 4)` in `lib/geometry/legacy.js`, before
 any new-cvar search. `renameCandidate` truncates the raw old console gap, so it **drops**
 that `+4`. `pixelCopyCandidate` copies the rendered offset, which **already includes** it,
 and the pixel-matching structural inverse recovers it. For the `size 3.9 / thickness 0.6 /

@@ -1,4 +1,4 @@
-import { el } from '../dom.js';
+import { el } from '../ui/dom.js';
 const field = (name, node) => el('div', {}, el('label', {}, name, node));
 export function imageView(kind, dimensions, native, options) {
   const dialog = el('dialog', { class: 'image-dialog', 'aria-labelledby': 'image-dialog-title' });

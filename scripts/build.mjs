@@ -3,11 +3,11 @@ import { cp, rm, mkdir, stat, readdir, readFile, writeFile } from 'node:fs/promi
 import { resolve,join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createHash } from 'node:crypto';
-import { isSiteFile } from './site-files.mjs';
+import { isSiteFile, PUBLISHED_DOCUMENTS, PUBLISHED_DIRECTORIES } from './site-files.mjs';
 await import('./notebook.mjs');
 const root=fileURLToPath(new URL('..',import.meta.url)),dist=resolve(root,'dist');
 await rm(dist,{recursive:true,force:true});await mkdir(dist);
-for(const path of ['index.html','app','lib','data','public','docs','research','licenses','README.md','LICENSE','THIRD_PARTY_NOTICES.md','CHANGELOG.md','CONTRIBUTING.md','SECURITY.md'])
+for(const path of [...PUBLISHED_DIRECTORIES,...PUBLISHED_DOCUMENTS])
   await cp(join(root,path),join(dist,path),{recursive:true,filter:s=>isSiteFile(root,s)});
 await writeFile(join(dist,'.nojekyll'),'');
 const entries=[];

@@ -28,6 +28,10 @@ playwright-report/
 artifacts/
 *.log
 
+# Local agent coordination
+.agents/
+.claude/settings.local.json
+
 # Editor and OS files
 .DS_Store
 ._*

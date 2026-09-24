@@ -7,9 +7,9 @@ into the application. It distills the project's own declared solver; it is not
 game data and it does not improve native accuracy. The corpus, historical
 binary32 arithmetic, 27-model family and target build are unchanged.
 
-The artifact is `data/quant-emulator.json`, its canonical fingerprint is
-`137061144`, and it is trained by `scripts/train-quant-emulator.mjs`
-(`npm run emulator:train`). The math and parsing live in `lib/quant/emulator.js`.
+The artifact is `research/generated/quant-emulator.json`, its canonical fingerprint is
+`137061144`, and it is trained by `research/scripts/train-quant-emulator.mjs`
+(`npm run emulator:train`). The math and parsing live in `research/lib/emulator.js`.
 Every number below is reproducible from those files under Node.js 22.12+.
 
 The inverse block is a **depth-3 boosted-tree** ensemble (120 rounds, learning
@@ -101,7 +101,7 @@ aggregate error by a wide margin, so it is a real regression fit rather than
 noise. It is still wrong on the full tuple about two times out of three.
 Per-dimension exact rates show why: length remains the hardest coordinate
 (0.563), while thickness is recovered about 78% of the time. The MAE columns are
-mean absolute errors from `evaluateEmulator` in `lib/quant/emulator.js`; the naive
+mean absolute errors from `evaluateEmulator` in `research/lib/emulator.js`; the naive
 baseline comes from the project's existing `naiveAssignment` helper and is
 included in the artifact as `naiveExactTupleRate` and `naiveMae`. These are
 fidelity numbers against the solver, not accuracy numbers against the game.
@@ -155,14 +155,14 @@ about Valve's renderer. It is not wired into inference.
 
 ## 6. The learned ranker: shortlist plus exact verification (W4a)
 
-`lib/quant/ranker.js` takes a different approach from replacing the solver. The
+`research/lib/ranker.js` takes a different approach from replacing the solver. The
 learned emulator only proposes a small **shortlist** around its prediction; the
 returned tuple is then the **exact argmin of the declared decision loss over that
 shortlist**. The approximation is only the shortlist; verification is exact. The
 honest consequence is that the verified answer can be *worse* than the solver
 when the shortlist misses the solver's tuple.
 
-`scripts/benchmark-ranker.mjs` (`npm run bench:ranker`) measures this on 125
+`research/scripts/benchmark-ranker.mjs` (`npm run bench:ranker`) measures this on 125
 group-disjoint test settings (`research/generated/ranker-benchmark.json`):
 
 | K (shortlist size) | Contains solver tuple |
@@ -188,7 +188,7 @@ it is not a safe drop-in for the exact solver.
 
 ## 7. The sensitivity layer: analytic margins and a weak learned classifier (W4b)
 
-`lib/quant/sensitivity.js` exposes two advisory layers, both scoped to the
+`research/lib/sensitivity.js` exposes two advisory layers, both scoped to the
 **declared** solver:
 
 - **Analytic (always available, no training).** For a legacy setting it computes,
@@ -255,12 +255,12 @@ assumed.
 
 Residual modulation is a separate, also-closed idea. A later patch could add a
 bounded (±2 pixel) correction on top of the exact solver once reviewed native
-captures exist. The v0.4 plan specifies it, `lib/quant/modulator.js` returns a
+captures exist. The v0.4 plan specifies it, `research/lib/modulator.js` returns a
 zero delta with reason `closed-no-native-pairs`, and it is **not** imported by
-`lib/quant/inference.js`. It is not a second emulator and is not trained on
+`lib/solver/inference.js`. It is not a second emulator and is not trained on
 solver labels; its artifact records `trainedOnSolverLabels: false`. The
 bounded-delta rule itself is a pure predicate in
-`lib/quant/modulation-contract.js`: it has no weights and is not imported by
+`research/lib/modulation-contract.js`: it has no weights and is not imported by
 inference either.
 
 ## 9. Why repository-only data cannot identify the native renderer
@@ -291,12 +291,12 @@ of against the project's own equations. Until such data exists, the learned
 emulator stays a documented research artifact: deterministic, fast, measured,
 and correctly left out of the conversion path.
 
-Relevant implementation modules are `lib/quant/emulator.js`, `ranker.js`,
-`sensitivity.js`, `scripts/train-quant-emulator.mjs` and
-`scripts/benchmark-ranker.mjs`; the committed artifact is
-`data/quant-emulator.json` with fingerprint `137061144`; regression coverage is
-`tests/emulator.test.mjs`, `tests/ranker.test.mjs` and
-`tests/sensitivity.test.mjs`. Source and evidence boundaries remain in the
+Relevant implementation modules are `research/lib/emulator.js`, `ranker.js`,
+`sensitivity.js`, `research/scripts/train-quant-emulator.mjs` and
+`research/scripts/benchmark-ranker.mjs`; the committed artifact is
+`research/generated/quant-emulator.json` with fingerprint `137061144`; regression coverage is
+`tests/research/emulator.test.mjs`, `tests/research/ranker.test.mjs` and
+`tests/research/sensitivity.test.mjs`. Source and evidence boundaries remain in the
 [source ledger](../research/quant-sources.md) and the
 [formula history](../research/formula-evolution.md); the opt-in certificate around
 the exact solver is in [chapter 11](11-certified-inverse-and-capture-plan.md).

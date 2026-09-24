@@ -1,7 +1,7 @@
 # 01 — Legacy geometry, quantization and numerical precision
 
 **Status:** source-derived static geometry, not a native-renderer verification.
-**Implementation:** `lib/legacy.js`, model `legacy-static-kz-f32-v1`.
+**Implementation:** `lib/geometry/legacy.js`, model `legacy-static-kz-f32-v1`.
 **Principal evidence:** [S01](../research/source-ledger.md#s01-old-static-geometry).
 
 ## 1. Define the problem before changing the numbers

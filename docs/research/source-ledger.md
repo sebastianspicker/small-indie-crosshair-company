@@ -52,7 +52,7 @@ hidden `cl_crosshairsize` (3.9), `cl_crosshairthickness` (0.6) and
 the gap between the crosshair center and the bars” and does **not** say gap scales,
 although length and thickness do. The re-read still does not support a quantizer, a gap
 origin, a migration callback or a share-code serializer. The machine-readable table is
-[`lib/cvar-inventory.js`](../../lib/cvar-inventory.js).
+[`lib/settings/cvars.js`](../../lib/settings/cvars.js).
 
 ## S04 New crosshair UI
 
@@ -125,7 +125,7 @@ currently corroborated native or website behavior. See correction C01 in the
 
 `cs2_crosshair_conversion_research_2026-09-23.zip`, supplied with the conversation.
 Extracted unchanged into `research/archive/2026-09-23/`. `SHA256SUMS` covers each original
-file. `scripts/reproduce.py` checks those bytes and reruns the Python experiment.
+file. `research/scripts/reproduce.py` checks those bytes and reruns the Python experiment.
 
 **Supports:** exact reproducibility of the earlier numerical experiment and a stable
 record of its assumptions, sources and limitations. **Does not support:** treating
@@ -147,6 +147,6 @@ without modifying the archived record.
 | Measured affine fit parameters | User-entered or synthetic data only | `fitAffine`; scope and residual checks |
 | Gap scaling is unresolved on build 2000914 | S03 re-read; dump omits a scaling sentence | `structural.js` `gapScale`; `gap-scale-unresolved` warning |
 | Structural gap-scale rival is not the default | This plan; zero native pairs | `enumerateReducedFamily`; `structural-study.mjs` |
-| Pixel-copy and rename candidates disagree | S01 + S03 recomputation | `migration.js`; `tests/structural.test.mjs` |
+| Pixel-copy and rename candidates disagree | S01 + S03 recomputation | `migration.js`; `tests/lib/structural.test.mjs` |
 | Residual modulation stays closed | Zero reviewed native pairs | `modulator.js`; `train-residual-modulator.mjs` |
 | Exact game compatibility | No shipped evidence | No production claim or native-verified fixture |
