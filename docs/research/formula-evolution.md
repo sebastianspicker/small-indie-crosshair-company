@@ -243,8 +243,8 @@ dependency-free learned model that predicts the converted tuple directly, for a
 large speedup.
 
 **What was built:** a deterministic boosted-stump inverse emulator and a
-depth-3 boosted-tree forward surrogate in `lib/quant/emulator.js`, trained offline
-by `scripts/train-quant-emulator.mjs` into `data/quant-emulator.json`. This entry
+depth-3 boosted-tree forward surrogate in `research/lib/emulator.js`, trained offline
+by `research/scripts/train-quant-emulator.mjs` into `research/generated/quant-emulator.json`. This entry
 describes the **first** artifact, whose fingerprint was `1027764490`; the later
 capacity revision (fingerprint `137061144`) is correction C06. The inverse's
 labels come from the project's own `infer` solver on 5000 deterministic samples
@@ -278,7 +278,7 @@ first measured artifact and its 11.6% figure; the later capacity revision (fidel
 **Proposal examined:** whether the shipped automatic search already returns the
 global minimizer of the declared decision loss, and whether that can be certified.
 
-**What was checked:** `scripts/certify-inverse.mjs` (`npm run certify:inverse`)
+**What was checked:** `research/scripts/certify-inverse.mjs` (`npm run certify:inverse`)
 re-solves every eligible corpus record at four heights under the `expected` and
 `worst` rules (1064 cases) with `rankAndCertify` and the adaptive Chebyshev-shell
 `certifyOptimum`, then validates the `shell-monotone` assumption against a
@@ -331,7 +331,7 @@ group-disjoint validation fold carved from the training samples; the held-out
 test split was not used for selection. The headline is "more capacity", not "new
 math".
 
-**Ranker (W4a):** `lib/quant/ranker.js` proposes a learned shortlist and takes
+**Ranker (W4a):** `research/lib/ranker.js` proposes a learned shortlist and takes
 the **exact** argmin of the declared loss over it. On 125 held-out settings the
 shortlist contained the solver tuple 0.848 of the time at K = 32, but the
 verified answer was **worse** than the solver on 13 of 125 samples (max gap
@@ -339,7 +339,7 @@ verified answer was **worse** than the solver on 13 of 125 samples (max gap
 (221 µs versus 1.471 ms). Artifact verdict: `NEGATIVE (fidelity)`; the speed gate
 stays `closed-not-exact-equivalent`.
 
-**Sensitivity (W4b):** `lib/quant/sensitivity.js` adds an analytic boundary-margin
+**Sensitivity (W4b):** `research/lib/sensitivity.js` adds an analytic boundary-margin
 advisory (always available) and an optional learned mismatch classifier. The
 classifier reached **0.736 accuracy against a 0.704 majority baseline** on 125
 held-out settings — weak — and is recorded as such. The analytic layer stands
@@ -360,9 +360,9 @@ height-scaled gap, so a converter that does can be right only if Valve changed t
 rule.
 
 **What v0.4 adds:** an explicit structural hypothesis family
-([`lib/quant/structural.js`](../../lib/quant/structural.js)) in which
+([`lib/solver/structural.js`](../../lib/solver/structural.js)) in which
 `gapScale ∈ {same-as-length, unscaled}` is a named rival, plus an offline census
-([`scripts/structural-study.mjs`](../../scripts/structural-study.mjs)) of where the
+([`research/scripts/structural-study.mjs`](../../research/scripts/structural-study.mjs)) of where the
 rivals disagree. At an authored height of 1080 and a current height of 2160 the two
 predict nears four and three respectively for a stored `length 9 / thickness 2 /
 gap 1`; at 1080/1080 they agree, so same-height tests cannot identify the scale. The
@@ -376,4 +376,4 @@ threshold and deliberately defines no reviewed-registry provenance value.
 
 **Disposition:** the rival is recorded and off the default path; the default tuple
 and `quant-static-v5` are frozen. Full account in the
-[v0.4 plan](../engineering/v0.4-conversion-improvement-plan.md).
+[v0.4 plan](../engineering/archive/v0.4-conversion-improvement-plan.md).

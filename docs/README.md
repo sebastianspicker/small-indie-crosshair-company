@@ -15,10 +15,12 @@ verified native renderer. No original old/new game capture pairs are included.
 - **Run or publish it:** [local and static hosting](engineering/deployment.md),
   [GitHub Pages](engineering/github-pages.md).
 - **Change the code:** [contributing](../CONTRIBUTING.md),
-  [architecture](engineering/v0.3-architecture.md), [testing](engineering/testing.md),
-  [v0.4 improvement plan](engineering/v0.4-conversion-improvement-plan.md)
-  (gap-scale rival, closed residual modulator, inventory facts). The plan describes
-  offline research helpers; the shipped `quant-static-v5` default tuple is unchanged.
+  [architecture](engineering/architecture.md), [testing](engineering/testing.md),
+  and [decision records](engineering/decisions/README.md). Superseded architecture and
+  planning documents, including the [v0.4 improvement plan](engineering/archive/v0.4-conversion-improvement-plan.md),
+  the implemented [maintenance plan](engineering/archive/maintenance-plan.md)
+  (gap-scale rival, closed residual modulator, inventory facts, implemented in 0.4.0), are
+  kept in [`engineering/archive/`](engineering/archive/) for history.
 - **Supply evidence:** [measurement policy](evidence/measurement-policy.md) and
   [calibration protocol](math/03-calibration-protocol.md).
 

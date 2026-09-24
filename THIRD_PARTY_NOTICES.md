@@ -6,7 +6,7 @@ repositories, provider pages, player names, or screenshots users import.
 
 ## AkiVer csgo-sharecode
 
-The legacy share-code codec in `lib/sharecode.js` and the inherited Python archive
+The legacy share-code codec in `lib/settings/sharecode.js` and the inherited Python archive
 are based on the documented format and implementation from AkiVer's
 [csgo-sharecode](https://github.com/akiver/csgo-sharecode/tree/753f16fe97f9bbb121fb56675b40f035ad403d05),
 Copyright (c) 2017-present AkiVer, under the MIT License. The complete required
@@ -50,4 +50,4 @@ MathJax's TeX input parser was used as an optional authoring tool to serialize o
 own equations to native MathML. The deployment contains that generated markup,
 not MathJax program code, font files or a runtime MathJax dependency. The normal
 build uses the checked-in content-addressed equation cache; optional regeneration
-is documented in `docs/engineering/quant-architecture.md`.
+is documented in `docs/engineering/archive/quant-architecture.md`.

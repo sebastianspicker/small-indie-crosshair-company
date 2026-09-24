@@ -173,7 +173,7 @@ The ridge feature vector is
 Three independent response regressions predict length, width, and near
 position. The design has six features and a fixed penalty \(\lambda=0.01\).
 The implementation uses weighted normal equations and pivoted elimination
-with numerical failure checks; inspect `lib/quant/regression.js` for the
+with numerical failure checks; inspect `research/lib/regression.js` for the
 exact intercept-penalty convention. Results and coefficients for every
 fold are committed, not merely a final fitted model.
 
