@@ -8,7 +8,14 @@ npm run verify
 ```
 
 This runs JavaScript syntax checks, regenerates the corpus study, runs Node tests,
-rebuilds the audit, reproduces the frozen Python reference, and builds `dist/`.
+reproduces the frozen Python reference (which also rebuilds and compares the
+audit), and builds `dist/` (regenerating `docs/notebook.html`).
+
+Node tests live in the `tests/` folder of the tree they protect: `tests/lib/`,
+`tests/app/`, `tests/research/` and `tests/tooling/` (layer boundaries, docs links,
+publish list, server). `npm test` runs `node --test "tests/**/*.test.mjs"`; a single
+folder runs with `node --test tests/lib/*.test.mjs`. Hand-written fixtures are in
+`tests/fixtures/`; Python browser checks are in `tests/browser/`.
 HTTP tests bind a loopback port. A restricted execution environment may need to
 permit that before the full suite can run.
 
@@ -33,8 +40,8 @@ against declared models, not executions of the CS2 renderer.
 
 ## Learned emulator
 
-`tests/emulator.test.mjs` covers the dependency-free emulator artifact. It reads
-the committed `data/quant-emulator.json` once, checks that the fail-closed parser
+`tests/research/emulator.test.mjs` covers the dependency-free emulator artifact. It reads
+the committed `research/generated/quant-emulator.json` once, checks that the fail-closed parser
 rejects a wrong schema/version/feature order/bounds, verifies the canonical
 fingerprint, checks that prediction is deterministic and stays inside the native
 domain, and checks that the committed model beats the naive baseline on fresh
@@ -69,20 +76,20 @@ npm run study:discriminating # research/generated/discriminating-set.json
 npm run bench:ranker         # research/generated/ranker-benchmark.json
 ```
 
-- `tests/certify.test.mjs` checks the declared objective (including a hand-built
+- `tests/lib/certify.test.mjs` checks the declared objective (including a hand-built
   CVaR reference), the exhaustive oracle on a tiny window, and the certificate
-  methods. `tests/certification-runtime.test.mjs` checks the opt-in
+  methods. `tests/lib/certification-runtime.test.mjs` checks the opt-in
   `infer({ certify: true })` path and that the default path makes no global
   claim.
-- `tests/preimage.test.mjs` checks `exactPreimage` against a reduced-box brute
+- `tests/lib/preimage.test.mjs` checks `exactPreimage` against a reduced-box brute
   force, the pure-dot gap range and the literal-zero restriction.
-- `tests/decision.test.mjs` checks the `expected`/`worst`/`cvar` rules and the
+- `tests/lib/decision.test.mjs` checks the `expected`/`worst`/`cvar` rules and the
   weighted CVaR helper.
-- `tests/partition.test.mjs` and `tests/experiments.test.mjs` check behavioural
+- `tests/research/partition.test.mjs` and `tests/lib/experiments.test.mjs` check behavioural
   equivalence and the greedy `discriminatingSet` against recomputed partitions.
-- `tests/ranker.test.mjs` checks the learned shortlist, exact `selectVerified`,
+- `tests/research/ranker.test.mjs` checks the learned shortlist, exact `selectVerified`,
   `coverageAtK` / `compareToSolver`, and fail-closed parsing.
-- `tests/sensitivity.test.mjs` checks analytic boundary margins and the fragility
+- `tests/research/sensitivity.test.mjs` checks analytic boundary margins and the fragility
   model parser.
 
 Each artifact states its own scope and refuses to claim native accuracy: the
@@ -91,6 +98,18 @@ domain, the discriminating set is a capture **plan**, and the ranker/fragility
 layers distil the declared solver. The shell-monotone certificate is conditional
 on a documented, spot-checked monotonicity assumption, not a proof. See
 [chapter 11](../math/11-certified-inverse-and-capture-plan.md).
+
+## Line length
+
+`npm run check` enforces a 140-character line-length ratchet over `app/**/*.js`
+and `lib/**/*.js`, using `scripts/line-length.mjs` and the committed
+`scripts/line-length-baseline.json`. A file may not gain long lines beyond its
+recorded baseline count, and a new file with any long line fails immediately;
+a file with fewer long lines than its baseline prints a hint instead of
+failing. Regenerate the baseline after intentionally changing long-line counts
+with `node scripts/check.mjs --update-line-baseline`; never edit the JSON file
+by hand. `tests/tooling/line-length.test.mjs` covers the pure `countLongLines` and
+`compareToBaseline` helpers directly.
 
 ## Browser checks
 
@@ -102,8 +121,8 @@ app's runtime dependencies:
 python3 -m venv .venv
 .venv/bin/python -m pip install playwright pillow
 .venv/bin/python -m playwright install chromium
-.venv/bin/python tests/quant_browser.py --output /tmp/sicc-quant-qa
-.venv/bin/python tests/browser_smoke.py --output /tmp/sicc-manual-qa
+.venv/bin/python tests/browser/quant_browser.py --output /tmp/sicc-quant-qa
+.venv/bin/python tests/browser/browser_smoke.py --output /tmp/sicc-manual-qa
 ```
 
 Both scripts start a local server. Normal mode uses HTTP, the production module
@@ -123,7 +142,7 @@ this mode and must be read with that limitation.
 Start `npm run dev`, then in another terminal:
 
 ```sh
-.venv/bin/python tests/capture_tour.py
+.venv/bin/python tests/browser/capture_tour.py
 ```
 
 This captures the converter, settings table, notebook, and mobile view into
@@ -152,7 +171,7 @@ npm run bench:emulator
 ```
 
 It reports speed only. The learned model is not on the runtime path and its
-fidelity ceiling is recorded in `data/quant-emulator.json`; see chapter 10.
+fidelity ceiling is recorded in `research/generated/quant-emulator.json`; see chapter 10.
 
 The learned shortlist plus exact verification has its own honest comparison
 against the exact solver:
@@ -173,10 +192,25 @@ same inputs and warmup. It does not measure browser responsiveness or game FPS.
 The historical comparison scripts accept a separate baseline checkout:
 
 ```sh
-node scripts/benchmark-compare.mjs /path/to/baseline
-node scripts/compare-inverse.mjs /path/to/baseline
+node research/scripts/benchmark-compare.mjs /path/to/baseline
+node research/scripts/compare-inverse.mjs /path/to/baseline
 ```
 
 CI runs `npm run verify` on Node.js 22 and 24 for pushes and pull requests. Browser
 checks are optional and described above. No automated check here runs CS2; preview
 agreement only describes the selected mathematical model.
+
+## In CI
+
+The `verify` job runs `npm run verify` on Node.js 22 and 24, then checks that
+`research/generated/`, `data/` and `docs/notebook.html` are unchanged, and that
+`data/`, `research/` and `docs/` have no new untracked files after that run (`git diff --exit-code` plus `git status --porcelain`). A red
+result there means a generated artifact drifted from what is committed; run
+`npm run verify` locally, review the diff, and commit the regenerated files.
+
+The `browser` job installs Playwright and Chromium and runs
+`tests/browser/browser_smoke.py` and `tests/browser/quant_browser.py` against `node
+scripts/serve.mjs` (each script starts and stops its own server). It is
+currently `continue-on-error: true` while it proves out on `main`; make it
+required after 10 consecutive green runs. On failure it uploads the scripts'
+screenshots and result JSON as a workflow artifact.

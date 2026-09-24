@@ -98,7 +98,7 @@ scale or rounding rule. It says even less about a new renderer that has not been
 
 ```sh
 npm run audit:research
-python3 scripts/reproduce.py
+python3 research/scripts/reproduce.py
 ```
 
 The first writes `research/generated/audit.json` and `audit.csv` using the JS implementation.

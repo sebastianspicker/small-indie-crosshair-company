@@ -4,7 +4,7 @@ Target inventory: build 2000914, pinned in [S03](source-ledger.md#s03-new-build-
 This is a snapshot, not a promise that these names/ranges will remain unchanged.
 The name mapping does not by itself establish a pixel conversion.
 The machine-readable source of truth for the ranges, defaults, hidden leftovers,
-removed names and styles is [`lib/cvar-inventory.js`](../../lib/cvar-inventory.js);
+removed names and styles is [`lib/settings/cvars.js`](../../lib/settings/cvars.js);
 this document quotes it and must not become a second copy.
 
 | Purpose | Old setting | New setting / treatment |
@@ -116,7 +116,7 @@ Re-read 2026-09-23. The build 2000914 dump still gives `cl_crosshair_gap 4`
 (`min: 0, max: 128`), and the post-update community confirms the new variable cannot be
 set negative — the top feedback request is literally "please allow negative crosshair
 gaps again". So the new gap is a **non-negative integer**, exactly as
-[`lib/native-settings.js`](../../lib/native-settings.js) assumes. Two consequences:
+[`lib/settings/native.js`](../../lib/settings/native.js) assumes. Two consequences:
 
 - The external `Horizzon1/cs2-crosshair-migrator` reconstruction clamps the new gap to
   -50…50. That signed clamp lies outside the build's range and is not a valid target, so
@@ -125,7 +125,7 @@ gaps again". So the new gap is a **non-negative integer**, exactly as
 - A published post-update pro-settings round-up that reports `cl_crosshair_gap -9` or
   `-7` is inconsistent with the dump and the community behavior; those entries are not
   treated as reference outputs. A reconstructed negative old offset stays
-  unrepresentable: [`pixelCopyCandidate`](../../lib/migration.js) clamps it to 0 and
+  unrepresentable: [`pixelCopyCandidate`](../../lib/solver/migration.js) clamps it to 0 and
   discloses the residual.
 
 The same round-up anchors the renderer. donk, m0NESY and s1mple share the old crosshair
@@ -140,7 +140,7 @@ The app's automatic choice therefore ships the authored model's pixel-exact inve
 there are no native measurements, matching the dump's `cl_crosshair_screen_height`
 mechanism. The weighted hedge stays available as an explicit option ("weighted model
 hedge") and is used automatically once measurement evidence exists. This is an
-application default only: [`infer()`](../../lib/quant/inference.js), the bounded search,
+application default only: [`infer()`](../../lib/solver/inference.js), the bounded search,
 the declared losses and the trained artifacts are unchanged, and the default is
 reversible from the same control.
 
