@@ -155,12 +155,15 @@ Optional browser checks and screenshot capture are described in
 
 | Directory | Contents |
 | --- | --- |
-| `lib/` | Pure geometry, conversion, image analysis, and statistics |
-| `app/` | Browser controls, canvases, and worker orchestration |
-| `data/` | Versioned settings and study results |
+| `lib/` | Pure domain: `settings/`, `geometry/`, `image/`, the automatic `solver/`, the `manual/` lab |
+| `app/` | Browser runtime: router, one folder per route, the worker boundary |
+| `data/` | The bundled JSON the app loads (presets, corpus, study summary) |
 | `docs/` | Math, sources, engineering notes, and screenshot tour |
-| `research/` | Frozen archive and reproducible experiments |
-| `scripts/`, `tests/` | Local tooling and regression checks |
+| `research/` | Research-only models and pipelines, generated results, frozen archive |
+| `scripts/` | Build, serve, check, and notebook tooling |
+| `tests/` | Node tests grouped by tree, plus Python browser checks |
+
+The layering and its rules are described in [architecture](docs/engineering/architecture.md).
 
 Imports and screenshots stay in the browser unless you export them. There is no
 tracking, persistence, or game-process access. See [security and privacy](SECURITY.md).

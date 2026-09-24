@@ -308,7 +308,7 @@ change the numerical comparison.
 ## References and executable correspondence
 
 Old reconstruction: [Q05](../research/quant-sources.md). New cvar inventory:
-[Q04](../research/quant-sources.md). Functions are in `lib/quant/models.js`,
-`lib/quant/inference.js` and `lib/raster.js`. Reproduce corpus comparisons
+[Q04](../research/quant-sources.md). Functions are in `lib/solver/renderer.js` and `lib/solver/inverse.js`,
+`lib/solver/inference.js` and `lib/geometry/raster.js`. Reproduce corpus comparisons
 with `npm run research:quant`; run the inverse and bounded-refinement tests
 with `npm test`.

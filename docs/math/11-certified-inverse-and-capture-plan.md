@@ -5,7 +5,7 @@ evidence shipped:** zero capture pairs. This chapter adds a certification layer
 around the *declared* decision loss, a complete integer preimage, three declared
 decision rules, a behavioural partition of the 27-model family, and a synthetic
 discriminating capture plan. Every number below is reproducible from the
-committed generated artifacts, the code in `lib/quant/`, and the scripts named in
+committed generated artifacts, the code in `lib/solver/` and `research/lib/`, and the scripts named in
 each section.
 
 None of these results observe the game. The certificate says a tuple is the best
@@ -17,7 +17,7 @@ default does not silently drift.
 ## 1. What "certified" means here
 
 The automatic solver ranks legal tuples by a declared loss over the 27 hypothesis
-scores. The loss key depends on the declared decision rule (`lib/quant/selection.js`):
+scores. The loss key depends on the declared decision rule (`lib/solver/selection.js`):
 
 ```text
 expected  -> expectedLoss   = sum_m  w_m * loss_m
@@ -37,9 +37,9 @@ neighbourhood passes, two extra length probes, and no full enumeration. That
 choice is fast and its trace is exact, but it can stop before the declared
 optimum.
 
-`scripts/certify-inverse.mjs` (`npm run certify:inverse`) re-solves the corpus
+`research/scripts/certify-inverse.mjs` (`npm run certify:inverse`) re-solves the corpus
 with `rankAndCertify` and the adaptive Chebyshev-shell certificate
-(`certifyOptimum` in `lib/quant/certify.js`), then measures how often the shipped
+(`certifyOptimum` in `lib/solver/certify.js`), then measures how often the shipped
 bounded choice differs from the certified minimum.
 
 Inputs and tally (`research/generated/inverse-certification.json`):
@@ -109,7 +109,7 @@ claims a global optimum. Default outputs are deliberately unchanged.
 
 The inverse is many-to-one: several legal integer tuples can render exactly the
 same geometry. `solveTarget` returns one minimum per hypothesis; the new
-`exactPreimage` (`lib/quant/inverse.js`) returns the **whole finite equivalence
+`exactPreimage` (`lib/solver/inverse.js`) returns the **whole finite equivalence
 class** for one hypothesis, derived directly from `forward()`. Rendering is
 quantised and a rendered length or width is an interval of stored values, so the
 preimage is a union of integer boxes, not a single tuple.
@@ -143,13 +143,13 @@ hypotheses is not an equivalence class of the game.
 
 ## 4. W3 — three declared decision rules disagree often
 
-`lib/quant/selection.js` defines `DECISION_RULES = [expected, worst, cvar]` and
+`lib/solver/selection.js` defines `DECISION_RULES = [expected, worst, cvar]` and
 `DEFAULT_ALPHA = 0.5`. The `cvar` rule is a prior-free weighted conditional
 value-at-risk: sort the scenario losses from worst to best, take the worst
 `alpha` share of the declared weight, and average those losses weighted by their
 mass. It is a declared risk attitude, not a fitted risk model.
 
-`scripts/decision-study.mjs` (`npm run study:decision`) evaluates all three rules
+`research/scripts/decision-study.mjs` (`npm run study:decision`) evaluates all three rules
 on the same source-derived targets (`research/generated/decision-study.json`):
 
 ```text
@@ -180,9 +180,9 @@ native CS2 rendering accuracy.
 
 ## 5. W5 — the 27 model family separates on the sampled domain
 
-`lib/quant/partition.js` asks whether two hypotheses are behaviourally identical:
+`research/lib/partition.js` asks whether two hypotheses are behaviourally identical:
 they are equivalent when they produce the same `{length, width, near, far}`
-geometry on every sampled cell. `scripts/model-partition.mjs`
+geometry on every sampled cell. `research/scripts/model-partition.mjs`
 (`npm run study:partition`) runs the full declared sample
 (`research/generated/model-partition.json`):
 
@@ -209,9 +209,9 @@ The 27/27 result is reported only for the sampled domain above.
 ## 6. W6 — a discriminating capture plan, not measurements
 
 A uniform prior leaves most model pairs unseparated by any single crosshair.
-`lib/quant/experiments.js` (`discriminatingSet`) greedily covers the weighted
+`lib/solver/experiments.js` (`discriminatingSet`) greedily covers the weighted
 model pairs with forward-computed prediction partitions.
-`scripts/discriminating-set.mjs` (`npm run study:discriminating`) searches the
+`research/scripts/discriminating-set.mjs` (`npm run study:discriminating`) searches the
 declared finite design grid (`research/generated/discriminating-set.json`):
 
 ```text
@@ -260,10 +260,10 @@ The project ships zero native old/new capture pairs,
 `nativeMatchProbability` remains `null`, and the `shell-monotone` certificate
 rests on a documented, spot-checked (not proved) monotonicity assumption.
 
-Relevant implementation: `lib/quant/certify.js`, `inverse.js` (`exactPreimage`),
+Relevant implementation: `lib/solver/certify.js`, `inverse.js` (`exactPreimage`),
 `selection.js` (`cvar`, `weightedCvar`), `partition.js`, `experiments.js`
 (`discriminatingSet`), and `inference.js` (`certify` option). Scripts:
-`scripts/certify-inverse.mjs`, `decision-study.mjs`, `model-partition.mjs`,
+`research/scripts/certify-inverse.mjs`, `decision-study.mjs`, `model-partition.mjs`,
 `discriminating-set.mjs`. Generated artifacts:
 `research/generated/inverse-certification.json`, `decision-study.json`,
 `model-partition.json`, `discriminating-set.json`. Prior derivations remain in

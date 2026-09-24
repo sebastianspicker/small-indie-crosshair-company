@@ -1,6 +1,18 @@
 # Changelog
 
-## Unreleased
+## 0.4.0 — 2026-09-24
+
+- Reorganize the repository by responsibility ([ADR-0005](docs/engineering/decisions/0005-layered-lib-and-research-isolation.md)):
+  `lib/` becomes the import-checked layers `settings`, `geometry`, `image`, `solver`
+  and `manual`; research-only models move to `research/lib/` and research pipelines to
+  `research/scripts/`; `app/` is grouped by route and worker boundary; tests are grouped
+  by the tree they protect. Conversion results, exports and routes are unchanged.
+- Published paths under `lib/` and `app/` change. `data/quant-emulator.json` and
+  `data/quant-modulator.json` move to `research/generated/`; `data/reference-audit.json`
+  is removed (it duplicated `research/archive/2026-09-23/results.json` and had no reader).
+- Share one quantizer and one legacy-text import dispatch between the two conversion
+  models; the build and dev server share one publish list; CI also checks
+  `docs/notebook.html` for drift.
 
 - Correct even-width preview alignment while preserving measured image pixels.
 - Keep the automatic search bounded and prefer the lower pixel error before applying
@@ -65,6 +77,19 @@
 - Add a pure modulation contract (`lib/quant/modulation-contract.js`) that rejects any
   delta with a component outside ±2 and any delta that increases geometry loss; it has
   no weights and is not imported by inference.
+- Default the automatic conversion to the authored pixel-exact model
+  `authored:trunc:thickness` (`resolveModelChoice`) when there is no measurement
+  evidence and no explicit request, instead of the weighted 27-model hedge; published
+  post-update pro settings match that model's own inverse, while the weighted hedge
+  shifts the length by one in 88 of 137 static corpus records. The weighted hedge
+  (`weighted-hedge`) remains available by name or once evidence exists. This is an
+  application default only: `infer()`, the bounded search, the declared losses,
+  `NATIVE_RANGES`, `legacyGeometry` and the trained artifacts are unchanged.
+- Consolidate the architecture documentation into a single current
+  `docs/engineering/architecture.md`, archive the superseded v0.3 architecture, quant
+  lab architecture and v0.4 improvement plan under `docs/engineering/archive/`, and add
+  short decision records under `docs/engineering/decisions/` for the learned-emulator
+  scope, closed speed gates, cvar-only exports and the no-dependency/no-persistence rule.
 
 ## 0.3.0 — 2026-09-23
 

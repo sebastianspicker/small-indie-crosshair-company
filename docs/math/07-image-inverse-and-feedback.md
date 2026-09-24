@@ -245,7 +245,7 @@ be correctly hashed yet be a browser-generated preview falsely attested
 as native. The system labels evidence user-attested and never claims
 forensic authenticity.
 
-Executable implementations: `lib/quant/screenshot.js`,
-`app/image-input.js`, `lib/quant/inference.js` and
-`lib/quant/evidence.js`. Synthetic fixtures test extraction mechanics;
+Executable implementations: `lib/image/screenshot.js`,
+`app/image/input.js`, `lib/solver/inference.js` and
+`lib/solver/evidence.js`. Synthetic fixtures test extraction mechanics;
 they are not added to the native evidence set.
