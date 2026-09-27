@@ -1,5 +1,5 @@
 import { el, fmt, table } from '../ui/dom.js';
-import { paintQuant } from './preview.js';
+import { paintQuant, fitZoom } from './preview.js';
 import { rgba } from '../../lib/settings/native.js';
 import { scaleOf } from '../../lib/solver/renderer.js';
 import { exportQuantCFG } from '../../lib/solver/export.js';
@@ -25,7 +25,7 @@ export function clearResult(view, state = 'pending', message = 'Calculating…')
     canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
   }
   for (const id of ['qs-length', 'qs-out-thickness', 'qs-out-gap']) get(id).textContent = '—';
-  get('qs-flags').textContent = '';
+  get('qs-flags').textContent = ''; get('qs-commands').textContent = ''; get('qs-scale').textContent = '';
   get('qs-note').textContent = state === 'error' ? 'Input not accepted.' : 'Waiting for valid input.';
   get('qs-status').textContent = state === 'pending' || state === 'error' ? message : 'Waiting for valid input.';
   get('qs-copy').disabled = get('qs-download').disabled = true;
@@ -90,11 +90,17 @@ export function renderSimple(view, report) {
   const relevant = warningText.filter(w => /conflict|cropped|large shape|No visible|outline replacement|zero-thickness/.test(w));
   get('qs-note').textContent = [gapScale, relevant[0]].filter(Boolean).join(' ')
     || 'Conditional preview under the selected model.';
-  const zoom = Number(get('q-zoom').value);
-  paintQuant(get('qs-old-canvas'), report.target, s, c, zoom, null, { grid: true });
-  paintQuant(get('qs-new-canvas'), report.converted, s, c, zoom, null, { grid: true });
+  const oldCanvas = get('qs-old-canvas'), zoom = fitZoom(oldCanvas, [report.target, report.converted], s);
+  paintQuant(oldCanvas, report.target, s, c, zoom, null, { grid: zoom >= 6, annotate: true });
+  paintQuant(get('qs-new-canvas'), report.converted, s, c, zoom, null, { grid: zoom >= 6, annotate: true });
+  get('qs-scale').textContent = `×${zoom} · one cell = one game pixel`;
   const blocked = Boolean(report.blockers.length);
-  get('qs-status').textContent = blocked ? 'This candidate cannot be exported yet; open Advanced options to inspect.' : 'Settings ready to copy or download.';
+  const lines = blocked ? [] : exportQuantCFG(report).split('\n').filter(line => line && !line.startsWith('//'));
+  get('qs-commands').replaceChildren(...(blocked ? ['No commands until the issue is resolved in the expert lab.'] : lines.flatMap(line => {
+    const [name, ...value] = line.split(' ');
+    return [el('span', { class: 'cvar-name' }, name), ' ', el('span', { class: 'cvar-value' }, value.join(' ')), '\n'];
+  })));
+  get('qs-status').textContent = blocked ? 'This candidate cannot be exported yet; open the expert lab to inspect it.' : '';
   get('qs-copy').disabled = blocked; get('qs-download').disabled = blocked;
 }
 

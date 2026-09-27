@@ -26,6 +26,8 @@ export class QuantController {
     fillPresets(this); bindSources(this); bindFeedback(this); this.bindOutput(); this.bindSimple();
     this.observer = new ResizeObserver(() => { cancelAnimationFrame(this.frame); this.frame = requestAnimationFrame(() => this.refresh()); });
     this.observer.observe(this.view.root.querySelector('.quant-previews'));
+    this.observer.observe(this.view.root.querySelector('.specimen'));
+    document.fonts?.ready.then(() => { if (!this.closed) this.refresh(); });
     this.setSettings(this.records[0]); this.schedule();
     return this;
   }
