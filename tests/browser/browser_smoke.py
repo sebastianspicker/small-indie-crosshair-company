@@ -132,6 +132,8 @@ def main():
             except ImportError:results.append('PNG UI check skipped: Pillow not installed')
             page.click('[data-route=workbench]');page.set_viewport_size({'width':390,'height':844});page.wait_for_timeout(150)
             check('mobile workbench has no page overflow',page.evaluate('document.documentElement.scrollWidth <= innerWidth'))
+            ratios=page.locator('#old-canvas').evaluate('(canvas)=>{const rect=canvas.getBoundingClientRect();return [canvas.width/canvas.height,rect.width/rect.height]}')
+            check('mobile workbench canvas preserves painted aspect ratio',abs(ratios[0]-ratios[1])<.01)
             page.screenshot(path=str(args.output/'workbench-mobile.png'),full_page=True)
             for tab in ['research','evidence','calibration']:
                 page.click(f'[data-route={tab}]');page.wait_for_timeout(50)
@@ -140,8 +142,10 @@ def main():
             browser.close()
     finally:
         if process:process.terminate();process.wait(timeout=5)
+    limitations=(('In-memory mode does not validate HTTP navigation or CSP delivery. ' if args.in_memory else '')+
+      'PNG fixture is synthetic. No CS2 client was run.')
     summary={'mode':'in-memory-local-sources' if args.in_memory else 'localhost-production-files',
-      'checks':len(results),'passed':results,'limitations':'In-memory mode does not validate HTTP navigation or CSP delivery. PNG fixture is synthetic. No CS2 client was run.'}
+      'checks':len(results),'passed':results,'limitations':limitations}
     (args.output/'results.json').write_text(json.dumps(summary,indent=2)+'\n')
     print(json.dumps(summary,indent=2))
 

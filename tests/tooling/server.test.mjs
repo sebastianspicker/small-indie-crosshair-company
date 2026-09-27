@@ -75,8 +75,14 @@ for(const path of ['/package.json','/.git/config','/scripts/serve.mjs','/tests/l
 test('HTTP refuses within-root symlink to private source',async()=>assert.equal((await fetch(base+'/public/'+publicTemp.split('/').pop()+'/internal.json')).status,404));
 test('HTTP refuses outside-root symlink',async()=>assert.equal((await fetch(base+'/public/'+publicTemp.split('/').pop()+'/external.txt')).status,404));
 test('HTTP research and documentation are readable',async()=>{
-  for(const path of ['/docs/math/01-legacy-geometry.md','/docs/engineering/testing.md','/LICENSE','/THIRD_PARTY_NOTICES.md','/licenses/akiver-MIT.txt']){
+  for(const path of ['/docs/math/01-legacy-geometry.md','/docs/engineering/testing.md','/DESIGN_BRIEF.md','/LICENSE','/THIRD_PARTY_NOTICES.md','/licenses/akiver-MIT.txt']){
     const res=await fetch(base+path);assert.equal(res.status,200,path);assert.match(res.headers.get('content-type'),/text\/plain/);
+  }
+});
+test('self-hosted fonts use the declared policy and MIME type',async()=>{
+  const page=await fetch(base);assert.match(page.headers.get('content-security-policy'),/font-src 'self'/);
+  for(const path of ['/public/fonts/archivo-latin-var.woff2','/public/fonts/martian-mono-latin-var.woff2']){
+    const res=await fetch(base+path);assert.equal(res.status,200,path);assert.match(res.headers.get('content-type'),/font\/woff2/);
   }
 });
 test('Pages HTML contains worker-compatible meta CSP without unsupported frame-ancestors',async()=>{

@@ -10,7 +10,7 @@ export const percent = value => value == null ? 'Undefined' : `${(100 * value).t
 
 export function clearResult(view, state = 'pending', message = 'Calculating…') {
   const { root, get } = view;
-  root.dataset.result = state; root.dataset.busy = String(state === 'pending');
+  root.dataset.result = state; root.dataset.busy = String(state === 'pending'); root.dataset.blocked = 'false';
   root.setAttribute('aria-busy', String(state === 'pending'));
   get('q-status').textContent = message;
   get('q-cfg').value = '';
@@ -26,6 +26,7 @@ export function clearResult(view, state = 'pending', message = 'Calculating…')
   }
   for (const id of ['qs-length', 'qs-out-thickness', 'qs-out-gap']) get(id).textContent = '—';
   get('qs-flags').textContent = ''; get('qs-commands').textContent = ''; get('qs-scale').textContent = '';
+  get('qs-live').textContent = '';
   if (state === 'error') get('qs-note').textContent = '';
   get('qs-status').textContent = state === 'error' ? message : '';
   get('qs-copy').disabled = get('qs-download').disabled = true;

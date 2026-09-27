@@ -11,8 +11,7 @@ html[data-mode="expert"] #quant .quant-simple { display: none; }
   display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--s-7);
   align-items: start; margin-top: var(--s-6);
 }
-.qs-input { min-width: 0; }
-.qs-step { min-width: 0; margin: 0; padding: 0 0 var(--s-5); border: 0; border-top: var(--hair); }
+.qs-step { grid-column: 1; min-width: 0; margin: 0; padding: 0 0 var(--s-5); border: 0; border-top: var(--hair); }
 .qs-step:first-child { border-top: 2px solid var(--ink); }
 .qs-step > legend {
   float: left; width: 100%; display: flex; align-items: center; gap: var(--s-3); padding: var(--s-4) 0 0;
@@ -29,7 +28,10 @@ html[data-mode="expert"] #quant .quant-simple { display: none; }
 .simple-checks { display: flex; flex-wrap: wrap; gap: 0 var(--s-5); }
 #qs-input-status:empty, #qs-status:empty, #q-input-status:empty { display: none; }
 
-.qs-reading { min-width: 0; padding: var(--s-5); background: var(--sheet); border-top: 2px solid var(--ink); }
+.qs-reading {
+  grid-column: 2; grid-row: 1 / span 4; min-width: 0; padding: var(--s-5);
+  background: var(--sheet); border-top: 2px solid var(--ink);
+}
 @media (min-width: 1000px) and (min-height: 820px) {
   .qs-reading { position: sticky; top: var(--s-4); }
 }
@@ -161,10 +163,11 @@ html[data-mode="expert"] #quant .quant-simple { display: none; }
 @media (max-width: 820px) {
   /* Mobile is its own flow: paste, read the answer, then adjust. */
   .quant-simple { grid-template-columns: minmax(0, 1fr); gap: 0; margin-top: var(--s-5); }
-  .qs-input { display: contents; }
-  .qs-step:first-child { order: 1; }
-  .qs-reading { order: 2; margin: 0 calc(-1 * var(--gutter)) var(--s-5); padding: var(--s-5) var(--gutter); }
-  .qs-step { order: 3; }
+  .qs-step { grid-column: 1; }
+  .qs-reading {
+    grid-column: 1; grid-row: auto; margin: 0 calc(-1 * var(--gutter)) var(--s-5);
+    padding: var(--s-5) var(--gutter);
+  }
   .quant-layout { grid-template-columns: minmax(0, 1fr); gap: var(--s-6); }
   .quant-input > button { width: auto; }
   .quant-previews { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-2); }

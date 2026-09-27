@@ -5,7 +5,7 @@
     "app/convert/feedback.js": 2,
     "app/convert/presentation.js": 18,
     "app/convert/sources.js": 7,
-    "app/convert/view.js": 22,
+    "app/convert/view.js": 20,
     "app/image/dialog.js": 1,
     "app/image/view.js": 8,
     "app/manual/calibration.js": 31,

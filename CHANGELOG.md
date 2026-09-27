@@ -13,6 +13,8 @@
     text) beside the inputs.
 - The CSP changes from `font-src 'none'` to `font-src 'self'`, and the dev
   server serves `.woff2`.
+- Keep the mobile Simple flow in DOM order, preserve the manual preview's pixel
+  aspect ratio, clear stale announced results, and publish the linked design brief.
 - Conversion results, exports, routes and element IDs are unchanged.
 
 ## 0.4.0 — 2026-09-24

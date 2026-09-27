@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { resolve } from 'node:path';
-import { isSiteFile } from '../../scripts/site-files.mjs';
+import { isPublishedPath, isSiteFile } from '../../scripts/site-files.mjs';
 
 const root = resolve('fixture-site');
 test('deployment omits local credentials and tooling nested in public directories', () => {
@@ -18,4 +18,8 @@ test('deployment keeps source, research, notebook cache and README screenshots',
     assert.equal(isSiteFile(root, resolve(root, file)), true, file);
   }
   assert.equal(isSiteFile(root, resolve(root, '../outside.txt')), false);
+});
+test('published root documents include the linked design brief', () => {
+  assert.equal(isPublishedPath('DESIGN_BRIEF.md'), true);
+  assert.equal(isPublishedPath('package.json'), false);
 });

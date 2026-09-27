@@ -2,7 +2,7 @@ import { raster, compareMasks } from '../../lib/geometry/raster.js';
 const token=(css,name,fallback)=>css.getPropertyValue(name).trim()||fallback;
 export function paint(canvas,geometry,flags,rgba,view,other=null) {
   const ctx=canvas.getContext('2d'),dpr=window.devicePixelRatio||1,css=getComputedStyle(document.documentElement);
-  const cssW=Math.max(200,canvas.getBoundingClientRect().width),cssH=300;
+  const rect=canvas.getBoundingClientRect(),cssW=Math.max(200,rect.width),cssH=Math.max(100,rect.height||300);
   canvas.width=Math.round(cssW*dpr);canvas.height=Math.round(cssH*dpr);
   ctx.scale(dpr,dpr);ctx.imageSmoothingEnabled=false;
   ctx.fillStyle=token(css,'--plate','#0c0e0d');ctx.fillRect(0,0,cssW,cssH);
