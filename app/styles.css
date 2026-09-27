@@ -16,12 +16,13 @@
 /* Metric-matched fallbacks keep the swap from shifting layout. */
 @font-face {
   font-family: 'Archivo Fallback';
-  src: local('Arial'), local('Helvetica Neue'), local('Helvetica'), local('Liberation Sans');
+  src: local('Arial'), local('ArialMT'), local('Helvetica Neue'), local('Helvetica'), local('Liberation Sans');
   size-adjust: 102%; ascent-override: 86%; descent-override: 20.5%; line-gap-override: 0%;
 }
 @font-face {
   font-family: 'Mono Fallback';
-  src: local('Menlo'), local('Consolas'), local('DejaVu Sans Mono'), local('Courier New');
+  src: local('Menlo Regular'), local('Menlo-Regular'), local('Menlo'), local('SF Mono Regular'), local('Consolas'),
+    local('DejaVu Sans Mono'), local('Liberation Mono'), local('Courier New');
   size-adjust: 104%; ascent-override: 94%; descent-override: 19%; line-gap-override: 0%;
 }
 
