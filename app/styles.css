@@ -239,10 +239,6 @@ main:focus { outline: none; }
 .title-block .tb-flag dd { display: flex; gap: var(--s-3); align-items: baseline; justify-content: space-between; color: var(--signal-ink); }
 .title-block .tb-flag a { font-family: var(--font-text); font-stretch: 100%; font-size: var(--fs-xs); color: var(--ink-2); }
 
-/* Legacy heading class, still produced by a few generated fragments. */
-.page-heading { padding: var(--s-7) 0 var(--s-5); border-bottom: var(--hair); }
-.page-heading h1 { font-size: clamp(var(--fs-2xl), 4.4vw, var(--fs-4xl)); line-height: var(--lh-tight); font-stretch: 68%; }
-.page-heading p { margin-top: var(--s-3); font-size: var(--fs-md); max-width: 58ch; }
 
 /* ── 6. Form controls ──────────────────────────────────────────────────────── */
 label { display: block; margin: var(--s-4) 0 6px; color: var(--ink-2); font-size: var(--fs-sm); font-weight: 500; line-height: 1.35; }

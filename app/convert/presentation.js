@@ -103,6 +103,8 @@ export function renderSimple(view, report) {
   })));
   get('qs-status').textContent = blocked ? `${report.blockers[0]} Nothing can be exported until this is resolved.` : '';
   get('qs-copy').disabled = blocked; get('qs-download').disabled = blocked;
+  const announcement = blocked ? '' : `New settings: length ${fmt(n.length)}, thickness ${fmt(n.thickness)}, gap ${fmt(n.gap)}.`;
+  if (get('qs-live').textContent !== announcement) get('qs-live').textContent = announcement;
 }
 
 const CERTIFICATE_METHOD_NOTES = {

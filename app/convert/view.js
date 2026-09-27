@@ -46,7 +46,7 @@ function simplePanel() {
     el('section', { class: 'qs-reading simple-output', 'aria-labelledby': 'qs-reading-title' },
       el('div', { class: 'reading-head' }, el('h2', { id: 'qs-reading-title' }, 'New settings'),
         el('span', { class: 'tag signal' }, 'Modelled, not captured')),
-      status('qs-status'),
+      status('qs-status'), el('p', { id: 'qs-live', class: 'sr-only', role: 'status' }),
       el('div', { class: 'specimen simple-previews' },
         plate('qs-old-canvas', 'Old', 'before', 'Historical reconstructed crosshair'),
         plate('qs-new-canvas', 'New', 'after', 'Proposed crosshair candidate simulation'),

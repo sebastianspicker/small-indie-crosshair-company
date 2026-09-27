@@ -28,7 +28,7 @@ function registration(context, width, height, ox, oy, zoom, colors) {
 function drawCells(context, mask, reference, width, height, zoom, color, colors) {
   const ox = Math.floor(width / 2), oy = Math.floor(height / 2), half = (mask.side - 1) / 2;
   const rgb = `rgb(${color.rgb.join(',')})`;
-  context.globalAlpha = reference ? 1 : color.alpha / 255;
+  context.globalAlpha = color.alpha / 255;
   for (let i = 0; i < mask.data.length; i++) {
     const a = mask.data[i], b = reference?.data[i];
     if (!(a || b)) continue;
