@@ -1,41 +1,85 @@
 # Interface design and browser review
 
-The design is an understated dark measurement workbench: a left parameter rail,
-two large pixel inspection canvases, native-value controls, and configuration
-output. Mint is the interaction accent; warm amber distinguishes warnings. A
-system-font stack keeps the project offline and avoids shipping font files.
+The interface follows one idea: **the app is a small, very serious metrology
+office that issues an inspection sheet for your crosshair.** Each route is a
+numbered sheet (01 Convert through 06 Archive). Each sheet head carries a
+drawing-style *title block* with the build, model, snapshot and the field
+**Checked in game: Not yet**. The uncertainty is a field on the sheet, not a
+repeated banner. The reasoning, the audience profile and the three directions
+that were considered are in [`DESIGN_BRIEF.md`](../../DESIGN_BRIEF.md).
 
-The product surface is the working tool, not a landing page. Four fragment-routed
-tabs separate Workbench, Mathematics, Calibration and Evidence. It has no marketing
-metrics, account controls, generated photographic backgrounds or unrelated charts.
-The visible crosshairs and grids are necessarily code-native mathematical graphics.
-No image-generated concept or externally approved mockup is claimed.
+## System rules
 
-## Responsive behavior
+- **Paper and plate.** The page is paper: graphite in the dark theme, bone in
+  the light one, following the OS. The crosshair always sits on a dark
+  *specimen plate*, because the plate stands in for the game screen. The
+  user's crosshair colour is the only saturated colour on the plate.
+- **Archivo speaks, Martian Mono measures.**
+  - Archivo is used condensed for sheet titles and at normal width for text.
+  - Martian Mono is used for everything a player could type into the
+    console: values, cvars, codes, tags and sheet numbers.
+  - Both are self-hosted OFL variable fonts
+    ([ADR-0006](decisions/0006-self-hosted-open-licensed-typefaces.md)).
+- **One signal colour.** Sodium yellow (ochre on light paper) marks
+  annotations, focus, the primary action and conditional status. Vermilion is
+  reserved for blockers and errors. Green never appears in the UI chrome, so
+  the crosshair is never competing with it.
+- **Hairlines, not shadows.** Square instruments, 1 px rules, and a heavy
+  2 px rule to open a region. The only shadow belongs to the modal dialog.
+- **Tokens first.** Every colour, size, space and duration is a custom
+  property in `app/styles.css`, including the canvas colours: the preview
+  painters read `--plate`, `--plate-grid`, `--plate-annot` and `--diff-*` at
+  paint time.
 
-At a wide desktop the parameter rail and inspector are adjacent. Small viewports
-stack inputs and previews; data tables scroll inside their own bounded containers.
-Controls retain labels and keyboard access; colors are not the only signal for
-model status. Native settings use integers and legacy inputs allow fractions.
-Error/status messages are text and expose changes through status regions.
+## Primary screen
 
-Canvas display zoom and horizontal stretch are explicitly presentation operations,
-not a change to the underlying geometry or exported settings. Pixel differences
-compare two simulated geometry masks and stay labeled as model-only information.
+The Simple view of sheet 01 is an input column (A paste, B old values,
+C resolution, D colour) beside a sticky **reading** panel. The reading panel
+holds:
+
+- two specimen plates at one shared, auto-fitted magnification (for example
+  "×20 · one cell = one game pixel"), with dimension lines reporting the
+  drawn arm length and thickness in game pixels;
+- the three new values as large numerals;
+- the console lines as text, so they can be typed by hand;
+- copy and download actions.
+
+On phones the order changes: paste, then the answer, then adjustments.
+
+Magnification, grid and dimension lines are presentation only. They never
+change geometry, inference or exports.
+
+## States
+
+- **Pending:** the numerals dim while the worker computes, and nothing moves.
+- **Error:** the message replaces the answer under the reading heading, and
+  the plates say "No valid input".
+- **Blocked:** the first blocker is shown in full, and copy and download are
+  disabled.
+- **Status regions:** they stay `role="status"`. Colour is never the only
+  signal: tags carry text, and diff colours are named in the captions.
+
+## Accessibility
+
+- All text roles meet WCAG 2.2 AA in both themes (ink ≥ 14:1, secondary ink
+  ≥ 6:1, signal text ≥ 5.5:1).
+- Control boundaries use `--edge` (≥ 3:1).
+- Focus is a 2 px signal outline.
+- Motion is limited to short opacity and rotation transitions, and is removed
+  under `prefers-reduced-motion`.
+- Forced-colours mode keeps the tag and toggle markers visible.
 
 ## Review process
 
-Browser screenshots are obtained from the actual HTML, CSS and ES modules. The
-construction environment's managed Chromium blocks HTTP navigation, including
-localhost. Its policy was not changed. Browser interaction and visual testing use
-an in-memory local-source harness on a blank page. Separate Node HTTP tests cover
-server status, headers, asset delivery and denied paths. This is not claimed to be
-an end-to-end CSP-enforced navigation test.
+Browser screenshots are taken from the real HTML, CSS and ES modules over the
+local server (`npm run dev`) with Playwright:
 
-Review targets: desktop 1440 × 1150 and mobile 390 × 844. Inspect all four surfaces,
-parameter labels, heading hierarchy, canvas alignment, control spacing, narrow
-viewport overflow, notice readability, and configuration output wrapping. Temporary
-screenshots and browser-generated files are excluded from the repository.
+- viewports: 1440, 768 and 390 wide;
+- both colour schemes;
+- every route, plus the error, blocked, dialog and focus states.
 
-No ten-out-of-ten design rating, full accessibility audit, browser-matrix approval,
-or native game rendering validation is asserted.
+`tests/browser/quant_browser.py` and `tests/browser/browser_smoke.py` run in
+both localhost and `--in-memory` modes.
+
+No ten-out-of-ten design rating, full accessibility audit, browser-matrix
+approval or native game rendering validation is asserted.

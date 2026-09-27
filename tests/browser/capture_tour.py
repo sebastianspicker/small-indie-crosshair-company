@@ -23,7 +23,7 @@ def main():
     errors, external = [], []
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
-        page = browser.new_page(viewport={'width': 1440, 'height': 1050}, device_scale_factor=1)
+        page = browser.new_page(viewport={'width': 1440, 'height': 1050}, device_scale_factor=1, color_scheme='dark')
         page.on('pageerror', lambda e: errors.append(str(e)))
         page.on('console', lambda message: errors.append(message.text) if message.type == 'error' else None)
         page.on('request', lambda request: external.append(request.url)
@@ -35,6 +35,7 @@ def main():
         assert page.locator('.quant-previews canvas').count() == 3
         page.screenshot(path=str(args.output / 'converter.png'))
 
+        page.click('#mode-toggle')  # Simple mode hides the other sheets' nav links.
         page.click('[data-route="corpus"]')
         page.wait_for_selector('#corpus-records')
         page.locator('#corpus-records').evaluate('(element) => element.scrollIntoView({block: "start", behavior: "instant"})')

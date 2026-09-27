@@ -25,10 +25,12 @@ npm run dev
 Open **http://127.0.0.1:4173**. Use a web server rather than opening `index.html`
 as a file: the app loads modules, local data, and a worker.
 
-The app opens in the **Simple** view, which keeps only the essential controls.
-Select **Advanced** in the masthead to open the full **Expert** lab with the
-27-model table, derivations, search trace, evidence and measurements. Mode is
-held only in the page, not saved to your device.
+The app opens in the **Simple** view: paste on the left, the answer on the right.
+It shows the old and new crosshair on dimensioned pixel plates, the three new
+values, and the console lines to paste or type. Select **Advanced** in the
+masthead to open the full **Expert** lab with the 27-model table, derivations,
+search trace, evidence and measurements. Mode is held only in the page, not
+saved to your device. The interface follows your system's light or dark theme.
 
 1. Paste a legacy v1 share code or old `cl_crosshair...` settings. You can also
    enter values, choose a published preset, or measure an original PNG.
@@ -45,16 +47,18 @@ export uses cvar commands.
 ## Screenshot tour
 
 These are screenshots of the local app with bundled settings and synthetic
-previews. They are not captures from CS2. The tour was captured in the **Expert**
-view; the app now opens in the **Simple** view, which you can expand with the
-masthead **Advanced** button.
+previews. They are not captures from CS2. The converter screenshot shows the
+default **Simple** view; the masthead **Advanced** button expands it into the
+Expert lab.
 
 ### 1. Convert and compare
 
-Edit the old values and compare all three previews at the same scale. Expand the
-pixel differences to see where a proposed conversion misses the target.
+Paste a code or edit the old values. The reading panel draws the old and new
+crosshair at the same magnification, with their arm length and thickness
+dimensioned in game pixels. The Expert lab adds the copied-values preview and the
+pixel differences that show where a proposed conversion misses the target.
 
-![Converter showing old values, proposed settings, and three pixel previews](docs/screenshots/converter.png)
+![Converter with the old values on the left and the new settings, dimensioned pixel plates and console lines on the right](docs/screenshots/converter.png)
 
 ### 2. Browse the source settings
 

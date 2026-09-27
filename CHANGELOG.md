@@ -1,5 +1,20 @@
 # Changelog
 
+## Unreleased
+
+- Redesign the interface as an "inspection sheet"
+  ([design](docs/engineering/design.md), `DESIGN_BRIEF.md`):
+  - token-driven light and dark themes;
+  - self-hosted Archivo and Martian Mono (OFL,
+    [ADR-0006](docs/engineering/decisions/0006-self-hosted-open-licensed-typefaces.md));
+  - sheet-numbered navigation and title blocks;
+  - a Simple view that puts the answer (dimensioned before/after plates at an
+    auto-fitted magnification, three readout values and the console lines as
+    text) beside the inputs.
+- The CSP changes from `font-src 'none'` to `font-src 'self'`, and the dev
+  server serves `.woff2`.
+- Conversion results, exports, routes and element IDs are unchanged.
+
 ## 0.4.0 — 2026-09-24
 
 - Reorganize the repository by responsibility ([ADR-0005](docs/engineering/decisions/0005-layered-lib-and-research-isolation.md)):
