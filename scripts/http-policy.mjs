@@ -3,10 +3,10 @@ import { resolve, extname, sep, relative } from 'node:path';
 import { isPublishedPath } from './site-files.mjs';
 const MIME = { '.html':'text/html', '.js':'text/javascript', '.mjs':'text/javascript', '.css':'text/css', '.svg':'image/svg+xml',
   '.json':'application/json', '.md':'text/plain', '.csv':'text/csv', '.tsv':'text/tab-separated-values', '.txt':'text/plain',
-  '.py':'text/plain', '.png':'image/png', '.ico':'image/x-icon' };
+  '.py':'text/plain', '.png':'image/png', '.ico':'image/x-icon', '.woff2':'font/woff2' };
 const isPublic = isPublishedPath;
 export const HEADERS = Object.freeze({
-  'Content-Security-Policy': "default-src 'none'; script-src 'self'; worker-src 'self'; style-src 'self'; img-src 'self' blob: data:; connect-src 'self'; font-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+  'Content-Security-Policy': "default-src 'none'; script-src 'self'; worker-src 'self'; style-src 'self'; img-src 'self' blob: data:; connect-src 'self'; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
   'X-Content-Type-Options':'nosniff', 'X-Frame-Options':'DENY', 'Referrer-Policy':'no-referrer',
   'Cross-Origin-Resource-Policy':'same-origin', 'Permissions-Policy':'camera=(), microphone=(), geolocation=()', 'Cache-Control':'no-cache',
 });
