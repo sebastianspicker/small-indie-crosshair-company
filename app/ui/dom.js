@@ -19,8 +19,24 @@ export async function copy(text,status) {
   try {await navigator.clipboard.writeText(text);status.textContent='Copied to clipboard.';}
   catch {status.textContent='Clipboard is unavailable. Select the command text, or use the download button.';}
 }
-export function heading(title,description) {
-  return el('div',{class:'page-heading'},el('div',{},el('h1',{},title),el('p',{},description)));
+/** Snapshot facts shared by every sheet's title block. */
+export const SNAPSHOT = { build: '2000914', date: '2026-09-23' };
+
+/**
+ * Page header in the "inspection sheet" form: eyebrow with sheet number, title, lede,
+ * and a title block of [term, value] fields. A field may be [term, value, 'tb-flag'].
+ */
+export function sheetHead({ sheet, label, title, lede, fields = [] }) {
+  return el('header', { class: 'sheet-head' },
+    el('div', { class: 'sheet-intro' },
+      el('p', { class: 'sheet-eyebrow' }, el('span', { class: 'sheet-no' }, sheet), label),
+      el('h1', {}, title), lede ? el('p', { class: 'lede' }, lede) : null),
+    fields.length ? el('dl', { class: 'title-block' }, fields.map(([term, value, className]) =>
+      el('div', className ? { class: className } : {}, el('dt', {}, term), el('dd', {}, value)))) : null);
+}
+export function heading(title, description, sheet = { sheet: '', label: '' }) {
+  return sheetHead({ ...sheet, title, lede: description,
+    fields: sheet.fields ?? [['Build', SNAPSHOT.build], ['Snapshot', SNAPSHOT.date]] });
 }
 export function docLink(path,label) {const chapter=/^math\/(\d{2})-/.exec(path);return el('a',{href:chapter?'./docs/notebook.html#chapter-'+Number(chapter[1]):'./docs/'+path,target:'_blank',rel:'noopener noreferrer'},label+' ↗');}
 export function table(headers,rows) {
