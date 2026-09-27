@@ -2,7 +2,9 @@ import { $,el,heading,docLink,table,fmt } from '../ui/dom.js';
 import { legacyGeometry,idealBucket } from '../../lib/geometry/legacy.js';
 export function initResearch() {
   const root=$('research');
-  root.append(heading('How the conversion works','The equations, tests, and open questions behind each proposed setting.'));
+  root.append(heading('How the conversion works',
+    'The equations, tests and open questions behind each proposed setting, from the first shortcut to the current solver.',
+    {sheet:'03',label:'Mathematics',fields:[['Build','2000914'],['Chapters','11'],['Cases','945'],['Capture pairs','0','tb-flag']]}));
   const entries=[
     ['v0 · the shortcut','Multiply everything by two.','It fails against the reconstructed old geometry in 32 of 56 numerical cases. Matching a few resolutions does not make it a general rule.'],
     ['v1 · reconstruct pixels','Scale by H / 480, then truncate.','Retained for old static geometry. Gap stays in raw pixels; rounding and truncation are not interchangeable.'],
