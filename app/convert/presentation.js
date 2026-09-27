@@ -26,8 +26,8 @@ export function clearResult(view, state = 'pending', message = 'Calculating…')
   }
   for (const id of ['qs-length', 'qs-out-thickness', 'qs-out-gap']) get(id).textContent = '—';
   get('qs-flags').textContent = ''; get('qs-commands').textContent = ''; get('qs-scale').textContent = '';
-  get('qs-note').textContent = state === 'error' ? 'Input not accepted.' : 'Waiting for valid input.';
-  get('qs-status').textContent = state === 'pending' || state === 'error' ? message : 'Waiting for valid input.';
+  if (state === 'error') get('qs-note').textContent = '';
+  get('qs-status').textContent = state === 'error' ? message : '';
   get('qs-copy').disabled = get('qs-download').disabled = true;
   for (const id of ['qs-old-canvas', 'qs-new-canvas']) {
     const canvas = get(id);
@@ -95,12 +95,13 @@ export function renderSimple(view, report) {
   paintQuant(get('qs-new-canvas'), report.converted, s, c, zoom, null, { grid: zoom >= 6, annotate: true });
   get('qs-scale').textContent = `×${zoom} · one cell = one game pixel`;
   const blocked = Boolean(report.blockers.length);
+  view.root.dataset.blocked = String(blocked);
   const lines = blocked ? [] : exportQuantCFG(report).split('\n').filter(line => line && !line.startsWith('//'));
   get('qs-commands').replaceChildren(...(blocked ? ['No commands until the issue is resolved in the expert lab.'] : lines.flatMap(line => {
     const [name, ...value] = line.split(' ');
     return [el('span', { class: 'cvar-name' }, name), ' ', el('span', { class: 'cvar-value' }, value.join(' ')), '\n'];
   })));
-  get('qs-status').textContent = blocked ? 'This candidate cannot be exported yet; open the expert lab to inspect it.' : '';
+  get('qs-status').textContent = blocked ? `${report.blockers[0]} Nothing can be exported until this is resolved.` : '';
   get('qs-copy').disabled = blocked; get('qs-download').disabled = blocked;
 }
 

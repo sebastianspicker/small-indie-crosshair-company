@@ -57,7 +57,7 @@ function dimensions(context, geometry, settings, width, height, zoom, colors) {
   if (x1 - x0 >= 14 && y1 + gap + 18 < height) {
     const y = y1 + gap;
     line(x0, y, x1, y); line(x0, y - tick, x0, y + tick); line(x1 - 1, y - tick, x1 - 1, y + tick);
-    context.textAlign = 'center'; context.fillText(`${length} px`, (x0 + x1) / 2, y + 11);
+    context.textAlign = 'left'; context.fillText(`${length} px`, x0, y + 12);
   }
   if (x1 + gap + 44 < width) {
     const x = x1 + gap;

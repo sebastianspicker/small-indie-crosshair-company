@@ -20,7 +20,7 @@ html[data-mode="expert"] #quant .quant-simple { display: none; }
 }
 .qs-step > legend + * { clear: both; }
 .step-no {
-  display: inline-grid; place-items: center; width: 22px; height: 22px; border: var(--hair-strong);
+  display: inline-grid; place-items: center; width: 22px; height: 22px; border: var(--hair-edge);
   font: 500 var(--fs-2xs)/1 var(--font-mono); font-stretch: var(--mono-stretch); color: var(--signal-ink);
 }
 #qs-import { min-height: 92px; font-size: var(--fs-sm); line-height: 1.7; }
@@ -45,13 +45,13 @@ html[data-mode="expert"] #quant .quant-simple { display: none; }
 .plate figcaption {
   position: absolute; inset: 0 0 auto; display: flex; justify-content: space-between; padding: var(--s-2) var(--s-3);
   font: 500 var(--fs-2xs)/1.3 var(--font-mono); font-stretch: var(--mono-stretch); text-transform: uppercase;
-  letter-spacing: var(--track-caps); color: #e9e5da; pointer-events: none;
+  letter-spacing: var(--track-caps); color: var(--plate-label); pointer-events: none;
 }
-.plate .preview-index { color: #92948c; }
+.plate .preview-index { color: var(--plate-ink); }
 .plate canvas { height: clamp(200px, 22vw, 260px); }
 .plate-scale {
   grid-column: 1 / -1; margin: 0; padding: 6px var(--s-3); background: var(--plate);
-  font: 400 var(--fs-2xs)/1.4 var(--font-mono); font-stretch: var(--mono-stretch); color: #92948c;
+  font: 400 var(--fs-2xs)/1.4 var(--font-mono); font-stretch: var(--mono-stretch); color: var(--plate-ink);
 }
 .plate-scale:empty::before { content: '·'; visibility: hidden; }
 
@@ -80,7 +80,7 @@ html[data-mode="expert"] #quant .quant-simple { display: none; }
 }
 .command-list .cvar-name { color: var(--ink-2); }
 .command-list .cvar-value { color: var(--ink); font-weight: 600; }
-.simple-actions { margin-top: var(--s-4); }
+.simple-actions { margin-top: var(--s-4); padding-bottom: var(--s-2); }
 .simple-actions #qs-advanced { margin-left: auto; }
 #qs-status { margin-top: var(--s-3); }
 .qs-note { margin-top: var(--s-4); padding-left: var(--s-3); border-left: 2px solid var(--signal-ink); font-size: var(--fs-sm); line-height: 1.55; }
@@ -149,7 +149,7 @@ html[data-mode="expert"] #quant .quant-simple { display: none; }
 .quant-metrics > div { display: flex; flex-direction: column; gap: 2px; padding: var(--s-3) var(--s-4); border-left: var(--hair); min-width: 0; }
 .quant-metrics > div:first-child { padding-left: 0; border-left: 0; }
 .quant-metrics span { color: var(--ink-2); font-size: var(--fs-sm); }
-.quant-metrics strong { font: 400 var(--fs-xl)/1.25 var(--font-mono); font-stretch: 100%; color: var(--ink); }
+.quant-metrics strong { font: 400 var(--fs-lg)/1.3 var(--font-mono); font-stretch: var(--mono-stretch); color: var(--ink); }
 .quant-metrics small { color: var(--ink-2); font-size: var(--fs-xs); }
 
 /* ── Responsive ────────────────────────────────────────────────────────────── */
@@ -193,3 +193,14 @@ html[data-mode="expert"] #quant .quant-simple { display: none; }
   .quant-output .table-scroll table { min-width: 520px; }
   #q-derivation .table-scroll table { min-width: 400px; }
 }
+
+/* ── Unhappy states: say what happened where the answer would have been ──── */
+#qs-status { margin: 0 0 var(--s-4); padding: var(--s-2) var(--s-3); border-left: 2px solid var(--ink-3); color: var(--ink); font-size: var(--fs-sm); }
+#quant:is([data-result=error], [data-blocked=true]) #qs-status { border-left-color: var(--alarm); background: var(--alarm-wash); }
+#quant:is([data-result=error], [data-result=pending]) .simple-value { color: var(--ink-3); }
+#quant[data-result=error] .plate::after {
+  content: 'No valid input'; position: absolute; inset: 0; display: grid; place-items: center; pointer-events: none;
+  font: 500 var(--fs-2xs)/1 var(--font-mono); font-stretch: var(--mono-stretch); text-transform: uppercase; letter-spacing: var(--track-caps); color: var(--plate-ink);
+}
+#quant[data-result=error] .command-list:empty::before { content: 'No commands until the input is accepted.'; color: var(--ink-2); }
+#qs-copy:disabled, #qs-download:disabled, #q-copy:disabled, #q-download-cfg:disabled { background: transparent; border-color: var(--rule-strong); color: var(--ink-2); opacity: 1; }
