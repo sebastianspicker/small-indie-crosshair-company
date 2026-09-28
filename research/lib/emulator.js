@@ -213,6 +213,36 @@ function trainTrees(X, y, featureCount, rounds, maxDepth, learningRate) {
   return { base, trees };
 }
 
+/** Reuse the deterministic tree grower for research-only solver distillation. */
+export function trainBoostedOutputs(rows, names, { rounds, maxDepth, learningRate }) {
+  if (!rows.length || !names.length) throw new Error('Boosted training needs rows and outputs.');
+  const width = rows[0].features.length;
+  if (!width || rows.some(row => row.features.length !== width ||
+    row.features.some(value => !Number.isFinite(value)))) throw new Error('Invalid boosted features.');
+  if (!Number.isInteger(rounds) || rounds < 1 || !Number.isInteger(maxDepth) || maxDepth < 1 ||
+    !Number.isFinite(learningRate) || learningRate <= 0) throw new Error('Invalid boosted capacity.');
+  const X = rows.map(row => row.features), outputs = {};
+  for (const name of names) {
+    const y = rows.map(row => row.native[name]);
+    if (y.some(value => !Number.isFinite(value))) throw new Error(`Invalid boosted label ${name}.`);
+    const fit = trainTrees(X, y, width, rounds, maxDepth, learningRate);
+    outputs[name] = { base: fit.base, trees: fit.trees };
+  }
+  return { outputs, rounds, maxDepth, learningRate, featureCount: width };
+}
+
+export function predictBoostedOutputs(model, features, bounds) {
+  if (features.length !== model.featureCount || features.some(value => !Number.isFinite(value)))
+    throw new Error('Invalid boosted prediction features.');
+  return Object.fromEntries(Object.entries(bounds).map(([name, [low, high]]) => {
+    const output = model.outputs[name];
+    if (!output) throw new Error(`Missing boosted output ${name}.`);
+    let value = output.base;
+    for (const tree of output.trees) value += model.learningRate * evaluateTree(tree, features);
+    return [name, clampRound(value, low, high)];
+  }));
+}
+
 function evaluateTree(node, features) {
   return typeof node === 'number' ? node : features[node.feature] <= node.threshold ? evaluateTree(node.left, features) : evaluateTree(node.right, features);
 }
