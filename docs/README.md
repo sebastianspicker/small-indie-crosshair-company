@@ -4,8 +4,9 @@ This project converts crosshair settings under stated renderer assumptions.
 These docs describe the models, how to reproduce the results, and what evidence
 would be needed to check them in CS2.
 
-Snapshot: **2026-09-23**, target build **2000914**. The automatic converter uses
-`quant-static-v5`; the manual lab uses `conditional-static-v4`. Neither is a
+The default converter uses **`community-static-v1`**, inspected build **2000918**,
+with six UI choices. The historical corpus snapshot is **2026-09-23** and the
+manual lab uses `conditional-static-v4`. Neither is a
 verified native renderer. No original old/new game capture pairs are included.
 
 ## Start here
@@ -39,9 +40,10 @@ or read the source chapters on GitHub:
 | [06 — Statistics](math/06-statistical-inference.md) | What do model weights and intervals mean? |
 | [07 — Image analysis](math/07-image-inverse-and-feedback.md) | What can a screenshot tell us? |
 | [08 — Corpus study](math/08-expanded-corpus-study.md) | What does the historical input benchmark measure? |
-| [09 — Current solver](math/09-solver-and-integrity.md) | How do joint search, shape loss, and evidence checks work? |
+| [09 — Historical joint solver](math/09-solver-and-integrity.md) | How do joint search, shape loss, and evidence checks work? |
 | [10 — Learned emulator](math/10-learned-emulator.md) | Can a small learned model replace the exact solver, and why was it rejected? |
 | [11 — Certified inverse](math/11-certified-inverse-and-capture-plan.md) | Is the shipped search the declared optimum, and which captures would separate the models? |
+| [12 — Community reconstruction](math/12-community-conversion.md) | What changed after the external comparison, and how did the learning experiment improve? |
 
 Chapter 09 updates the earlier optimizer descriptions. Chapter 10 documents a
 dependency-free learned emulator that **distills the declared solver**; its labels
@@ -50,8 +52,8 @@ fidelity was raised from about 11.6% to about 35.7% by a capacity revision, whic
 is still not interchangeable, so it is left out of the conversion path. Chapter 11
 adds an **opt-in** certificate for the declared loss (`infer({ certify: true })`),
 complete integer preimages, the `cvar` decision rule, a behavioural partition of
-the 27 scenarios, and a synthetic capture plan. The default model stays
-`quant-static-v5` and the project still ships **zero native capture pairs**, so
+the 27 historical scenarios, and a synthetic capture plan. Chapter 12 records
+the new source-labelled default and the project still ships **zero native capture pairs**, so
 none of this is native accuracy. Prior derivations remain available so changes can
 be traced through the [formula history](research/formula-evolution.md).
 The [source ledger](research/quant-sources.md) records provenance and limitations.

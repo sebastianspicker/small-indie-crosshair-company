@@ -1,5 +1,43 @@
 # Changelog
 
+## Unreleased
+
+## 0.5.0 — 2026-09-28
+
+- Replace the automatic default with a source-labelled static reconstruction:
+  round-to-even old dimensions, centre-based new gap, positive visible minimum,
+  authored-height rescaling and explicit odd-width pixel placement. Target the
+  inspected build 2000918; retain historical and manual models separately.
+- Reduce visible renderer choices to six. Compare 24 recorded crosshair.club
+  outputs, including twelve later holdout queries: 24/24 tuple agreement versus
+  0/24 for the former authored/trunc/thickness hypothesis. This is external
+  software agreement, not native game validation.
+- Fix screen-relative parity, measured-target preimages, restricted-domain
+  certificates and historical search plateaus. Reports advance to v5.
+- Measure odd-width transverse placement independently and retain build-scoped
+  capture evidence across renderer switches.
+- Add a reproducible research-only ML ablation: geometry and authored-height
+  features improve same-test synthetic tuple fidelity from 29.17% to 90.48%.
+  The exact converter remains the runtime path. See the
+  [audit](docs/research/converter-audit-2026-09-28.md) and
+  [ADR-0007](docs/engineering/decisions/0007-source-labelled-static-default.md).
+
+- Redesign the interface as an "inspection sheet"
+  ([design](docs/engineering/design.md), `DESIGN_BRIEF.md`):
+  - token-driven light and dark themes;
+  - self-hosted Archivo and Martian Mono (OFL,
+    [ADR-0006](docs/engineering/decisions/0006-self-hosted-open-licensed-typefaces.md));
+  - sheet-numbered navigation and title blocks;
+  - a Simple view that puts the answer (dimensioned before/after plates at an
+    auto-fitted magnification, three readout values and the console lines as
+    text) beside the inputs.
+- The CSP changes from `font-src 'none'` to `font-src 'self'`, and the dev
+  server serves `.woff2`.
+- Keep the mobile Simple flow in DOM order, preserve the manual preview's pixel
+  aspect ratio, clear stale announced results, and publish the linked design brief.
+- The interface redesign retains routes and element IDs; conversion changes
+  in this release are described above.
+
 ## 0.4.0 — 2026-09-24
 
 - Reorganize the repository by responsibility ([ADR-0005](docs/engineering/decisions/0005-layered-lib-and-research-isolation.md)):

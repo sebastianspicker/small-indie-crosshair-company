@@ -4,6 +4,8 @@ import { rgba } from '../../lib/settings/native.js';
 import { copy, download } from '../ui/dom.js';
 import { exportQuantCFG } from '../../lib/solver/export.js';
 import { resolveModelChoice } from '../../lib/solver/selection.js';
+import { BUILD, getModel } from '../../lib/solver/renderer.js';
+import { COMMUNITY_MODEL } from '../../lib/geometry/community.js';
 import { clearResult, renderResult, renderPreviews, renderDerivation, renderScenarios, renderTrace, renderSimple, renderDiscriminating } from './presentation.js';
 import { bindSources, fillPresets } from './sources.js';
 import { bindFeedback } from './feedback.js';
@@ -26,6 +28,8 @@ export class QuantController {
     fillPresets(this); bindSources(this); bindFeedback(this); this.bindOutput(); this.bindSimple();
     this.observer = new ResizeObserver(() => { cancelAnimationFrame(this.frame); this.frame = requestAnimationFrame(() => this.refresh()); });
     this.observer.observe(this.view.root.querySelector('.quant-previews'));
+    this.observer.observe(this.view.root.querySelector('.specimen'));
+    document.fonts?.ready.then(() => { if (!this.closed) this.refresh(); });
     this.setSettings(this.records[0]); this.schedule();
     return this;
   }
@@ -88,16 +92,19 @@ export class QuantController {
   async analyze() {
     const ticket = this.generation;
     try {
-      const decision = this.get('q-decision').value, hasEvidence = this.state.measurements.length > 0;
-      const labels = { worst: 'Automatic · limit largest mismatch', cvar: 'Automatic · limit weighted worst tail (CVaR)' };
+      const decision = this.get('q-decision').value;
+      const labels = { worst: 'Historical · limit largest mismatch', cvar: 'Historical · limit weighted worst tail (CVaR)' };
       const select = this.get('q-model');
-      select.options[0].textContent = hasEvidence ? 'Automatic · evidence-weighted hedge' : 'Automatic · authored model (pixel-exact)';
-      select.options[1].textContent = labels[decision] ?? 'Automatic · weighted model hedge';
+      select.options[0].textContent = 'Automatic · community static reconstruction';
+      select.options[1].textContent = labels[decision] ?? 'Historical · weighted model hedge';
       this.state.settings = this.readSettings();
-      const selectedModelId = resolveModelChoice({ request: select.value, hasEvidence });
+      const selectedModelId = resolveModelChoice({ request: select.value });
+      const build = selectedModelId ? getModel(selectedModelId).build ?? BUILD : BUILD;
+      for (const id of ['q-decision', 'q-certify']) this.get(id).disabled = selectedModelId === COMMUNITY_MODEL.id;
       this.view.root.dataset.strategy = selectedModelId ? 'model' : 'hedge';
       const report = await this.worker.call('infer', { settings: this.state.settings, options: this.options(),
-        measurements: this.state.measurements, targetOverride: this.state.targetOverride, targetMask: this.state.targetMask,
+        measurements: this.state.measurements.filter(row => row.build === build),
+        targetOverride: this.state.targetOverride, targetMask: this.state.targetMask,
         selectedModelId, decision, certify: this.get('q-certify').checked });
       if (ticket !== this.generation || this.closed) return;
       this.state.result = report; this.dirtyDetails.clear();
@@ -128,6 +135,10 @@ export class QuantController {
   async loadDiscriminating() {
     const r = this.state.result;
     if (!r || !this.get('q-feedback').open) return;
+    if (!r.posterior.weights.length) {
+      this.get('q-discriminating').textContent = 'Select a historical hypothesis or the weighted hedge to explore its capture plan.';
+      return;
+    }
     const signature = r.posterior.weights.map(w => w.toPrecision(10)).join(',');
     if (this.discriminating?.signature === signature) return;
     if (this.discriminatingPending === signature) return;
@@ -135,7 +146,7 @@ export class QuantController {
     const ticket = this.generation, output = this.get('q-discriminating');
     output.textContent = 'Computing a discriminating capture plan…';
     try {
-      const set = await this.worker.call('discriminating', { measurements: this.state.measurements });
+      const set = await this.worker.call('discriminating', { measurements: this.state.measurements.filter(row => row.build === BUILD) });
       if (ticket !== this.generation || this.closed) return;
       this.discriminating = { signature, set };
       renderDiscriminating(this.view, set);

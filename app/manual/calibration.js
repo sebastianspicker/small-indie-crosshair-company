@@ -6,7 +6,9 @@ const input=(id,value,attrs={})=>el('input',{id,type:'number',value,...attrs});
 function field(label,id,control){return el('div',{},el('label',{for:id},label),control);}
 export function initCalibration(editor) {
   const root=$('calibration');let fit=null,lastDataset=null,provenance='user-entered',image=null,imageMeta=null,picks=[];
-  root.append(heading('Measure a screenshot','Record the capture conditions, fit a model, and reserve separate images to check it.'));
+  root.append(heading('Measure a screenshot','Record the capture conditions, fit a model, and keep separate images back to check it.',
+    {sheet:'05',label:'Measurements',
+      fields:[['Build',TARGET_BUILD],['Protocol','sicc-measurement-v1'],['Sample values','Synthetic only','tb-flag']]}));
   root.append(el('p',{class:'disclosure'},'No sample values below are native measurements. “Load synthetic example” demonstrates the workflow only. Uploaded PNGs stay in this tab; their pixels are not sent to a server.'));
   const scope=el('article',{class:'math-sheet'},el('h2',{},'01 · Lock the measurement conditions'),
     el('div',{class:'input-grid four'},
@@ -69,10 +71,10 @@ export function initCalibration(editor) {
     for(const[id,v]of Object.entries({'cal-build':d.scope.build,'cal-current':d.scope.currentHeight,'cal-authored':d.scope.authoredHeight,'cal-width':d.scope.effectiveThickness,'cal-kind':d.kind,'cal-notes':d.notes??''}))$(id).value=v;
     $('cal-provenance').textContent=provenance==='synthetic-example'?'SYNTHETIC EXAMPLE · not game evidence':'Imported user observations · not independently verified';invalidate();$('cal-status').textContent='Imported safely as data. PNG contents are not included in measurement JSON.';
   }catch(error){$('cal-status').textContent=error.message;}});
-  function drawCrop(){const c=$('screenshot-canvas'),ctx=c.getContext('2d');ctx.fillStyle='#111a15';ctx.fillRect(0,0,480,480);if(!image)return;
+  function drawCrop(){const c=$('screenshot-canvas'),ctx=c.getContext('2d');ctx.fillStyle='#0c0e0d';ctx.fillRect(0,0,480,480);if(!image)return;
     const x=Number($('crop-x').value),y=Number($('crop-y').value);if(!Number.isFinite(x+y))return;
     ctx.imageSmoothingEnabled=false;ctx.drawImage(image,x-24,y-24,48,48,0,0,480,480);
-    ctx.strokeStyle='#9aba7b';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(240,0);ctx.lineTo(240,480);ctx.moveTo(0,240);ctx.lineTo(480,240);ctx.stroke();}
+    ctx.strokeStyle='#e8c547';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(240,0);ctx.lineTo(240,480);ctx.moveTo(0,240);ctx.lineTo(480,240);ctx.stroke();}
   let uploadToken=0;
   $('screenshot-file').addEventListener('change',async e=>{const token=++uploadToken;try{
     const f=e.target.files[0];if(!f)return;if(f.size>8*1024*1024)throw new Error('PNG exceeds 8 MiB.');

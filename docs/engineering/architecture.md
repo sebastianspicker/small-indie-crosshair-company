@@ -17,7 +17,7 @@ app/        browser runtime            DOM, canvases, routing, worker transport
   └─ imports ─▶ lib/
 lib/        pure domain                no DOM, no worker globals, no network
   settings ◀─ geometry ◀─┬─ image
-                         ├─ solver     (automatic converter, quant-static-v5)
+                         ├─ solver     (community-static-v1; historical quant-static-v6)
                          └─ manual     (manual lab, conditional-static-v4)
 data/       runtime data               the four JSON files the app fetches
 research/   evidence, never runtime    lib/ (research models), scripts/ (pipelines),
@@ -42,7 +42,7 @@ browser, in the worker and in Node. Five layers, each with one job:
 | `lib/settings/` | What a setting *is*. Input validation primitives (`validation.js`), native cvar ranges, colour resolution and CFG command formatting (`native.js`), the frozen build-2000914 cvar inventory (`cvars.js`), the legacy v1 share-code codec (`sharecode.js`, MIT-attributed), the allowlisted legacy CFG parser (`cfg.js`), and the single legacy-text import dispatch (`import.js`). | `settings` |
 | `lib/geometry/` | What a crosshair *looks like*. Binary32 legacy geometry (`legacy.js`), the one integer quantizer (`quantize.js`), illustrative rasterization (`raster.js`), lossless shape and mask compilation (`pixel-shape.js`), and the 56-case legacy audit shared by the #evidence page and the archive reproduction (`audit.js`). | `geometry`, `settings` |
 | `lib/image/` | Reading pixels. Bounded PNG screenshot segmentation and native component measurement (`screenshot.js`, `components.js`). | `image`, `geometry`, `settings` |
-| `lib/solver/` | The automatic converter (`quant-static-v5`, 27 forward hypotheses). Forward renderers (`renderer.js`), exact integer inverse (`inverse.js`), visual refinement (`visual.js`), decision rules (`selection.js`), opt-in certificates (`certify.js`), measurement evidence (`observations.js`, `evidence.js`), experiment design (`experiments.js`), corpus coverage (`corpus.js`, `statistics.js`), the gap-scale structural rival (`structural.js`), the read-only rival rows (`migration.js`), the report and CFG export (`report.js`, `export.js`), and the orchestrating entry point `infer()` (`inference.js`). | `solver`, `geometry`, `settings` |
+| `lib/solver/` | The default direct converter (`community.js`, `community-static-v1`) and historical 27-model study (`quant-static-v6`). Forward renderers (`renderer.js`), integer inverse (`inverse.js`), visual refinement (`visual.js`), decision rules (`selection.js`), opt-in certificates (`certify.js`), measurement evidence (`observations.js`, `evidence.js`), experiment design (`experiments.js`), corpus coverage (`corpus.js`, `statistics.js`), structural rivals (`structural.js`, `migration.js`), report/CFG export (`report.js`, `export.js`), and entry point `infer()` (`inference.js`). | `solver`, `geometry`, `settings` |
 | `lib/manual/` | The manual lab (`conditional-static-v4`): the `convert()`/`exportCFG()` model with its `measured` gap branch (`conversion.js`) and the affine calibration fit plus `sicc-measurement-v1` schema (`calibration.js`). | `manual`, `geometry`, `settings` |
 
 `solver` and `manual` are deliberately separate conversion models, not two
@@ -55,6 +55,14 @@ CFG formatting. The three build-id constants (`TARGET_BUILD` in the manual
 model, `BUILD` in the renderer, `INVENTORY_BUILD` in the cvar inventory) are
 separate facts that happen to be equal today. A test asserts that equality,
 so they can only diverge deliberately.
+
+The current community reconstruction has a separate build (2000918), geometry
+module (`geometry/community.js`) and report version. It is not a 28th weighted
+hypothesis. The UI defaults to this direct, per-axis solver and offers six choices:
+the default, the historical hedge and four authored-height controls. The research
+API keeps its historical default for reproducibility. Measurements are stored
+together but validated and evaluated only against their matching build. See
+[ADR-0007](decisions/0007-source-labelled-static-default.md).
 
 `inference.js` and `report.js` read `performance.now()` to record solve
 timings in the report. That is the only non-deterministic input in `lib/`.
@@ -132,8 +140,8 @@ them is a product change and needs a CHANGELOG entry.
 
 - **Downloads.**
   - Automatic converter: `small-indie-crosshair.cfg`, plus
-    `crosshair-quant-report.json` (schema `sicc-quant-report-v4`, model
-    `version` `quant-static-v5`, `targetBuild`).
+    `crosshair-quant-report.json` (schema `sicc-quant-report-v5`, model
+    `version` `community-static-v1` or `quant-static-v6`, `targetBuild`).
   - Workbench: `small-indie-candidate.cfg` and `small-indie-math-report.json`
     (`sicc-report-v1`).
   - Other routes: `crosshair-audit.json`, `small-indie-measurements.json`

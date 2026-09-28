@@ -40,7 +40,7 @@ export function initEditor(presets) {
       for(const [id,key] of [['new-length','length'],['new-thickness','thickness'],['new-gap','gap']])if(document.activeElement!==$(id))$(id).value=n[key];
       $('old-res-label').textContent=`${opts.oldHeight}p`;
       $('old-preview-title').textContent=design?'Legacy reference (not a target)':'Legacy reconstruction';
-      $('candidate-caption').textContent=difference?'Green = overlap · amber = new-only · lilac = old-only':`${opts.currentHeight}p target / ${n.authoredHeight}p authored · ${opts.model.gapBaseline} gap`;
+      $('candidate-caption').textContent=difference?'Light = overlap · amber = new only · blue = old only':`${opts.currentHeight}p target / ${n.authoredHeight}p authored · ${opts.model.gapBaseline} gap`;
       paint($('old-canvas'),result.old,settings,color,view);
       paint($('new-canvas'),prediction,settings,color,view,difference?result.old:null);
       const labels=[['Arm length',result.old.length,prediction.length],['Line thickness',result.old.width,prediction.width],['Near inner edge',result.old.near,prediction.near]];

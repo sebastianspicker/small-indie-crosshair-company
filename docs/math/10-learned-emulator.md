@@ -1,5 +1,10 @@
 # 10 — A learned emulator: solver distillation and the closed speed gate
 
+**Historical snapshot.** The app default changed in September 2026; the scores
+below describe the frozen earlier target, not today's default. Rerunning its
+trainer with revised solver code may change them. See [chapter 12](12-community-conversion.md)
+for the current-target feature ablation and its separate held-out evaluation.
+
 **Implementation:** `quant-emulator-v1`, snapshot 2026-09-23. **Native renderer
 evidence shipped:** zero capture pairs. This chapter documents a dependency-free
 learned emulator that was trained, measured and then deliberately **not** wired
@@ -10,7 +15,7 @@ binary32 arithmetic, 27-model family and target build are unchanged.
 The artifact is `research/generated/quant-emulator.json`, its canonical fingerprint is
 `137061144`, and it is trained by `research/scripts/train-quant-emulator.mjs`
 (`npm run emulator:train`). The math and parsing live in `research/lib/emulator.js`.
-Every number below is reproducible from those files under Node.js 22.12+.
+The stored metrics and fingerprint describe that artifact under Node.js 22.12+.
 
 The inverse block is a **depth-3 boosted-tree** ensemble (120 rounds, learning
 rate 0.2) over **26 declared features**. A later capacity revision raised the
