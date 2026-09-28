@@ -109,7 +109,7 @@ test('aggregate search crosses a one-cell length plateau when it lowers expected
  assert.equal(r.chosen.native.length,6);
  assert.ok(r.chosen.expectedLoss<r.decision.trace[0].expectedLoss);
  assert.equal(r.chosen.native.thickness,0);
- assert.equal(r.decision.searchPolicy,'bounded-neighborhood-plus-length-two-v1');
+ assert.equal(r.decision.searchPolicy,'radius-two-proposals-plus-length-two-v2');
  assert.equal(r.confidence.nativeMatchProbability,null);
 });
 test('both two-cell probes use the same length origin',()=>{

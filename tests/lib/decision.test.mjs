@@ -91,20 +91,20 @@ test('infer accepts an object cvar rule and keeps the report decision a string',
   assert.equal(report.chosen.alpha, .25);
 });
 
-test('the shipped automatic model choice is the authored inverse until evidence exists', () => {
-  assert.equal(resolveModelChoice(), 'authored:trunc:thickness');
-  assert.equal(resolveModelChoice({ request: '', hasEvidence: false }), 'authored:trunc:thickness');
-  assert.equal(resolveModelChoice({ request: '', hasEvidence: true }), null);
+test('the automatic choice stays on its declared build; historical hedging is explicit', () => {
+  assert.equal(resolveModelChoice(), 'community-static-2026-09');
+  assert.equal(resolveModelChoice({ request: '', hasEvidence: false }), 'community-static-2026-09');
+  assert.equal(resolveModelChoice({ request: '', hasEvidence: true }), 'community-static-2026-09');
   assert.equal(resolveModelChoice({ request: HEDGE_MODEL, hasEvidence: false }), null);
   assert.equal(resolveModelChoice({ request: HEDGE_MODEL, hasEvidence: true }), null);
   assert.equal(resolveModelChoice({ request: 'reference720:nearest:center', hasEvidence: false }), 'reference720:nearest:center');
 });
 
-test('the authored default reproduces the published post-update donk-style crosshair', () => {
+test('the default uses a centre-based gap while retaining the historical hedge', () => {
   const settings = { ...DEFAULT_SETTINGS, style: 4, weapon_gap: false, outline: false, size: 1, thickness: 1, gap: -4 };
   const options = { oldHeight: 1080, currentHeight: 1080, authoredHeight: 1080, goal: 'pixels' };
   const authored = infer({ settings, options, selectedModelId: resolveModelChoice({ request: '', hasEvidence: false }) });
-  assert.deepEqual({ ...authored.chosen.native }, { length: 2, thickness: 2, gap: 0, authoredHeight: 1080 });
+  assert.deepEqual({ ...authored.chosen.native }, { length: 2, thickness: 2, gap: 1, authoredHeight: 1080 });
   // The weighted hedge, kept as an explicit option, still shifts one pixel longer here.
   const hedge = infer({ settings, options, selectedModelId: resolveModelChoice({ request: HEDGE_MODEL, hasEvidence: false }) });
   assert.equal(hedge.chosen.native.length, 3);

@@ -1,0 +1,251 @@
+{
+  "schema": "sicc-external-converter-comparison-v1",
+  "retrieved": "2026-09-28",
+  "source": "https://crosshair.club/convert",
+  "endpoint": "https://crosshair.club/api/convert",
+  "kind": "synthetic-input-external-output",
+  "nativeEvidence": false,
+  "scope": "Twelve synthetic diagnostic queries, not independent game captures or a native holdout.",
+  "cases": [
+    {
+      "id": "club-01",
+      "height": 1080,
+      "settings": {
+        "size": 2.5,
+        "thickness": 0,
+        "gap": -3,
+        "dot": false,
+        "outline": false,
+        "style": 4
+      },
+      "returnedCode": "CSGO-hTpbn-LRWj7-ahyT2-MhxAp-zdjCG",
+      "returnedWarnings": [],
+      "native": {
+        "length": 6,
+        "thickness": 1,
+        "gap": 2,
+        "authoredHeight": 1080
+      }
+    },
+    {
+      "id": "club-02",
+      "height": 1080,
+      "settings": {
+        "size": 2,
+        "thickness": 1,
+        "gap": -4,
+        "dot": false,
+        "outline": false,
+        "style": 4
+      },
+      "returnedCode": "CSGO-G4tnh-2iMr4-hKKaU-3KLrB-6uv8O",
+      "returnedWarnings": [],
+      "native": {
+        "length": 4,
+        "thickness": 2,
+        "gap": 1,
+        "authoredHeight": 1080
+      }
+    },
+    {
+      "id": "club-03",
+      "height": 1080,
+      "settings": {
+        "size": 1.5,
+        "thickness": 1.5,
+        "gap": -4,
+        "dot": false,
+        "outline": false,
+        "style": 4
+      },
+      "returnedCode": "CSGO-Aw3d3-8ytUY-vme6A-YEp5a-WWY5F",
+      "returnedWarnings": [],
+      "native": {
+        "length": 3,
+        "thickness": 3,
+        "gap": 2,
+        "authoredHeight": 1080
+      }
+    },
+    {
+      "id": "club-04",
+      "height": 1080,
+      "settings": {
+        "size": 1,
+        "thickness": 2,
+        "gap": -5,
+        "dot": false,
+        "outline": false,
+        "style": 4
+      },
+      "returnedCode": "CSGO-hyXVU-RnPwm-wqbtY-c6FKZ-qMM5O",
+      "returnedWarnings": [],
+      "native": {
+        "length": 2,
+        "thickness": 4,
+        "gap": 1,
+        "authoredHeight": 1080
+      }
+    },
+    {
+      "id": "club-05",
+      "height": 1080,
+      "settings": {
+        "size": 0,
+        "thickness": 0,
+        "gap": -4,
+        "dot": true,
+        "outline": false,
+        "style": 4
+      },
+      "returnedCode": "CSGO-86nX3-GGfPn-hrJr4-kJyRQ-z6JnK",
+      "returnedWarnings": [],
+      "native": {
+        "length": 0,
+        "thickness": 1,
+        "gap": 1,
+        "authoredHeight": 1080
+      }
+    },
+    {
+      "id": "club-06",
+      "height": 960,
+      "settings": {
+        "size": 3.3,
+        "thickness": 0.5,
+        "gap": -3.5,
+        "dot": false,
+        "outline": false,
+        "style": 4
+      },
+      "returnedCode": "CSGO-RmqnA-ca5KQ-uKUqo-dRzkc-E2EhP",
+      "returnedWarnings": [],
+      "native": {
+        "length": 7,
+        "thickness": 1,
+        "gap": 1,
+        "authoredHeight": 960
+      }
+    },
+    {
+      "id": "club-07",
+      "height": 1440,
+      "settings": {
+        "size": 1.5,
+        "thickness": 0.5,
+        "gap": -4,
+        "dot": false,
+        "outline": false,
+        "style": 4
+      },
+      "returnedCode": "CSGO-6CyqU-fMGWz-Qt2ot-Jp7We-3V2bE",
+      "returnedWarnings": [],
+      "native": {
+        "length": 4,
+        "thickness": 2,
+        "gap": 1,
+        "authoredHeight": 1440
+      }
+    },
+    {
+      "id": "club-08",
+      "height": 720,
+      "settings": {
+        "size": 3,
+        "thickness": 1,
+        "gap": -3,
+        "dot": false,
+        "outline": false,
+        "style": 4
+      },
+      "returnedCode": "CSGO-a7GRr-8rDBW-UuQ4Q-ocWbX-2W7VH",
+      "returnedWarnings": [],
+      "native": {
+        "length": 4,
+        "thickness": 2,
+        "gap": 2,
+        "authoredHeight": 720
+      }
+    },
+    {
+      "id": "club-09",
+      "height": 1080,
+      "settings": {
+        "size": 2,
+        "thickness": 2,
+        "gap": -4.5,
+        "dot": false,
+        "outline": false,
+        "style": 4
+      },
+      "returnedCode": "CSGO-8NVk5-qVVmC-UyRJM-qnTwO-Y47FP",
+      "returnedWarnings": [],
+      "native": {
+        "length": 4,
+        "thickness": 4,
+        "gap": 2,
+        "authoredHeight": 1080
+      }
+    },
+    {
+      "id": "club-10",
+      "height": 1080,
+      "settings": {
+        "size": 2,
+        "thickness": 2,
+        "gap": -6,
+        "dot": false,
+        "outline": false,
+        "style": 4
+      },
+      "returnedCode": "CSGO-DUKx4-V5zQR-6WHHU-3KLrB-6uv8O",
+      "returnedWarnings": [],
+      "native": {
+        "length": 4,
+        "thickness": 4,
+        "gap": 0,
+        "authoredHeight": 1080
+      }
+    },
+    {
+      "id": "club-11",
+      "height": 2160,
+      "settings": {
+        "size": 1,
+        "thickness": 2,
+        "gap": -5,
+        "dot": false,
+        "outline": false,
+        "style": 4
+      },
+      "returnedCode": "CSGO-48WY6-RrY3s-wODWC-7ji4a-HrQEL",
+      "returnedWarnings": [],
+      "native": {
+        "length": 4,
+        "thickness": 9,
+        "gap": 4,
+        "authoredHeight": 2160
+      }
+    },
+    {
+      "id": "club-12",
+      "height": 1080,
+      "settings": {
+        "size": 3.9,
+        "thickness": 0.6,
+        "gap": -2.2,
+        "dot": false,
+        "outline": false,
+        "style": 4
+      },
+      "returnedCode": "CSGO-dt7cP-DwXiu-M5qYn-YPCoc-iMVOG",
+      "returnedWarnings": [],
+      "native": {
+        "length": 9,
+        "thickness": 1,
+        "gap": 2,
+        "authoredHeight": 1080
+      }
+    }
+  ]
+}

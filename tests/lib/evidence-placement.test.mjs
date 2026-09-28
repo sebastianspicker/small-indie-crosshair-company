@@ -20,8 +20,8 @@ test('synthetic literal even-width mask keeps raw edges while drawn predictions 
   const holdoutMask = literalMask([[-10, -5, -1, 1], [5, 10, -1, 1], [-1, 1, -10, -5], [-1, 1, 5, 10]]);
   const originalCalibrationBytes = calibrationMask.data.slice(), originalHoldoutBytes = holdoutMask.data.slice();
   const measured = measureNativeMask(calibrationMask), heldOut = measureNativeMask(holdoutMask);
-  assert.deepEqual(measured.geometry, { length: 5, width: 2, near: 4, far: 4 });
-  assert.deepEqual(heldOut.geometry, { length: 5, width: 2, near: 5, far: 5 });
+  assert.deepEqual(measured.geometry, { length: 5, width: 2, near: 4, far: 4, axisStart: -1 });
+  assert.deepEqual(heldOut.geometry, { length: 5, width: 2, near: 5, far: 5, axisStart: -1 });
   assert.deepEqual(calibrationMask.data, originalCalibrationBytes);
   assert.deepEqual(holdoutMask.data, originalHoldoutBytes);
 
@@ -39,6 +39,10 @@ test('synthetic literal even-width mask keeps raw edges while drawn predictions 
   assert.equal(result.validation.successes, 1);
   assert.equal(result.holdoutTests[0].topModelCorrect, true);
   assert.deepEqual(result.edgeComparison, { predicted: RASTER_CONVENTION, observed: RAW_EDGE_CONVENTION });
+  const shifted = { ...holdout, observed: { ...holdout.observed, axisStart: 0 } };
+  assert.equal(posterior([calibration, shifted]).holdoutTests[0].topModelCorrect, false);
+  assert.equal(posterior([calibration, shifted]).validation.successes, 0);
+  assert.match(result.likelihoodScope, /transverse origin.*holdouts/);
   assert.deepEqual(calibration.observed, measured.geometry);
   assert.deepEqual(holdout.observed, heldOut.geometry);
   assert.deepEqual(calibrationMask.data, originalCalibrationBytes);

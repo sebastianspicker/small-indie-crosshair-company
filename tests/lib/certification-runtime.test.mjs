@@ -12,7 +12,7 @@ const DEFAULT_METHODS = ['loss-zero', 'not-evaluated'];
 
 test('default inference keeps the bounded policy and makes no global claim', () => {
   const report = infer({ settings: SETTINGS, options: { oldHeight: 1080 } });
-  assert.equal(report.decision.searchPolicy, 'bounded-neighborhood-plus-length-two-v1');
+  assert.equal(report.decision.searchPolicy, 'radius-two-proposals-plus-length-two-v2');
   const certificate = report.decision.certificate;
   assert.ok(DEFAULT_METHODS.includes(certificate.method));
   assert.equal(certificate.improved, false);
@@ -55,9 +55,9 @@ test('report exposes an exact structured-cloneable preimage', () => {
     assert.equal(geometryError(forward(tuple, report.options.currentHeight, model), report.target), 0);
 });
 
-test('report schema is v4 and the full report survives a JSON round-trip', () => {
+test('report schema is v5 and the full report survives a JSON round-trip', () => {
   const report = infer({ settings: SETTINGS, options: { oldHeight: 1080 }, certify: true });
-  assert.equal(report.schema, 'sicc-quant-report-v4');
+  assert.equal(report.schema, 'sicc-quant-report-v5');
   const clone = JSON.parse(JSON.stringify(report));
   assert.equal(clone.schema, report.schema);
   assert.deepEqual(clone.preimage, report.preimage);

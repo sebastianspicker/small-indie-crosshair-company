@@ -1,10 +1,11 @@
 import { el, docLink, sheetHead, SNAPSHOT } from '../ui/dom.js';
-import { MODELS, BUILD, VERSION } from '../../lib/solver/renderer.js';
+import { EXPERT_MODELS } from '../../lib/solver/renderer.js';
 import { HEDGE_MODEL } from '../../lib/solver/selection.js';
+import { COMMUNITY_MODEL } from '../../lib/geometry/community.js';
 
 export const labels = { authored: 'Authored height', reference1080: '1080 reference', reference720: '720 reference',
   thickness: 'Thickness-relative', center: 'Center-relative', opening: 'Full opening' };
-export const modelName = m => `${labels[m.scale]} · ${m.rounding} · ${labels[m.gap]}`;
+export const modelName = m => m.name ?? `${labels[m.scale]} · ${m.rounding} · ${labels[m.gap]}`;
 const detail = (id, title, ...children) => el('details', { id }, el('summary', {}, title), ...children);
 const field = (id, label, type, attrs = {}) => el('div', {}, el('label', { for: id }, label), el('input', { id, type, ...attrs }));
 const check = (id, label) => el('label', { class: 'check' }, el('input', { id, type: 'checkbox' }), label);
@@ -98,7 +99,7 @@ function appearanceControls() {
     el('label', { for: 'q-decision' }, 'When models disagree'), el('select', { id: 'q-decision' },
       option('expected', 'Lowest weighted mismatch'), option('worst', 'Limit the largest mismatch'),
       option('cvar', 'Limit weighted worst tail (CVaR)')),
-    el('p', { class: 'small' }, 'These choices compare our models. They do not predict which one CS2 uses.'));
+    el('p', { class: 'small' }, 'Historical models only. The community default preserves dimensions, then fits the centre radius.'));
 }
 
 function valueTable() {
@@ -143,12 +144,15 @@ function resultsPanel() {
       el('div', { class: 'export-actions' }, el('button', { id: 'q-copy', class: 'button secondary', disabled: true }, 'Copy commands'),
         el('button', { id: 'q-download-cfg', class: 'button primary', disabled: true }, 'Download .cfg'))),
     el('div', { class: 'quant-model-select' }, el('label', { for: 'q-model' }, 'Rendering model'),
-      el('select', { id: 'q-model' }, option('', 'Automatic · authored model (pixel-exact)'), option(HEDGE_MODEL, 'Automatic · weighted model hedge'), ...MODELS.map(m => option(m.id, modelName(m))))),
-    el('p', { class: 'small' }, "Without native measurements the automatic choice is the authored model's pixel-exact inverse. Adding measurements, or choosing the weighted hedge, lets the 27 models disagree."),
+      el('select', { id: 'q-model' }, option('', 'Automatic · community static reconstruction'),
+        option(HEDGE_MODEL, 'Historical · weighted model hedge'), ...EXPERT_MODELS.map(m => option(m.id, modelName(m))))),
+    el('p', { class: 'small' }, 'Six choices: the community default, a historical hedge, and four authored-height alternatives. ',
+      docLink('research/converter-audit-2026-09-28.md', 'Sources and comparison')),
     valueTable(), el('p', { id: 'q-target-line', class: 'target-line' }),
-    detail('q-derivation-panel', 'Pixel measurements and differences', el('div', { id: 'q-derivation' }), docLink('math/09-solver-and-integrity.md', 'How the values are calculated')),
+    detail('q-derivation-panel', 'Pixel measurements and differences', el('div', { id: 'q-derivation' }),
+      docLink('math/12-community-conversion.md', 'How the current values are calculated')),
     status('q-status'), el('div', { id: 'q-warnings', class: 'warnings', role: 'alert' }), previewPanel(),
-    detail('q-scenarios', 'Compare all 27 models', el('div', { id: 'q-model-table' })),
+    detail('q-scenarios', 'Compare selected models', el('div', { id: 'q-model-table' })),
     detail('q-trace-panel', 'Search details and uncertainty',
       el('label', { class: 'check' }, el('input', { id: 'q-certify', type: 'checkbox' }), 'Certify global optimum (slower)'),
       el('p', { id: 'q-certify-note', class: 'small' }),
@@ -162,7 +166,7 @@ export function createView(root, meta) {
   root.replaceChildren(
     sheetHead({ sheet: '01', label: 'Convert', title: 'Crosshair conversion',
       lede: 'Paste an old share code or console lines. You get the new length, thickness and gap, drawn next to the old crosshair pixel for pixel.',
-      fields: [['Build', BUILD], ['Model', VERSION], ['Snapshot', SNAPSHOT.date],
+      fields: [['Default build', COMMUNITY_MODEL.build], ['Model', COMMUNITY_MODEL.version], ['Corpus snapshot', SNAPSHOT.date],
         ['Checked in game', ['Not yet', docLink('math/06-statistical-inference.md', 'Why')], 'tb-flag']] }),
     simplePanel(),
     el('div', { class: 'quant-layout' }, sourcePanel(meta), resultsPanel()));

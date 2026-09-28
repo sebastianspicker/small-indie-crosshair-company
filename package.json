@@ -1,6 +1,6 @@
 {
   "name": "small-indie-crosshair-company",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "private": true,
   "description": "Local CS2 crosshair converter with pixel previews and reproducible research.",
   "type": "module",
@@ -20,7 +20,8 @@
     "test:browser": "python3 tests/browser/browser_smoke.py",
     "verify": "npm run check && npm run research:quant && npm test && npm run research:reproduce && npm run build",
     "corpus:build": "node research/scripts/corpus.mjs",
-    "research:quant": "node research/scripts/corpus.mjs && node research/scripts/quant-study.mjs",
+    "research:quant": "node research/scripts/corpus.mjs && node research/scripts/quant-study.mjs && node research/scripts/converter-comparison.mjs",
+    "study:converters": "node research/scripts/converter-comparison.mjs",
     "bench:quant": "node research/scripts/benchmark-quant.mjs",
     "bench:ranker": "node research/scripts/benchmark-ranker.mjs",
     "certify:inverse": "node research/scripts/certify-inverse.mjs",

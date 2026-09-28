@@ -20,6 +20,7 @@ than rewriting history in place.
 | [0004](0004-no-runtime-dependencies-or-persistence.md) | No runtime (npm) dependencies and no client-side persistence. |
 | [0005](0005-layered-lib-and-research-isolation.md) | `lib/` is five import-checked layers; research code lives in `research/` and never reaches the app. |
 | [0006](0006-self-hosted-open-licensed-typefaces.md) | Two OFL typefaces are self-hosted as static WOFF2 assets; the CSP allows `font-src 'self'` only. |
+| [0007](0007-source-labelled-static-default.md) | Default to the source-labelled static reconstruction, expose six choices and keep learned approximations research-only. |
 
 See [architecture](../architecture.md) for where these modules and boundaries
 sit in the codebase, and [`archive/`](../archive/) for the plans these
