@@ -10,7 +10,9 @@ export function imageView(kind, dimensions, native, options) {
   const run = el('button', { class: 'button secondary' }, 'Reanalyze crop');
   const accept = el('button', { class: 'button primary', disabled: true }, kind === 'old' ? 'Use measured old target' : 'Record native measurement');
   const cancel = el('button', { class: 'button ghost' }, 'Cancel');
-  const role = el('select', {}, el('option', { value: 'calibration' }, 'Calibration — updates models'), el('option', { value: 'holdout' }, 'Holdout — evaluation only'));
+  const role = el('select', {}, el('option', { value: 'calibration' },
+    options.targetBuild === '2000918' ? 'Calibration — compare reconstruction' : 'Calibration — updates models'),
+    el('option', { value: 'holdout' }, 'Holdout — evaluation only'));
   const attested = el('input', { type: 'checkbox' });
   const session = el('input', { type: 'text', value: 'user-session', maxlength: 128 });
   const status = el('p', { role: 'status', class: 'small' });
@@ -22,7 +24,8 @@ export function imageView(kind, dimensions, native, options) {
   if (kind === 'new') dialog.append(
     el('p', { class: 'small' }, `Declare that this capture used length ${native.length}, thickness ${native.thickness}, gap ${native.gap}, authored height ${native.authoredHeight}, current height ${options.currentHeight}. Import measurement JSON for other settings.`),
     field('Independent capture/session group', session), field('Evidence role', role),
-    el('label', { class: 'check' }, attested, 'I confirm this is a native CS2 build 2000914 capture using the displayed settings, not a generated preview.'));
+    el('label', { class: 'check' }, attested,
+      `I confirm this is a native CS2 build ${options.targetBuild ?? '2000914'} capture using the displayed settings, not a generated preview.`));
   dialog.append(accept, el('p', { class: 'small' }, 'Files stay in this tab. Images are not uploaded.'));
   return { dialog, canvas, cx, cy, tolerance, auto, run, accept, cancel, role, attested, session, status };
 }

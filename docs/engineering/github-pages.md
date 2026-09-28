@@ -5,9 +5,9 @@ The site uses relative asset URLs, so it works under a repository subpath.
 
 ## Deploy changes
 
-The [Pages workflow](../../.github/workflows/pages.yml) runs `npm run verify`,
-builds `dist/`, and deploys it. It runs on pushes to `main` and can be started
-from the Actions tab. Check the workflow run before sharing a deployment URL.
+The repository's Pages workflow runs `npm run build`, builds `dist/`, and
+deploys it. It runs on pushes to `main` and can be started from the Actions tab.
+Check the workflow run before sharing a deployment URL.
 
 The build job has read-only repository access. Only the deploy job receives
 `pages: write` and `id-token: write`. All third-party actions are pinned to

@@ -31,8 +31,20 @@ observations, not endorsement or verified current personal settings.
 
 “Small Indie Crosshair Company” is an independent parody project name. Valve,
 Counter-Strike, CS2 and Volvo are not project sponsors or affiliates. No Valve
-or Volvo logos, proprietary game backgrounds, player portraits, or external
-font files are distributed. The crosshair glyph and interface are code-native.
+or Volvo logos, proprietary game backgrounds or player portraits are distributed.
+The crosshair mark and interface are code-native.
+
+## Typefaces
+
+Two variable fonts are self-hosted in `public/fonts/`, subset to Latin, under the
+SIL Open Font License 1.1:
+
+- **Archivo**, Copyright 2020 The Archivo Project Authors
+  (https://github.com/Omnibus-Type/Archivo). License: `licenses/Archivo-OFL.txt`.
+- **Martian Mono**, Copyright 2021 The Martian Mono Project Authors
+  (https://github.com/evilmartians/mono). License: `licenses/MartianMono-OFL.txt`.
+
+The files are the unmodified Latin subsets served by Google Fonts.
 
 ## Expanded pro-code corpus (v0.2.0)
 
@@ -49,5 +61,4 @@ marks, factual source collections, or proprietary game assets.
 MathJax's TeX input parser was used as an optional authoring tool to serialize our
 own equations to native MathML. The deployment contains that generated markup,
 not MathJax program code, font files or a runtime MathJax dependency. The normal
-build uses the checked-in content-addressed equation cache; optional regeneration
-is documented in `docs/engineering/archive/quant-architecture.md`.
+build uses the checked-in content-addressed equation cache.

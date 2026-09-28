@@ -134,7 +134,7 @@ the literal-zero branch asks for one. These goals cannot both hold in the curren
 The repository prioritizes preserving the branch by default and reports the one-pixel
 residual. Manual candidate editing lets the user prioritize a different objective.
 
-This corrects the first chat proposal, which always promoted a minimum-width result to
+This corrects the initial proposal, which always promoted a minimum-width result to
 positive one. The correction is still conditional on the new renderer's minimum/scaling
 semantics; it is not an independently confirmed native behavior.
 
@@ -214,7 +214,7 @@ length ratio is one and the two scales **agree** (`r_g = 1` either way); agreeme
 is non-identifying and must not be read as confirmation of scaling. Only a cross-height
 capture can separate the rivals, and none is shipped. The shipped default tuple is
 unchanged and every automatic report warns that the scale is unresolved; see
-[the v0.4 plan](../engineering/archive/v0.4-conversion-improvement-plan.md) §2.4 and §2.7.
+[correction C07](../research/formula-evolution.md).
 
 ### The old `+4` is already in the painter
 

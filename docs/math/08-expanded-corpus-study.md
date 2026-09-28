@@ -1,6 +1,6 @@
 # 08 — The expanded pro-crosshair corpus and quantitative study
 
-Snapshot: **2026-09-23**. This is a reproducible observational input corpus
+Snapshot: **2026-09-23**. This is a documented observational input corpus
 and a deterministic historical-model benchmark. It is not a native new
 renderer accuracy study. The complete records, source URLs and generated
 rows ship with the repository.
@@ -13,12 +13,12 @@ Three cohorts are retained without claiming they are independent:
 |---|---:|---|
 | Pinned ProCrosshairs-derived GitHub archive | 100 | Published named-player/code/HLTV-ID facts, with no individual observation dates or resolutions |
 | ProCrosshairs published index retrieved on the snapshot date | 30 | Published name/code associations; shares the archive's upstream |
-| Original dated xhair.pro fixtures | 8 | User-supplied prior research records, not newly reparsed demos |
+| Original dated xhair.pro fixtures | 8 | Frozen historical research records, not newly reparsed demos |
 | **Total** | **138** | **106 distinct normalized player names** |
 
 All codes decode as legacy version 1 and pass their checksum. There are
 **119 distinct codes** and **50 complete old static-geometry signatures**.
-Only **8 records have supplied observation dates**. The other 130 are
+Only **8 records have recorded observation dates**. The other 130 are
 published legacy-format snapshots, not claims that a particular player
 used that setting on September 23 or in a particular match.
 
@@ -172,10 +172,10 @@ The ridge feature vector is
 
 Three independent response regressions predict length, width, and near
 position. The design has six features and a fixed penalty \(\lambda=0.01\).
-The implementation uses weighted normal equations and pivoted elimination
-with numerical failure checks; inspect `research/lib/regression.js` for the
-exact intercept-penalty convention. Results and coefficients for every
-fold are committed, not merely a final fitted model.
+The recorded study uses weighted normal equations and pivoted elimination
+with numerical failure checks and a fixed intercept-penalty convention.
+Results and coefficients for every fold are committed, not merely a final
+fitted model.
 
 Geometry signatures are deterministically assigned to one of five folds
 by a seeded stable hash. Every duplicate code/player/color variant and all
@@ -263,15 +263,12 @@ express the legacy target? It is not evidence that the model represents
 Valve's code. A model with more convenient coordinates can have excellent
 self-consistency and still be entirely wrong in the game.
 
-## 8.10 Reproduction and future study design
+## 8.10 Retained results and future study design
 
-Run `npm run corpus:build` to check transcription identity and recreate the
-versioned corpus. Run `npm run research:quant` to recreate fold assignments,
-coefficients, summary JSON, per-case CSV, and model representability rows.
-`npm run research:reproduce` separately checks the immutable original
-Python experiment. Unit tests assert source checksums, record counts,
-geometry-disjoint folds, deterministic outputs, and that legacy corpus
-changes do not affect native posterior weights.
+The retained generated corpus records transcription identity, fold
+assignments, coefficients, per-case rows and model representability results.
+The immutable original archive includes its own hash manifest and Python
+reference results.
 
 A future native study should register capture settings before measurement,
 span quantization transitions and authored/current-height ratios, hold out

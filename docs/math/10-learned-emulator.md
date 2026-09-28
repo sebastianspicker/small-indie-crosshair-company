@@ -1,5 +1,10 @@
 # 10 — A learned emulator: solver distillation and the closed speed gate
 
+**Historical snapshot.** The app default changed in September 2026; the scores
+below describe the frozen earlier target, not today's default. Rerunning its
+trainer with revised solver code may change them. See [chapter 12](12-community-conversion.md)
+for the current-target feature ablation and its separate held-out evaluation.
+
 **Implementation:** `quant-emulator-v1`, snapshot 2026-09-23. **Native renderer
 evidence shipped:** zero capture pairs. This chapter documents a dependency-free
 learned emulator that was trained, measured and then deliberately **not** wired
@@ -7,10 +12,9 @@ into the application. It distills the project's own declared solver; it is not
 game data and it does not improve native accuracy. The corpus, historical
 binary32 arithmetic, 27-model family and target build are unchanged.
 
-The artifact is `research/generated/quant-emulator.json`, its canonical fingerprint is
-`137061144`, and it is trained by `research/scripts/train-quant-emulator.mjs`
-(`npm run emulator:train`). The math and parsing live in `research/lib/emulator.js`.
-Every number below is reproducible from those files under Node.js 22.12+.
+The retained artifact is `research/generated/quant-emulator.json`, with canonical
+fingerprint `137061144`. Its stored metrics and fingerprint describe the recorded
+experiment under Node.js 22.12+.
 
 The inverse block is a **depth-3 boosted-tree** ensemble (120 rounds, learning
 rate 0.2) over **26 declared features**. A later capacity revision raised the
@@ -101,9 +105,8 @@ aggregate error by a wide margin, so it is a real regression fit rather than
 noise. It is still wrong on the full tuple about two times out of three.
 Per-dimension exact rates show why: length remains the hardest coordinate
 (0.563), while thickness is recovered about 78% of the time. The MAE columns are
-mean absolute errors from `evaluateEmulator` in `research/lib/emulator.js`; the naive
-baseline comes from the project's existing `naiveAssignment` helper and is
-included in the artifact as `naiveExactTupleRate` and `naiveMae`. These are
+mean absolute errors recorded by the evaluation; the naive baseline is included
+in the artifact as `naiveExactTupleRate` and `naiveMae`. These are
 fidelity numbers against the solver, not accuracy numbers against the game.
 
 ### The 26 features and the ablation
@@ -155,15 +158,15 @@ about Valve's renderer. It is not wired into inference.
 
 ## 6. The learned ranker: shortlist plus exact verification (W4a)
 
-`research/lib/ranker.js` takes a different approach from replacing the solver. The
+The recorded ranker takes a different approach from replacing the solver. The
 learned emulator only proposes a small **shortlist** around its prediction; the
 returned tuple is then the **exact argmin of the declared decision loss over that
 shortlist**. The approximation is only the shortlist; verification is exact. The
 honest consequence is that the verified answer can be *worse* than the solver
 when the shortlist misses the solver's tuple.
 
-`research/scripts/benchmark-ranker.mjs` (`npm run bench:ranker`) measures this on 125
-group-disjoint test settings (`research/generated/ranker-benchmark.json`):
+The retained `research/generated/ranker-benchmark.json` measures this on 125
+group-disjoint test settings:
 
 | K (shortlist size) | Contains solver tuple |
 | --- | --- |
@@ -188,7 +191,7 @@ it is not a safe drop-in for the exact solver.
 
 ## 7. The sensitivity layer: analytic margins and a weak learned classifier (W4b)
 
-`research/lib/sensitivity.js` exposes two advisory layers, both scoped to the
+The recorded sensitivity study has two advisory layers, both scoped to the
 **declared** solver:
 
 - **Analytic (always available, no training).** For a legacy setting it computes,
@@ -211,13 +214,13 @@ project's own declared quantiser, not CS2 rendering risk.
 
 ## 8. Measured speed and the speed gate
 
-The motivation for an emulator is speed. `npm run bench:emulator` compares the
-same samples against both paths. The committed run for the current depth-3
+The motivation for an emulator is speed. The retained benchmark compares the
+same samples against both paths. The committed run for the depth-3
 artifact recorded:
 
 ```text
-predictEmulator (learned):     ~3.8 µs p50   (npm run bench:emulator)
-exact infer core:              ~1.13 ms p50  (npm run bench:emulator)
+predictEmulator (learned):     ~3.8 µs p50
+exact infer core:              ~1.13 ms p50
 ```
 
 That is a prediction-only ratio of roughly **292×**. The earlier depth-1 stump
@@ -253,15 +256,11 @@ No ML claim is made about improving the conversion. The artifact exists so that
 the experiment, its numbers and its rejection are inspectable rather than
 assumed.
 
-Residual modulation is a separate, also-closed idea. A later patch could add a
-bounded (±2 pixel) correction on top of the exact solver once reviewed native
-captures exist. The v0.4 plan specifies it, `research/lib/modulator.js` returns a
-zero delta with reason `closed-no-native-pairs`, and it is **not** imported by
-`lib/solver/inference.js`. It is not a second emulator and is not trained on
-solver labels; its artifact records `trainedOnSolverLabels: false`. The
-bounded-delta rule itself is a pure predicate in
-`research/lib/modulation-contract.js`: it has no weights and is not imported by
-inference either.
+Residual modulation is a separate, also-closed idea. A future implementation
+could add a bounded (±2 pixel) correction on top of the exact solver once
+reviewed native captures exist. The retained artifact records a zero delta with
+reason `closed-no-native-pairs` and `trainedOnSolverLabels: false`. No residual
+modulator is included in or called by the runtime.
 
 ## 9. Why repository-only data cannot identify the native renderer
 
@@ -291,12 +290,9 @@ of against the project's own equations. Until such data exists, the learned
 emulator stays a documented research artifact: deterministic, fast, measured,
 and correctly left out of the conversion path.
 
-Relevant implementation modules are `research/lib/emulator.js`, `ranker.js`,
-`sensitivity.js`, `research/scripts/train-quant-emulator.mjs` and
-`research/scripts/benchmark-ranker.mjs`; the committed artifact is
-`research/generated/quant-emulator.json` with fingerprint `137061144`; regression coverage is
-`tests/research/emulator.test.mjs`, `tests/research/ranker.test.mjs` and
-`tests/research/sensitivity.test.mjs`. Source and evidence boundaries remain in the
+The retained artifacts are `research/generated/quant-emulator.json` with
+fingerprint `137061144` and `research/generated/ranker-benchmark.json`. Source
+and evidence boundaries remain in the
 [source ledger](../research/quant-sources.md) and the
 [formula history](../research/formula-evolution.md); the opt-in certificate around
 the exact solver is in [chapter 11](11-certified-inverse-and-capture-plan.md).

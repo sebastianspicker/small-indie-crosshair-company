@@ -19,13 +19,13 @@ height-scaled by the old equations. Over the seven-height controlled grid, fixed
 length/thickness disagrees in 32/56 cases. A simple larger counterexample is size four
 at 1080p: the baseline gives nine pixels, not eight.
 
-**Disposition:** rejected as a universal mapping. Retained as an explicit audit
-comparator so future readers can reproduce the failure instead of trusting a verdict.
+**Disposition:** rejected as a universal mapping. The retained audit records the
+failure so readers need not trust an unsupported verdict.
 This did not identify the new renderer; it evaluated an old-model shortcut.
 
 ## v1 — Recover rendered pixels first
 
-**First chat proposal:**
+**Initial proposal:**
 
 $$
 \ell\approx\operatorname{trunc}(SH_o/480),\qquad
@@ -68,7 +68,7 @@ $$
 g_{\mathrm{ideal}}=(a_o-B)/K.
 $$
 
-**What became stronger:** old-model comparisons were reproducibly evaluated for eight
+**What became stronger:** old-model comparisons were evaluated for eight
 dated legacy codes and seven heights. The sampled settings include zero thickness,
 zero arm length with a dot, fractional arm length, negative fractional gap and a more
 open crosshair. The hauptrolle generator's early size truncation, zero-width preview
@@ -81,8 +81,8 @@ and parity remain hypotheses. The two proposed gap baselines can both reproduce 
 synthetic target when each is paired with its own compensating candidate number.
 
 **Disposition:** these are the principal model distinctions preserved in the GUI and
-in the original Python archive. The archive self-tests and stored result object now
-reproduce exactly during repository verification.
+in the original Python archive. The frozen archive retains its self-checks and
+stored result object unchanged.
 
 ## v3 — Make assumptions, constraints and residuals executable
 
@@ -116,9 +116,9 @@ records rather than replacing the label on existing synthetic tests.
 
 ## Correction C01 — The reported 720p website reference
 
-The supplied archive and earlier chat reported that xhair.pro's current library used a
-720-pixel reference and distinguished current versus legacy version-1 searches. During
-repository construction, the currently retrieved parsed library page did **not** expose
+The historical archive reported that xhair.pro's library used a 720-pixel
+reference and distinguished current versus legacy version-1 searches. During
+source review, the retrieved parsed library page did **not** expose
 the cited 720 statement. That recheck does not establish that the old observation was
 false: the page could have changed, use client-rendered content or differ by retrieval.
 It does mean the statement is **not presently corroborated by this retrieval**.
@@ -128,20 +128,20 @@ ledger downgrades that claim accordingly. No native factor 1.5 or globally fixed
 reference is derived from it. The app instead uses explicit authored and current heights.
 This is the safer conclusion whether or not the historical website claim was accurate.
 
-## Correction C02 — Scope of “tests”
+## Correction C02 — Scope of the 56 cases
 
-“56 tests” in conversation referred to source-based numerical comparisons. It did not
-mean 56 executions of the updated game. The repository keeps that wording precise:
-56 numerical cases, separate software test assertions, optional browser interaction
-checks, and zero native validation captures shipped. No passing software assertion is
-converted into an in-game evidence count.
+The historical phrase “56 tests” referred to source-based numerical
+comparisons, not 56 executions of the updated game. Public documentation uses
+“56 numerical cases” and records zero native validation captures. Numerical
+agreement is not converted into an in-game evidence count.
 
 ## Rules for v4 and later
 
 Preserve the old version and source fixtures. Identify which claim changes and what
 new evidence distinguishes the hypotheses. Add the observed failing case before the
-fix. Update the derivation, tests, model identifier, exported provenance and migration
-notes together. If a later build differs, scope the new model to that build rather than
+fix. Update the derivation, validation record, model identifier, exported
+provenance and migration notes together. If a later build differs, scope the
+new model to that build rather than
 silently rewriting the interpretation of an earlier snapshot.
 
 Refuting a favored formula is a successful research result. A good generator should
@@ -243,8 +243,8 @@ dependency-free learned model that predicts the converted tuple directly, for a
 large speedup.
 
 **What was built:** a deterministic boosted-stump inverse emulator and a
-depth-3 boosted-tree forward surrogate in `research/lib/emulator.js`, trained offline
-by `research/scripts/train-quant-emulator.mjs` into `research/generated/quant-emulator.json`. This entry
+depth-3 boosted-tree forward surrogate, recorded in
+`research/generated/quant-emulator.json`. This entry
 describes the **first** artifact, whose fingerprint was `1027764490`; the later
 capacity revision (fingerprint `137061144`) is correction C06. The inverse's
 labels come from the project's own `infer` solver on 5000 deterministic samples
@@ -259,7 +259,7 @@ thickness 0.589, gap 0.403; mean absolute errors were length 1.269, thickness
 0.667, gap 1.062 px against a naive combined MAE of 2.610. The forward surrogate
 reached held-out MAE below one pixel on all four outputs (length 0.392, width
 0.286, near 0.540, far 0.540). The initial depth-1 emulator ran in roughly 0.4 µs
-per call versus a 1.0–1.1 ms p50 for the exact core (`npm run bench:emulator`),
+per call versus a 1.0–1.1 ms p50 for the exact core,
 about **2500× faster**.
 
 **Disposition:** rejected as a substitute. The artifact records
@@ -278,8 +278,8 @@ first measured artifact and its 11.6% figure; the later capacity revision (fidel
 **Proposal examined:** whether the shipped automatic search already returns the
 global minimizer of the declared decision loss, and whether that can be certified.
 
-**What was checked:** `research/scripts/certify-inverse.mjs` (`npm run certify:inverse`)
-re-solves every eligible corpus record at four heights under the `expected` and
+**What was checked:** the recorded certification study re-solves every eligible
+corpus record at four heights under the `expected` and
 `worst` rules (1064 cases) with `rankAndCertify` and the adaptive Chebyshev-shell
 `certifyOptimum`, then validates the `shell-monotone` assumption against a
 bounded sub-domain exhaustive oracle (probe length `0..32`, thickness `0..31`,
@@ -331,7 +331,7 @@ group-disjoint validation fold carved from the training samples; the held-out
 test split was not used for selection. The headline is "more capacity", not "new
 math".
 
-**Ranker (W4a):** `research/lib/ranker.js` proposes a learned shortlist and takes
+**Ranker (W4a):** the study proposes a learned shortlist and takes
 the **exact** argmin of the declared loss over it. On 125 held-out settings the
 shortlist contained the solver tuple 0.848 of the time at K = 32, but the
 verified answer was **worse** than the solver on 13 of 125 samples (max gap
@@ -339,7 +339,7 @@ verified answer was **worse** than the solver on 13 of 125 samples (max gap
 (221 µs versus 1.471 ms). Artifact verdict: `NEGATIVE (fidelity)`; the speed gate
 stays `closed-not-exact-equivalent`.
 
-**Sensitivity (W4b):** `research/lib/sensitivity.js` adds an analytic boundary-margin
+**Sensitivity (W4b):** the study adds an analytic boundary-margin
 advisory (always available) and an optional learned mismatch classifier. The
 classifier reached **0.736 accuracy against a 0.704 majority baseline** on 125
 held-out settings — weak — and is recorded as such. The analytic layer stands
@@ -362,8 +362,8 @@ rule.
 **What v0.4 adds:** an explicit structural hypothesis family
 ([`lib/solver/structural.js`](../../lib/solver/structural.js)) in which
 `gapScale ∈ {same-as-length, unscaled}` is a named rival, plus an offline census
-([`research/scripts/structural-study.mjs`](../../research/scripts/structural-study.mjs)) of where the
-rivals disagree. At an authored height of 1080 and a current height of 2160 the two
+retained in `research/generated/structural-disagreement.json`. At an authored
+height of 1080 and a current height of 2160 the two
 predict nears four and three respectively for a stored `length 9 / thickness 2 /
 gap 1`; at 1080/1080 they agree, so same-height tests cannot identify the scale. The
 shipped `infer()` default tuple is **unchanged**. Every automatic report now warns
@@ -375,5 +375,4 @@ callback. Opening the gate needs reviewed native pairs; the plan defines the
 threshold and deliberately defines no reviewed-registry provenance value.
 
 **Disposition:** the rival is recorded and off the default path; the default tuple
-and `quant-static-v5` are frozen. Full account in the
-[v0.4 plan](../engineering/archive/v0.4-conversion-improvement-plan.md).
+and `quant-static-v5` are frozen.

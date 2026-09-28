@@ -1,0 +1,256 @@
+{
+  "schema": "sicc-external-converter-comparison-v1",
+  "retrieved": "2026-09-28",
+  "source": "https://crosshair.club/convert",
+  "endpoint": "https://crosshair.club/api/convert",
+  "kind": "synthetic-input-external-output",
+  "nativeEvidence": false,
+  "phase": "comparison-holdout",
+  "scope": "Twelve new queries chosen after freezing community-static-v1; no refitting to these outputs. This tests external software agreement, not game accuracy.",
+  "cases": [
+    {
+      "id": "holdout-01",
+      "height": 900,
+      "settings": {
+        "size": 3.7,
+        "thickness": 1.2,
+        "gap": -2.7,
+        "dot": false,
+        "outline": false,
+        "style": 4
+      },
+      "returnedCode": "CSGO-ayBdA-XitMv-cHv6r-qhBNu-pohyC",
+      "returnedWarnings": [],
+      "native": {
+        "length": 7,
+        "thickness": 2,
+        "gap": 2,
+        "authoredHeight": 900
+      }
+    },
+    {
+      "id": "holdout-02",
+      "height": 1200,
+      "settings": {
+        "size": 2.2,
+        "thickness": 0.6,
+        "gap": -3.8,
+        "dot": false,
+        "outline": false,
+        "style": 4
+      },
+      "returnedCode": "CSGO-jxtQr-2HfLQ-OPXbb-9oNox-682fF",
+      "returnedWarnings": [],
+      "native": {
+        "length": 6,
+        "thickness": 2,
+        "gap": 1,
+        "authoredHeight": 1200
+      }
+    },
+    {
+      "id": "holdout-03",
+      "height": 768,
+      "settings": {
+        "size": 1.9,
+        "thickness": 1.6,
+        "gap": -4.9,
+        "dot": false,
+        "outline": false,
+        "style": 4
+      },
+      "returnedCode": "CSGO-WUjyH-OSq6o-ehEXT-cpZz4-uHzTC",
+      "returnedWarnings": [],
+      "native": {
+        "length": 3,
+        "thickness": 3,
+        "gap": 2,
+        "authoredHeight": 768
+      }
+    },
+    {
+      "id": "holdout-04",
+      "height": 1024,
+      "settings": {
+        "size": 2.8,
+        "thickness": 2.3,
+        "gap": -6.1,
+        "dot": false,
+        "outline": false,
+        "style": 4
+      },
+      "returnedCode": "CSGO-9FSNy-HNvOG-sibzA-FmsBU-sXMjC",
+      "returnedWarnings": [],
+      "native": {
+        "length": 6,
+        "thickness": 5,
+        "gap": 1,
+        "authoredHeight": 1024
+      }
+    },
+    {
+      "id": "holdout-05",
+      "height": 1440,
+      "settings": {
+        "size": 0.5,
+        "thickness": 0.5,
+        "gap": -4.5,
+        "dot": false,
+        "outline": false,
+        "style": 4
+      },
+      "returnedCode": "CSGO-8F8UQ-RMurS-aymQ4-UMxRS-YOqUE",
+      "returnedWarnings": [],
+      "native": {
+        "length": 2,
+        "thickness": 2,
+        "gap": 1,
+        "authoredHeight": 1440
+      }
+    },
+    {
+      "id": "holdout-06",
+      "height": 2160,
+      "settings": {
+        "size": 0.1,
+        "thickness": 0,
+        "gap": -7,
+        "dot": false,
+        "outline": false,
+        "style": 4
+      },
+      "returnedCode": "CSGO-fuP3S-chF5F-CvBv5-GvpVL-Q5MTK",
+      "returnedWarnings": [
+        "gap"
+      ],
+      "native": {
+        "length": 0,
+        "thickness": 1,
+        "gap": 0,
+        "authoredHeight": 2160
+      }
+    },
+    {
+      "id": "holdout-07",
+      "height": 960,
+      "settings": {
+        "size": 0,
+        "thickness": 2,
+        "gap": -5.5,
+        "dot": true,
+        "outline": false,
+        "style": 4
+      },
+      "returnedCode": "CSGO-hjXXk-sp457-NpG7N-OQdMs-9BbML",
+      "returnedWarnings": [],
+      "native": {
+        "length": 0,
+        "thickness": 4,
+        "gap": 1,
+        "authoredHeight": 960
+      }
+    },
+    {
+      "id": "holdout-08",
+      "height": 1080,
+      "settings": {
+        "size": 2.0000001,
+        "thickness": 2.0000003,
+        "gap": -4,
+        "dot": false,
+        "outline": false,
+        "style": 4
+      },
+      "returnedCode": "CSGO-zj5Hw-ZHjjx-btQUw-kv3hQ-FELGG",
+      "returnedWarnings": [],
+      "native": {
+        "length": 4,
+        "thickness": 5,
+        "gap": 3,
+        "authoredHeight": 1080
+      }
+    },
+    {
+      "id": "holdout-09",
+      "height": 720,
+      "settings": {
+        "size": 1,
+        "thickness": 3,
+        "gap": -8,
+        "dot": false,
+        "outline": false,
+        "style": 4
+      },
+      "returnedCode": "CSGO-89iMc-DUmuT-LzYLd-avJyi-JqLLH",
+      "returnedWarnings": [
+        "gap"
+      ],
+      "native": {
+        "length": 2,
+        "thickness": 4,
+        "gap": 0,
+        "authoredHeight": 720
+      }
+    },
+    {
+      "id": "holdout-10",
+      "height": 1080,
+      "settings": {
+        "size": 100,
+        "thickness": 6,
+        "gap": 30,
+        "dot": false,
+        "outline": false,
+        "style": 4
+      },
+      "returnedCode": "CSGO-3MB96-T6S82-ejCAt-Su9qq-h9PpP",
+      "returnedWarnings": [],
+      "native": {
+        "length": 225,
+        "thickness": 14,
+        "gap": 41,
+        "authoredHeight": 1080
+      }
+    },
+    {
+      "id": "holdout-11",
+      "height": 1600,
+      "settings": {
+        "size": 0.7,
+        "thickness": 0.1,
+        "gap": -3.1,
+        "dot": false,
+        "outline": false,
+        "style": 4
+      },
+      "returnedCode": "CSGO-SK6bZ-5K8fj-y4Qcc-NsLtq-CUfVG",
+      "returnedWarnings": [],
+      "native": {
+        "length": 2,
+        "thickness": 1,
+        "gap": 1,
+        "authoredHeight": 1600
+      }
+    },
+    {
+      "id": "holdout-12",
+      "height": 1050,
+      "settings": {
+        "size": 2.7,
+        "thickness": 0.7,
+        "gap": -3.3,
+        "dot": false,
+        "outline": false,
+        "style": 4
+      },
+      "returnedCode": "CSGO-ac7qG-6rYCq-J3zAb-mjFaD-P6RNN",
+      "returnedWarnings": [],
+      "native": {
+        "length": 6,
+        "thickness": 2,
+        "gap": 1,
+        "authoredHeight": 1050
+      }
+    }
+  ]
+}

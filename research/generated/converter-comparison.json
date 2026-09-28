@@ -1,0 +1,639 @@
+{
+  "schema": "sicc-converter-comparison-v1",
+  "fixture": "research/comparisons/crosshair-club-2026-09-28.json",
+  "fixtureSha256": "45d85babdfb897b23f72636094ebacfc87a509bbd86a5d1e6e55c5e5f4f0259b",
+  "source": "https://crosshair.club/convert",
+  "holdoutFixture": "research/comparisons/crosshair-club-holdout-2026-09-28.json",
+  "holdoutSha256": "b71a1d774920cf71e700bf4d565efd386706949ccf0a5d4f175d5b6a837e38ee",
+  "retrieved": "2026-09-28",
+  "returnedCodesVerified": true,
+  "nativeEvidence": false,
+  "nativeAccuracy": null,
+  "interpretation": "Agreement with external software on diagnostic examples, not game accuracy. Corpus disagreements have no truth label.",
+  "cases": [
+    {
+      "id": "club-01",
+      "phase": "diagnostic",
+      "height": 1080,
+      "expectedExternal": {
+        "length": 6,
+        "thickness": 1,
+        "gap": 2,
+        "authoredHeight": 1080
+      },
+      "historicalHypothesis": {
+        "length": 5,
+        "thickness": 0,
+        "gap": 1,
+        "authoredHeight": 1080
+      },
+      "current": {
+        "length": 6,
+        "thickness": 1,
+        "gap": 2,
+        "authoredHeight": 1080
+      },
+      "historicalAgreement": false,
+      "currentAgreement": true
+    },
+    {
+      "id": "club-02",
+      "phase": "diagnostic",
+      "height": 1080,
+      "expectedExternal": {
+        "length": 4,
+        "thickness": 2,
+        "gap": 1,
+        "authoredHeight": 1080
+      },
+      "historicalHypothesis": {
+        "length": 4,
+        "thickness": 2,
+        "gap": 0,
+        "authoredHeight": 1080
+      },
+      "current": {
+        "length": 4,
+        "thickness": 2,
+        "gap": 1,
+        "authoredHeight": 1080
+      },
+      "historicalAgreement": false,
+      "currentAgreement": true
+    },
+    {
+      "id": "club-03",
+      "phase": "diagnostic",
+      "height": 1080,
+      "expectedExternal": {
+        "length": 3,
+        "thickness": 3,
+        "gap": 2,
+        "authoredHeight": 1080
+      },
+      "historicalHypothesis": {
+        "length": 3,
+        "thickness": 3,
+        "gap": 0,
+        "authoredHeight": 1080
+      },
+      "current": {
+        "length": 3,
+        "thickness": 3,
+        "gap": 2,
+        "authoredHeight": 1080
+      },
+      "historicalAgreement": false,
+      "currentAgreement": true
+    },
+    {
+      "id": "club-04",
+      "phase": "diagnostic",
+      "height": 1080,
+      "expectedExternal": {
+        "length": 2,
+        "thickness": 4,
+        "gap": 1,
+        "authoredHeight": 1080
+      },
+      "historicalHypothesis": {
+        "length": 1,
+        "thickness": 4,
+        "gap": 0,
+        "authoredHeight": 1080
+      },
+      "current": {
+        "length": 2,
+        "thickness": 4,
+        "gap": 1,
+        "authoredHeight": 1080
+      },
+      "historicalAgreement": false,
+      "currentAgreement": true
+    },
+    {
+      "id": "club-05",
+      "phase": "diagnostic",
+      "height": 1080,
+      "expectedExternal": {
+        "length": 0,
+        "thickness": 1,
+        "gap": 1,
+        "authoredHeight": 1080
+      },
+      "historicalHypothesis": {
+        "length": 0,
+        "thickness": 0,
+        "gap": 0,
+        "authoredHeight": 1080
+      },
+      "current": {
+        "length": 0,
+        "thickness": 1,
+        "gap": 1,
+        "authoredHeight": 1080
+      },
+      "historicalAgreement": false,
+      "currentAgreement": true
+    },
+    {
+      "id": "club-06",
+      "phase": "diagnostic",
+      "height": 960,
+      "expectedExternal": {
+        "length": 7,
+        "thickness": 1,
+        "gap": 1,
+        "authoredHeight": 960
+      },
+      "historicalHypothesis": {
+        "length": 6,
+        "thickness": 1,
+        "gap": 0,
+        "authoredHeight": 960
+      },
+      "current": {
+        "length": 7,
+        "thickness": 1,
+        "gap": 1,
+        "authoredHeight": 960
+      },
+      "historicalAgreement": false,
+      "currentAgreement": true
+    },
+    {
+      "id": "club-07",
+      "phase": "diagnostic",
+      "height": 1440,
+      "expectedExternal": {
+        "length": 4,
+        "thickness": 2,
+        "gap": 1,
+        "authoredHeight": 1440
+      },
+      "historicalHypothesis": {
+        "length": 4,
+        "thickness": 1,
+        "gap": 0,
+        "authoredHeight": 1440
+      },
+      "current": {
+        "length": 4,
+        "thickness": 2,
+        "gap": 1,
+        "authoredHeight": 1440
+      },
+      "historicalAgreement": false,
+      "currentAgreement": true
+    },
+    {
+      "id": "club-08",
+      "phase": "diagnostic",
+      "height": 720,
+      "expectedExternal": {
+        "length": 4,
+        "thickness": 2,
+        "gap": 2,
+        "authoredHeight": 720
+      },
+      "historicalHypothesis": {
+        "length": 4,
+        "thickness": 1,
+        "gap": 1,
+        "authoredHeight": 720
+      },
+      "current": {
+        "length": 4,
+        "thickness": 2,
+        "gap": 2,
+        "authoredHeight": 720
+      },
+      "historicalAgreement": false,
+      "currentAgreement": true
+    },
+    {
+      "id": "club-09",
+      "phase": "diagnostic",
+      "height": 1080,
+      "expectedExternal": {
+        "length": 4,
+        "thickness": 4,
+        "gap": 2,
+        "authoredHeight": 1080
+      },
+      "historicalHypothesis": {
+        "length": 4,
+        "thickness": 4,
+        "gap": 0,
+        "authoredHeight": 1080
+      },
+      "current": {
+        "length": 4,
+        "thickness": 4,
+        "gap": 2,
+        "authoredHeight": 1080
+      },
+      "historicalAgreement": false,
+      "currentAgreement": true
+    },
+    {
+      "id": "club-10",
+      "phase": "diagnostic",
+      "height": 1080,
+      "expectedExternal": {
+        "length": 4,
+        "thickness": 4,
+        "gap": 0,
+        "authoredHeight": 1080
+      },
+      "historicalHypothesis": {
+        "length": 2,
+        "thickness": 4,
+        "gap": 0,
+        "authoredHeight": 1080
+      },
+      "current": {
+        "length": 4,
+        "thickness": 4,
+        "gap": 0,
+        "authoredHeight": 1080
+      },
+      "historicalAgreement": false,
+      "currentAgreement": true
+    },
+    {
+      "id": "club-11",
+      "phase": "diagnostic",
+      "height": 2160,
+      "expectedExternal": {
+        "length": 4,
+        "thickness": 9,
+        "gap": 4,
+        "authoredHeight": 2160
+      },
+      "historicalHypothesis": {
+        "length": 4,
+        "thickness": 7,
+        "gap": 0,
+        "authoredHeight": 2160
+      },
+      "current": {
+        "length": 4,
+        "thickness": 9,
+        "gap": 4,
+        "authoredHeight": 2160
+      },
+      "historicalAgreement": false,
+      "currentAgreement": true
+    },
+    {
+      "id": "club-12",
+      "phase": "diagnostic",
+      "height": 1080,
+      "expectedExternal": {
+        "length": 9,
+        "thickness": 1,
+        "gap": 2,
+        "authoredHeight": 1080
+      },
+      "historicalHypothesis": {
+        "length": 8,
+        "thickness": 1,
+        "gap": 1,
+        "authoredHeight": 1080
+      },
+      "current": {
+        "length": 9,
+        "thickness": 1,
+        "gap": 2,
+        "authoredHeight": 1080
+      },
+      "historicalAgreement": false,
+      "currentAgreement": true
+    },
+    {
+      "id": "holdout-01",
+      "phase": "comparison-holdout",
+      "height": 900,
+      "expectedExternal": {
+        "length": 7,
+        "thickness": 2,
+        "gap": 2,
+        "authoredHeight": 900
+      },
+      "historicalHypothesis": {
+        "length": 6,
+        "thickness": 2,
+        "gap": 1,
+        "authoredHeight": 900
+      },
+      "current": {
+        "length": 7,
+        "thickness": 2,
+        "gap": 2,
+        "authoredHeight": 900
+      },
+      "historicalAgreement": false,
+      "currentAgreement": true
+    },
+    {
+      "id": "holdout-02",
+      "phase": "comparison-holdout",
+      "height": 1200,
+      "expectedExternal": {
+        "length": 6,
+        "thickness": 2,
+        "gap": 1,
+        "authoredHeight": 1200
+      },
+      "historicalHypothesis": {
+        "length": 5,
+        "thickness": 1,
+        "gap": 0,
+        "authoredHeight": 1200
+      },
+      "current": {
+        "length": 6,
+        "thickness": 2,
+        "gap": 1,
+        "authoredHeight": 1200
+      },
+      "historicalAgreement": false,
+      "currentAgreement": true
+    },
+    {
+      "id": "holdout-03",
+      "phase": "comparison-holdout",
+      "height": 768,
+      "expectedExternal": {
+        "length": 3,
+        "thickness": 3,
+        "gap": 2,
+        "authoredHeight": 768
+      },
+      "historicalHypothesis": {
+        "length": 3,
+        "thickness": 2,
+        "gap": 0,
+        "authoredHeight": 768
+      },
+      "current": {
+        "length": 3,
+        "thickness": 3,
+        "gap": 2,
+        "authoredHeight": 768
+      },
+      "historicalAgreement": false,
+      "currentAgreement": true
+    },
+    {
+      "id": "holdout-04",
+      "phase": "comparison-holdout",
+      "height": 1024,
+      "expectedExternal": {
+        "length": 6,
+        "thickness": 5,
+        "gap": 1,
+        "authoredHeight": 1024
+      },
+      "historicalHypothesis": {
+        "length": 3,
+        "thickness": 4,
+        "gap": 0,
+        "authoredHeight": 1024
+      },
+      "current": {
+        "length": 6,
+        "thickness": 5,
+        "gap": 1,
+        "authoredHeight": 1024
+      },
+      "historicalAgreement": false,
+      "currentAgreement": true
+    },
+    {
+      "id": "holdout-05",
+      "phase": "comparison-holdout",
+      "height": 1440,
+      "expectedExternal": {
+        "length": 2,
+        "thickness": 2,
+        "gap": 1,
+        "authoredHeight": 1440
+      },
+      "historicalHypothesis": {
+        "length": 1,
+        "thickness": 1,
+        "gap": 0,
+        "authoredHeight": 1440
+      },
+      "current": {
+        "length": 2,
+        "thickness": 2,
+        "gap": 1,
+        "authoredHeight": 1440
+      },
+      "historicalAgreement": false,
+      "currentAgreement": true
+    },
+    {
+      "id": "holdout-06",
+      "phase": "comparison-holdout",
+      "height": 2160,
+      "expectedExternal": {
+        "length": 0,
+        "thickness": 1,
+        "gap": 0,
+        "authoredHeight": 2160
+      },
+      "historicalHypothesis": {
+        "length": 0,
+        "thickness": 0,
+        "gap": 0,
+        "authoredHeight": 2160
+      },
+      "current": {
+        "length": 0,
+        "thickness": 1,
+        "gap": 0,
+        "authoredHeight": 2160
+      },
+      "historicalAgreement": false,
+      "currentAgreement": true
+    },
+    {
+      "id": "holdout-07",
+      "phase": "comparison-holdout",
+      "height": 960,
+      "expectedExternal": {
+        "length": 0,
+        "thickness": 4,
+        "gap": 1,
+        "authoredHeight": 960
+      },
+      "historicalHypothesis": {
+        "length": 0,
+        "thickness": 4,
+        "gap": 0,
+        "authoredHeight": 960
+      },
+      "current": {
+        "length": 0,
+        "thickness": 4,
+        "gap": 1,
+        "authoredHeight": 960
+      },
+      "historicalAgreement": false,
+      "currentAgreement": true
+    },
+    {
+      "id": "holdout-08",
+      "phase": "comparison-holdout",
+      "height": 1080,
+      "expectedExternal": {
+        "length": 4,
+        "thickness": 5,
+        "gap": 3,
+        "authoredHeight": 1080
+      },
+      "historicalHypothesis": {
+        "length": 4,
+        "thickness": 4,
+        "gap": 0,
+        "authoredHeight": 1080
+      },
+      "current": {
+        "length": 4,
+        "thickness": 5,
+        "gap": 3,
+        "authoredHeight": 1080
+      },
+      "historicalAgreement": false,
+      "currentAgreement": true
+    },
+    {
+      "id": "holdout-09",
+      "phase": "comparison-holdout",
+      "height": 720,
+      "expectedExternal": {
+        "length": 2,
+        "thickness": 4,
+        "gap": 0,
+        "authoredHeight": 720
+      },
+      "historicalHypothesis": {
+        "length": 1,
+        "thickness": 2,
+        "gap": 0,
+        "authoredHeight": 720
+      },
+      "current": {
+        "length": 2,
+        "thickness": 4,
+        "gap": 0,
+        "authoredHeight": 720
+      },
+      "historicalAgreement": false,
+      "currentAgreement": true
+    },
+    {
+      "id": "holdout-10",
+      "phase": "comparison-holdout",
+      "height": 1080,
+      "expectedExternal": {
+        "length": 225,
+        "thickness": 14,
+        "gap": 41,
+        "authoredHeight": 1080
+      },
+      "historicalHypothesis": {
+        "length": 225,
+        "thickness": 13,
+        "gap": 34,
+        "authoredHeight": 1080
+      },
+      "current": {
+        "length": 225,
+        "thickness": 14,
+        "gap": 41,
+        "authoredHeight": 1080
+      },
+      "historicalAgreement": false,
+      "currentAgreement": true
+    },
+    {
+      "id": "holdout-11",
+      "phase": "comparison-holdout",
+      "height": 1600,
+      "expectedExternal": {
+        "length": 2,
+        "thickness": 1,
+        "gap": 1,
+        "authoredHeight": 1600
+      },
+      "historicalHypothesis": {
+        "length": 2,
+        "thickness": 1,
+        "gap": 0,
+        "authoredHeight": 1600
+      },
+      "current": {
+        "length": 2,
+        "thickness": 1,
+        "gap": 1,
+        "authoredHeight": 1600
+      },
+      "historicalAgreement": false,
+      "currentAgreement": true
+    },
+    {
+      "id": "holdout-12",
+      "phase": "comparison-holdout",
+      "height": 1050,
+      "expectedExternal": {
+        "length": 6,
+        "thickness": 2,
+        "gap": 1,
+        "authoredHeight": 1050
+      },
+      "historicalHypothesis": {
+        "length": 5,
+        "thickness": 1,
+        "gap": 0,
+        "authoredHeight": 1050
+      },
+      "current": {
+        "length": 6,
+        "thickness": 2,
+        "gap": 1,
+        "authoredHeight": 1050
+      },
+      "historicalAgreement": false,
+      "currentAgreement": true
+    }
+  ],
+  "externalComparison": {
+    "total": 24,
+    "historicalAgreement": 0,
+    "currentAgreement": 24,
+    "byPhase": [
+      {
+        "phase": "diagnostic",
+        "total": 12,
+        "currentAgreement": 12,
+        "historicalAgreement": 0
+      },
+      {
+        "phase": "comparison-holdout",
+        "total": 12,
+        "currentAgreement": 12,
+        "historicalAgreement": 0
+      }
+    ]
+  },
+  "oldRoundingSensitivity": {
+    "tested": 945,
+    "dimensionDisagreements": 276,
+    "weighting": "Record-height rows; duplicate settings are retained. This is not an independent sample count."
+  }
+}

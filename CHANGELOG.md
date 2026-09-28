@@ -1,12 +1,46 @@
 # Changelog
 
+## Unreleased
+
+## 0.5.0 — 2026-09-28
+
+- Replace the automatic default with a source-labelled static reconstruction:
+  round-to-even old dimensions, centre-based new gap, positive visible minimum,
+  authored-height rescaling and explicit odd-width pixel placement. Target the
+  inspected build 2000918; retain historical and manual models separately.
+- Reduce visible renderer choices to six. Compare 24 recorded crosshair.club
+  outputs, including twelve later holdout queries: 24/24 tuple agreement versus
+  0/24 for the former authored/trunc/thickness hypothesis. This is external
+  software agreement, not native game validation.
+- Fix screen-relative parity, measured-target preimages, restricted-domain
+  certificates and historical search plateaus. Reports advance to v5.
+- Measure odd-width transverse placement independently and retain build-scoped
+  capture evidence across renderer switches.
+- Record a research-only ML ablation: geometry and authored-height
+  features improve same-test synthetic tuple fidelity from 29.17% to 90.48%.
+  The exact converter remains the runtime path. See the
+  [audit](docs/research/converter-audit-2026-09-28.md).
+
+- Redesign the interface as an "inspection sheet":
+  - token-driven light and dark themes;
+  - self-hosted Archivo and Martian Mono under the OFL;
+  - sheet-numbered navigation and title blocks;
+  - a Simple view that puts the answer (dimensioned before/after plates at an
+    auto-fitted magnification, three readout values and the console lines as
+    text) beside the inputs.
+- The CSP changes from `font-src 'none'` to `font-src 'self'`, and the dev
+  server serves `.woff2`.
+- Keep the mobile Simple flow in DOM order, preserve the manual preview's pixel
+  aspect ratio, and clear stale announced results.
+- The interface redesign retains routes and element IDs; conversion changes
+  in this release are described above.
+
 ## 0.4.0 — 2026-09-24
 
-- Reorganize the repository by responsibility ([ADR-0005](docs/engineering/decisions/0005-layered-lib-and-research-isolation.md)):
-  `lib/` becomes the import-checked layers `settings`, `geometry`, `image`, `solver`
-  and `manual`; research-only models move to `research/lib/` and research pipelines to
-  `research/scripts/`; `app/` is grouped by route and worker boundary; tests are grouped
-  by the tree they protect. Conversion results, exports and routes are unchanged.
+- Reorganize the product source by responsibility: `lib/` becomes the layered
+  `settings`, `geometry`, `image`, `solver` and `manual` tree, while `app/` is
+  grouped by route and worker boundary. Conversion results, exports and routes
+  are unchanged.
 - Published paths under `lib/` and `app/` change. `data/quant-emulator.json` and
   `data/quant-modulator.json` move to `research/generated/`; `data/reference-audit.json`
   is removed (it duplicated `research/archive/2026-09-23/results.json` and had no reader).
@@ -25,7 +59,7 @@
 - Make **Simple** the default converter view (import, values, resolution, appearance,
   proposed values, two previews, copy/download) and move the full lab behind an
   **Advanced** Expert mode; mode is DOM-only with no persistence.
-- Add a dependency-free learned-emulator research artifact (`npm run emulator:train`).
+- Add a dependency-free learned-emulator research artifact.
   It distills the declared solver on self-generated labels, records
   `speedGate: "closed-not-exact-equivalent"`, ships zero native evidence, and is
   not wired into the app or its Simple view.
@@ -54,18 +88,17 @@
 - Add `lib/cvar-inventory.js`, a frozen data table for the build 2000914 crosshair
   cvars, styles, hidden leftovers and removed names, plus `NATIVE_RANGES` in
   `lib/native-settings.js` as the one source of the export ranges.
-- Add `lib/quant/structural.js` and `lib/migration.js`: an explicit gap-scale rival
+- Add an explicit gap-scale rival
   (`same-as-length` vs `unscaled`) and named `pixelCopy` / `rename` candidates. The
-  24-hypothesis structural family is offline only (`npm run study:structural`); the
+  24-hypothesis structural family is offline only; the
   default `infer()` tuple, `quant-static-v5` and the 27-model worker search are
   unchanged.
-- Add a closed residual modulator (`lib/quant/modulator.js`,
-  `npm run modulator:train`). It returns a zero delta with reason
+- Record a closed residual-modulation study. It returns a zero delta with reason
   `closed-no-native-pairs`, is not imported by inference, and its gate cannot open
   in v1 because no reviewed-registry provenance value is defined.
 - Warn on every automatic report that build 2000914 does not state gap scaling, and
   surface an unscaled-gap rival note in the Simple and Expert views. Lock the default
-  tuple for the size-2 fixture in a regression test.
+  tuple for the size-2 fixture.
 - Harden imports and exports: reject new-build cvars in the legacy CFG importer with a
   dedicated message, test that exports never emit removed or hidden legacy commands,
   cap worker payloads at 1 MiB, and scan `lib/` as well as `app/` for `eval`,
@@ -74,9 +107,9 @@
   export validator; the default tuple is unchanged.
 - Let the Expert view list the rename, pixel-copy and unscaled structural rivals as
   read-only rows; none of them replaces `infer().chosen`.
-- Add a pure modulation contract (`lib/quant/modulation-contract.js`) that rejects any
-  delta with a component outside ±2 and any delta that increases geometry loss; it has
-  no weights and is not imported by inference.
+- Record a pure modulation contract that rejects any delta with a component
+  outside ±2 and any delta that increases geometry loss; it has no weights and
+  is not imported by inference.
 - Default the automatic conversion to the authored pixel-exact model
   `authored:trunc:thickness` (`resolveModelChoice`) when there is no measurement
   evidence and no explicit request, instead of the weighted 27-model hedge; published
@@ -85,11 +118,8 @@
   (`weighted-hedge`) remains available by name or once evidence exists. This is an
   application default only: `infer()`, the bounded search, the declared losses,
   `NATIVE_RANGES`, `legacyGeometry` and the trained artifacts are unchanged.
-- Consolidate the architecture documentation into a single current
-  `docs/engineering/architecture.md`, archive the superseded v0.3 architecture, quant
-  lab architecture and v0.4 improvement plan under `docs/engineering/archive/`, and add
-  short decision records under `docs/engineering/decisions/` for the learned-emulator
-  scope, closed speed gates, cvar-only exports and the no-dependency/no-persistence rule.
+- Consolidate public architecture documentation into the current
+  `docs/engineering/architecture.md`.
 
 ## 0.3.0 — 2026-09-23
 
@@ -122,7 +152,7 @@
   old-image template inference and independent native-component measurement.
 - Added four mathematical chapters and a complete eight-chapter static-MathML
   notebook, preserving all original mathematical documentation and archive data.
-- Added pinned GitHub Pages workflow and explicit publication helper; no hosted
+- Added a pinned GitHub Pages workflow; no hosted
   deployment is claimed without a successfully inspected real environment URL.
 
 ## 0.1.0 — 2026-09-23

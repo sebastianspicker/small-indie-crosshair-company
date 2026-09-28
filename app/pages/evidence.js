@@ -2,9 +2,9 @@ import { $,el,heading,table,download,docLink } from '../ui/dom.js';
 import { runAudit } from '../../lib/geometry/audit.js';
 export function initEvidence(presets) {
   const root=$('evidence');let audit=runAudit(presets);
-  root.append(heading('Archive audit','Re-run the original numerical experiment in this browser. The archive contains no native game screenshots.'));
+  root.append(heading('Archive audit','Re-run the original 56-case numerical experiment in this browser. The archive contains no native game screenshots.',{sheet:'06',label:'Archive',fields:[['Archive','2026-09-23'],['Cases','56'],['Native captures','0','tb-flag']]}));
   const stats=el('div',{class:'evidence-stats'},...[[String(audit.cases),'source-model cases'],['8','dated legacy codes'],['7','controlled heights'],['0','native captures shipped']].map(([v,l])=>el('div',{},el('strong',{},v),el('span',{},l))));
-  root.append(stats,el('p',{class:'disclosure'},'These are eight presets × seven controlled test heights, not each player’s actual display settings. Dates and associations were reported by xhair.pro in the supplied archive; this project did not reparse the demos.'));
+  root.append(stats,el('p',{class:'disclosure'},'These are eight presets × seven controlled test heights, not each player’s actual display settings. Dates and associations were reported by xhair.pro in the frozen archive; this project did not reparse the demos.'));
   const summary=el('article',{class:'math-sheet'},el('h2',{},'Compare the shortcuts'));
   const renderSummary=()=>summary.replaceChildren(el('h2',{},'Compare the shortcuts'),table(['Comparator','Length differs','Thickness differs','Either differs'],
     Object.entries(audit.counts).map(([k,v])=>[k,v.length_disagreements,v.thickness_disagreements,`${v.any_dimension_disagreements} / ${audit.cases}`])),

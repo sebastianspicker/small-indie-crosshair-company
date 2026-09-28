@@ -1,9 +1,7 @@
 # Architecture
 
-This is the single current architecture document. Standing rules live as short
-decision records in [`decisions/`](decisions/); superseded designs are kept in
-[`archive/`](archive/). This document describes where things live and why;
-the decisions describe constraints that must stay true.
+This document describes the current public repository: where things live, how
+the runtime is layered, and which files are published.
 
 The project is a static, dependency-free, client-only web app plus the
 research that justifies it. There is no server component, bundler, account,
@@ -17,20 +15,18 @@ app/        browser runtime            DOM, canvases, routing, worker transport
   └─ imports ─▶ lib/
 lib/        pure domain                no DOM, no worker globals, no network
   settings ◀─ geometry ◀─┬─ image
-                         ├─ solver     (automatic converter, quant-static-v5)
+                         ├─ solver     (community-static-v1; historical quant-static-v6)
                          └─ manual     (manual lab, conditional-static-v4)
 data/       runtime data               the four JSON files the app fetches
-research/   evidence, never runtime    lib/ (research models), scripts/ (pipelines),
-                                        generated/, corpus/, measurements/, archive/ (frozen)
-  └─ imports ─▶ lib/
-scripts/    repository tooling         build, serve, check, notebook, import graph
-tests/      one folder per tree        lib/, app/, research/, tooling/, browser/, fixtures/
+research/   evidence, never runtime    generated/, corpus/, comparisons/,
+                                        measurements/, archive/ (frozen)
+scripts/    repository tooling         build, serve, notebook
 docs/       math, research notes, evidence policy, engineering docs, generated notebook
 ```
 
-Arrows point from importer to imported module. Nothing points back:
-`lib/` never imports `app/`, and neither `app/` nor `lib/` imports
-`research/`.
+Arrows point from importer to imported module. Nothing points back: `lib/`
+never imports `app/`; retained research files are evidence and data, not
+runtime modules.
 
 ## `lib/`: the pure domain
 
@@ -42,7 +38,7 @@ browser, in the worker and in Node. Five layers, each with one job:
 | `lib/settings/` | What a setting *is*. Input validation primitives (`validation.js`), native cvar ranges, colour resolution and CFG command formatting (`native.js`), the frozen build-2000914 cvar inventory (`cvars.js`), the legacy v1 share-code codec (`sharecode.js`, MIT-attributed), the allowlisted legacy CFG parser (`cfg.js`), and the single legacy-text import dispatch (`import.js`). | `settings` |
 | `lib/geometry/` | What a crosshair *looks like*. Binary32 legacy geometry (`legacy.js`), the one integer quantizer (`quantize.js`), illustrative rasterization (`raster.js`), lossless shape and mask compilation (`pixel-shape.js`), and the 56-case legacy audit shared by the #evidence page and the archive reproduction (`audit.js`). | `geometry`, `settings` |
 | `lib/image/` | Reading pixels. Bounded PNG screenshot segmentation and native component measurement (`screenshot.js`, `components.js`). | `image`, `geometry`, `settings` |
-| `lib/solver/` | The automatic converter (`quant-static-v5`, 27 forward hypotheses). Forward renderers (`renderer.js`), exact integer inverse (`inverse.js`), visual refinement (`visual.js`), decision rules (`selection.js`), opt-in certificates (`certify.js`), measurement evidence (`observations.js`, `evidence.js`), experiment design (`experiments.js`), corpus coverage (`corpus.js`, `statistics.js`), the gap-scale structural rival (`structural.js`), the read-only rival rows (`migration.js`), the report and CFG export (`report.js`, `export.js`), and the orchestrating entry point `infer()` (`inference.js`). | `solver`, `geometry`, `settings` |
+| `lib/solver/` | The default direct converter (`community.js`, `community-static-v1`) and historical 27-model study (`quant-static-v6`). Forward renderers (`renderer.js`), integer inverse (`inverse.js`), visual refinement (`visual.js`), decision rules (`selection.js`), opt-in certificates (`certify.js`), measurement evidence (`observations.js`, `evidence.js`), experiment design (`experiments.js`), corpus coverage (`corpus.js`, `statistics.js`), structural rivals (`structural.js`, `migration.js`), report/CFG export (`report.js`, `export.js`), and entry point `infer()` (`inference.js`). | `solver`, `geometry`, `settings` |
 | `lib/manual/` | The manual lab (`conditional-static-v4`): the `convert()`/`exportCFG()` model with its `measured` gap branch (`conversion.js`) and the affine calibration fit plus `sicc-measurement-v1` schema (`calibration.js`). | `manual`, `geometry`, `settings` |
 
 `solver` and `manual` are deliberately separate conversion models, not two
@@ -53,8 +49,14 @@ change results and needs its own model id. What they genuinely share lives in
 `settings` and `geometry`: the quantizer, legacy geometry, validation and
 CFG formatting. The three build-id constants (`TARGET_BUILD` in the manual
 model, `BUILD` in the renderer, `INVENTORY_BUILD` in the cvar inventory) are
-separate facts that happen to be equal today. A test asserts that equality,
-so they can only diverge deliberately.
+separate facts that happen to be equal today; keeping them explicit makes any
+future divergence deliberate.
+
+The current community reconstruction has a separate build (2000918), geometry
+module (`geometry/community.js`) and report version. It is not a 28th weighted
+hypothesis. The UI defaults to this direct, per-axis solver and offers six choices:
+the default, the historical hedge and four authored-height controls. Measurements
+are stored together but validated and evaluated only against their matching build.
 
 `inference.js` and `report.js` read `performance.now()` to record solve
 timings in the report. That is the only non-deterministic input in `lib/`.
@@ -121,8 +123,7 @@ download. Invalid or empty input disables export. A legacy import replaces
 source state only after parsing and validation succeed. The automatic
 converter merges a partial CFG onto the current settings; the workbench
 merges it onto the CFG defaults. New-build (2000914) cvars are rejected on
-import with a dedicated message. Exported configs are cvar commands only
-([ADR-0003](decisions/0003-export-cvars-not-share-codes.md)). If the worker
+import with a dedicated message. Exported configs are cvar commands only. If the worker
 fails to start or breaks protocol, conversion is disabled.
 
 ## External contracts
@@ -132,8 +133,8 @@ them is a product change and needs a CHANGELOG entry.
 
 - **Downloads.**
   - Automatic converter: `small-indie-crosshair.cfg`, plus
-    `crosshair-quant-report.json` (schema `sicc-quant-report-v4`, model
-    `version` `quant-static-v5`, `targetBuild`).
+    `crosshair-quant-report.json` (schema `sicc-quant-report-v5`, model
+    `version` `community-static-v1` or `quant-static-v6`, `targetBuild`).
   - Workbench: `small-indie-candidate.cfg` and `small-indie-math-report.json`
     (`sicc-report-v1`).
   - Other routes: `crosshair-audit.json`, `small-indie-measurements.json`
@@ -150,41 +151,29 @@ them is a product change and needs a CHANGELOG entry.
 ## Data, research and generated artifacts
 
 - `data/` holds only what the app fetches: `presets.json`, `corpus.json`,
-  `corpus-meta.json` and `quant-summary.json`. The last three are
-  regenerated by `npm run research:quant` from `research/corpus/*.tsv` and
-  the presets.
-- `research/lib/` holds the research-only models: the learned
-  inverse/forward emulator, learned shortlist ranker, sensitivity advisories,
-  closed residual modulator, bounded modulation contract, behavioural
-  partition and ridge regression. They may import `lib/`, but nothing in
-  `app/` or `lib/` imports them
-  ([ADR-0001](decisions/0001-learned-emulator-research-only.md),
-  [ADR-0002](decisions/0002-speed-gate-closed-without-native-pairs.md),
-  [ADR-0005](decisions/0005-layered-lib-and-research-isolation.md)).
-- `research/scripts/` holds the pipelines: corpus build, quant study,
-  audit, decision/structural/partition/discriminating studies, inverse
-  certification, emulator and modulator training, benchmarks, and the Python
-  archive reproduction `reproduce.py`. They write to `data/` or
-  `research/generated/` only.
+  `corpus-meta.json` and `quant-summary.json`. The last three are retained
+  outputs derived from the published corpus and model study.
 - `research/generated/` holds committed study outputs and research artifacts
   (`quant-emulator.json`, `quant-modulator.json`). Benchmarks with timing
-  fields are dated records; rerunning one legitimately changes it.
+  fields are dated records rather than deterministic build outputs.
+- `research/corpus/` and `research/comparisons/` retain the source records and
+  frozen external comparison responses used by the public reports.
 - `research/archive/2026-09-23/` is the frozen reference implementation and
   its outputs, hash-pinned by `research/archive/SHA256SUMS` and byte-stable
   via `.gitattributes`. Never edit it.
 - `docs/notebook.html` is generated from `docs/math/*.md` by
   `scripts/notebook.mjs` (run by `npm run build`).
 
-CI runs `npm run verify` and then fails if `data/`, `research/generated/` or
-`docs/notebook.html` differ from what is committed, or if new untracked output
-appears under `data/`, `research/` or `docs/`.
+CI runs `npm run build` on the supported Node versions and fails if notebook
+generation changes `docs/notebook.html`.
 
 ## Build and deployment
 
 `scripts/site-files.mjs` is the single definition of what is public: the
 published top-level documents, the published root directories (`app`, `lib`,
 `data`, `public`, `docs`, `research`, `licenses`), the private exception
-`research/scripts/`, and filters for local and secret files. Both
+for research implementation and internal analysis outputs, and filters for local
+and secret files. Both
 `scripts/build.mjs` (which copies into `dist/`) and `scripts/http-policy.mjs`
 (the dev/preview server allowlist) use it.
 
@@ -195,27 +184,11 @@ packages. Changing the automatic model or its default needs at least a minor
 version bump. See [deployment](deployment.md) and
 [GitHub Pages](github-pages.md) for hosting and headers.
 
-## Enforcement
+## Build check
 
-Mechanical checks, all run by `npm run verify`:
-
-- `tests/tooling/boundaries.test.mjs`:
-  - The shipped roots `app/main.js` and `app/worker/worker.js` reach no
-    `research/` module.
-  - Every `lib/` import respects the layer table above.
-  - No `app/` or `lib/` file imports `research/`.
-  - `lib/` and `research/lib/` use only relative specifiers and no
-    DOM/worker globals.
-- `scripts/check.mjs`:
-  - Syntax-checks `app/`, `lib/`, `research/lib/`, `research/scripts/`,
-    `scripts/` and `tests/`.
-  - Rejects `eval`, `new Function` and `.innerHTML =` in shipped and
-    research code.
-  - Runs the line-length ratchet against `scripts/line-length-baseline.json`.
-- `tests/tooling/docs.test.mjs` checks the CHANGELOG version and relative
-  doc links. `tests/tooling/site-files.test.mjs` and
-  `tests/tooling/server.test.mjs` check the publish list, headers and private
-  paths.
+CI runs the dependency-free static build on Node.js 22 and 24. The build
+regenerates the notebook, copies only the public allowlist, and emits a file
+hash manifest for the deployed tree.
 
 ## Where new code goes
 
@@ -227,6 +200,3 @@ Mechanical checks, all run by `npm run verify`:
   instead of importing sideways.
 - DOM, canvas and worker code goes in `app/`, in the route's folder.
   Bundled data fetches go through `app/data.js`.
-- Anything learned, experimental or offline goes in `research/`. It can
-  reach the app only through a new ADR.
-- Tests go in the `tests/` folder of the tree they protect.

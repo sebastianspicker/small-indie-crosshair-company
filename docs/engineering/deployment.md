@@ -2,8 +2,7 @@
 
 ## Run locally
 
-Node.js 22.12+ is required. Python 3.10+ is also needed for archive reproduction.
-There is no npm install step.
+Node.js 22.12+ is required. There is no npm install step.
 
 ```sh
 npm run dev
@@ -20,7 +19,7 @@ modules, worker, and bundled data.
 ## Build and host
 
 ```sh
-npm run verify
+npm run build
 npm run preview
 ```
 
@@ -38,7 +37,7 @@ old and new modules can give inconsistent results.
 On hosts that support custom headers, use:
 
 ```text
-Content-Security-Policy: default-src 'none'; script-src 'self'; worker-src 'self'; style-src 'self'; img-src 'self' blob: data:; connect-src 'self'; font-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'
+Content-Security-Policy: default-src 'none'; script-src 'self'; worker-src 'self'; style-src 'self'; img-src 'self' blob: data:; connect-src 'self'; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'
 X-Content-Type-Options: nosniff
 Referrer-Policy: no-referrer
 Cross-Origin-Resource-Policy: same-origin

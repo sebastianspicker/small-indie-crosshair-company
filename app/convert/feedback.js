@@ -14,9 +14,10 @@ function acceptOld(c, { fit, meta }) {
 }
 
 function acceptNative(c, n, o, { fit, meta, role, attested, captureGroup }) {
-  const observation = { id: meta.captureSha256.slice(0, 24), kind: 'native-user', role, attested, build: BUILD,
+  const build = o.targetBuild ?? BUILD;
+  const observation = { id: meta.captureSha256.slice(0, 24), kind: 'native-user', role, attested, build,
     captureGroup, captureSha256: meta.captureSha256, native: n, currentHeight: o.currentHeight, observed: fit.geometry, sigma: .5 };
-  c.state.measurements = validateMeasurements([...c.state.measurements, observation]);
+  c.state.measurements = validateMeasurements([...c.state.measurements, observation], null);
   c.get('q-evidence-status').textContent = `Recorded your ${role} capture for this session.`;
   c.schedule();
 }
@@ -28,7 +29,8 @@ async function openImage(c, kind) {
   try {
     const r = c.state.result;
     if (kind === 'new' && !r) throw new Error('Wait for a valid current candidate before recording native evidence.');
-    const options = kind === 'old' ? c.options() : { ...r.options }, native = r ? { ...r.chosen.native } : null;
+    const options = kind === 'old' ? c.options() : { ...r.options, targetBuild: r.targetBuild };
+    const native = r ? { ...r.chosen.native } : null;
     await imageInput(c.get(id).files[0], c.worker, { kind, options, native, signal: c.listeners.signal,
       onAccept: kind === 'old' ? data => acceptOld(c, data) : data => acceptNative(c, native, options, data) });
   } catch (error) { status.textContent = error.message; }
@@ -40,7 +42,7 @@ async function loadEvidence(c) {
     const file = c.get('q-measurements').files[0];
     if (!file || file.size > 1024 * 1024) throw new Error('Evidence JSON must be below 1 MB.');
     const parsed = JSON.parse(await file.text());
-    c.state.measurements = validateMeasurements(parsed);
+    c.state.measurements = validateMeasurements(parsed, null);
     c.get('q-evidence-status').textContent = `Loaded ${parsed.length} measurements. Generated examples do not change the model weights.`;
     c.schedule();
   } catch (error) { c.get('q-evidence-status').textContent = error.message; }
