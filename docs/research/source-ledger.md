@@ -26,7 +26,7 @@ SteamTracking / GameTracking-CS2, commit
 
 **Supports:** the earlier investigation's old variable names and descriptions.
 **Does not support:** the exact rendering arithmetic merely because a variable exists.
-This is a pinned historical pointer retained from the conversation evidence.
+This is a pinned pointer retained in the historical source record.
 
 ## S03 New build inventory
 
@@ -121,32 +121,32 @@ construction did not contain that statement. Preserve it as an archived report, 
 currently corroborated native or website behavior. See correction C01 in the
 [formula evolution](formula-evolution.md). It is not an input to the implemented formula.
 
-## S10 Supplied experiment archive
+## S10 Frozen experiment archive
 
-`cs2_crosshair_conversion_research_2026-09-23.zip`, supplied with the conversation.
-Extracted unchanged into `research/archive/2026-09-23/`. `SHA256SUMS` covers each original
-file. `research/scripts/reproduce.py` checks those bytes and reruns the Python experiment.
+The original numerical experiment is retained unchanged in
+`research/archive/2026-09-23/`. `SHA256SUMS` covers each original file; the
+archive includes the Python experiment and its stored result.
 
 **Supports:** exact reproducibility of the earlier numerical experiment and a stable
 record of its assumptions, sources and limitations. **Does not support:** treating
 historical prose as immune to later correction. The active notebook documents corrections
 without modifying the archived record.
 
-## Claim-to-code traceability
+## Claim-to-artifact traceability
 
-| Claim / hypothesis | Evidence | Code / test |
+| Claim / hypothesis | Evidence | Implementation / artifact |
 |---|---|---|
-| Old length and width use height/480 | S01 | `legacyGeometry`; all 56 Python-parity cases |
+| Old length and width use height/480 | S01 | `legacyGeometry`; retained 56-row audit |
 | Old negative gap conversion truncates | S01 | -4.5 and -5.1 fixtures |
-| Literal-zero branch should be preserved | S01 + S03; new behavior conditional | `convert`; zero and screen-goal conflict tests |
+| Literal-zero branch should be preserved | S01 + S03; new behavior conditional | `convert`; explicit zero branch |
 | New gap includes half-width baseline | Hypothesis, not established | `gapBaseline: thickness` |
 | New gap is center-relative | Rival hypothesis, not established | `gapBaseline: center` |
 | New authored scaling is current/authored | Inference from S03 | `predictedGeometry`; explicitly conditional |
-| New quantizer is truncation or nearest | Rival hypotheses | Selectable `rounding`; scaled-boundary tests |
+| New quantizer is truncation or nearest | Rival hypotheses | Selectable `rounding`; generated study rows |
 | Browser fixed ×2 is not universal | S01/S06 plus computation | `runAudit`; 32/56 mismatch result |
 | Measured affine fit parameters | User-entered or synthetic data only | `fitAffine`; scope and residual checks |
 | Gap scaling is unresolved on build 2000914 | S03 re-read; dump omits a scaling sentence | `structural.js` `gapScale`; `gap-scale-unresolved` warning |
-| Structural gap-scale rival is not the default | This plan; zero native pairs | `enumerateReducedFamily`; `structural-study.mjs` |
-| Pixel-copy and rename candidates disagree | S01 + S03 recomputation | `migration.js`; `tests/lib/structural.test.mjs` |
-| Residual modulation stays closed | Zero reviewed native pairs | `modulator.js`; `train-residual-modulator.mjs` |
+| Structural gap-scale rival is not the default | This plan; zero native pairs | `research/generated/structural-disagreement.json` |
+| Pixel-copy and rename candidates disagree | S01 + S03 recomputation | `lib/solver/migration.js` |
+| Residual modulation stays closed | Zero reviewed native pairs | `research/generated/quant-modulator.json` |
 | Exact game compatibility | No shipped evidence | No production claim or native-verified fixture |

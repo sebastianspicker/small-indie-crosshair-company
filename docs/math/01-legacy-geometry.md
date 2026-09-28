@@ -94,7 +94,7 @@ $$
 JavaScript's ordinary arithmetic uses binary64 numbers. Evaluating everything in that
 format until the final integer conversion is not always equivalent to a sequence of
 binary32 operations. Close to a pixel threshold, a tiny difference can change the
-integer result by one. `Math.fround` is used explicitly to reproduce the supplied
+integer result by one. `Math.fround` is used explicitly to reproduce the archived
 reference model's operation boundaries. Python uses a binary32 pack/unpack helper.
 
 This matches the **archived model**. It is not proof of native instruction ordering,
@@ -254,11 +254,11 @@ At 1080p and $S=4$, the reference gives nine pixels. A fixed multiplier of two g
 eight. The eight chosen small pro presets happen to hide this distinction at 960p and
 1080p, but this additional input exposes it immediately.
 
-## 10. What the old-model tests establish
+## 10. What the old-model comparisons establish
 
 All 56 fixture geometries match the archived Python calculations. The original archive
-reproduces its stored JSON exactly. Invalid values and several boundary cases are tested.
-This establishes consistent implementation of a documented model and preserves the
-original experiment. It does **not** establish native old-client raster fidelity, the
-new renderer's mapping, or that a reported player record was correctly extracted from
-the actual match demo. Those are separate evidence obligations.
+contains its stored JSON and hash manifest. This establishes consistent implementation
+of a documented model and preserves the original experiment. It does **not** establish
+native old-client raster fidelity, the new renderer's mapping, or that a reported player
+record was correctly extracted from the actual match demo. Those are separate evidence
+obligations.

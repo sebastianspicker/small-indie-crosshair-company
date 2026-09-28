@@ -62,7 +62,7 @@ export function initResearch() {
   }$('bucket-size').addEventListener('input',update);update();
   root.append(el('article',{class:'math-sheet'},el('h2',{},'Precision is not certainty'),table(['Question','Status'],[
     ['Old static length / thickness / gap equations','Source-derived community reconstruction'],
-    ['56-case comparisons','Reproducible numerical tests'],['New convar names and ranges','Pinned build inventory'],
+    ['56-case comparisons','Recorded numerical comparison'],['New convar names and ranges','Pinned build inventory'],
     ['New native pixel snapping / parity / migration','Community evidence, not independently native-validated'],
     ['Current transverse centring','Source-labelled reconstruction; historical previews remain illustrative'],
     ['Custom outline equivalence / dynamic motion','Outside the implemented equivalence claim'],

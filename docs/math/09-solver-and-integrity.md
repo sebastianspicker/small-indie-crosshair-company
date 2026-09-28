@@ -225,4 +225,9 @@ experiments and their numbers are documented in
 [chapter 10](10-learned-emulator.md) and
 [chapter 11](11-certified-inverse-and-capture-plan.md).
 
-Relevant implementation modules are `lib/solver/inverse.js`, `certify.js`, `selection.js`, `partition.js`, `experiments.js`, `ranker.js`, `sensitivity.js`, `visual.js`, `evidence.js`, `observations.js`, `lib/geometry/pixel-shape.js` and the screenshot component extractor. Regression tests are in `tests/lib/solver-v5.test.mjs`, `tests/lib/certify.test.mjs`, `tests/lib/certification-runtime.test.mjs`, `tests/lib/decision.test.mjs`, `tests/lib/preimage.test.mjs`, `tests/research/partition.test.mjs`, `tests/lib/experiments.test.mjs`, `tests/research/ranker.test.mjs`, `tests/research/sensitivity.test.mjs` and `tests/app/worker-client.test.mjs`. The fixed source/data provenance remains in the [source ledger](../research/quant-sources.md) and [formula history](../research/formula-evolution.md).
+Relevant implementation modules are `lib/solver/inverse.js`, `certify.js`,
+`selection.js`, `experiments.js`, `visual.js`, `evidence.js`,
+`observations.js`, `lib/geometry/pixel-shape.js` and the screenshot component
+extractor. The fixed source/data provenance remains in the
+[source ledger](../research/quant-sources.md) and
+[formula history](../research/formula-evolution.md).

@@ -47,12 +47,11 @@ odd/even widths, a dot, large values, and a binary32 half-integer boundary.
 These are software comparison cases, not independently sampled players or
 native-game holdouts. The external service's returned code is decoded for
 length, thickness, gap and authoring height; we do not implement new-code export.
-The audit-only [response reader](../../research/lib/external-code.js) verifies
-the envelope, version and checksum, and reproduces every saved native tuple.
-Its field layout is documented in the converter's
+The saved observations include the decoded tuple plus envelope, version and
+checksum metadata. The field layout is documented in the converter's
 [public decoder](https://crosshair.club/static/js/crosshair.js?v=1790553505).
-`npm run study:converters` regenerates
-`research/generated/converter-comparison.json` offline from both frozen files.
+The retained `research/generated/converter-comparison.json` records the offline
+comparison of both frozen files.
 
 The choice of old rounding matters beyond the selected examples: the two old
 dimension formulas disagree on 276 of the existing 945 record-height rows.
@@ -103,7 +102,7 @@ The full historical factorial stays in the research core and its hedge.
 ## Learning experiment
 
 The old learned artifact approximates a historical 27-model solver and cannot
-be quoted as fidelity to the new default. A new reproducible ablation distils
+be quoted as fidelity to the new default. A new recorded ablation distils
 `solveCommunity` with the existing dependency-free boosted trees. The historical
 feature map omitted authored height, so different legal answers could have
 identical feature vectors. The improved map adds authored ratio, target
@@ -125,9 +124,9 @@ train and validation groups before evaluating the untouched test groups.
 The improved model has zero rendered length/width MAE on this test set and
 0.137 px near/far MAE. The effective test sample is 21 setting groups, not
 672 independent observations. This limited grid is not an extrapolation or
-game-accuracy guarantee. `npm run emulator:community` regenerates the artifact;
-tests check its labels, split, fingerprint and predictions. The learned model
-remains research-only: it still loses information versus a small exact solver.
+game-accuracy guarantee. The retained artifact records its labels, split,
+fingerprint and predictions. The learned model remains research-only: it still
+loses information versus a small exact solver.
 
 ## Remaining evidence needed
 

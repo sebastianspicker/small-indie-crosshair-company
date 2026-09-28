@@ -28,9 +28,59 @@ playwright-report/
 artifacts/
 *.log
 
-# Local agent coordination
+# Agent and tool state
 .agents/
-.claude/settings.local.json
+.claude/
+.codex/
+.codacy/
+.repowise/
+.codegraph/
+.serena/
+.impeccable/
+.cursor/
+.aider*
+.continue/
+.windsurf/
+.mcp.json
+AGENTS.md
+CLAUDE.md
+GEMINI.md
+.cursorrules
+.github/copilot-instructions.md
+.github/prompts/
+
+# Linked worktrees and nested checkouts
+.worktrees/
+worktrees/
+
+# Private tests and development-only implementation
+tests/
+pytest.ini
+conftest.py
+jest.config.*
+.coverage
+research/lib/
+research/scripts/
+research/generated/complexity-comparison.json
+research/generated/performance-local.json
+scripts/check.mjs
+scripts/import-graph.mjs
+scripts/line-length.mjs
+scripts/line-length-baseline.json
+scripts/notebook-cache.mjs
+scripts/publish-*.sh
+
+# Work-in-progress and internal engineering documents
+DESIGN_BRIEF.md
+docs/engineering/design.md
+docs/engineering/testing.md
+docs/engineering/decisions/
+docs/engineering/archive/
+docs/plans/
+docs/drafts/
+docs/roadmap/
+docs/specs/
+TODO.md
 
 # Editor and OS files
 .DS_Store
@@ -38,6 +88,8 @@ artifacts/
 Thumbs.db
 .idea/
 .vscode/
+.history/
+.cache/
 *.swp
 *.swo
 *~

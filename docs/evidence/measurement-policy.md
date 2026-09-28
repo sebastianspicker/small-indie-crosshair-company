@@ -1,7 +1,7 @@
 # Measurement policy
 
 **Native measurements included in this release: zero.** The examples used in the
-calibration UI and browser tests are synthetic and must remain labeled synthetic.
+calibration UI and retained studies are synthetic and must remain labeled synthetic.
 
 Evidence is classified as a pinned-source statement, source-derived model,
 reproduced archival calculation, synthetic test, user-entered observation, or

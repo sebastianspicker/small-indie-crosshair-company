@@ -6,30 +6,26 @@ model, and exported report so someone else can reproduce it.
 
 ## Development setup
 
-Use Node.js 22.12+ and Python 3.10+. No npm packages are required.
+Use Node.js 22.12+. No npm packages are required.
 
 ```sh
 npm run dev
-npm run verify
+npm run build
 ```
 
-For UI changes, also run the [browser checks](docs/engineering/testing.md).
 See [architecture](docs/engineering/architecture.md) for where code belongs:
 `lib/` is the pure, layered domain, `app/` handles the DOM and worker,
-`research/` holds research-only code and pipelines, and `scripts/` holds repository
-tooling. Keep imports as validated data, and keep the app usable without accounts,
-remote services, or persistence.
+and `scripts/` holds build and serving tooling. Keep imports as validated data,
+and keep the app usable without accounts, remote services, or persistence.
 
 ## Before opening a pull request
 
 - Describe the problem and the resulting behavior. Include a small reproducible case.
-- Add a regression test for changed behavior. Geometry changes should cover relevant
-  zero, fractional, negative, odd/even width, and resolution boundaries.
 - For changes to formula families, update the model ID, affected derivations, and
   [formula history](docs/research/formula-evolution.md). Explain the source or measurements.
-- Run `npm run verify`. For UI work, include screenshots and browser results.
-- Regenerate research output with the scripts; do not hand-edit it. Leave the
-  frozen archive and its hash manifest unchanged.
+- Run `npm run build`. For UI work, include screenshots.
+- Do not hand-edit generated reports. Leave the frozen archive and its hash
+  manifest unchanged.
 
 ## Measurements and model claims
 

@@ -117,8 +117,8 @@ and [formula history](docs/research/formula-evolution.md) for details.
 ## GitHub Pages demo
 
 The [live demo](https://sebastianspicker.github.io/small-indie-crosshair-company/)
-is built and deployed by the [Pages workflow](.github/workflows/pages.yml). It
-supports repository subpaths without changing asset URLs.
+is built and deployed by the repository's Pages workflow. It supports repository
+subpaths without changing asset URLs.
 
 Follow the [deployment guide](docs/engineering/github-pages.md) to connect a
 repository and enable Pages. To preview the same static build locally:
@@ -128,32 +128,13 @@ npm run build
 npm run preview
 ```
 
-## Development
-
-Python **3.10+** is also needed for the archived research checks. Normal development,
-verification, and builds have no third-party package dependencies.
-
-```sh
-npm run verify              # syntax, research, tests, archive parity, static build
-npm run bench:quant         # local solver timing
-npm run bench:emulator      # learned-vs-exact timing (research only)
-npm run bench:ranker        # learned shortlist + exact verification (research only)
-npm run certify:inverse     # certify/refuse the declared optimum per corpus case
-npm run study:decision      # compare the expected/worst/cvar decision rules
-npm run study:partition     # behavioural partition of the 27 hypotheses
-npm run study:discriminating # two-design separating capture plan
-npm run research:quant      # regenerate the corpus study
-npm run research:reproduce  # verify archive hashes and JS/Python parity
-npm run emulator:train      # retrain the research-only learned emulator
-npm run emulator:community  # current-target ML feature ablation; grouped validation/test
-npm run study:converters    # validate saved external responses and compare converters
-```
+## Research reports and source layout
 
 The current research-only emulator improves exact tuple fidelity from **29.17%
 to 90.48%** on the same held-out new-target data by adding authored-height and
 geometry features. There are 21 independent setting groups (672 rows); model
-capacity is selected on separate validation groups. Full verification retrains
-the artifact and rejects drift. This imitates our equations, not CS2; the small
+capacity is selected on separate validation groups. The committed report records
+the artifact and evaluation split. This imitates our equations, not CS2; the small
 exact solver remains the runtime path. See the [audit](docs/research/converter-audit-2026-09-28.md).
 
 The historical learned emulator is a research artifact only. It is trained offline on labels
@@ -167,9 +148,8 @@ the app's conversion path. See
 [chapter 10](docs/math/10-learned-emulator.md) and
 [chapter 11](docs/math/11-certified-inverse-and-capture-plan.md).
 
-Optional browser checks and screenshot capture are described in
-[testing](docs/engineering/testing.md). For changes and review guidance, see
-[CONTRIBUTING](CONTRIBUTING.md) and the [changelog](CHANGELOG.md).
+For changes and review guidance, see [CONTRIBUTING](CONTRIBUTING.md) and the
+[changelog](CHANGELOG.md).
 
 | Directory | Contents |
 | --- | --- |
@@ -177,9 +157,8 @@ Optional browser checks and screenshot capture are described in
 | `app/` | Browser runtime: router, one folder per route, the worker boundary |
 | `data/` | The bundled JSON the app loads (presets, corpus, study summary) |
 | `docs/` | Math, sources, engineering notes, and screenshot tour |
-| `research/` | Research-only models and pipelines, generated results, frozen archive |
-| `scripts/` | Build, serve, check, and notebook tooling |
-| `tests/` | Node tests grouped by tree, plus Python browser checks |
+| `research/` | Frozen sources, comparisons, corpora, generated results, and archive |
+| `scripts/` | Build, serve, and notebook tooling |
 
 The layering and its rules are described in [architecture](docs/engineering/architecture.md).
 

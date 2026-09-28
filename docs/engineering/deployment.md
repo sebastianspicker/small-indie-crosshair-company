@@ -2,8 +2,7 @@
 
 ## Run locally
 
-Node.js 22.12+ is required. Python 3.10+ is also needed for archive reproduction.
-There is no npm install step.
+Node.js 22.12+ is required. There is no npm install step.
 
 ```sh
 npm run dev
@@ -20,7 +19,7 @@ modules, worker, and bundled data.
 ## Build and host
 
 ```sh
-npm run verify
+npm run build
 npm run preview
 ```
 

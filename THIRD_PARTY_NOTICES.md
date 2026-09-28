@@ -37,7 +37,7 @@ The crosshair mark and interface are code-native.
 ## Typefaces
 
 Two variable fonts are self-hosted in `public/fonts/`, subset to Latin, under the
-SIL Open Font License 1.1 ([ADR-0006](docs/engineering/decisions/0006-self-hosted-open-licensed-typefaces.md)):
+SIL Open Font License 1.1:
 
 - **Archivo**, Copyright 2020 The Archivo Project Authors
   (https://github.com/Omnibus-Type/Archivo). License: `licenses/Archivo-OFL.txt`.
@@ -61,5 +61,4 @@ marks, factual source collections, or proprietary game assets.
 MathJax's TeX input parser was used as an optional authoring tool to serialize our
 own equations to native MathML. The deployment contains that generated markup,
 not MathJax program code, font files or a runtime MathJax dependency. The normal
-build uses the checked-in content-addressed equation cache; optional regeneration
-is documented in `docs/engineering/archive/quant-architecture.md`.
+build uses the checked-in content-addressed equation cache.

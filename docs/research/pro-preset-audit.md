@@ -6,7 +6,7 @@
 ## Fixed inputs, not “current pro settings”
 
 The source material associated the following legacy v1 codes with dated match observations
-on xhair.pro. These attributions/dates are retained from the supplied archive; the
+on xhair.pro. These attributions and dates are retained from the frozen archive; the
 repository independently checks decoding and checksums, but did not reparse the match
 demos. The karrigan entry is specifically the August 27 Inferno record, not whatever
 code happens to lead a mutable player page now. Sources and map metadata are in
@@ -94,18 +94,12 @@ They are a deliberately structured regression/diagnostic matrix. The central fin
 is logical: agreement inside a quantization bucket cannot identify the underlying
 scale or rounding rule. It says even less about a new renderer that has not been observed.
 
-## Reproduce it
+## Retained results
 
-```sh
-npm run audit:research
-python3 research/scripts/reproduce.py
-```
-
-The first writes `research/generated/audit.json` and `audit.csv` using the JS implementation.
-The second checks original archive hashes, executes its 21 self-checks, reproduces its
-stored result object, and compares all 56 JS geometry records to the Python reference.
-`npm test` also contains individually named parity cases and separate boundary, codec,
-calibration, export and range checks.
+`research/generated/audit.json` and `audit.csv` preserve the recorded JS
+outputs. The frozen archive retains its hash manifest, Python experiment and
+stored result object; the recorded audit compares all 56 geometry rows against
+that reference.
 
 A native post-update experiment belongs in a new evidence record. Do not append a
 synthetic prediction to the observations and then report an improved native match rate.

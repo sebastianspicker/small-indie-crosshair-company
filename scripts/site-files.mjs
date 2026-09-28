@@ -4,10 +4,15 @@ const LOCAL_DIRECTORIES = new Set(['node_modules', '__pycache__', 'venv', 'cover
 const LOCAL_FILE = /(?:\.(?:py[co]|log|pem|key|p12|pfx|swp|swo)$|~$|^(?:Thumbs\.db|credentials\.json|secrets\.json)$)/i;
 
 /** Single source of truth for what the build and the dev/preview server publish. */
-export const PUBLISHED_DOCUMENTS = ['index.html', 'README.md', 'DESIGN_BRIEF.md', 'LICENSE', 'THIRD_PARTY_NOTICES.md', 'CHANGELOG.md', 'CONTRIBUTING.md', 'SECURITY.md'];
+export const PUBLISHED_DOCUMENTS = ['index.html', 'README.md', 'LICENSE', 'THIRD_PARTY_NOTICES.md', 'CHANGELOG.md', 'CONTRIBUTING.md', 'SECURITY.md'];
 export const PUBLISHED_DIRECTORIES = ['app', 'lib', 'data', 'public', 'docs', 'research', 'licenses'];
 // Repo tooling that must stay private even though it lives under a published root directory.
-const EXCLUDED_SUBPATHS = ['research/scripts'];
+const EXCLUDED_SUBPATHS = [
+  'research/lib',
+  'research/scripts',
+  'research/generated/complexity-comparison.json',
+  'research/generated/performance-local.json',
+];
 const isExcludedSubpath = rel => EXCLUDED_SUBPATHS.some(sub => rel === sub || rel.startsWith(sub + '/'));
 const directoryPattern = new RegExp(`^(?:${PUBLISHED_DIRECTORIES.join('|')})/`);
 

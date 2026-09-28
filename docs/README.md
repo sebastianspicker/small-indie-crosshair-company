@@ -1,7 +1,7 @@
 # Documentation
 
 This project converts crosshair settings under stated renderer assumptions.
-These docs describe the models, how to reproduce the results, and what evidence
+These docs describe the models, how the results were produced, and what evidence
 would be needed to check them in CS2.
 
 The default converter uses **`community-static-v1`**, inspected build **2000918**,
@@ -15,13 +15,8 @@ verified native renderer. No original old/new game capture pairs are included.
 - **Understand a result:** [conversion and identifiability](math/02-conversion-and-identifiability.md).
 - **Run or publish it:** [local and static hosting](engineering/deployment.md),
   [GitHub Pages](engineering/github-pages.md).
-- **Change the code:** [contributing](../CONTRIBUTING.md),
-  [architecture](engineering/architecture.md), [testing](engineering/testing.md),
-  and [decision records](engineering/decisions/README.md). Superseded architecture and
-  planning documents, including the [v0.4 improvement plan](engineering/archive/v0.4-conversion-improvement-plan.md),
-  the implemented [maintenance plan](engineering/archive/maintenance-plan.md)
-  (gap-scale rival, closed residual modulator, inventory facts, implemented in 0.4.0), are
-  kept in [`engineering/archive/`](engineering/archive/) for history.
+- **Change the code:** [contributing](../CONTRIBUTING.md) and
+  [architecture](engineering/architecture.md).
 - **Supply evidence:** [measurement policy](evidence/measurement-policy.md) and
   [calibration protocol](math/03-calibration-protocol.md).
 
@@ -78,11 +73,9 @@ The corpus has 138 records, but only eight have known observation dates. The stu
 uses 135 eligible records at seven heights. These 945 cases test calculations;
 they are not 945 independent game observations.
 
-## Reproduce the work
+## Build the site
 
-`npm run verify` rebuilds the study, runs the tests, checks the archive hashes and
-56 JS/Python parity cases, and builds the site. See [testing](engineering/testing.md)
-for browser checks and the distinction between current runs and historical records.
+`npm run build` regenerates the mathematical notebook and builds the static site.
 Do not edit the [frozen archive](../research/archive/2026-09-23/README.md) to correct
 an assumption; record corrections in the formula history.
 

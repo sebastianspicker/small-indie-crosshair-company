@@ -1,8 +1,8 @@
 /* Small Indie Crosshair Company — "Inspection sheet" design system.
    Rule of the system: the interface is the paper, the specimen plate is the game.
-   Archivo speaks, Martian Mono measures. See DESIGN_BRIEF.md and docs/engineering/design.md. */
+   Archivo speaks, Martian Mono measures. */
 
-/* ── 1. Typefaces (self-hosted, OFL; ADR-0006) ─────────────────────────────── */
+/* ── 1. Typefaces (self-hosted, OFL) ───────────────────────────────────────── */
 @font-face {
   font-family: 'Archivo';
   src: url('../public/fonts/archivo-latin-var.woff2') format('woff2');
