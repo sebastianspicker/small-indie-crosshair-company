@@ -1,4 +1,4 @@
-# Quant research source ledger — 2026-09-23
+# Quant research source ledger — updated 2026-09-28
 
 All dates below describe retrieval/snapshot unless an observation date is
 explicitly supplied. Factual data transcription is not independently
@@ -111,7 +111,7 @@ implemented, calibrated or advertised as a product feature.
 
 ## Q11 — Learned-emulator labels (self-generated, not a source)
 
-The learned emulator artifact `research/generated/quant-emulator.json` has no external source.
+The historical learned artifact `research/generated/quant-emulator.json` has no external source.
 Its training labels are produced by this project's own declared automatic solver
 (`infer`) over a deterministic grid of legacy settings; its forward block learns
 the project's declared `forward()` renderer. It therefore distills the repository's
@@ -162,6 +162,27 @@ uses schema `sicc-fragility-v1`. The artifact records a `NEGATIVE (fidelity)`
 verdict for the ranker (it lost to the solver on 13 of 125 samples) and a weak
 learned classifier (0.736 accuracy against a 0.704 majority baseline). Neither
 is wired into inference and neither is native evidence. See chapters 10 and 11.
+
+## Q15 — External converter comparison and current reconstruction
+
+The [September 28 audit](converter-audit-2026-09-28.md) records the public
+crosshair.club converter and renderer, Crosshair Restore's methodology, Valve's
+update notes and the pinned build-2000918 convar inventory. The audit gives
+source URLs, the renderer hash, equations and limits of each source.
+
+`research/comparisons/` contains 12 diagnostic and 12 later comparison queries.
+`research/generated/converter-comparison.json` is regenerated offline with
+`npm run study:converters`. Agreement with another converter is software
+conformance, not a native-game accuracy estimate. No source code was copied.
+
+## Q16 — Current learned emulator (self-generated, not a source)
+
+`research/generated/community-emulator.json` learns `solveCommunity`, not the
+historical solver used by Q11. Both feature variants use the same synthetic
+target and grouped train/validation/test split. Capacity is selected on
+validation only; final fidelity is evaluated on 21 reserved setting groups.
+The 90.48% exact-tuple result is equation imitation, not native accuracy.
+Reproduce with `npm run emulator:community`. Learning remains research-only.
 
 ## Rights and independence
 

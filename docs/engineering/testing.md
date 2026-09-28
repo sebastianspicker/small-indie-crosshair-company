@@ -40,6 +40,20 @@ against declared models, not executions of the CS2 renderer.
 
 ## Learned emulator
 
+For the current default, `tests/lib/community.test.mjs` checks the 24 frozen
+external comparisons, float32 ties, negative gaps, zero visibility, odd/even
+placement, screen-relative targets, screenshot measurement and build isolation.
+Regenerate the comparison summary with `npm run study:converters`; this uses
+saved factual responses, not live network queries or native screenshots.
+
+`tests/research/community-emulator.test.mjs` checks the current research-only
+emulator's group-disjoint splits, labels, deterministic predictions, same-task
+ablation and artifact fingerprint. Regenerate with `npm run emulator:community`.
+Full verification also retrains with `npm run emulator:community -- --check`
+and rejects any drift from the committed artifact, including trainer changes.
+Its untouched test set contains 672 rows but only 21 independent setting groups.
+The following older emulator uses a different, historical target.
+
 `tests/research/emulator.test.mjs` covers the dependency-free emulator artifact. It reads
 the committed `research/generated/quant-emulator.json` once, checks that the fail-closed parser
 rejects a wrong schema/version/feature order/bounds, verifies the canonical
@@ -126,8 +140,8 @@ python3 -m venv .venv
 ```
 
 Both scripts start a local server. Normal mode uses HTTP, the production module
-worker, and browser WebCrypto. The converter suite covers imports, model selection,
-resolution changes, export, source search, image selection, synthetic evidence,
+worker, and browser WebCrypto. The converter suite covers imports, the six model choices,
+resolution changes, export, source search, image selection, mixed-build synthetic evidence,
 and layouts at 390, 768, and 1440 pixels. The manual suite covers the retained editor,
 calibration, and original audit. Results and screenshots go to the output directory.
 
