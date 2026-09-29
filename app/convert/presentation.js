@@ -54,6 +54,9 @@ function renderMetrics(view, r) {
     r.provenance ? ['Evidence basis', 'Community', 'External software comparison; not game captures']
       : ['Model agreement', percent(r.confidence.conditionalFamilyMass), 'Share of weighted models that match'],
     ['Native confidence', 'Not identified', `${r.posterior.calibrationGroups} calibration · ${r.posterior.holdoutGroups} holdout groups`],
+    ...(r.provenance && r.posterior.validation.total ? [['Holdout agreement', percent(r.posterior.validation.rate),
+      `${r.posterior.validation.successes}/${r.posterior.validation.total} capture groups · ` +
+      `interval ${percent(r.posterior.validation.lower)}–${percent(r.posterior.validation.upper)}; measured fields only`]] : []),
   ].map(([label, value, note]) => el('div', {}, el('span', {}, label), el('strong', {}, value), el('small', {}, note))));
 }
 
@@ -199,6 +202,7 @@ export function renderTrace(view, r, screenshotMeta) {
     decision: r.decision, search: r.search, preimage: r.preimage, traceModel: r.chosen.traceModelId, iterations: r.chosen.trace,
     inverseCertificate: r.chosen.inverseCertificate, rendering: r.rendering, nativeValidation: r.posterior.validation,
     noiseAssumptions: r.posterior.noiseModel, originalBuckets: screenshotMeta?.buckets ?? null,
+    imageQuality: screenshotMeta?.quality ?? null, declaredConfidence: r.confidence,
     measurementChecks: r.measurementChecks ?? r.posterior.holdoutTests,
   }, null, 2)));
 }

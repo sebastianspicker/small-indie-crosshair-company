@@ -1,0 +1,286 @@
+{
+  "schema": "sicc-conversion-accuracy-v1",
+  "before": "community-static-v2",
+  "after": "community-static-v3",
+  "nativeEvidence": false,
+  "scopes": [
+    [
+      720,
+      900,
+      960
+    ],
+    [
+      720,
+      1080,
+      960
+    ],
+    [
+      1080,
+      720,
+      1440
+    ],
+    [
+      1080,
+      1440,
+      1080
+    ],
+    [
+      1080,
+      2160,
+      720
+    ],
+    [
+      1440,
+      960,
+      1080
+    ]
+  ],
+  "totals": {
+    "cases": 8640,
+    "visibleTargets": 7768,
+    "improved": 750,
+    "regressed": 0,
+    "changedTuples": 750,
+    "exactBefore": 1498,
+    "exactAfter": 1640,
+    "meanIouBefore": 0.4603476736046748,
+    "meanIouAfter": 0.48721458794101186,
+    "maxGain": 0.8461538461538461,
+    "maxShapes": 8
+  },
+  "examples": [
+    {
+      "settings": {
+        "size": 0,
+        "thickness": 0,
+        "gap": -5.5,
+        "dot": true,
+        "t_style": false
+      },
+      "options": {
+        "oldHeight": 720,
+        "currentHeight": 1080,
+        "authoredHeight": 960,
+        "goal": "screen"
+      },
+      "before": {
+        "length": 0,
+        "thickness": 1,
+        "gap": 0,
+        "authoredHeight": 960
+      },
+      "after": {
+        "length": 0,
+        "thickness": 2,
+        "gap": 0,
+        "authoredHeight": 960
+      },
+      "beforeIou": 0,
+      "afterIou": 0.25
+    },
+    {
+      "settings": {
+        "size": 0,
+        "thickness": 0,
+        "gap": -5.5,
+        "dot": true,
+        "t_style": true
+      },
+      "options": {
+        "oldHeight": 720,
+        "currentHeight": 1080,
+        "authoredHeight": 960,
+        "goal": "screen"
+      },
+      "before": {
+        "length": 0,
+        "thickness": 1,
+        "gap": 0,
+        "authoredHeight": 960
+      },
+      "after": {
+        "length": 0,
+        "thickness": 2,
+        "gap": 0,
+        "authoredHeight": 960
+      },
+      "beforeIou": 0,
+      "afterIou": 0.25
+    },
+    {
+      "settings": {
+        "size": 0,
+        "thickness": 0,
+        "gap": -4.25,
+        "dot": true,
+        "t_style": false
+      },
+      "options": {
+        "oldHeight": 720,
+        "currentHeight": 1080,
+        "authoredHeight": 960,
+        "goal": "screen"
+      },
+      "before": {
+        "length": 0,
+        "thickness": 1,
+        "gap": 1,
+        "authoredHeight": 960
+      },
+      "after": {
+        "length": 0,
+        "thickness": 2,
+        "gap": 1,
+        "authoredHeight": 960
+      },
+      "beforeIou": 0,
+      "afterIou": 0.25
+    },
+    {
+      "settings": {
+        "size": 0,
+        "thickness": 0,
+        "gap": -4.25,
+        "dot": true,
+        "t_style": true
+      },
+      "options": {
+        "oldHeight": 720,
+        "currentHeight": 1080,
+        "authoredHeight": 960,
+        "goal": "screen"
+      },
+      "before": {
+        "length": 0,
+        "thickness": 1,
+        "gap": 1,
+        "authoredHeight": 960
+      },
+      "after": {
+        "length": 0,
+        "thickness": 2,
+        "gap": 1,
+        "authoredHeight": 960
+      },
+      "beforeIou": 0,
+      "afterIou": 0.25
+    },
+    {
+      "settings": {
+        "size": 0,
+        "thickness": 0,
+        "gap": -3,
+        "dot": true,
+        "t_style": false
+      },
+      "options": {
+        "oldHeight": 720,
+        "currentHeight": 1080,
+        "authoredHeight": 960,
+        "goal": "screen"
+      },
+      "before": {
+        "length": 0,
+        "thickness": 1,
+        "gap": 3,
+        "authoredHeight": 960
+      },
+      "after": {
+        "length": 0,
+        "thickness": 2,
+        "gap": 2,
+        "authoredHeight": 960
+      },
+      "beforeIou": 0,
+      "afterIou": 0.25
+    },
+    {
+      "settings": {
+        "size": 0,
+        "thickness": 0,
+        "gap": -3,
+        "dot": true,
+        "t_style": true
+      },
+      "options": {
+        "oldHeight": 720,
+        "currentHeight": 1080,
+        "authoredHeight": 960,
+        "goal": "screen"
+      },
+      "before": {
+        "length": 0,
+        "thickness": 1,
+        "gap": 3,
+        "authoredHeight": 960
+      },
+      "after": {
+        "length": 0,
+        "thickness": 2,
+        "gap": 2,
+        "authoredHeight": 960
+      },
+      "beforeIou": 0,
+      "afterIou": 0.25
+    },
+    {
+      "settings": {
+        "size": 0,
+        "thickness": 0,
+        "gap": -2,
+        "dot": true,
+        "t_style": false
+      },
+      "options": {
+        "oldHeight": 720,
+        "currentHeight": 1080,
+        "authoredHeight": 960,
+        "goal": "screen"
+      },
+      "before": {
+        "length": 0,
+        "thickness": 1,
+        "gap": 4,
+        "authoredHeight": 960
+      },
+      "after": {
+        "length": 0,
+        "thickness": 2,
+        "gap": 3,
+        "authoredHeight": 960
+      },
+      "beforeIou": 0,
+      "afterIou": 0.25
+    },
+    {
+      "settings": {
+        "size": 0,
+        "thickness": 0,
+        "gap": -2,
+        "dot": true,
+        "t_style": true
+      },
+      "options": {
+        "oldHeight": 720,
+        "currentHeight": 1080,
+        "authoredHeight": 960,
+        "goal": "screen"
+      },
+      "before": {
+        "length": 0,
+        "thickness": 1,
+        "gap": 4,
+        "authoredHeight": 960
+      },
+      "after": {
+        "length": 0,
+        "thickness": 2,
+        "gap": 3,
+        "authoredHeight": 960
+      },
+      "beforeIou": 0,
+      "afterIou": 0.25
+    }
+  ],
+  "scope": "Synthetic declared-model geometry only. All cases preserve minimum length/width error; means exclude empty targets."
+}
