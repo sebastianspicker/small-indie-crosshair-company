@@ -195,6 +195,15 @@ Learning remains research-only.
 These reports validate declared software behavior under their recorded scope;
 they do not identify Valve's renderer.
 
+## Q18 — September 29 audits and structured learning
+
+The [dump audit](converter-audit-2026-09-29.md) pins source snapshots and records
+build 2000919 metadata continuity. It supersedes Q16 for the residual artifact;
+Q16 describes the earlier experiment and split. The [v3 accuracy study](accuracy-improvements-2026-09-29.md)
+and [structured-learning study](structured-learning-2026-09-29.md) add grouped
+synthetic evaluations, separate calibration and explicit abstention denominators.
+These results imitate declared equations and contain no native capture evidence.
+
 ## Rights and independence
 
 The new corpus is a transcription of factual associations (names, codes,

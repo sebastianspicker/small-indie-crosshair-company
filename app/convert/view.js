@@ -147,7 +147,7 @@ function resultsPanel() {
       el('select', { id: 'q-model' }, option('', 'Automatic · community static reconstruction'),
         option(HEDGE_MODEL, 'Historical · weighted model hedge'), ...EXPERT_MODELS.map(m => option(m.id, modelName(m))))),
     el('p', { class: 'small' }, 'Six choices: the community default, a historical hedge, and four authored-height alternatives. ',
-      docLink('research/converter-audit-2026-09-28.md', 'Sources and comparison')),
+      docLink('research/converter-audit-2026-09-29.md', 'Sources and comparison')),
     valueTable(), el('p', { id: 'q-target-line', class: 'target-line' }),
     detail('q-derivation-panel', 'Pixel measurements and differences', el('div', { id: 'q-derivation' }),
       docLink('math/12-community-conversion.md', 'How the current values are calculated')),

@@ -4,10 +4,16 @@ This project converts crosshair settings under stated renderer assumptions.
 These docs describe the models, how the results were produced, and what evidence
 would be needed to check them in CS2.
 
-The default converter uses **`community-static-v1`**, inspected build **2000918**,
+The default converter uses **`community-static-v3`**, inspected build **2000918**,
 with six UI choices. The historical corpus snapshot is **2026-09-23** and the
 manual lab uses `conditional-static-v4`. Neither is a
 verified native renderer. No original old/new game capture pairs are included.
+
+The [September 29 audit](research/converter-audit-2026-09-29.md) records the
+latest inspected dump and detector improvements. The [accuracy study](research/accuracy-improvements-2026-09-29.md)
+explains v3 dimension ties; the [structured-learning study](research/structured-learning-2026-09-29.md)
+adds exact search acceleration and new grouped ML results. These are declared-model
+studies, not native game validation.
 
 ## Start here
 
