@@ -2,6 +2,50 @@
 
 ## Unreleased
 
+## 0.8.0 — 2026-09-29
+
+- Preserve `community-static-v3` results while replacing exhaustive dimension
+  scans with monotone plateau search: 94.4% fewer axis evaluations on 15,360 cases.
+- Add a research-only structured candidate ranker and constrained residual decoder.
+  On 400 fresh setting groups, ranker test fidelity is 98.75%; interior/exterior
+  challenges reach 84.22%/96.02%. Same-data residual baselines are
+  97.33%/66.02%/80.63%. Record canonical and frozen baselines, paired regressions,
+  calibration abstention and limitations in the
+  [structured-learning study](docs/research/structured-learning-2026-09-29.md).
+- Optimize boosted-tree training with local feature orders and shared sorting,
+  preserving existing model artifact bytes. Record successful development retraining and independent exact axis/candidate
+  parity checks.
+
+## 0.7.0 — 2026-09-29
+
+- Advance to `community-static-v3`: compare all equally accurate rendered lengths
+  and widths, recompute parity-specific radius choices, and select exact overlap.
+  Preserve canonical cvars when overlap ties. Across 8,640 synthetic cases,
+  750 improve and none regress; 24 frozen external comparisons remain unchanged.
+- Add quantization-aware research features and 400 new setting groups. With the
+  same v3 labels, test tuple fidelity improves from 96.31% to 97.29%; interior
+  and exterior challenge fidelity improve to 73.91% and 77.66%. Keep exact
+  runtime inference, group-disjoint fitting/calibration and support abstention.
+- Freeze v2 labels and artifacts. Document correction/re-evaluation history,
+  selective interval coverage and native-evidence limits in the
+  [accuracy report](docs/research/accuracy-improvements-2026-09-29.md).
+
+## 0.6.0 — 2026-09-29
+
+- Audit old, first-redesign and newest public dumps: build 2000919 retains the
+  crosshair inventory inspected at 2000918. Document verified changes and the
+  limits of metadata evidence in the [audit](docs/research/converter-audit-2026-09-29.md).
+- Advance to `community-static-v2`: resolve equal-radius-loss gaps by exact shape
+  overlap while preserving bar dimensions. Retain all 24 frozen external tuples.
+  Report residuals, ambiguity and grouped current-build holdout validation.
+- Fix overlapping-arm image ranking with exhaustive exact union scoring, support
+  signed near edges and white auto-detection, and round-trip screenshot settings
+  through half-even geometry. Block cropped/unstable captures and native dot/T mismatches.
+- Add research-only boosted residual learning, a separate calibration partition,
+  cluster stability intervals and unseen fraction/resolution challenges. Same-test
+  tuple fidelity improves from 87.05% to 93.90%; shifted-input fidelity is 72.66%,
+  below the analytic baseline's 80.12%. Learned models remain outside runtime.
+
 ## 0.5.0 — 2026-09-28
 
 - Replace the automatic default with a source-labelled static reconstruction:

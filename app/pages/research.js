@@ -6,7 +6,7 @@ export function initResearch() {
     'The equations, tests and open questions behind each proposed setting, from the first shortcut to the current solver.',
     {sheet:'03',label:'Mathematics',fields:[['Build','2000918'],['Chapters','12'],['Cases','945'],['Capture pairs','0','tb-flag']]}));
   root.append(el('section',{class:'math-sheet'},el('h2',{},'The current default: a source-labelled reconstruction'),
-    el('p',{},'The September 28 audit compared crosshair.club, Crosshair Restore, a public renderer and the current cvar inventory. ' +
+    el('p',{},'The September 29 audit checked the newest tracked build 2000919; its crosshair metadata matches build 2000918. ' +
       'The default now uses round-to-even old dimensions and a centre-based new gap. ' +
       'It preserves the visible old minimum thickness with a positive new value. Odd-width centring can still shift pixels.'),
     el('pre',{class:'formula'},'old scale = f32(H / 480)\nold length = roundEven(f32(scale × f32(size)))\n' +
@@ -15,9 +15,11 @@ export function initResearch() {
       'new gap = old offset + ceil(old width / 2)'),
     el('p',{},'The new reconstruction matches 12 diagnostic and 12 later comparison tuples from crosshair.club; ' +
       'the previous default matches none. These are external-software comparisons, not game captures. ' +
-      'The direct solver checks 417 per-axis values and preserves dimensions before matching the centre radius. ' +
+      'The direct solver uses exact monotone axis searches and preserves minimum dimension errors. ' +
+      'It compares up to eight tied shapes: 750 of 8,640 synthetic cases improve versus v2, with zero regressions. ' +
       'Six UI choices replace the former 27 alternatives; the historical study remains below.'),
-    docLink('research/converter-audit-2026-09-28.md','Read the source audit, frozen comparisons and limitations'),
+    docLink('research/converter-audit-2026-09-29.md','Read the latest dump audit, comparisons and limitations'),
+    docLink('research/accuracy-improvements-2026-09-29.md','V3 conversion and learning accuracy, with evaluation limits'),
     docLink('math/12-community-conversion.md','12 · Current equations, rounding and pixel centres')));
   const entries=[
     ['v0 · the shortcut','Multiply everything by two.','It fails against the reconstructed old geometry in 32 of 56 numerical cases. Matching a few resolutions does not make it a general rule.'],
@@ -69,18 +71,20 @@ export function initResearch() {
   ]),el('p',{},'A low test error only validates the thing the test observes. A code regression test cannot validate a renderer that was never executed.')));
   root.append(el('section',{class:'math-sheet'},el('h2',{},'Improved learning, with a fair comparison'),
     el('p',{},'The new research-only emulator learns the current deterministic converter, not Valve’s renderer. ' +
-      'Adding authored-height and geometry features raises exact tuple fidelity from 29.17% to 90.48% on the same untouched test set. ' +
-      'The old feature map could not distinguish some inputs with different authored heights. ' +
-      'Both variants are retrained on the same new target, so this is a same-task ablation.'),
-    el('pre',{class:'formula'},'3200 synthetic rows · 100 setting groups\nsplit: 59 train / 20 validation / 21 test groups\n' +
+      'Quantization-aware features raise exact tuple fidelity from 96.31% to 97.29% on the same reserved v3 test groups. ' +
+      'Training, capacity selection, interval calibration and testing use separate setting groups.'),
+    el('pre',{class:'formula'},'12800 synthetic development rows · 320 new setting groups\n' +
+      '198 train / 34 validation / 29 calibration / 59 test groups\n' +
       'heights, goals and shape flags stay within their setting group\n' +
       'capacity chosen on validation only; final refit on train + validation\n' +
-      'test: 672 rows, but only 21 independent setting groups\nexact tuple: old features 29.17% → geometry features 90.48%\n' +
-      'rendered MAE: length 0 / width 0 / near and far 0.137 px\nspeed gate closed · nativeEvidence = false'),
-    el('p',{},'The remaining errors and limited synthetic grid are enough to keep learning out of runtime. ' +
-      'The exact three-axis solver is small and remains authoritative. ' +
-      'These numbers measure imitation of our equations, not in-game accuracy.'),
-    docLink('research/converter-audit-2026-09-28.md','Training protocol, artifacts and remaining evidence')));
+      'test: 2360 rows, but only 59 setting groups\nexact tuple: residual 96.31% → quantization-aware 97.29%\n' +
+      'rendered exact masks: 96.57% → 97.37%\nspeed gate closed · nativeEvidence = false'),
+    el('p',{},'On 80 additional groups at unseen resolutions, the new features improve interior fidelity ' +
+      'from 52.97% to 73.91%, and exterior fidelity from 63.59% to 77.66%. Interior intervals accept only 8/80 complete ' +
+      'groups; all exterior groups abstain. These are solver-imitation results, not in-game accuracy. ' +
+      'The fixed experiment was rerun after a reviewed converter tie correction; no ML choices were tuned on test scores. ' +
+      'The exact solver remains authoritative.'),
+    docLink('research/accuracy-improvements-2026-09-29.md','Training protocol, correction history and selective coverage')));
   root.append(el('section',{class:'math-sheet'},el('h2',{},'Historical learning experiment (different target)'),
     el('p',{},'We trained a small dependency-free learned model to imitate the exact solver. Its labels are the solver’s own output, not game measurements. A capacity revision raised its held-out full-tuple fidelity from about 11.6% to about 35.7%, but it is still wrong on the full tuple about two times out of three, so it is not wired into the app. The exact solver stays authoritative.'),
     el('pre',{class:'formula'},'training: 5000 samples · 607 distinct legacy settings\nsplit: group-disjoint by setting signature → 3991 train / 1009 test\nmodel: depth-3 boosted trees · 120 rounds · 26 declared features\nexact full tuple: learned 0.35679 vs naive 0.03568 (earlier revision 0.11596)\nexact per dimension: length 0.563 · thickness 0.783 · gap 0.644\nMAE (px): length 0.561 · thickness 0.308 · gap 0.575 vs naive 2.610\nablation: the 7 extra declared-math features did NOT help; capacity did\nforward surrogate held-out MAE: 0.392 / 0.286 / 0.540 / 0.540 px\nfingerprint: 137061144 · speedGate = "closed-not-exact-equivalent" · nativeEvidence = false'),
