@@ -11,8 +11,8 @@ settings. The app runs in your browser without an account or backend.
 > the new renderers are hypotheses. No original old/new game capture pairs are
 > included. A perfect preview match does not establish an in-game match.
 
-Default model **`community-static-v1`** · inspected build **2000918** ·
-[conversion audit, September 28](docs/research/converter-audit-2026-09-28.md).
+Default model **`community-static-v3`** · inspected build **2000918** ·
+[conversion audit, September 29](docs/research/converter-audit-2026-09-29.md).
 The September 23 corpus, historical `quant-static-v6` family and manual
 `conditional-static-v4` lab remain separate comparisons.
 
@@ -130,12 +130,19 @@ npm run preview
 
 ## Research reports and source layout
 
-The current research-only emulator improves exact tuple fidelity from **29.17%
-to 90.48%** on the same held-out new-target data by adding authored-height and
-geometry features. There are 21 independent setting groups (672 rows); model
-capacity is selected on separate validation groups. The committed report records
-the artifact and evaluation split. This imitates our equations, not CS2; the small
-exact solver remains the runtime path. See the [audit](docs/research/converter-audit-2026-09-28.md).
+The latest structured experiment uses 400 fresh setting groups and excludes
+all 596 groups from earlier experiments. Its legal-shape ranker reaches
+**98.75%** exact tuple fidelity on the test set and **84.22% / 96.02%** on
+interior/exterior resolution challenges. A residual model fitted on the same
+data reaches **97.33% / 66.02% / 80.63%**, respectively. These are synthetic
+solver-imitation scores; learning remains outside runtime. The retained
+[study](docs/research/structured-learning-2026-09-29.md) records the protocol,
+paired regressions, calibration abstention and limits.
+
+The exact converter preserves v3 results with **94.4% fewer axis evaluations**
+on a 15,360-case study. This operation count is not a wall-clock speed claim.
+The public repository retains scientific reports and generated model artifacts;
+private training implementation and development tests are kept separately.
 
 The historical learned emulator is a research artifact only. It is trained offline on labels
 from the declared solver, and it measures fidelity to that solver, not accuracy

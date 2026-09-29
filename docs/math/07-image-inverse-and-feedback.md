@@ -2,6 +2,15 @@
 
 **Version note:** the v4 derivation below is preserved. [Chapter 09](09-solver-and-integrity.md) specifies the implemented v5 joint inverse, full-domain shape metric, robust likelihood and evidence-integrity changes.
 
+**September 29 update:** the current implementation supersedes the historical
+shortlist method below with exhaustive exact rectangle-union scoring, near edges
+from -16 to 24, half-even representative settings and white auto-color candidates.
+Image acceptance also checks crop boundaries and nearby color thresholds; native
+captures check declared dot/T/bar presence. See the
+[current audit](../research/converter-audit-2026-09-29.md) and
+[chapter 12](12-community-conversion.md). The equations below document the prior
+image inference assumptions, not the current acceptance policy.
+
 A crosshair screenshot is an observation of pixels, not a unique encoding
 of old cvars. This chapter describes both image paths: estimating a target
 from an old capture, and measuring a native new capture that can challenge

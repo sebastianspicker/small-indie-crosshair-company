@@ -35,16 +35,20 @@ export class ImageDialog {
       const selection = this.selection(); this.draw(selection);
       const operation = this.context.kind === 'new' ? 'native-screenshot' : 'screenshot';
       const result = await this.worker.call(operation, { data: this.rgba, side: SIDE,
-        seed: selection.seed, tolerance: selection.tolerance, height: this.context.options?.oldHeight ?? 1080 });
+        seed: selection.seed, tolerance: selection.tolerance, height: this.context.options?.oldHeight ?? 1080,
+        expectedFlags: this.context.expectedFlags ?? null });
       if (this.closed || ticket !== this.token) return;
       this.fit = result; this.measuredSelection = selection;
       const g = result.geometry;
-      this.view.status.textContent = `Colored-mask agreement ${(result.templateIou * 100).toFixed(1)}% · length ${g.length} px · width ${g.width} px · near ${g.near} px. This is image-fit agreement, not native correctness confidence.`;
+      const quality = result.quality, stability = (quality.stability.minimumIou * 100).toFixed(1);
+      this.view.status.textContent = `Mask agreement ${(result.templateIou * 100).toFixed(1)}% · length ${g.length} px · ` +
+        `width ${g.width} px · near ${g.near} px. Color-threshold stability ${stability}%. ` +
+        (quality.acceptable ? 'Image checks passed; this is not native correctness confidence.' : result.warnings.at(-1));
       this.updateAccept();
     } catch (error) { if (!this.closed && ticket === this.token) this.view.status.textContent = error.message; }
   }
   updateAccept() {
-    this.view.accept.disabled = !this.fit || this.fit.templateIou < .75 || (this.context.kind === 'new' && !this.view.attested.checked);
+    this.view.accept.disabled = !this.fit?.quality?.acceptable || (this.context.kind === 'new' && !this.view.attested.checked);
   }
   pick(event) {
     if (!this.rgba) return;

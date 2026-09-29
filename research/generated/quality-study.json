@@ -1,0 +1,360 @@
+{
+  "schema": "sicc-quality-study-v1",
+  "date": "2026-09-29",
+  "model": "community-static-v2",
+  "nativeEvidence": false,
+  "scope": "Synthetic declared-model overlap and image recovery only. No game accuracy inference.",
+  "conversion": {
+    "cases": 4620,
+    "tied": 1215,
+    "improved": 180,
+    "regressed": 0,
+    "maxIouGain": 0.6666666666666666,
+    "beforeIou": 0.4480407179352609,
+    "afterIou": 0.45407794479267594,
+    "objective": "Preserve selected dimensions and minimum radius loss; maximize overlap only among gap ties."
+  },
+  "detection": {
+    "cases": 24,
+    "exactMasks": 24,
+    "rows": [
+      {
+        "geometry": {
+          "length": 8,
+          "width": 1,
+          "near": -3,
+          "far": -2
+        },
+        "flags": {
+          "dot": false,
+          "t_style": false
+        },
+        "iou": 1,
+        "tiedTemplates": 28
+      },
+      {
+        "geometry": {
+          "length": 8,
+          "width": 1,
+          "near": -3,
+          "far": -2
+        },
+        "flags": {
+          "dot": false,
+          "t_style": true
+        },
+        "iou": 1,
+        "tiedTemplates": 2
+      },
+      {
+        "geometry": {
+          "length": 8,
+          "width": 1,
+          "near": 0,
+          "far": 1
+        },
+        "flags": {
+          "dot": false,
+          "t_style": false
+        },
+        "iou": 1,
+        "tiedTemplates": 2
+      },
+      {
+        "geometry": {
+          "length": 8,
+          "width": 1,
+          "near": 0,
+          "far": 1
+        },
+        "flags": {
+          "dot": false,
+          "t_style": true
+        },
+        "iou": 1,
+        "tiedTemplates": 1
+      },
+      {
+        "geometry": {
+          "length": 8,
+          "width": 1,
+          "near": 4,
+          "far": 5
+        },
+        "flags": {
+          "dot": false,
+          "t_style": false
+        },
+        "iou": 1,
+        "tiedTemplates": 2
+      },
+      {
+        "geometry": {
+          "length": 8,
+          "width": 1,
+          "near": 4,
+          "far": 5
+        },
+        "flags": {
+          "dot": false,
+          "t_style": true
+        },
+        "iou": 1,
+        "tiedTemplates": 1
+      },
+      {
+        "geometry": {
+          "length": 8,
+          "width": 2,
+          "near": -3,
+          "far": -2
+        },
+        "flags": {
+          "dot": false,
+          "t_style": false
+        },
+        "iou": 1,
+        "tiedTemplates": 30
+      },
+      {
+        "geometry": {
+          "length": 8,
+          "width": 2,
+          "near": -3,
+          "far": -2
+        },
+        "flags": {
+          "dot": false,
+          "t_style": true
+        },
+        "iou": 1,
+        "tiedTemplates": 2
+      },
+      {
+        "geometry": {
+          "length": 8,
+          "width": 2,
+          "near": 0,
+          "far": 1
+        },
+        "flags": {
+          "dot": false,
+          "t_style": false
+        },
+        "iou": 1,
+        "tiedTemplates": 42
+      },
+      {
+        "geometry": {
+          "length": 8,
+          "width": 2,
+          "near": 0,
+          "far": 1
+        },
+        "flags": {
+          "dot": false,
+          "t_style": true
+        },
+        "iou": 1,
+        "tiedTemplates": 5
+      },
+      {
+        "geometry": {
+          "length": 8,
+          "width": 2,
+          "near": 4,
+          "far": 5
+        },
+        "flags": {
+          "dot": false,
+          "t_style": false
+        },
+        "iou": 1,
+        "tiedTemplates": 2
+      },
+      {
+        "geometry": {
+          "length": 8,
+          "width": 2,
+          "near": 4,
+          "far": 5
+        },
+        "flags": {
+          "dot": false,
+          "t_style": true
+        },
+        "iou": 1,
+        "tiedTemplates": 1
+      },
+      {
+        "geometry": {
+          "length": 8,
+          "width": 9,
+          "near": -3,
+          "far": -2
+        },
+        "flags": {
+          "dot": false,
+          "t_style": false
+        },
+        "iou": 1,
+        "tiedTemplates": 44
+      },
+      {
+        "geometry": {
+          "length": 8,
+          "width": 9,
+          "near": -3,
+          "far": -2
+        },
+        "flags": {
+          "dot": false,
+          "t_style": true
+        },
+        "iou": 1,
+        "tiedTemplates": 15
+      },
+      {
+        "geometry": {
+          "length": 8,
+          "width": 9,
+          "near": 0,
+          "far": 1
+        },
+        "flags": {
+          "dot": false,
+          "t_style": false
+        },
+        "iou": 1,
+        "tiedTemplates": 2
+      },
+      {
+        "geometry": {
+          "length": 8,
+          "width": 9,
+          "near": 0,
+          "far": 1
+        },
+        "flags": {
+          "dot": false,
+          "t_style": true
+        },
+        "iou": 1,
+        "tiedTemplates": 1
+      },
+      {
+        "geometry": {
+          "length": 8,
+          "width": 9,
+          "near": 4,
+          "far": 5
+        },
+        "flags": {
+          "dot": false,
+          "t_style": false
+        },
+        "iou": 1,
+        "tiedTemplates": 2
+      },
+      {
+        "geometry": {
+          "length": 8,
+          "width": 9,
+          "near": 4,
+          "far": 5
+        },
+        "flags": {
+          "dot": false,
+          "t_style": true
+        },
+        "iou": 1,
+        "tiedTemplates": 1
+      },
+      {
+        "geometry": {
+          "length": 8,
+          "width": 13,
+          "near": -3,
+          "far": -2
+        },
+        "flags": {
+          "dot": false,
+          "t_style": false
+        },
+        "iou": 1,
+        "tiedTemplates": 52
+      },
+      {
+        "geometry": {
+          "length": 8,
+          "width": 13,
+          "near": -3,
+          "far": -2
+        },
+        "flags": {
+          "dot": false,
+          "t_style": true
+        },
+        "iou": 1,
+        "tiedTemplates": 1
+      },
+      {
+        "geometry": {
+          "length": 8,
+          "width": 13,
+          "near": 0,
+          "far": 1
+        },
+        "flags": {
+          "dot": false,
+          "t_style": false
+        },
+        "iou": 1,
+        "tiedTemplates": 2
+      },
+      {
+        "geometry": {
+          "length": 8,
+          "width": 13,
+          "near": 0,
+          "far": 1
+        },
+        "flags": {
+          "dot": false,
+          "t_style": true
+        },
+        "iou": 1,
+        "tiedTemplates": 1
+      },
+      {
+        "geometry": {
+          "length": 8,
+          "width": 13,
+          "near": 4,
+          "far": 5
+        },
+        "flags": {
+          "dot": false,
+          "t_style": false
+        },
+        "iou": 1,
+        "tiedTemplates": 2
+      },
+      {
+        "geometry": {
+          "length": 8,
+          "width": 13,
+          "near": 4,
+          "far": 5
+        },
+        "flags": {
+          "dot": false,
+          "t_style": true
+        },
+        "iou": 1,
+        "tiedTemplates": 1
+      }
+    ],
+    "scope": "Mask reconstruction can be exact while several geometries explain it. No unique recovered-cvar claim."
+  }
+}

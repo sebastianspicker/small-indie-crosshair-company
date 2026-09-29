@@ -1,6 +1,6 @@
 # 12 — Source-labelled static conversion and smaller choices
 
-The default is now `community-static-v1` for inspected build 2000918.
+The default is now `community-static-v3` for inspected build 2000918.
 [The September 28 audit](../research/converter-audit-2026-09-28.md) records
 sources, immutable data references and the external comparison. The previous
 chapters remain the historical reconstruction and 27-hypothesis study.
@@ -34,15 +34,21 @@ thickness = clamp(W, 1, 31)
 gap = clamp(d + ceil(W / 2), 0, 128)
 ```
 
-When dimensions saturate or resolutions differ, finite per-axis enumeration
+When dimensions saturate or resolutions differ, exact monotone per-axis search
 fits length and width first, then the symmetric radius of the old drawn edges.
-There are only 256 length, 32 thickness and 129 gap values to inspect. This is
-an exact per-axis geometric objective, not a global pixel-overlap objective.
+The legal domains contain 256 length, 31 positive thickness and 129 gap values;
+boundary searches recover all nearest plateaus without scanning every value.
+Version 3 retains all minimum-error lengths and widths, recomputes radius for
+each width's parity, then compares at most eight distinct shapes by exact overlap.
+Equal overlap retains the old length/width/gap canonical ordering. Edge loss is
+diagnostic, not globally minimized across widths. This improves 750 of 8,640
+synthetic cases versus v2 with no regressions. It does not establish global visual
+optimality over arbitrary dimensions or gaps. V2 and its study remain frozen.
 
 New bars use the transverse interval `[-ceil(W/2), floor(W/2))`. Left arms end
 at `-gap`; right arms start at `gap - (W % 2)`. Old odd-width bars sit one pixel
 differently. The preview retains this shift instead of silently aligning images
-or changing thickness to chase IoU. Uploaded masks are compared as supplied.
+or sacrificing thickness accuracy to chase IoU. Uploaded masks are compared as supplied.
 
 For the screen-relative goal, scale old *drawn* edges and transverse origin
 before rasterizing. Scaling raw arithmetic offsets and then applying a parity
@@ -59,10 +65,42 @@ The report schema is `sicc-quant-report-v5`. An unavailable pixel preimage has
 
 ## Learning after the audit
 
-The new synthetic distillation experiment compares the historical feature map
-with geometry and authoring-height features on the same new-target test set.
-Exact tuple fidelity rises from 29.17% to 90.48% across 21 untouched setting
-groups (672 rows). Capacity selection uses separate validation groups.
-This is not comparable to chapter 10's 35.7% on a different historical target.
-The deterministic converter remains exact for its declared size objective and
-the learned approximation remains outside the runtime path.
+The September 28 experiment reached 90.48% synthetic tuple fidelity with geometry
+features. The [September 29 audit](../research/converter-audit-2026-09-29.md) adds
+learned residuals around an analytic guess and reserves 16 calibration groups
+separately. Under the new target/split, same-test fidelity is 87.05% for geometry
+features and 93.90% for the residual learner, over 21 groups (672 rows).
+
+On 96 unseen fractional/resolution challenge groups, residual fidelity falls to
+72.66%, below the analytic guess's 80.12%. Calibration uses group-max residuals;
+all challenge groups exceed fitted feature ranges and abstain from interval
+claims. Cluster intervals and held-out scores describe solver imitation, not
+native correctness. No guaranteed coverage is inferred from a designed grid.
+Capacity selection uses validation only; learned inference remains research-only.
+
+The [v3 follow-up](../research/accuracy-improvements-2026-09-29.md) excludes all 196
+earlier setting groups. Its 320 development groups split into 198 train, 34
+validation, 29 calibration and 59 test; 80 additional groups form two shifted
+resolution challenges. Quantization-aware input features improve same-test tuple
+fidelity from 96.31% to 97.29%. Interior challenge fidelity rises from 52.97% to
+73.91%; exterior from 63.59% to 77.66%. These are different labels/data from v2.
+After a reviewed converter tie correction the fixed protocol was rerun; the
+report discloses that re-evaluation instead of claiming a pristine one-shot test.
+Interior intervals accept only 8/80 complete groups, and all exterior groups
+abstain. No learned approximation enters the runtime or establishes native confidence.
+
+## Structured learning and exact search acceleration
+
+The [next experiment](../research/structured-learning-2026-09-29.md) reserves
+another 400 setting groups and learns to rank analytically legal candidates.
+Its same-data residual / structured test fidelity is 97.33% / 98.75%; shifted
+interior and exterior scopes reach 84.22% and 96.02% for the ranker. Canonical
+arithmetic and projection ablations separate deterministic constraints from
+learned selection. Exterior uncertainty intervals abstain on every row despite
+high diagnostic tuple fidelity. These remain synthetic reconstruction results.
+
+Runtime axis inversion now finds adjacent quantized levels and their complete
+plateaus by binary search, preserving all v3 cvars and pixel choices. On 15,360
+existing research cases, axis evaluations fall from 6,583,140 to 366,064. This
+operation count excludes the unchanged exact visual tie scoring and is not a
+claim of equivalent wall-clock speedup.

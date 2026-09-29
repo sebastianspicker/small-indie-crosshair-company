@@ -150,3 +150,11 @@ without modifying the archived record.
 | Pixel-copy and rename candidates disagree | S01 + S03 recomputation | `lib/solver/migration.js` |
 | Residual modulation stays closed | Zero reviewed native pairs | `research/generated/quant-modulator.json` |
 | Exact game compatibility | No shipped evidence | No production claim or native-verified fixture |
+
+
+## September 29 follow-up
+
+The [latest dump audit](converter-audit-2026-09-29.md) adds pinned source hashes
+and compares build 2000919 with 2000918. The [accuracy study](accuracy-improvements-2026-09-29.md)
+and [structured-learning study](structured-learning-2026-09-29.md) retain the new
+synthetic comparisons, fitting protocols and their evidence limitations.
