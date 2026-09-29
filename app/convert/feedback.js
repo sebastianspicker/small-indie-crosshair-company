@@ -4,16 +4,19 @@ import { validateMeasurements } from '../../lib/solver/observations.js';
 import { BUILD } from '../../lib/solver/renderer.js';
 
 function acceptOld(c, { fit, meta }) {
+  if (!fit.quality?.acceptable) throw new Error('Image quality checks must pass before accepting the measured target.');
   c.setSettings({ ...c.state.settings, ...fit.representative, dot: fit.flags.dot, t_style: fit.flags.t_style,
     style: 4, weapon_gap: false, outline: false, color: 5, rgb: fit.color, alpha: 255, alpha_enabled: true });
   Object.assign(c.state, { targetOverride: fit.geometry, targetMask: fit.mask,
-    screenshotMeta: { ...meta, buckets: fit.buckets, templateIou: fit.templateIou, declaredOldHeight: c.options().oldHeight }, source: { type: 'image' } });
+    screenshotMeta: { ...meta, buckets: fit.buckets, templateIou: fit.templateIou, quality: fit.quality,
+      measurementMethod: fit.measurementMethod, declaredOldHeight: c.options().oldHeight }, source: { type: 'image' } });
   c.get('q-import').value = '';
   c.get('q-input-status').textContent = 'Image measured. Several old settings may produce the same pixels.';
   c.schedule();
 }
 
 function acceptNative(c, n, o, { fit, meta, role, attested, captureGroup }) {
+  if (!fit.quality?.acceptable) throw new Error('Stable uncropped image measurements are required.');
   const build = o.targetBuild ?? BUILD;
   const observation = { id: meta.captureSha256.slice(0, 24), kind: 'native-user', role, attested, build,
     captureGroup, captureSha256: meta.captureSha256, native: n, currentHeight: o.currentHeight, observed: fit.geometry, sigma: .5 };
@@ -32,6 +35,8 @@ async function openImage(c, kind) {
     const options = kind === 'old' ? c.options() : { ...r.options, targetBuild: r.targetBuild };
     const native = r ? { ...r.chosen.native } : null;
     await imageInput(c.get(id).files[0], c.worker, { kind, options, native, signal: c.listeners.signal,
+      expectedFlags: kind === 'new' ? { dot: c.state.settings.dot, t_style: c.state.settings.t_style,
+        bars: r.converted.length > 0 && r.converted.width > 0 } : null,
       onAccept: kind === 'old' ? data => acceptOld(c, data) : data => acceptNative(c, native, options, data) });
   } catch (error) { status.textContent = error.message; }
   finally { c.get(id).value = ''; c.imageOpen = false; }
