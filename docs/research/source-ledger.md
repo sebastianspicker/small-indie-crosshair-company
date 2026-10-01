@@ -4,6 +4,9 @@ Snapshot 2026-09-23. Entries describe what each source supports, not a blanket g
 about the game. Public source files are linked rather than republished wholesale.
 The original archive provides the chain of custody for the prior research.
 
+The [October 1 note](build-2000922-update-2026-10-01.md) adds build 2000922
+(see [S11](#s11-build-2000922-inventory)).
+
 ## S01 Old static geometry
 
 KZGlobalTeam / cs2kz-metamod, commit
@@ -131,6 +134,22 @@ archive includes the Python experiment and its stored result.
 record of its assumptions, sources and limitations. **Does not support:** treating
 historical prose as immune to later correction. The active notebook documents corrections
 without modifying the archived record.
+
+## S11 Build 2000922 inventory
+
+SteamTracking / GameTracking-CS2, build 2000922, commit
+`6ac247908a83c309b37314fd097c47dc78103746`,
+[`DumpSource2/convars.txt`](https://github.com/SteamTracking/GameTracking-CS2/blob/6ac247908a83c309b37314fd097c47dc78103746/DumpSource2/convars.txt),
+SHA-256 `667b1d2ecb36673097ea14058ef66447c3148acbf11f496a77eba64243e2fec4`
+(identical to build 2000921), plus the Valve October 1 2026 update entry.
+
+**Supports:** signed `cl_crosshair_gap` range -3840..3840, thickness 0..32, style 9,
+outline colour cvars, shader version 2 and the renderer class change. Hashes,
+the changelog table and reproduction steps are in the
+[October 1 note](build-2000922-update-2026-10-01.md).
+
+**Does not support:** native pixel behaviour of any setting, negative gaps on
+static styles, or the new share-code layout.
 
 ## Claim-to-artifact traceability
 
