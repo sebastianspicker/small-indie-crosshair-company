@@ -2,6 +2,21 @@
 
 ## Unreleased
 
+## 0.9.1 — 2026-10-01
+
+- Map old outline widths to the new outline modes (issue #11): an enabled outline
+  with `cl_crosshair_outlinethickness` below 1 exports `cl_crosshair_drawoutline 2`
+  (Valve's half outline, which draws only the top-left edge), width 0 exports no
+  outline, and 1 or more stays the full outline. Reports warn with
+  `outline-half-mapping` or `outline-zero-width`; the mapping is not native-validated.
+  Build 2000922 still has no outline-width cvar.
+- Disclose outline opacity: old outlines used the crosshair opacity, while build
+  2000922 has a separate `cl_crosshairoutline_a`. Exports keep 255 and warn with
+  `outline-alpha-unverified` when an outlined crosshair is below full opacity.
+- Old `cl_crosshairsize 0` stays zero-length arms (dot and outline preserved); the
+  new integer `cl_crosshair_length` cannot express 0.3 and no evidence shows old
+  size 0 drew a visible arm.
+
 ## 0.9.0 — 2026-10-01
 
 - Advance to `community-static-v4` for CS2 build 2000922 (Valve's October 1

@@ -163,10 +163,14 @@ premultiplication details. Equal alpha numbers alone do not prove equal displaye
 
 ## 7. Outlines and dots
 
-The old inventory has a separate outline width; the inspected new inventory does not
-expose an equivalent standalone setting. The new outline toggle remains. The converter
-therefore carries the toggle, but does not pretend to map a legacy custom outline width
-through the arm-length factor.
+The old inventory has a separate outline width; the new inventory does not expose an
+equivalent standalone setting. Since build 2000918, `cl_crosshair_drawoutline` has
+three modes: 0 none, 1 full and 2 half, which draws only the top-left edge. The
+converter maps an enabled old outline by width: below 1 to the half outline, which
+Valve added on September 24 2026 for those settings; exactly 0 to no outline, because a
+zero-width border draws nothing; and 1 or more to the full outline. The width itself
+is not mapped through the arm-length factor. The half-outline mapping follows Valve's
+note and user reports (issue #11), not native captures.
 
 The preview draws a one-pixel expanded black border for illustration, then the colored
 core. That is not a verified implementation of native outline joins, overlapping alpha
