@@ -2,6 +2,26 @@
 
 ## Unreleased
 
+## 0.9.0 — 2026-10-01
+
+- Advance to `community-static-v4` for CS2 build 2000922 (Valve's October 1
+  crosshair update). Forward equations are unchanged from v3 and are an
+  unverified carry-over across the renderer rewrite; no native capture pairs
+  exist. Thickness search maximum is 32. Static Cross gaps stay 0..128 and
+  an old gap that would need overlap (negative centre radius) clamps to 0 with the new warning `negative-gap-static-unverified`.
+- Every CFG export now also emits `cl_crosshairoutline_r 0`, `_g 0`, `_b 0` and
+  `_a 255`, pinning the legacy opaque black outline.
+- Measurement intake rejects build 2000918 records; build 2000922 captures with a
+  gap outside 0..128 are reported outside the model domain and excluded from holdouts.
+  New-build cvar names, including outline colour, are rejected on legacy import.
+- Retrain the accuracy and structured research learners on v4 labels (a regression
+  re-run, not fresh holdout evidence): 1,152 of 15,360 labels change, all thickness
+  31 → 32. Ranker test fidelity 98.50% (was 98.75%); quantization-aware accuracy
+  learner 96.99% (was 97.29%). The frozen v2 distillation and historical models
+  are unchanged.
+- Document the build, shader diff, decisions and a native capture protocol in the
+  [build 2000922 note](docs/research/build-2000922-update-2026-10-01.md).
+
 ## 0.8.0 — 2026-09-29
 
 - Preserve `community-static-v3` results while replacing exhaustive dimension

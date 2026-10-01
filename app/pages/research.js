@@ -4,9 +4,11 @@ export function initResearch() {
   const root=$('research');
   root.append(heading('How the conversion works',
     'The equations, tests and open questions behind each proposed setting, from the first shortcut to the current solver.',
-    {sheet:'03',label:'Mathematics',fields:[['Build','2000918'],['Chapters','12'],['Cases','945'],['Capture pairs','0','tb-flag']]}));
+    {sheet:'03',label:'Mathematics',fields:[['Build','2000922'],['Chapters','12'],['Cases','945'],['Capture pairs','0','tb-flag']]}));
   root.append(el('section',{class:'math-sheet'},el('h2',{},'The current default: a source-labelled reconstruction'),
-    el('p',{},'The September 29 audit checked the newest tracked build 2000919; its crosshair metadata matches build 2000918. ' +
+    el('p',{},'The October 1 update (build 2000922) widens thickness to 32 and the gap cvar to −3840…3840, adds outline colour cvars, ' +
+      'and moves layout to a new native renderer; the equations are carried over from 2000918 unverified. ' +
+      'Negative gaps are only enabled for Classic Dynamic, so Static Cross clamps them to 0; exports pin the outline to opaque black. ' +
       'The default now uses round-to-even old dimensions and a centre-based new gap. ' +
       'It preserves the visible old minimum thickness with a positive new value. Odd-width centring can still shift pixels.'),
     el('pre',{class:'formula'},'old scale = f32(H / 480)\nold length = roundEven(f32(scale × f32(size)))\n' +
@@ -18,7 +20,7 @@ export function initResearch() {
       'The direct solver uses exact monotone axis searches and preserves minimum dimension errors. ' +
       'It compares up to eight tied shapes: 750 of 8,640 synthetic cases improve versus v2, with zero regressions. ' +
       'Six UI choices replace the former 27 alternatives; the historical study remains below.'),
-    docLink('research/converter-audit-2026-09-29.md','Read the latest dump audit, comparisons and limitations'),
+    docLink('research/build-2000922-update-2026-10-01.md','Read the October 1 build 2000922 update and its limitations'),
     docLink('research/accuracy-improvements-2026-09-29.md','V3 conversion and learning accuracy, with evaluation limits'),
     docLink('math/12-community-conversion.md','12 · Current equations, rounding and pixel centres')));
   const entries=[
@@ -71,18 +73,18 @@ export function initResearch() {
   ]),el('p',{},'A low test error only validates the thing the test observes. A code regression test cannot validate a renderer that was never executed.')));
   root.append(el('section',{class:'math-sheet'},el('h2',{},'Improved learning, with a fair comparison'),
     el('p',{},'The new research-only emulator learns the current deterministic converter, not Valve’s renderer. ' +
-      'Quantization-aware features raise exact tuple fidelity from 96.31% to 97.29% on the same reserved v3 test groups. ' +
+      'Quantization-aware features raise exact tuple fidelity from 95.21% to 96.99% on the same reserved test groups (v4 labels). ' +
       'Training, capacity selection, interval calibration and testing use separate setting groups.'),
     el('pre',{class:'formula'},'12800 synthetic development rows · 320 new setting groups\n' +
       '198 train / 34 validation / 29 calibration / 59 test groups\n' +
       'heights, goals and shape flags stay within their setting group\n' +
       'capacity chosen on validation only; final refit on train + validation\n' +
-      'test: 2360 rows, but only 59 setting groups\nexact tuple: residual 96.31% → quantization-aware 97.29%\n' +
-      'rendered exact masks: 96.57% → 97.37%\nspeed gate closed · nativeEvidence = false'),
+      'test: 2360 rows, but only 59 setting groups\nexact tuple: residual 95.21% → quantization-aware 96.99%\n' +
+      'rendered exact masks: 95.30% → 96.99%\nspeed gate closed · nativeEvidence = false'),
     el('p',{},'On 80 additional groups at unseen resolutions, the new features improve interior fidelity ' +
-      'from 52.97% to 73.91%, and exterior fidelity from 63.59% to 77.66%. Interior intervals accept only 8/80 complete ' +
+      'from 51.48% to 69.92%, and exterior fidelity from 57.89% to 77.89%. Interior intervals accept only 8/80 complete ' +
       'groups; all exterior groups abstain. These are solver-imitation results, not in-game accuracy. ' +
-      'The fixed experiment was rerun after a reviewed converter tie correction; no ML choices were tuned on test scores. ' +
+      'The fixed experiment was rerun on v4 labels (thickness up to 32) without retuning; no ML choices were tuned on test scores. ' +
       'The exact solver remains authoritative.'),
     docLink('research/accuracy-improvements-2026-09-29.md','Training protocol, correction history and selective coverage')));
   root.append(el('section',{class:'math-sheet'},el('h2',{},'Historical learning experiment (different target)'),

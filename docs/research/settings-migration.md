@@ -1,6 +1,9 @@
 # Build-specific settings and migration scope
 
 Target inventory: build 2000914, pinned in [S03](source-ledger.md#s03-new-build-inventory).
+Since October 1 2026 the app targets build 2000922 ([S11](source-ledger.md#s11-build-2000922-inventory));
+the tables below describe the 2000914 snapshot and the update is recorded in the
+[October 1 note](build-2000922-update-2026-10-01.md).
 This is a snapshot, not a promise that these names/ranges will remain unchanged.
 The name mapping does not by itself establish a pixel conversion.
 The machine-readable source of truth for the ranges, defaults, hidden leftovers,
@@ -110,7 +113,18 @@ The repository intentionally does not guess a new code layout or claim current-f
 serialization support. Export a native `.cfg` and use the game's own sharing UI for any
 new-format code until that representation is independently specified and tested.
 
-## Post-update evidence fixes the gap sign and the shipped default
+## Update, October 1 2026: the gap range is signed at cvar level
+
+Build 2000922 widens `cl_crosshair_gap` to -3840..3840 with an unchanged
+description, for every style. Valve's notes scope negative gaps to the classic
+dynamic style, and the Static Cross UI slider is still 0..128 (a separate
+classic slider runs -10..128). The app therefore keeps the Static Cross export
+range at 0..128 and clamps a negative old gap to 0 with the warning
+`negative-gap-static-unverified`; the next section is a 2000914 record. Native
+negative-gap behaviour on static styles is unverified; see the
+[capture protocol](build-2000922-update-2026-10-01.md#native-capture-protocol).
+
+## Post-update evidence fixes the gap sign and the shipped default (build 2000914)
 
 Re-read 2026-09-23. The build 2000914 dump still gives `cl_crosshair_gap 4`
 (`min: 0, max: 128`), and the post-update community confirms the new variable cannot be

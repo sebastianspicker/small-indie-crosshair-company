@@ -1,6 +1,9 @@
 # 12 — Source-labelled static conversion and smaller choices
 
-The default is now `community-static-v3` for inspected build 2000918.
+The default is now `community-static-v4` for inspected build 2000922
+(thickness range 0..32; the equations below are unchanged from v3 and an
+unverified carry-over, see the
+[October 1 note](../research/build-2000922-update-2026-10-01.md)).
 [The September 28 audit](../research/converter-audit-2026-09-28.md) records
 sources, immutable data references and the external comparison. The previous
 chapters remain the historical reconstruction and 27-hypothesis study.
@@ -30,13 +33,13 @@ The new gap is a centre radius. At equal heights the direct conversion is:
 
 ```text
 length = clamp(L, 0, 255)
-thickness = clamp(W, 1, 31)
+thickness = clamp(W, 1, 32)
 gap = clamp(d + ceil(W / 2), 0, 128)
 ```
 
 When dimensions saturate or resolutions differ, exact monotone per-axis search
 fits length and width first, then the symmetric radius of the old drawn edges.
-The legal domains contain 256 length, 31 positive thickness and 129 gap values;
+The legal domains contain 256 length, 32 positive thickness and 129 gap values;
 boundary searches recover all nearest plateaus without scanning every value.
 Version 3 retains all minimum-error lengths and widths, recomputes radius for
 each width's parity, then compares at most eight distinct shapes by exact overlap.
@@ -81,9 +84,11 @@ Capacity selection uses validation only; learned inference remains research-only
 The [v3 follow-up](../research/accuracy-improvements-2026-09-29.md) excludes all 196
 earlier setting groups. Its 320 development groups split into 198 train, 34
 validation, 29 calibration and 59 test; 80 additional groups form two shifted
-resolution challenges. Quantization-aware input features improve same-test tuple
-fidelity from 96.31% to 97.29%. Interior challenge fidelity rises from 52.97% to
-73.91%; exterior from 63.59% to 77.66%. These are different labels/data from v2.
+resolution challenges. On v3 labels, quantization-aware input features improved
+same-test tuple fidelity from 96.31% to 97.29%; on v4 labels (thickness up to 32)
+the same protocol gives 95.21% to 96.99%. Interior challenge fidelity rises from
+51.48% to 69.92% and exterior from 57.89% to 77.89% (v3: 52.97% to 73.91% and
+63.59% to 77.66%). These are different labels/data from v2.
 After a reviewed converter tie correction the fixed protocol was rerun; the
 report discloses that re-evaluation instead of claiming a pristine one-shot test.
 Interior intervals accept only 8/80 complete groups, and all exterior groups
@@ -93,8 +98,9 @@ abstain. No learned approximation enters the runtime or establishes native confi
 
 The [next experiment](../research/structured-learning-2026-09-29.md) reserves
 another 400 setting groups and learns to rank analytically legal candidates.
-Its same-data residual / structured test fidelity is 97.33% / 98.75%; shifted
-interior and exterior scopes reach 84.22% and 96.02% for the ranker. Canonical
+On v3 labels its same-data residual / structured test fidelity was 97.33% / 98.75%,
+with 84.22% and 96.02% on shifted interior and exterior scopes; on v4 labels the
+ranker gives 98.50%, 83.91% and 96.09%. Canonical
 arithmetic and projection ablations separate deterministic constraints from
 learned selection. Exterior uncertainty intervals abstain on every row despite
 high diagnostic tuple fidelity. These remain synthetic reconstruction results.

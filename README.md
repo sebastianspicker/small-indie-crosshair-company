@@ -11,8 +11,10 @@ settings. The app runs in your browser without an account or backend.
 > the new renderers are hypotheses. No original old/new game capture pairs are
 > included. A perfect preview match does not establish an in-game match.
 
-Default model **`community-static-v3`** · inspected build **2000918** ·
+Default model **`community-static-v4`** · inspected build **2000922** ·
+[build update, October 1](docs/research/build-2000922-update-2026-10-01.md) ·
 [conversion audit, September 29](docs/research/converter-audit-2026-09-29.md).
+The v4 equations are an unverified carry-over from v3 across Valve's renderer rewrite.
 The September 23 corpus, historical `quant-static-v6` family and manual
 `conditional-static-v4` lab remain separate comparisons.
 
@@ -143,6 +145,12 @@ The exact converter preserves v3 results with **94.4% fewer axis evaluations**
 on a 15,360-case study. This operation count is not a wall-clock speed claim.
 The public repository retains scientific reports and generated model artifacts;
 private training implementation and development tests are kept separately.
+
+On build 2000922 (v4 labels, thickness up to 32) the regenerated learners reach
+**96.99%** quantization-aware test fidelity (97.29% on v3 labels) and a
+legal-shape ranker reaches **98.50% / 83.91% / 96.09%** on test/interior/exterior
+(98.75% / 84.22% / 96.02% on v3 labels). These are synthetic solver-imitation
+scores; see the [build 2000922 note](docs/research/build-2000922-update-2026-10-01.md#effect-of-v4-on-the-learners).
 
 The historical learned emulator is a research artifact only. It is trained offline on labels
 from the declared solver, and it measures fidelity to that solver, not accuracy

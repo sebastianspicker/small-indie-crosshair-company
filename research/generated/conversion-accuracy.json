@@ -1,7 +1,7 @@
 {
   "schema": "sicc-conversion-accuracy-v1",
   "before": "community-static-v2",
-  "after": "community-static-v3",
+  "after": "community-static-v4",
   "nativeEvidence": false,
   "scopes": [
     [

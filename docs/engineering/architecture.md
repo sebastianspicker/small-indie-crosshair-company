@@ -15,7 +15,7 @@ app/        browser runtime            DOM, canvases, routing, worker transport
   └─ imports ─▶ lib/
 lib/        pure domain                no DOM, no worker globals, no network
   settings ◀─ geometry ◀─┬─ image
-                         ├─ solver     (community-static-v3; historical quant-static-v6)
+                         ├─ solver     (community-static-v4; historical quant-static-v6)
                          └─ manual     (manual lab, conditional-static-v4)
 data/       runtime data               the four JSON files the app fetches
 research/   evidence, never runtime    generated/, corpus/, comparisons/,
@@ -35,10 +35,10 @@ browser, in the worker and in Node. Five layers, each with one job:
 
 | Layer | Owns | May import |
 |---|---|---|
-| `lib/settings/` | What a setting *is*. Input validation primitives (`validation.js`), native cvar ranges, colour resolution and CFG command formatting (`native.js`), the frozen build-2000914 cvar inventory (`cvars.js`), the legacy v1 share-code codec (`sharecode.js`, MIT-attributed), the allowlisted legacy CFG parser (`cfg.js`), and the single legacy-text import dispatch (`import.js`). | `settings` |
+| `lib/settings/` | What a setting *is*. Input validation primitives (`validation.js`), native cvar ranges, colour resolution and CFG command formatting (`native.js`), the frozen build-2000914 cvar inventory (`cvars.js`; the community model's native ranges and CFG export follow build 2000922), the legacy v1 share-code codec (`sharecode.js`, MIT-attributed), the allowlisted legacy CFG parser (`cfg.js`), and the single legacy-text import dispatch (`import.js`). | `settings` |
 | `lib/geometry/` | What a crosshair *looks like*. Binary32 legacy geometry (`legacy.js`), the one integer quantizer (`quantize.js`), illustrative rasterization (`raster.js`), lossless shape and mask compilation (`pixel-shape.js`), and the 56-case legacy audit shared by the #evidence page and the archive reproduction (`audit.js`). | `geometry`, `settings` |
 | `lib/image/` | Reading pixels. Bounded PNG screenshot segmentation and native component measurement (`screenshot.js`, `components.js`). | `image`, `geometry`, `settings` |
-| `lib/solver/` | The default direct converter (`community.js`, `community-static-v3`) and historical 27-model study (`quant-static-v6`). Forward renderers (`renderer.js`), integer inverse (`inverse.js`), visual refinement (`visual.js`), decision rules (`selection.js`), opt-in certificates (`certify.js`), measurement evidence (`observations.js`, `evidence.js`), experiment design (`experiments.js`), corpus coverage (`corpus.js`, `statistics.js`), structural rivals (`structural.js`, `migration.js`), report/CFG export (`report.js`, `export.js`), and entry point `infer()` (`inference.js`). | `solver`, `geometry`, `settings` |
+| `lib/solver/` | The default direct converter (`community.js`, `community-static-v4`) and historical 27-model study (`quant-static-v6`). Forward renderers (`renderer.js`), integer inverse (`inverse.js`), visual refinement (`visual.js`), decision rules (`selection.js`), opt-in certificates (`certify.js`), measurement evidence (`observations.js`, `evidence.js`, `community-evidence.js`), experiment design (`experiments.js`), corpus coverage (`corpus.js`, `statistics.js`), structural rivals (`structural.js`, `migration.js`), report/CFG export (`report.js`, `export.js`), and entry point `infer()` (`inference.js`). | `solver`, `geometry`, `settings` |
 | `lib/manual/` | The manual lab (`conditional-static-v4`): the `convert()`/`exportCFG()` model with its `measured` gap branch (`conversion.js`) and the affine calibration fit plus `sicc-measurement-v1` schema (`calibration.js`). | `manual`, `geometry`, `settings` |
 
 `solver` and `manual` are deliberately separate conversion models, not two
@@ -52,11 +52,15 @@ model, `BUILD` in the renderer, `INVENTORY_BUILD` in the cvar inventory) are
 separate facts that happen to be equal today; keeping them explicit makes any
 future divergence deliberate.
 
-The current community reconstruction has a separate build (2000918), geometry
+The current community reconstruction has a separate build (2000922), geometry
 module (`geometry/community.js`) and report version. It is not a 28th weighted
 hypothesis. The UI defaults to this direct, per-axis solver and offers six choices:
 the default, the historical hedge and four authored-height controls. Measurements
-are stored together but validated and evaluated only against their matching build.
+are stored together but validated and evaluated only against their matching build:
+build 2000918 records are rejected, and 2000922 records with a gap outside
+0..128 are reported outside the model domain and kept out of holdout validation.
+The v4 default targets build 2000922; its equations are carried over from v3
+unverified (see the [build 2000922 note](../research/build-2000922-update-2026-10-01.md)).
 
 The v3 solver preserves minimum length/width errors, recomputes radius for each
 tied width, and scores up to eight distinct shapes by exact overlap. The monotone
@@ -133,8 +137,9 @@ in the DOM, and state lives in one tab; anything durable is an explicit
 download. Invalid or empty input disables export. A legacy import replaces
 source state only after parsing and validation succeed. The automatic
 converter merges a partial CFG onto the current settings; the workbench
-merges it onto the CFG defaults. New-build (2000914) cvars are rejected on
-import with a dedicated message. Exported configs are cvar commands only. If the worker
+merges it onto the CFG defaults. New-build (2000914 and later, including the
+outline colour) cvars are rejected on import with a dedicated message. Exported
+configs are cvar commands only. If the worker
 fails to start or breaks protocol, conversion is disabled.
 
 ## External contracts
@@ -145,7 +150,9 @@ them is a product change and needs a CHANGELOG entry.
 - **Downloads.**
   - Automatic converter: `small-indie-crosshair.cfg`, plus
     `crosshair-quant-report.json` (schema `sicc-quant-report-v5`, model
-    `version` `community-static-v3` or `quant-static-v6`, `targetBuild`).
+    `version` `community-static-v4` or `quant-static-v6`, `targetBuild`).
+    Every CFG export (automatic and manual) also emits
+    `cl_crosshairoutline_r 0`, `_g 0`, `_b 0` and `_a 255`.
   - Workbench: `small-indie-candidate.cfg` and `small-indie-math-report.json`
     (`sicc-report-v1`).
   - Other routes: `crosshair-audit.json`, `small-indie-measurements.json`
