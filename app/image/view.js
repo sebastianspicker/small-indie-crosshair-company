@@ -1,4 +1,5 @@
 import { el } from '../ui/dom.js';
+import { COMMUNITY_MODEL } from '../../lib/geometry/community.js';
 const field = (name, node) => el('div', {}, el('label', {}, name, node));
 export function imageView(kind, dimensions, native, options) {
   const dialog = el('dialog', { class: 'image-dialog', 'aria-labelledby': 'image-dialog-title' });
@@ -11,7 +12,7 @@ export function imageView(kind, dimensions, native, options) {
   const accept = el('button', { class: 'button primary', disabled: true }, kind === 'old' ? 'Use measured old target' : 'Record native measurement');
   const cancel = el('button', { class: 'button ghost' }, 'Cancel');
   const role = el('select', {}, el('option', { value: 'calibration' },
-    options.targetBuild === '2000918' ? 'Calibration — compare reconstruction' : 'Calibration — updates models'),
+    options.targetBuild === COMMUNITY_MODEL.build ? 'Calibration — compare reconstruction' : 'Calibration — updates models'),
     el('option', { value: 'holdout' }, 'Holdout — evaluation only'));
   const attested = el('input', { type: 'checkbox' });
   const session = el('input', { type: 'text', value: 'user-session', maxlength: 128 });
