@@ -1,6 +1,8 @@
 import { el, fmt, table } from '../ui/dom.js';
 import { paintQuant, fitZoom } from './preview.js';
-import { rgba } from '../../lib/settings/native.js';
+import { rgba, outlineMode } from '../../lib/settings/native.js';
+const RELEVANT_WARNING =
+  /conflict|cropped|large shape|No visible|outline replacement|half outline|outline off|zero-thickness|shift|limits/;
 import { scaleOf, EXPERT_MODELS } from '../../lib/solver/renderer.js';
 import { exportQuantCFG } from '../../lib/solver/export.js';
 import { rivalSummary } from '../../lib/solver/migration.js';
@@ -89,12 +91,12 @@ export function renderSimple(view, report) {
   get('qs-length').textContent = fmt(n.length);
   get('qs-out-thickness').textContent = fmt(n.thickness);
   get('qs-out-gap').textContent = fmt(n.gap);
-  const flags = [s.dot ? 'center dot' : 'no center dot', s.t_style ? 'T shape' : 'cross', s.outline ? 'outline' : 'no outline',
+  const flags = [s.dot ? 'center dot' : 'no center dot', s.t_style ? 'T shape' : 'cross', ['no outline', 'outline', 'half outline'][outlineMode(s)],
     s.recoil ? 'follow recoil (not simulated)' : 'static'];
   get('qs-flags').textContent = `${flags.join(' · ')} · rgba(${c.rgb.join(', ')}, ${c.alpha})`;
   const warningText = report.warnings.map(w => typeof w === 'string' ? w : w.text);
   const gapScale = warningText.find(w => /Gap scaling is not stated in the build 2000914/.test(w));
-  const relevant = warningText.filter(w => /conflict|cropped|large shape|No visible|outline replacement|zero-thickness|shift|limits/.test(w));
+  const relevant = warningText.filter(w => RELEVANT_WARNING.test(w));
   get('qs-note').textContent = [gapScale ?? (report.provenance && 'Community reconstruction; not checked against game captures.'),
     relevant[0]].filter(Boolean).join(' ')
     || 'Conditional preview under the selected model.';
@@ -139,7 +141,7 @@ export function renderResult(view, r) {
   get('q-status').textContent = r.blockers.length ? 'No export until the issues below are resolved.' : 'Settings ready to copy or download.';
   const warningText = r.warnings.map(w => typeof w === 'string' ? w : w.text);
   const relevant = warningText.filter(w =>
-    /conflict|cropped|large shape|No visible|outline replacement|zero-thickness|shift|limits/.test(w));
+    RELEVANT_WARNING.test(w));
   if (root.dataset.strategy === 'hedge' && r.convertedFit.iou !== 1) relevant.unshift('The automatic choice balances several models. Open the pixel measurements to see where this preview differs.');
   get('q-warnings').replaceChildren(...[...r.blockers, ...relevant].map(w => el('p', {}, w)));
   const e = r.experiment;

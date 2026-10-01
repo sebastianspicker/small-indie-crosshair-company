@@ -20,8 +20,8 @@ this document quotes it and must not become a second copy.
 | RGB components | `cl_crosshaircolor_r/g/b` | Same component names, 0–255 |
 | Dot | `cl_crosshairdot` | Retain boolean; preview shape tied to width |
 | T shape | `cl_crosshair_t` | Retain boolean |
-| Outline enabled | `cl_crosshair_drawoutline` | Retain toggle, not a verified width mapping |
-| Outline width | `cl_crosshair_outlinethickness` | No standalone equivalent found in the new inventory |
+| Outline enabled | `cl_crosshair_drawoutline` | Mode 0/1/2 from toggle and old width; not native-validated |
+| Outline width | `cl_crosshair_outlinethickness` | No standalone equivalent; width below 1 → half outline (2), 0 → off, 1 or more → full (1) |
 | Follow recoil | `cl_crosshair_recoil` | Retain preference, motion not modeled |
 | Weapon-dependent gap | `cl_crosshairgap_useweaponvalue` | No standalone equivalent found; conversion blocked |
 | Authored resolution | No equivalent in earlier inventory | `cl_crosshair_screen_height`, minimum 240 |
