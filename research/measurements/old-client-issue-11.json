@@ -1,0 +1,51 @@
+{
+  "schema": "sicc-old-client-observation-v1",
+  "id": "old-client-issue-11-size0",
+  "label": "user-supplied old-client observation",
+  "evidenceClass": "user-entered observation; not a native capture of build 2000922, not independently reviewed",
+  "registered": false,
+  "registrationNote": "Not in index.json nativeMeasurements and not accepted by lib/solver/observations.js: that intake only takes build 2000922 (or 2000914) records of kind native-user or synthetic, with observed length/width/near/far readings. This is a pre-update client, so it can neither be registered nor enter any holdout.",
+  "role": "calibration",
+  "roleNote": "Outside every holdout set. Used only to check the old-renderer outline model (leaked cstrike15 DrawCrosshairRect).",
+  "source": {
+    "issue": "issue #11 of this repository",
+    "imageUrl": "https://github.com/user-attachments/assets/9111d38a-fe7e-432f-bda3-27f1ce0d5495",
+    "imageStored": false,
+    "imageNote": "The image is not committed; fetch it from the URL and verify the hash.",
+    "sha256": "8c06350b289f1a959d0957a5886f68d0a2cd5113e7ca046268288410268bf115",
+    "format": "PNG, 8-bit RGBA, 1920x1080",
+    "attested": "reporter-supplied; unedited status not verifiable"
+  },
+  "client": "old (before the September 2026 crosshair update); exact build not recorded",
+  "resolution": { "width": 1920, "height": 1080 },
+  "centrePixel": { "x": 960, "y": 540 },
+  "settings": {
+    "cl_crosshairstyle": 4,
+    "cl_crosshairsize": 0,
+    "cl_crosshairthickness": 3.4,
+    "cl_crosshairgap": -5,
+    "cl_crosshair_drawoutline": 1,
+    "cl_crosshair_outlinethickness": 0.01,
+    "cl_crosshairdot": 0,
+    "colour": "white (255,255,255)",
+    "cl_crosshairalpha": 230
+  },
+  "observed": {
+    "description": "Four 1 px dark strokes forming a #; no coloured core.",
+    "rows": { "indices": [536, 542], "columnSpan": [958, 966] },
+    "columns": { "indices": [959, 965], "rowSpan": [535, 543] },
+    "relativeToCentre": {
+      "rows": [-4, 2], "columnSpan": [-2, 6], "columns": [-1, 5], "rowSpan": [-5, 3]
+    },
+    "pixelCount": 32,
+    "luma": { "background": "about 170 to 190", "stroke": "about 60", "crossings": "about 15" },
+    "lumaNote": "Fits black at alpha 230 blended in linear light; a reading from pixel values, not a colour-managed measurement."
+  },
+  "modelComparison": {
+    "model": "old-renderer: communityLegacy geometry (length 0, width 8, near 3) with legacyOutlineExtent {low 1, high 0}",
+    "predicted": { "rows": [-4, 2], "columnSpan": [-5, 3], "columns": [-4, 2], "rowSpan": [-5, 3] },
+    "result": "Rows match exactly. Columns are offset by +3 px in x (observed minus predicted); the cause is unexplained (equal to floor(7/2) under the truncation width model).",
+    "tool": "research calibration comparison (development tooling, not published), size0.png against case old-reporter-issue11, threshold 40",
+    "toolResult": { "bestOffset": { "dx": 3, "dy": 0 }, "iouAtBest": 1.0, "iouAtZero": 0.231, "pixelsObserved": 32, "pixelsPredicted": 32 }
+  }
+}

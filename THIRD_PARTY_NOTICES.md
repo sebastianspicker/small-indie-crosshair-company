@@ -13,6 +13,16 @@ Copyright (c) 2017-present AkiVer, under the MIT License. The complete required
 notice is retained in `licenses/akiver-MIT.txt`, and the original supplied notice
 remains at `research/archive/2026-09-23/LICENSE_csgo-sharecode.txt`.
 
+## patriQ cursed-crosshair-generator
+
+The read-only `CS…` share-code decoder in `lib/settings/sharecode-cs.js` is an
+independent implementation of the byte layout described in patriQ's
+[cursed-crosshair-generator](https://github.com/patriqcs/cursed-crosshair-generator/tree/fa88525f6dc6f0c2cd3474194b292d1be3730c1e)
+(`public/js/sharecode.js`), Copyright (c) 2026 patriQ, under the MIT License. The
+complete notice is retained in `licenses/cursed-crosshair-generator-MIT.txt`. The
+decoder's test vectors were cross-checked against that decoder and against
+SpiRaL-network/cs2-crosshair-lab, whose code is not used.
+
 ## Research references, not bundled engines
 
 The old geometry is an independently implemented mathematical reconstruction

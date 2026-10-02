@@ -1,13 +1,14 @@
 import { el, fmt, table } from '../ui/dom.js';
 import { paintQuant, fitZoom } from './preview.js';
-import { rgba, outlineMode } from '../../lib/settings/native.js';
+import { rgba, effectiveOutlineMode, legacyOutlineExtent, nativeOutlineExtent } from '../../lib/settings/native.js';
 const RELEVANT_WARNING =
-  /conflict|cropped|large shape|No visible|outline replacement|half outline|outline off|zero-thickness|shift|limits/;
+  /conflict|cropped|large shape|No visible|only outline strokes|outline replacement|half outline|outline off|zero-thickness|shift|limits/;
 import { scaleOf, EXPERT_MODELS } from '../../lib/solver/renderer.js';
 import { exportQuantCFG } from '../../lib/solver/export.js';
 import { rivalSummary } from '../../lib/solver/migration.js';
 import { modelName } from './view.js';
 import { drawingEdges } from '../../lib/geometry/raster.js';
+import { clearOutcomes } from './outcomes.js';
 export const percent = value => value == null ? 'Undefined' : `${(100 * value).toFixed(1)}%`;
 
 export function clearResult(view, state = 'pending', message = 'Calculating…') {
@@ -27,6 +28,7 @@ export function clearResult(view, state = 'pending', message = 'Calculating…')
     canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
   }
   for (const id of ['qs-length', 'qs-out-thickness', 'qs-out-gap']) get(id).textContent = '—';
+  clearOutcomes(view);
   get('qs-flags').textContent = ''; get('qs-commands').textContent = ''; get('qs-scale').textContent = '';
   get('qs-live').textContent = '';
   if (state === 'error') get('qs-note').textContent = '';
@@ -65,10 +67,11 @@ function renderMetrics(view, r) {
 export function renderPreviews(view, r, measuredMask = null) {
   if (!r) return;
   const { get } = view, c = rgba(r.settings), zoom = Number(get('q-zoom').value), grid = get('q-grid').checked;
-  paintQuant(get('q-old-canvas'), r.target, r.settings, c, zoom, null, { grid, mask: measuredMask });
-  paintQuant(get('q-naive-canvas'), r.naiveGeometry, r.settings, c, zoom, null, { grid });
+  const old = legacyOutlineExtent(r.settings), assumed = nativeOutlineExtent(r.settings, r.options.outlineMode);
+  paintQuant(get('q-old-canvas'), r.target, r.settings, c, zoom, null, { grid, mask: measuredMask, outline: old });
+  paintQuant(get('q-naive-canvas'), r.naiveGeometry, r.settings, c, zoom, null, { grid, outline: assumed });
   const reference = get('q-difference').checked ? measuredMask ?? r.target : null;
-  paintQuant(get('q-converted-canvas'), r.converted, r.settings, c, zoom, reference, { grid });
+  paintQuant(get('q-converted-canvas'), r.converted, r.settings, c, zoom, reference, { grid, outline: assumed });
 }
 
 function previewLabels(view, r) {
@@ -81,7 +84,8 @@ function previewLabels(view, r) {
   get('q-naive-note').textContent = `${percent(r.naiveFit.iou)} overlap in the preview. Copied with new integer limits.`;
   get('q-converted-note').textContent = `${percent(r.convertedFit.iou)} overlap in the selected model.`;
   get('q-renderer-note').textContent = `New preview: ${modelName(r.renderer)}. ` +
-    'Difference colors: light = shared, amber = extra, blue = missing. Outlines are excluded. ' +
+    'Difference colors: light = shared, amber = extra, blue = missing. Outlines (black, beneath the core) are not compared; ' +
+    'the new outline is assumed: 1 px all round, half = top and left. ' +
     (r.provenance ? r.provenance.scope : 'Gap scaling remains a hypothesis in the historical build 2000914 study.');
 }
 
@@ -91,19 +95,20 @@ export function renderSimple(view, report) {
   get('qs-length').textContent = fmt(n.length);
   get('qs-out-thickness').textContent = fmt(n.thickness);
   get('qs-out-gap').textContent = fmt(n.gap);
-  const flags = [s.dot ? 'center dot' : 'no center dot', s.t_style ? 'T shape' : 'cross', ['no outline', 'outline', 'half outline'][outlineMode(s)],
+  const flags = [s.dot ? 'center dot' : 'no center dot', s.t_style ? 'T shape' : 'cross', ['no outline', 'outline', 'half outline'][effectiveOutlineMode(s, report.options.outlineMode)],
     s.recoil ? 'follow recoil (not simulated)' : 'static'];
   get('qs-flags').textContent = `${flags.join(' · ')} · rgba(${c.rgb.join(', ')}, ${c.alpha})`;
   const warningText = report.warnings.map(w => typeof w === 'string' ? w : w.text);
   const gapScale = warningText.find(w => /Gap scaling is not stated in the build 2000914/.test(w));
-  const relevant = warningText.filter(w => RELEVANT_WARNING.test(w));
-  get('qs-note').textContent = [gapScale ?? (report.provenance && 'Community reconstruction; not checked against game captures.'),
-    relevant[0]].filter(Boolean).join(' ')
+  get('qs-note').textContent = (gapScale ?? (report.provenance && 'Community reconstruction; not checked against game captures.'))
     || 'Conditional preview under the selected model.';
-  const oldCanvas = get('qs-old-canvas'), zoom = fitZoom(oldCanvas, [report.target, report.converted], s);
-  paintQuant(oldCanvas, report.target, s, c, zoom, null, { grid: zoom >= 6, annotate: true });
-  paintQuant(get('qs-new-canvas'), report.converted, s, c, zoom, null, { grid: zoom >= 6, annotate: true });
-  get('qs-scale').textContent = `×${zoom} · one cell = one game pixel`;
+  const oldCanvas = get('qs-old-canvas'), zoom = fitZoom(oldCanvas, [report.target, report.converted], s,
+    [legacyOutlineExtent(s), nativeOutlineExtent(s, report.options.outlineMode)]);
+  paintQuant(oldCanvas, report.target, s, c, zoom, null, { grid: zoom >= 6, annotate: true, outline: legacyOutlineExtent(s) });
+  paintQuant(get('qs-new-canvas'), report.converted, s, c, zoom, null,
+    { grid: zoom >= 6, annotate: true, outline: nativeOutlineExtent(s, report.options.outlineMode) });
+  get('qs-scale').textContent = `×${zoom} · one cell = one game pixel` +
+    (effectiveOutlineMode(s, report.options.outlineMode) ? ' · outline black at crosshair opacity; new outline assumed, unverified' : '');
   const blocked = Boolean(report.blockers.length);
   view.root.dataset.blocked = String(blocked);
   const lines = blocked ? [] : exportQuantCFG(report).split('\n').filter(line => line && !line.startsWith('//'));

@@ -1,4 +1,4 @@
-import { raster, rectangles } from '../../lib/geometry/raster.js';
+import { raster, rectangles, outlineRaster } from '../../lib/geometry/raster.js';
 
 /** Plate colours come from the CSS tokens so the canvas and the page stay one system. */
 function palette() {
@@ -23,6 +23,15 @@ function registration(context, width, height, ox, oy, zoom, colors) {
   context.moveTo(cx, 0); context.lineTo(cx, tick); context.moveTo(cx, height - tick); context.lineTo(cx, height);
   context.moveTo(0, cy); context.lineTo(tick, cy); context.moveTo(width - tick, cy); context.lineTo(width, cy);
   context.stroke();
+}
+
+/** Outline layer: black at the crosshair opacity, drawn beneath the core like the game does. */
+function drawOutline(context, mask, width, height, zoom, color) {
+  const ox = Math.floor(width / 2), oy = Math.floor(height / 2), half = (mask.side - 1) / 2;
+  context.fillStyle = '#000'; context.globalAlpha = color.alpha / 255;
+  for (let i = 0; i < mask.data.length; i++)
+    if (mask.data[i]) context.fillRect(ox + (i % mask.side - half) * zoom, oy + (Math.floor(i / mask.side) - half) * zoom, zoom, zoom);
+  context.globalAlpha = 1;
 }
 
 function drawCells(context, mask, reference, width, height, zoom, color, colors) {
@@ -68,12 +77,13 @@ function dimensions(context, geometry, settings, width, height, zoom, colors) {
 }
 
 /** Largest integer magnification at which every mask fits comfortably on the canvas. */
-export function fitZoom(canvas, geometries, settings) {
+export function fitZoom(canvas, geometries, settings, outlines = []) {
   const rect = canvas.getBoundingClientRect(), room = Math.max(40, Math.min(rect.width, rect.height || 150)) / 2 * .56;
   let extent = 1;
-  for (const geometry of geometries) {
-    if (!geometry) continue;
-    const mask = geometry.data ? geometry : raster(geometry, settings), half = (mask.side - 1) / 2;
+  const masks = geometries.flatMap((geometry, index) => !geometry ? [] : [geometry.data ? geometry : raster(geometry, settings),
+    ...(outlines[index] && !geometry.data ? [outlineRaster(geometry, settings, outlines[index])] : [])]);
+  for (const mask of masks) {
+    const half = (mask.side - 1) / 2;
     for (let i = 0; i < mask.data.length; i++) {
       if (!mask.data[i]) continue;
       extent = Math.max(extent, Math.abs(i % mask.side - half) + .5, Math.abs(Math.floor(i / mask.side) - half) + .5);
@@ -94,6 +104,8 @@ export function paintQuant(canvas, geometry, settings, color, zoom = 6, differen
   const ox = Math.floor(width / 2), oy = Math.floor(height / 2);
   if (options.grid && zoom >= 4) grid(context, width, height, ox, oy, zoom, colors);
   registration(context, width, height, ox, oy, zoom, colors);
+  if (options.outline && !reference && !options.mask)
+    drawOutline(context, outlineRaster(geometry, settings, options.outline), width, height, zoom, color);
   drawCells(context, mask, reference, width, height, zoom, color, colors);
   if (options.annotate && !reference && !options.mask) dimensions(context, geometry, settings, width, height, zoom, colors);
 }

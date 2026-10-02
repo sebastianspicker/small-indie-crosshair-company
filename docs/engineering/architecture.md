@@ -15,7 +15,7 @@ app/        browser runtime            DOM, canvases, routing, worker transport
   └─ imports ─▶ lib/
 lib/        pure domain                no DOM, no worker globals, no network
   settings ◀─ geometry ◀─┬─ image
-                         ├─ solver     (community-static-v4; historical quant-static-v6)
+                         ├─ solver     (community-static-v5; historical quant-static-v6)
                          └─ manual     (manual lab, conditional-static-v4)
 data/       runtime data               the four JSON files the app fetches
 research/   evidence, never runtime    generated/, corpus/, comparisons/,
@@ -35,10 +35,10 @@ browser, in the worker and in Node. Five layers, each with one job:
 
 | Layer | Owns | May import |
 |---|---|---|
-| `lib/settings/` | What a setting *is*. Input validation primitives (`validation.js`), native cvar ranges, colour resolution and CFG command formatting (`native.js`), the frozen build-2000914 cvar inventory (`cvars.js`; the community model's native ranges and CFG export follow build 2000922), the legacy v1 share-code codec (`sharecode.js`, MIT-attributed), the allowlisted legacy CFG parser (`cfg.js`), and the single legacy-text import dispatch (`import.js`). | `settings` |
+| `lib/settings/` | What a setting *is*. Input validation primitives (`validation.js`), native cvar ranges, colour resolution and CFG command formatting (`native.js`), the frozen build-2000914 cvar inventory (`cvars.js`; the community model's native ranges and CFG export follow build 2000922), the legacy v1 share-code codec (`sharecode.js`, MIT-attributed), a read-only decoder for current `CS…` share codes (`sharecode-cs.js`), the per-setting outcome and confidence labels behind the "What changed" table (`outcomes.js`), the allowlisted legacy CFG parser (`cfg.js`), and the single legacy-text import dispatch (`import.js`). | `settings` |
 | `lib/geometry/` | What a crosshair *looks like*. Binary32 legacy geometry (`legacy.js`), the one integer quantizer (`quantize.js`), illustrative rasterization (`raster.js`), lossless shape and mask compilation (`pixel-shape.js`), and the 56-case legacy audit shared by the #evidence page and the archive reproduction (`audit.js`). | `geometry`, `settings` |
 | `lib/image/` | Reading pixels. Bounded PNG screenshot segmentation and native component measurement (`screenshot.js`, `components.js`). | `image`, `geometry`, `settings` |
-| `lib/solver/` | The default direct converter (`community.js`, `community-static-v4`) and historical 27-model study (`quant-static-v6`). Forward renderers (`renderer.js`), integer inverse (`inverse.js`), visual refinement (`visual.js`), decision rules (`selection.js`), opt-in certificates (`certify.js`), measurement evidence (`observations.js`, `evidence.js`, `community-evidence.js`), experiment design (`experiments.js`), corpus coverage (`corpus.js`, `statistics.js`), structural rivals (`structural.js`, `migration.js`), report/CFG export (`report.js`, `export.js`), and entry point `infer()` (`inference.js`). | `solver`, `geometry`, `settings` |
+| `lib/solver/` | The default direct converter (`community.js`, `community-static-v5`) and historical 27-model study (`quant-static-v6`). Forward renderers (`renderer.js`), integer inverse (`inverse.js`), visual refinement (`visual.js`), decision rules (`selection.js`), opt-in certificates (`certify.js`), measurement evidence (`observations.js`, `evidence.js`, `community-evidence.js`), shift-aligned overlap for tie ranking (`alignment.js`), experiment design (`experiments.js`), corpus coverage (`corpus.js`, `statistics.js`), structural rivals (`structural.js`, `migration.js`), report/CFG export (`report.js`, `export.js`), and entry point `infer()` (`inference.js`). | `solver`, `geometry`, `settings` |
 | `lib/manual/` | The manual lab (`conditional-static-v4`): the `convert()`/`exportCFG()` model with its `measured` gap branch (`conversion.js`) and the affine calibration fit plus `sicc-measurement-v1` schema (`calibration.js`). | `manual`, `geometry`, `settings` |
 
 `solver` and `manual` are deliberately separate conversion models, not two
@@ -61,6 +61,12 @@ build 2000918 records are rejected, and 2000922 records with a gap outside
 0..128 are reported outside the model domain and kept out of holdout validation.
 The v4 default targets build 2000922; its equations are carried over from v3
 unverified (see the [build 2000922 note](../research/build-2000922-update-2026-10-01.md)).
+v5 keeps the equations and changes only the tie-break: tied shapes are ranked by
+pixel overlap maximised over whole-shape shifts of at most 1 px (`alignment.js`),
+then plain overlap, then the canonical order, so the centring difference between
+the old and new renderers for odd widths no longer decides ties. Old styles 2, 3
+and 5, which the old source draws like style 4 at rest, export as Static Cross by
+default.
 
 The v3 solver preserves minimum length/width errors, recomputes radius for each
 tied width, and scores up to eight distinct shapes by exact overlap. The monotone
@@ -101,7 +107,8 @@ Supporting directories:
   Presets are memoized, so the workbench, calibration and evidence routes
   share one fetch, and #evidence no longer builds the workbench editor.
 - `app/convert/` is the automatic converter UI. `converter.js` boots the
-  route. `controller.js` owns the state (settings, result, measurements,
+  route. `outcomes.js` renders the "What changed" table, confidence chips,
+  warnings and limits line from the report. `controller.js` owns the state (settings, result, measurements,
   target override and mask, source), request generations and the 90 ms
   analysis debounce; text import has its own 250 ms debounce in `sources.js`.
   `view.js` builds the controls, `presentation.js` renders values, canvases,
@@ -149,17 +156,21 @@ them is a product change and needs a CHANGELOG entry.
 
 - **Downloads.**
   - Automatic converter: `small-indie-crosshair.cfg`, plus
-    `crosshair-quant-report.json` (schema `sicc-quant-report-v5`, model
-    `version` `community-static-v4` or `quant-static-v6`, `targetBuild`).
+    `crosshair-quant-report.json` (schema `sicc-quant-report-v6`, model
+    `version` `community-static-v5` or `quant-static-v6`, `targetBuild`;
+    reports carry `clamped[]`, `options` for the outline and style choices
+    and, in `settings`, `outline_width_rounded`).
     Every CFG export (automatic and manual) also emits
-    `cl_crosshairoutline_r 0`, `_g 0`, `_b 0` and `_a 255`.
+    `cl_crosshairoutline_r 0`, `_g 0`, `_b 0` and `_a` set to the old
+    crosshair opacity when the outline is on.
   - Workbench: `small-indie-candidate.cfg` and `small-indie-math-report.json`
     (`sicc-report-v1`).
   - Other routes: `crosshair-audit.json`, `small-indie-measurements.json`
     (`sicc-measurement-v1`) and `native-measurements.json`.
   - Reports carry model ids and schema ids. The `package.json` version
     appears only in `build-manifest.json`.
-- **Imports.** Legacy v1 share codes, the allowlisted legacy CFG subset
+- **Imports.** Legacy v1 share codes (a pasted current `CS…` code is read and
+  explained, not converted), the allowlisted legacy CFG subset
   (at most 32 KiB), measurement JSON, and PNG screenshots.
 - **Routes.** The six hash routes above, plus the notebook's
   `#chapter-N` anchors.

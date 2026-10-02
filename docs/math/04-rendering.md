@@ -172,10 +172,43 @@ zero-width border draws nothing; and 1 or more to the full outline. The width it
 is not mapped through the arm-length factor. The half-outline mapping follows Valve's
 note and user reports (issue #11), not native captures.
 
-The preview draws a one-pixel expanded black border for illustration, then the colored
-core. That is not a verified implementation of native outline joins, overlapping alpha
-or antialiasing. The geometry-mask score ignores it. Turn outlines off when calibrating
-the core geometry, then assess the outline separately.
+The old outline is the leaked cstrike15 `CWeaponCSBase::DrawCrosshairRect`. With
+`cl_crosshair_drawoutline` on it sets the colour to black with the crosshair alpha, then
+calls `DrawFilledRect(x0 - t, y0 - t, x1 + t, y1 + t)` with the float outline thickness
+`t` truncated to an int. At screen-positive coordinates the truncation moves the low
+(left, top) edges out by ceil(t) and the high (right, bottom) edges by floor(t):
+t = 0 adds nothing, t = 0.01 or 0.5 adds one pixel left/top only, t = 1 one pixel all
+round, t = 1.5 two low and one high. Every bar and the dot is drawn this way, so a
+zero-length bar (`cl_crosshairsize 0`) still leaves its outline: style 4, size 0,
+thickness 3.4, gap -5, t = 0.01 at 1080p is four 1 px strokes (two 1 x 9 vertical, two
+9 x 1 horizontal, 6 px apart) forming a small `#` and no core, confirmed by a user
+screenshot whose strokes blend as black at the crosshair alpha (230). A share-code width
+0 is read as t < 0.5. A Static Cross with visible arms cannot draw such parallel
+strokes; the export keeps length 0, which reproduces the shape only if the new game still
+outlines zero-length bars (unverified). The report warns `outline-only-legacy` instead of
+`empty-geometry`.
+
+The preview draws this outline layer in black at the crosshair alpha beneath the core
+for the old crosshair. The new preview applies an assumed rule, unverified: mode 1 one
+pixel all round, mode 2 one pixel left/top; whether the new game outlines zero-length
+bars is unknown. Because the old outline used the crosshair opacity, the export sets
+`cl_crosshairoutline_a` to the old opacity (255 with the outline off); if build 2000922
+also multiplies it by `cl_crosshaircolor_a` the outline is lighter. The geometry-mask
+score ignores the outline layer. Turn outlines off when calibrating the core geometry,
+then assess the outline separately.
+
+Two further observations (October 2, 2026; labels as in the
+[build note addendum](../research/build-2000922-update-2026-10-01.md#2026-10-02-addendum)).
+The 2000922 shader (verified) tests a rectangle as `p >= xy && p <= zw` on integer
+pixels and the outline as `p >= xy - m3.x && p <= zw + m3.y`, so the two corners expand
+separately; this is consistent with a half outline that grows only left and top
+(inferred). A fractional `m3` therefore acts as a floor and any rounding happens on the
+CPU, which is not observable. Whether a zero-length bar is an empty rectangle (an
+outline-only result is possible) or a one-pixel rectangle is open. Second, the reporter's
+screenshot matches the old model's rows exactly but its columns lie +3 px in x; the
+shape is otherwise exact (harness result in the addendum), and the cause is unexplained.
+The [October 2 protocol](../research/capture-protocol-2026-10-02.md) cases `s8-*` and
+`s9-*` target both questions.
 
 Dot-only legacy constructions are kept as style 4 plus zero arm length and an enabled
 dot. The new style-6 Dot Only option exists in the inventory, but identical native shape
