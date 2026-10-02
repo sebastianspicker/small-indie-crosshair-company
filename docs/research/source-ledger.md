@@ -5,7 +5,8 @@ about the game. Public source files are linked rather than republished wholesale
 The original archive provides the chain of custody for the prior research.
 
 The [October 1 note](build-2000922-update-2026-10-01.md) adds build 2000922
-(see [S11](#s11-build-2000922-inventory)).
+(see [S11](#s11-build-2000922-inventory)). The 2026-10-02 additions are
+[S12](#s12-other-converters-and-calibration-tools) to [S14](#s14-leaked-old-renderer-source-and-the-reporters-screenshot).
 
 ## S01 Old static geometry
 
@@ -151,6 +152,59 @@ the changelog table and reproduction steps are in the
 **Does not support:** native pixel behaviour of any setting, negative gaps on
 static styles, or the new share-code layout.
 
+## S12 Other converters and calibration tools
+
+Source-level study on 2026-10-02 (code read, not run against the game). Licences
+decide what may be reused: this project copies none of them. Decompile-derived
+constants are **stated** (a claim by the tool's author), not verified.
+
+| Tool | Revision | Licence | Evidence class | Findings |
+|---|---|---|---|---|
+| JDD310 / CS2-Crosshair-Converter | `013c559` | MIT | Stated (community model) | Our output equals it on five test inputs; the community model's formulas are the same family |
+| Horizzon1 | `3a867cc` | not recorded | Stated | Gap `+ thick % 2`, stale clamps, no `screen_height` |
+| patriqcs / cursed-crosshair-generator | `fa88525` | MIT | Stated; has calibration tools | Gap `+ floor(thick / 2)`; drops the outline when the stored width is 0 |
+| SpiRaL-network / cs2-crosshair-lab | `72e81b8` | none (all rights reserved) | Stated; read only | Scales the legacy gap by H / 480, which contradicts S01 |
+| akiver / csgo-sharecode | v6.0.0 `996e37e` | MIT | Stated (share-code codec) | Reference for the legacy v1 code layout |
+| unicbm / demotracer | not recorded | AGPL | Not used | Do not copy or derive from it |
+| crosshairrestore.com | n/a (closed) | closed | Claim only | Claims 13 holdout captures; none are available to inspect |
+
+**Supports:** that independent reimplementations agree on length and width and differ
+on the gap origin and outline handling, which are the open questions in the
+[October 2 protocol](capture-protocol-2026-10-02.md).
+
+**Does not support:** any native pixel claim. Agreement between tools is not
+validation: they share assumptions.
+
+## S13 Game dumps before and after the update
+
+SteamDatabase / GameTracking-CS2, builds 2000691 through 2000922 (`d8e2c7a` is the last
+pre-update build 2000908; `10f3693` 2000913 first shows the crosshair material;
+`18d0779` 2000915 the first shader dump; `3b5862a`, `42d0ddd`, `6ac2479` as in the
+[October 1 note](build-2000922-update-2026-10-01.md#2026-10-02-addendum)).
+
+**Supports** (verified in the dumps): the shader's inclusive integer bounds and
+independent outline expansion, the removal of the Panorama crosshair panel and of
+per-weapon gap data, the per-style UI controls, the removed names that survive as
+strings.
+
+**Does not support:** CPU-side layout arithmetic, which is compiled, or any native pixel
+result.
+
+## S14 Leaked old-renderer source and the reporter's screenshot
+
+Leaked cstrike15 `weapon_csbase.cpp`, `perilouswithadollarsign/cstrike15_src`
+`f82112a` (stated; a leak). User screenshot from issue #11, recorded in
+`research/measurements/old-client-issue-11.json` (user-supplied old-client observation,
+SHA-256 `8c06350b289f1a959d0957a5886f68d0a2cd5113e7ca046268288410268bf115`).
+
+**Supports:** the old outline rule `DrawFilledRect(x0 - t, y0 - t, x1 + t, y1 + t)` with
+float truncation, outline alpha equal to crosshair alpha, and the rows of the reporter's
+`#`. A research comparison reproduces the shape exactly at a +3 px x offset.
+
+**Does not support:** an explanation of the +3 px offset, behaviour of the new client,
+or any holdout use: the observation is outside every holdout and outside the measurement
+intake.
+
 ## Claim-to-artifact traceability
 
 | Claim / hypothesis | Evidence | Implementation / artifact |
@@ -168,6 +222,9 @@ static styles, or the new share-code layout.
 | Structural gap-scale rival is not the default | This plan; zero native pairs | `research/generated/structural-disagreement.json` |
 | Pixel-copy and rename candidates disagree | S01 + S03 recomputation | `lib/solver/migration.js` |
 | Residual modulation stays closed | Zero reviewed native pairs | `research/generated/quant-modulator.json` |
+| Old outline grows low edges by ceil(t), high by floor(t) | S14 (stated leak) + reporter's rows | `legacyOutlineExtent`; `research/measurements/old-client-issue-11.json` |
+| Reporter `#` matches the old model up to +3 px in x | S14 | `research/measurements/old-client-issue-11.json` |
+| Shader rect bounds are inclusive with separate outline min/max | S13 (verified) | Documentation only; no code depends on it |
 | Exact game compatibility | No shipped evidence | No production claim or native-verified fixture |
 
 

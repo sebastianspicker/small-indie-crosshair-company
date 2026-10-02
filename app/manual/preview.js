@@ -1,6 +1,6 @@
-import { raster, compareMasks } from '../../lib/geometry/raster.js';
+import { raster, compareMasks, outlineRaster } from '../../lib/geometry/raster.js';
 const token=(css,name,fallback)=>css.getPropertyValue(name).trim()||fallback;
-export function paint(canvas,geometry,flags,rgba,view,other=null) {
+export function paint(canvas,geometry,flags,rgba,view,other=null,outline=null) {
   const ctx=canvas.getContext('2d'),dpr=window.devicePixelRatio||1,css=getComputedStyle(document.documentElement);
   const rect=canvas.getBoundingClientRect(),cssW=Math.max(200,rect.width),cssH=Math.max(100,rect.height||300);
   canvas.width=Math.round(cssW*dpr);canvas.height=Math.round(cssH*dpr);
@@ -15,9 +15,10 @@ export function paint(canvas,geometry,flags,rgba,view,other=null) {
   const a=raster(geometry,flags),b=other?raster(other,flags):null,half=(a.side-1)/2;
   ctx.globalAlpha=.35;ctx.strokeStyle=token(css,'--plate-ink','#92948c');ctx.setLineDash([3,5]);ctx.beginPath();
   ctx.moveTo(ox+sx/2,0);ctx.lineTo(ox+sx/2,cssH);ctx.moveTo(0,oy+z/2);ctx.lineTo(cssW,oy+z/2);ctx.stroke();ctx.setLineDash([]);ctx.globalAlpha=1;
-  if(flags.outline && !other) {
+  if(outline && !other) {
+    const o=outlineRaster(geometry,flags,outline);
     ctx.fillStyle='#000';ctx.globalAlpha=rgba.alpha/255;
-    a.data.forEach((v,i)=>{if(v){const x=i%a.side-half,y=Math.floor(i/a.side)-half;ctx.fillRect(ox+(x-1)*sx,oy+(y-1)*z,3*sx,3*z);}});
+    o.data.forEach((v,i)=>{if(v){const x=i%o.side-half,y=Math.floor(i/o.side)-half;ctx.fillRect(ox+x*sx,oy+y*z,sx,z);}});
   }
   ctx.fillStyle=`rgb(${rgba.rgb.join(',')})`;ctx.globalAlpha=rgba.alpha/255;
   for(let i=0;i<a.data.length;i++) {

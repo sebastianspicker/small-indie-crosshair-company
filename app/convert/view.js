@@ -2,6 +2,11 @@ import { el, docLink, sheetHead, SNAPSHOT } from '../ui/dom.js';
 import { EXPERT_MODELS } from '../../lib/solver/renderer.js';
 import { HEDGE_MODEL } from '../../lib/solver/selection.js';
 import { COMMUNITY_MODEL } from '../../lib/geometry/community.js';
+import { CURRENT_INVENTORY_BUILD, CURRENT_INVENTORY_RETRIEVED } from '../../lib/settings/cvars.js';
+
+const LIMITS_LINE = 'Modelled from the old renderer source and community measurements; not yet checked against in-game captures. ' +
+  'Compare in game before relying on it.';
+const BUILD_LINE = `Checked against CS2 build ${CURRENT_INVENTORY_BUILD} (convar dump, ${CURRENT_INVENTORY_RETRIEVED})`;
 
 export const labels = { authored: 'Authored height', reference1080: '1080 reference', reference720: '720 reference',
   thickness: 'Thickness-relative', center: 'Center-relative', opening: 'Full opening' };
@@ -10,12 +15,22 @@ const detail = (id, title, ...children) => el('details', { id }, el('summary', {
 const field = (id, label, type, attrs = {}) => el('div', {}, el('label', { for: id }, label), el('input', { id, type, ...attrs }));
 const check = (id, label) => el('label', { class: 'check' }, el('input', { id, type: 'checkbox' }), label);
 const option = (value, name) => el('option', { value }, name);
+const OUTLINE_OPTIONS = [['auto', 'Auto from old settings'], ['0', 'None'], ['1', 'Full'], ['2', 'Half']];
+const STYLE_OPTIONS = [['static', 'Static Cross'], ['family', 'Keep old style family (experimental)']];
+const exportSelects = prefix => [
+  el('label', { for: `${prefix}-outline` }, 'Outline'),
+  el('select', { id: `${prefix}-outline` }, ...OUTLINE_OPTIONS.map(([value, name]) => option(value, name))),
+  el('label', { for: `${prefix}-style` }, 'Style'),
+  el('select', { id: `${prefix}-style` }, ...STYLE_OPTIONS.map(([value, name]) => option(value, name))),
+  el('p', { class: 'small' }, 'Both mappings are unverified in game. Auto derives the outline mode from the old settings; ' +
+    'the experimental style keeps old styles 2, 3 and 5 as new 2 or 5, which move with inaccuracy and shots.')];
 const status = id => el('p', { id, class: 'small', role: 'status' });
 const simpleField = (id, label, attrs) => el('div', {}, el('label', { for: id }, label), el('input', { id, ...attrs }));
 const step = (index, title, ...children) => el('fieldset', { class: 'qs-step' },
   el('legend', {}, el('span', { class: 'step-no' }, index), title), ...children);
-const readout = (id, label, cvar) => el('div', { class: 'readout-item' },
-  el('dt', {}, label), el('dd', { id, class: 'simple-value' }, '—'), el('dd', { class: 'readout-cvar' }, cvar));
+const readout = (id, label, cvar, chip) => el('div', { class: 'readout-item' },
+  el('dt', {}, label), el('dd', { id, class: 'simple-value' }, '—'),
+  el('dd', { class: 'readout-cvar' }, cvar), el('dd', { id: chip, class: 'confidence-chip' }));
 const plate = (id, title, index, label) => el('figure', { class: 'quant-preview plate' },
   el('figcaption', {}, el('span', {}, title), el('span', { class: 'preview-index' }, index)),
   el('canvas', { id, role: 'img', 'aria-label': label }));
@@ -37,18 +52,27 @@ function simplePanel() {
         plate('qs-old-canvas', 'Old', 'before', 'Historical reconstructed crosshair'),
         plate('qs-new-canvas', 'New', 'after', 'Proposed crosshair candidate simulation'),
         el('p', { id: 'qs-scale', class: 'plate-scale', 'aria-hidden': 'true' })),
-      el('dl', { class: 'readout simple-values' }, readout('qs-length', 'Length', 'cl_crosshair_length'),
-        readout('qs-out-thickness', 'Thickness', 'cl_crosshair_thickness'), readout('qs-out-gap', 'Gap', 'cl_crosshair_gap')),
+      el('dl', { class: 'readout simple-values' }, readout('qs-length', 'Length', 'cl_crosshair_length', 'qs-conf-length'),
+        readout('qs-out-thickness', 'Thickness', 'cl_crosshair_thickness', 'qs-conf-thickness'),
+        readout('qs-out-gap', 'Gap', 'cl_crosshair_gap', 'qs-conf-gap')),
       el('p', { id: 'qs-flags', class: 'simple-flags' }),
+      el('p', { id: 'qs-backup', class: 'qs-backup' }, 'Save your current crosshair first (copy its share code from the game).'),
       el('div', { class: 'export-actions simple-actions' },
         el('button', { id: 'qs-copy', type: 'button', class: 'button primary', disabled: true }, 'Copy commands'),
         el('button', { id: 'qs-download', type: 'button', class: 'button secondary', disabled: true }, 'Download .cfg'),
         el('button', { id: 'qs-advanced', type: 'button', class: 'button ghost' }, 'Open the expert lab →')),
+      el('p', { id: 'qs-limits', class: 'qs-limits' }, LIMITS_LINE),
+      el('p', { id: 'qs-build', class: 'small qs-build' }, BUILD_LINE),
       el('div', { class: 'console-block' },
         el('div', { class: 'console-head' }, el('h3', { id: 'qs-commands-title' }, 'Console lines'),
           el('span', { class: 'small' }, 'Paste or type them in order')),
         el('pre', { id: 'qs-commands', class: 'command-list', tabindex: 0, 'aria-labelledby': 'qs-commands-title' })),
-      el('p', { id: 'qs-note', class: 'qs-note' })),
+      el('p', { id: 'qs-note', class: 'qs-note' }),
+      el('section', { class: 'qs-changes', 'aria-labelledby': 'qs-changes-title' },
+        el('h3', { id: 'qs-changes-title' }, 'What changed'),
+        el('div', { id: 'qs-outcomes' }),
+        el('h3', { id: 'qs-warnings-title', class: 'qs-warnings-title' }, 'Limits of this result'),
+        el('ul', { id: 'qs-warnings', class: 'qs-warnings', 'aria-labelledby': 'qs-warnings-title' }))),
     step('B', 'Old values',
       el('div', { class: 'input-grid triple' },
         simpleField('qs-size', 'Size', { type: 'number', min: 0, max: 10000, step: 'any', inputmode: 'decimal' }),
@@ -63,7 +87,9 @@ function simplePanel() {
       el('select', { id: 'qs-goal' }, option('pixels', 'the same size in game pixels'), option('screen', 'the same share of the screen'))),
     step('D', 'Color',
       el('div', { class: 'input-grid' }, simpleField('qs-color', 'Color', { type: 'color', value: '#00ff00' }),
-        simpleField('qs-alpha', 'Opacity · 0–255', { type: 'number', min: 0, max: 255, step: 1, value: 255 }))));
+        simpleField('qs-alpha', 'Opacity · 0–255', { type: 'number', min: 0, max: 255, step: 1, value: 255 }))),
+    el('details', { id: 'qs-export-options', class: 'qs-export-options' },
+      el('summary', {}, 'Advanced export options'), ...exportSelects('qs')));
 }
 
 function sourcePanel(meta) {
@@ -99,7 +125,8 @@ function appearanceControls() {
     el('label', { for: 'q-decision' }, 'When models disagree'), el('select', { id: 'q-decision' },
       option('expected', 'Lowest weighted mismatch'), option('worst', 'Limit the largest mismatch'),
       option('cvar', 'Limit weighted worst tail (CVaR)')),
-    el('p', { class: 'small' }, 'Historical models only. The community default preserves dimensions, then fits the centre radius.'));
+    el('p', { class: 'small' }, 'Historical models only. The community default preserves dimensions, then fits the centre radius.'),
+    el('h3', {}, 'Export options (unverified)'), ...exportSelects('q'));
 }
 
 function valueTable() {
@@ -149,6 +176,7 @@ function resultsPanel() {
     el('p', { class: 'small' }, 'Six choices: the community default, a historical hedge, and four authored-height alternatives. ',
       docLink('research/converter-audit-2026-09-29.md', 'Sources and comparison')),
     valueTable(), el('p', { id: 'q-target-line', class: 'target-line' }),
+    detail('q-outcomes-panel', 'What happened to each old setting', el('div', { id: 'q-outcomes' })),
     detail('q-derivation-panel', 'Pixel measurements and differences', el('div', { id: 'q-derivation' }),
       docLink('math/12-community-conversion.md', 'How the current values are calculated')),
     status('q-status'), el('div', { id: 'q-warnings', class: 'warnings', role: 'alert' }), previewPanel(),

@@ -1,6 +1,6 @@
 # 12 — Source-labelled static conversion and smaller choices
 
-The default is now `community-static-v4` for inspected build 2000922
+The default is now `community-static-v5` for inspected build 2000922
 (thickness range 0..32; the equations below are unchanged from v3 and an
 unverified carry-over, see the
 [October 1 note](../research/build-2000922-update-2026-10-01.md)).
@@ -48,6 +48,19 @@ diagnostic, not globally minimized across widths. This improves 750 of 8,640
 synthetic cases versus v2 with no regressions. It does not establish global visual
 optimality over arbitrary dimensions or gaps. V2 and its study remain frozen.
 
+Version 5 changes only the tie ranking. Old odd-width bars are centred on
+`-floor(W/2)` and new ones on `-ceil(W/2)`, and no cvar moves the whole
+crosshair, so absolute overlap rewarded shapes that cover the misplaced centre.
+Tied shapes are now ranked by the aligned overlap
+
+```text
+alignedIoU(A, B) = max over dx, dy in {-1, 0, 1} of IoU(A shifted by (dx, dy), B)
+```
+
+then by plain overlap, then by the canonical ordering. Equal-height
+conversions have no ties and are unchanged; on the corpus, 74 of 1,755
+record-scope rows (48 records) change, all at cross heights.
+
 New bars use the transverse interval `[-ceil(W/2), floor(W/2))`. Left arms end
 at `-gap`; right arms start at `gap - (W % 2)`. Old odd-width bars sit one pixel
 differently. The preview retains this shift instead of silently aligning images
@@ -57,13 +70,25 @@ For the screen-relative goal, scale old *drawn* edges and transverse origin
 before rasterizing. Scaling raw arithmetic offsets and then applying a parity
 correction would create a false extra pixel for doubled even-width bars.
 
+## Open calibration questions (October 2, 2026)
+
+The v4 equations stay unverified on build 2000922. The shader's integer-bounds rule is
+verified for rectangles, but the CPU layout that supplies the bounds is not observable
+(see the [build note addendum](../research/build-2000922-update-2026-10-01.md#2026-10-02-addendum)).
+Open: the gap origin at odd thickness (ceil against floor, `s9-*`), negative gaps on
+static styles (`s1-t2-gm2`), zero-length bars with outlines (`s8-*`), the outline alpha
+rule (`s10-*`) and the styles 2, 3, 5, 6, 8 and 9 without a model. The research-only
+harness (development tooling, not published) prints the console lines and the
+predicted mask for each case and scores a screenshot against it, including a
+best-offset search. Neither enters the runtime.
+
 ## Evidence and interface
 
 The six UI choices are the community default, historical hedge and four
 authored-height controls. The full factorial remains a historical research
 comparison. Imported measurements are scoped to their build; the new direct
 model reports measurement residuals without inventing probability weights.
-The report schema is `sicc-quant-report-v5`. An unavailable pixel preimage has
+The report schema is `sicc-quant-report-v6`. An unavailable pixel preimage has
 `complete: false` and `count: null`, never an unrelated exact-match count.
 
 ## Learning after the audit

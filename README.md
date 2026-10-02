@@ -11,10 +11,12 @@ settings. The app runs in your browser without an account or backend.
 > the new renderers are hypotheses. No original old/new game capture pairs are
 > included. A perfect preview match does not establish an in-game match.
 
-Default model **`community-static-v4`** · inspected build **2000922** ·
+Default model **`community-static-v5`** · inspected build **2000922** ·
 [build update, October 1](docs/research/build-2000922-update-2026-10-01.md) ·
+[learner findings, October 2](docs/research/learners-2026-10-02.md) ·
 [conversion audit, September 29](docs/research/converter-audit-2026-09-29.md).
-The v4 equations are an unverified carry-over from v3 across Valve's renderer rewrite.
+The forward equations are an unverified carry-over from v3 across Valve's renderer rewrite;
+v5 only ranks equally accurate choices with the odd-width centring shift removed.
 The September 23 corpus, historical `quant-static-v6` family and manual
 `conditional-static-v4` lab remain separate comparisons.
 
@@ -43,10 +45,20 @@ saved to your device. The interface follows your system's light or dark theme.
 4. Download the config. The JSON report includes the selected model, assumptions,
    residuals, and search trace.
 
-Static style 4 is supported, including dots and T shapes. Dynamic styles and
-weapon-dependent gaps are blocked. Outlines, blending, and recoil motion are
-not certified by colored-core matching. New share-code encoding is not implemented;
-export uses cvar commands.
+Static style 4 is supported, including dots and T shapes. Old styles 2, 3 and 5
+export as Static Cross by default, because the old source draws them like style 4
+at rest; an opt-in style option keeps the old family (experimental). Old styles 0
+and 1 and weapon-dependent gaps are blocked. Outlines are drawn beneath the
+core, but blending and recoil motion are not certified by colored-core matching.
+Outline mode (Auto, None, Full, Half) can be overridden; the choice is recorded in
+the report. New share-code encoding is not implemented; export uses cvar commands.
+A pasted current `CS…` share code is read-only: the app lists its values and says
+it already uses the new settings.
+
+Beside the answer, a **What changed** table gives each setting a status
+(converted, approximated, assumed, dropped, ignored or user choice) and its
+reason. Per-value confidence chips, a warnings list, a limits line next to
+Copy/Download and the checked build (2000922, convar dump 2026-10-01) sit with it.
 
 ## Screenshot tour
 
@@ -129,6 +141,10 @@ repository and enable Pages. To preview the same static build locally:
 npm run build
 npm run preview
 ```
+
+Reports use schema `sicc-quant-report-v6`; they carry `clamped[]` (outputs that
+were clamped or approximated), `options` (outline mode, style target) and, in
+`settings`, `outline_width_rounded`.
 
 ## Research reports and source layout
 

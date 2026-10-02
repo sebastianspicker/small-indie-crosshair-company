@@ -21,7 +21,10 @@ this document quotes it and must not become a second copy.
 | Dot | `cl_crosshairdot` | Retain boolean; preview shape tied to width |
 | T shape | `cl_crosshair_t` | Retain boolean |
 | Outline enabled | `cl_crosshair_drawoutline` | Mode 0/1/2 from toggle and old width; not native-validated |
-| Outline width | `cl_crosshair_outlinethickness` | No standalone equivalent; width below 1 → half outline (2), 0 → off, 1 or more → full (1) |
+| Outline width | `cl_crosshair_outlinethickness` | No standalone equivalent; width below 1 → half outline (2), 1 or more → full (1); a CFG width of exactly 0 → off, but a share-code 0 (0.5-step rounding, any width below 0.5) → half (2) |
+| Outline mode (opt-in override) | `cl_crosshair_drawoutline` | Export option Outline: Auto (default, mapping above), None (0), Full (1) or Half (2). Unverified in game; reports record `options.outlineMode`, add warning `outline-user-override` and mark the "What changed" rows `user-choice`. Geometry numbers do not change |
+| Style target (opt-in) | `cl_crosshairstyle` | Default: old 2, 3 and 5 export Static Cross (4) with warning `style-dynamic-at-rest` (the "What changed" row is `approximated`); old 0 and 1 stay blocked. Export option "Keep the old style family (experimental)": old 2 and 3 → 2, old 5 → 5, others → 4. Old styles 2/3/5 drew exactly like style 4 at rest (leaked old source), so the at-rest numbers stay the same, but the new styles 2 and 5 are dynamic (they move with inaccuracy and shots) and their at-rest pixels are unverified. Warning `style-family-experimental`; reports record `options.styleTarget`; without the option old styles other than 4 stay blocked |
+| Outline opacity | none (old outline used the crosshair alpha) | `cl_crosshairoutline_a` is set to the old crosshair opacity (255 with the outline off); verified in the old source and a user screenshot, but whether 2000922 also multiplies by `cl_crosshaircolor_a` is unverified |
 | Follow recoil | `cl_crosshair_recoil` | Retain preference, motion not modeled |
 | Weapon-dependent gap | `cl_crosshairgap_useweaponvalue` | No standalone equivalent found; conversion blocked |
 | Authored resolution | No equivalent in earlier inventory | `cl_crosshair_screen_height`, minimum 240 |
@@ -53,16 +56,24 @@ The new inventory enumerates:
 |---:|---|---|---|
 | 0 | Dynamic Cross | Yes | No |
 | 1 | Dynamic Circle | Yes | No |
-| 2 | Dynamic Cross (Legacy) | No time model | No; do not treat as the old classic |
+| 2 | Dynamic Cross (Classic) | No time model | Opt-in only (experimental style target) |
 | 3 | Static Circle | No | No |
 | 4 | Static Cross | No | Yes, conditional static geometry |
-| 5 | Static Cross (Shot Feedback) | Firing feedback, not modeled | No |
+| 5 | Dynamic Cross (Legacy/Shot Feedback) | Firing feedback, not modeled | Opt-in only (experimental style target) |
 | 6 | Dot Only | No | Not substituted for old style-4 dot construction |
-| 7 | Dynamic Quad (new default) | Yes | No |
+| 7 | Dynamic Quadrant (new default) | Yes | No |
+| 8 | Static Square | No | No |
+| 9 | Static Quadrant | No | No |
+
+Labels are the build 2000922 UI strings (`uiLabel` in `lib/settings/cvars.js`). For
+style 5 the convar description still says "Static Cross (Shot Feedback)" and the tooltip
+"Dynamic Cross (Legacy)"; the UI label wins here and the conflict is unresolved. Before
+2000922 the 2000914 dump labelled 2 "Dynamic Cross (Legacy)".
 
 The earlier dump describes old disabled/reassigned style meanings for some of these
 identifiers. Do not preserve an integer and assume the semantics survived. The generated
-static configuration explicitly selects style 4. Direct dot designs use style 4, zero
+static configuration explicitly selects style 4 unless the user opts in to the
+experimental old-family target (see the style-target row above). Direct dot designs use style 4, zero
 arm length and a center dot until native style-6 equivalence is measured.
 
 ## Dynamic settings that survive are not automatically calibrated

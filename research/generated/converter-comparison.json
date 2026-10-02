@@ -635,5 +635,2410 @@
     "tested": 945,
     "dimensionDisagreements": 276,
     "weighting": "Record-height rows; duplicate settings are retained. This is not an independent sample count."
+  },
+  "crossTool": {
+    "scope": "Equal old/new/authored height. Clean-room restatements of published formulas; no third-party code. All tools share length = roundEven(size*H/480), thickness = max(1, roundEven(thickness*H/480)) in double precision, gap = trunc(4 + gap) + origin(thickness), native clamps 0..255 / 1..32 / 0..128; only origin differs. Software agreement only, never game evidence. Outlier = ours differs from every tool.",
+    "tools": {
+      "jdd310": {
+        "originFormula": "ceil(thickness / 2)",
+        "source": "JDD310/CS2-Crosshair-Converter 013c559 (MIT), source ledger S12; formula restated, stated evidence"
+      },
+      "cursed": {
+        "originFormula": "floor(thickness / 2)",
+        "source": "patriqcs/cursed-crosshair-generator fa88525 (MIT), source ledger S12; formula restated, stated evidence"
+      },
+      "horizzon1": {
+        "originFormula": "thickness % 2",
+        "source": "Horizzon1 3a867cc (licence not recorded), source ledger S12; formula restated, stated evidence. Its own stale gap clamp is replaced by 0..128 to isolate the origin term"
+      },
+      "crosshairrestore": {
+        "originFormula": "ceil(thickness / 2) (assumed)",
+        "source": "crosshairrestore.com/conversion-method (closed), source ledger S12: half-even old dimensions and a centre-based new gap. The page gives no explicit odd-width origin; the centre reading equals JDD310. Claim only"
+      }
+    },
+    "probes": [
+      {
+        "id": "a",
+        "code": "CSGO-jZPWn-QfvO3-czHYc-vTr8W-qDZ2Q",
+        "settings": {
+          "size": 1.5,
+          "thickness": 0,
+          "gap": -2
+        },
+        "height": 1080,
+        "reportedJdd310": [
+          3,
+          1,
+          3
+        ],
+        "ours": [
+          3,
+          1,
+          3
+        ],
+        "tools": {
+          "jdd310": [
+            3,
+            1,
+            3
+          ],
+          "cursed": [
+            3,
+            1,
+            2
+          ],
+          "horizzon1": [
+            3,
+            1,
+            3
+          ],
+          "crosshairrestore": [
+            3,
+            1,
+            3
+          ]
+        }
+      },
+      {
+        "id": "b",
+        "settings": {
+          "size": 0,
+          "thickness": 3.4,
+          "gap": -5
+        },
+        "height": 1080,
+        "reportedJdd310": [
+          0,
+          8,
+          3
+        ],
+        "ours": [
+          0,
+          8,
+          3
+        ],
+        "tools": {
+          "jdd310": [
+            0,
+            8,
+            3
+          ],
+          "cursed": [
+            0,
+            8,
+            3
+          ],
+          "horizzon1": [
+            0,
+            8,
+            0
+          ],
+          "crosshairrestore": [
+            0,
+            8,
+            3
+          ]
+        }
+      },
+      {
+        "id": "c",
+        "settings": {
+          "size": 2.5,
+          "thickness": 1,
+          "gap": -2.5
+        },
+        "height": 1080,
+        "reportedJdd310": [
+          6,
+          2,
+          2
+        ],
+        "ours": [
+          6,
+          2,
+          2
+        ],
+        "tools": {
+          "jdd310": [
+            6,
+            2,
+            2
+          ],
+          "cursed": [
+            6,
+            2,
+            2
+          ],
+          "horizzon1": [
+            6,
+            2,
+            1
+          ],
+          "crosshairrestore": [
+            6,
+            2,
+            2
+          ]
+        }
+      },
+      {
+        "id": "d",
+        "settings": {
+          "size": 1,
+          "thickness": 0,
+          "gap": -4
+        },
+        "height": 1080,
+        "reportedJdd310": [
+          2,
+          1,
+          1
+        ],
+        "ours": [
+          2,
+          1,
+          1
+        ],
+        "tools": {
+          "jdd310": [
+            2,
+            1,
+            1
+          ],
+          "cursed": [
+            2,
+            1,
+            0
+          ],
+          "horizzon1": [
+            2,
+            1,
+            1
+          ],
+          "crosshairrestore": [
+            2,
+            1,
+            1
+          ]
+        }
+      },
+      {
+        "id": "e",
+        "settings": {
+          "size": 5,
+          "thickness": 1.5,
+          "gap": 1
+        },
+        "height": 1080,
+        "reportedJdd310": [
+          11,
+          3,
+          7
+        ],
+        "ours": [
+          11,
+          3,
+          7
+        ],
+        "tools": {
+          "jdd310": [
+            11,
+            3,
+            7
+          ],
+          "cursed": [
+            11,
+            3,
+            6
+          ],
+          "horizzon1": [
+            11,
+            3,
+            6
+          ],
+          "crosshairrestore": [
+            11,
+            3,
+            7
+          ]
+        }
+      }
+    ],
+    "corpus": {
+      "rows": 945,
+      "agreement": {
+        "jdd310": {
+          "rows": 945,
+          "rate": 1
+        },
+        "cursed": {
+          "rows": 557,
+          "rate": 0.5894179894179894
+        },
+        "horizzon1": {
+          "rows": 306,
+          "rate": 0.3238095238095238
+        },
+        "crosshairrestore": {
+          "rows": 945,
+          "rate": 1
+        }
+      },
+      "oursOutlierRows": 0,
+      "clusters": {}
+    },
+    "presets": {
+      "rows": 56,
+      "agreement": {
+        "jdd310": {
+          "rows": 56,
+          "rate": 1
+        },
+        "cursed": {
+          "rows": 32,
+          "rate": 0.5714285714285714
+        },
+        "horizzon1": {
+          "rows": 17,
+          "rate": 0.30357142857142855
+        },
+        "crosshairrestore": {
+          "rows": 56,
+          "rate": 1
+        }
+      },
+      "oursOutlierRows": 0,
+      "clusters": {}
+    },
+    "shareCodeGrid": {
+      "design": "size 0..3, thickness 0..3, gap -8..4 in share-code 0.1 steps; heights 720/960/1080/1440/2160; synthetic",
+      "rows": 581405,
+      "agreement": {
+        "jdd310": {
+          "rows": 581405,
+          "rate": 1
+        },
+        "cursed": {
+          "rows": 313906,
+          "rate": 0.5399093575046654
+        },
+        "horizzon1": {
+          "rows": 188201,
+          "rate": 0.32370034657424684
+        },
+        "crosshairrestore": {
+          "rows": 581405,
+          "rate": 1
+        }
+      },
+      "oursOutlierRows": 0,
+      "clusters": {}
+    },
+    "boundaryGrid": {
+      "design": "Seed 2026100202, 20000 synthetic rows: ordinary, binary32 half-pixel size/thickness, integer-gap +-1e-7 and large (size 80-140, thickness 12-20, gap 60-140) strata",
+      "rows": 20000,
+      "agreement": {
+        "jdd310": {
+          "rows": 13142,
+          "rate": 0.6571
+        },
+        "cursed": {
+          "rows": 8193,
+          "rate": 0.40965
+        },
+        "horizzon1": {
+          "rows": 3853,
+          "rate": 0.19265
+        },
+        "crosshairrestore": {
+          "rows": 13142,
+          "rate": 0.6571
+        }
+      },
+      "oursOutlierRows": 6551,
+      "clusters": {
+        "binary32-width": {
+          "rows": 1194,
+          "examples": [
+            {
+              "label": "boundary-stratum-2",
+              "height": 1080,
+              "settings": {
+                "size": 2.5271297083236277,
+                "thickness": 3.3333332333333336,
+                "gap": -7.449498375877738
+              },
+              "ours": [
+                6,
+                8,
+                1
+              ],
+              "jdd310": [
+                6,
+                7,
+                1
+              ]
+            },
+            {
+              "label": "boundary-stratum-2",
+              "height": 1080,
+              "settings": {
+                "size": 6.231245349626988,
+                "thickness": 2.0000001,
+                "gap": 3.815053805243224
+              },
+              "ours": [
+                14,
+                4,
+                9
+              ],
+              "jdd310": [
+                14,
+                5,
+                10
+              ]
+            },
+            {
+              "label": "boundary-stratum-2",
+              "height": 1080,
+              "settings": {
+                "size": 7.141057173721492,
+                "thickness": 2.0000001,
+                "gap": -2.7942922497168183
+              },
+              "ours": [
+                16,
+                4,
+                3
+              ],
+              "jdd310": [
+                16,
+                5,
+                4
+              ]
+            },
+            {
+              "label": "boundary-stratum-2",
+              "height": 1080,
+              "settings": {
+                "size": 7.287254515103996,
+                "thickness": 3.3333332333333336,
+                "gap": -2.591438554227352
+              },
+              "ours": [
+                16,
+                8,
+                5
+              ],
+              "jdd310": [
+                16,
+                7,
+                5
+              ]
+            },
+            {
+              "label": "boundary-stratum-2",
+              "height": 1080,
+              "settings": {
+                "size": 6.612654428463429,
+                "thickness": 3.3333332333333336,
+                "gap": -3.9547967822290957
+              },
+              "ours": [
+                15,
+                8,
+                4
+              ],
+              "jdd310": [
+                15,
+                7,
+                4
+              ]
+            },
+            {
+              "label": "boundary-stratum-2",
+              "height": 1080,
+              "settings": {
+                "size": 8.354380114469677,
+                "thickness": 2.0000001,
+                "gap": 4.692459173500538
+              },
+              "ours": [
+                19,
+                4,
+                10
+              ],
+              "jdd310": [
+                19,
+                5,
+                11
+              ]
+            },
+            {
+              "label": "boundary-stratum-2",
+              "height": 1080,
+              "settings": {
+                "size": 7.02723648166284,
+                "thickness": 3.7777778777777775,
+                "gap": -3.043279608245939
+              },
+              "ours": [
+                16,
+                8,
+                4
+              ],
+              "jdd310": [
+                16,
+                9,
+                5
+              ]
+            },
+            {
+              "label": "boundary-stratum-2",
+              "height": 1080,
+              "settings": {
+                "size": 9.034172263927758,
+                "thickness": 2.0000001,
+                "gap": 3.5982526657171547
+              },
+              "ours": [
+                20,
+                4,
+                9
+              ],
+              "jdd310": [
+                20,
+                5,
+                10
+              ]
+            },
+            {
+              "label": "boundary-stratum-2",
+              "height": 1080,
+              "settings": {
+                "size": 3.4062686865217984,
+                "thickness": 2.0000001,
+                "gap": -5.692660476081073
+              },
+              "ours": [
+                8,
+                4,
+                1
+              ],
+              "jdd310": [
+                8,
+                5,
+                2
+              ]
+            },
+            {
+              "label": "boundary-stratum-2",
+              "height": 1080,
+              "settings": {
+                "size": 4.210915421135724,
+                "thickness": 3.3333332333333336,
+                "gap": 5.878409846685827
+              },
+              "ours": [
+                9,
+                8,
+                13
+              ],
+              "jdd310": [
+                9,
+                7,
+                13
+              ]
+            },
+            {
+              "label": "boundary-stratum-2",
+              "height": 1080,
+              "settings": {
+                "size": 3.457581854891032,
+                "thickness": 2.0000001,
+                "gap": 4.625698965974152
+              },
+              "ours": [
+                8,
+                4,
+                10
+              ],
+              "jdd310": [
+                8,
+                5,
+                11
+              ]
+            },
+            {
+              "label": "boundary-stratum-2",
+              "height": 1080,
+              "settings": {
+                "size": 0.9429972339421511,
+                "thickness": 2.0000001,
+                "gap": -7.66148119373247
+              },
+              "ours": [
+                2,
+                4,
+                0
+              ],
+              "jdd310": [
+                2,
+                5,
+                0
+              ]
+            }
+          ]
+        },
+        "thickness-clamp-keeps-inner-edge+length-clamp": {
+          "rows": 2390,
+          "examples": [
+            {
+              "label": "boundary-stratum-4",
+              "height": 2160,
+              "settings": {
+                "size": 132.25526065099984,
+                "thickness": 17.135322466492653,
+                "gap": 66.61294557154179
+              },
+              "ours": [
+                255,
+                32,
+                109
+              ],
+              "jdd310": [
+                255,
+                32,
+                86
+              ]
+            },
+            {
+              "label": "boundary-stratum-4",
+              "height": 2160,
+              "settings": {
+                "size": 83.36003365926445,
+                "thickness": 16.345629535615444,
+                "gap": 86.2558020465076
+              },
+              "ours": [
+                255,
+                32,
+                127
+              ],
+              "jdd310": [
+                255,
+                32,
+                106
+              ]
+            },
+            {
+              "label": "boundary-stratum-4",
+              "height": 2160,
+              "settings": {
+                "size": 114.73869616165757,
+                "thickness": 14.12716019153595,
+                "gap": 91.33675821125507
+              },
+              "ours": [
+                255,
+                32,
+                127
+              ],
+              "jdd310": [
+                255,
+                32,
+                111
+              ]
+            },
+            {
+              "label": "boundary-stratum-4",
+              "height": 2160,
+              "settings": {
+                "size": 136.02349003311247,
+                "thickness": 19.81630266830325,
+                "gap": 106.58912347629666
+              },
+              "ours": [
+                255,
+                32,
+                128
+              ],
+              "jdd310": [
+                255,
+                32,
+                126
+              ]
+            },
+            {
+              "label": "boundary-stratum-4",
+              "height": 2160,
+              "settings": {
+                "size": 128.16351901739836,
+                "thickness": 13.150994094088674,
+                "gap": 78.31789422780275
+              },
+              "ours": [
+                255,
+                32,
+                112
+              ],
+              "jdd310": [
+                255,
+                32,
+                98
+              ]
+            },
+            {
+              "label": "boundary-stratum-4",
+              "height": 2160,
+              "settings": {
+                "size": 91.94532516412437,
+                "thickness": 19.57495031505823,
+                "gap": 99.53425955027342
+              },
+              "ours": [
+                255,
+                32,
+                128
+              ],
+              "jdd310": [
+                255,
+                32,
+                119
+              ]
+            },
+            {
+              "label": "boundary-stratum-4",
+              "height": 2160,
+              "settings": {
+                "size": 124.4946389645338,
+                "thickness": 15.381892440840602,
+                "gap": 107.49814510345459
+              },
+              "ours": [
+                255,
+                32,
+                128
+              ],
+              "jdd310": [
+                255,
+                32,
+                127
+              ]
+            },
+            {
+              "label": "boundary-stratum-4",
+              "height": 2160,
+              "settings": {
+                "size": 100.62517914921045,
+                "thickness": 15.173031797632575,
+                "gap": 105.48236928880215
+              },
+              "ours": [
+                255,
+                32,
+                128
+              ],
+              "jdd310": [
+                255,
+                32,
+                125
+              ]
+            },
+            {
+              "label": "boundary-stratum-4",
+              "height": 2160,
+              "settings": {
+                "size": 133.3078990969807,
+                "thickness": 15.80675726942718,
+                "gap": 90.39341578260064
+              },
+              "ours": [
+                255,
+                32,
+                128
+              ],
+              "jdd310": [
+                255,
+                32,
+                110
+              ]
+            },
+            {
+              "label": "boundary-stratum-4",
+              "height": 2160,
+              "settings": {
+                "size": 90.59591319877654,
+                "thickness": 15.378535417839885,
+                "gap": 74.78989833965898
+              },
+              "ours": [
+                255,
+                32,
+                113
+              ],
+              "jdd310": [
+                255,
+                32,
+                94
+              ]
+            },
+            {
+              "label": "boundary-stratum-4",
+              "height": 2160,
+              "settings": {
+                "size": 97.03853031620383,
+                "thickness": 18.870276123285294,
+                "gap": 94.13678925484419
+              },
+              "ours": [
+                255,
+                32,
+                128
+              ],
+              "jdd310": [
+                255,
+                32,
+                114
+              ]
+            },
+            {
+              "label": "boundary-stratum-4",
+              "height": 2160,
+              "settings": {
+                "size": 111.05113435536623,
+                "thickness": 13.14202981442213,
+                "gap": 96.79752741008997
+              },
+              "ours": [
+                255,
+                32,
+                128
+              ],
+              "jdd310": [
+                255,
+                32,
+                116
+              ]
+            }
+          ]
+        },
+        "binary32-length": {
+          "rows": 1608,
+          "examples": [
+            {
+              "label": "boundary-stratum-1",
+              "height": 960,
+              "settings": {
+                "size": 2.7499999,
+                "thickness": 2.5907783478032798,
+                "gap": 1.521930266637355
+              },
+              "ours": [
+                6,
+                5,
+                8
+              ],
+              "jdd310": [
+                5,
+                5,
+                8
+              ]
+            },
+            {
+              "label": "boundary-stratum-1",
+              "height": 960,
+              "settings": {
+                "size": 7.7499999,
+                "thickness": 0.9497433807700872,
+                "gap": -4.3320828028954566
+              },
+              "ours": [
+                16,
+                2,
+                1
+              ],
+              "jdd310": [
+                15,
+                2,
+                1
+              ]
+            },
+            {
+              "label": "boundary-stratum-1",
+              "height": 960,
+              "settings": {
+                "size": 2.7499999,
+                "thickness": 4.936322163557634,
+                "gap": 4.561255380045623
+              },
+              "ours": [
+                6,
+                10,
+                13
+              ],
+              "jdd310": [
+                5,
+                10,
+                13
+              ]
+            },
+            {
+              "label": "boundary-stratum-1",
+              "height": 960,
+              "settings": {
+                "size": 2.2500001,
+                "thickness": 2.697150744497776,
+                "gap": 0.8024713271297514
+              },
+              "ours": [
+                4,
+                5,
+                7
+              ],
+              "jdd310": [
+                5,
+                5,
+                7
+              ]
+            },
+            {
+              "label": "boundary-stratum-1",
+              "height": 960,
+              "settings": {
+                "size": 5.2500001,
+                "thickness": 0.04978217766620219,
+                "gap": -3.2564567476511
+              },
+              "ours": [
+                10,
+                1,
+                1
+              ],
+              "jdd310": [
+                11,
+                1,
+                1
+              ]
+            },
+            {
+              "label": "boundary-stratum-1",
+              "height": 960,
+              "settings": {
+                "size": 3.2500001,
+                "thickness": 2.013512523844838,
+                "gap": 0.09505419386550784
+              },
+              "ours": [
+                6,
+                4,
+                6
+              ],
+              "jdd310": [
+                7,
+                4,
+                6
+              ]
+            },
+            {
+              "label": "boundary-stratum-1",
+              "height": 960,
+              "settings": {
+                "size": 8.7499999,
+                "thickness": 3.1562909216154367,
+                "gap": 0.47167186671867967
+              },
+              "ours": [
+                18,
+                6,
+                7
+              ],
+              "jdd310": [
+                17,
+                6,
+                7
+              ]
+            },
+            {
+              "label": "boundary-stratum-1",
+              "height": 960,
+              "settings": {
+                "size": 9.2500001,
+                "thickness": 2.3095253319479525,
+                "gap": 0.5941316792741418
+              },
+              "ours": [
+                18,
+                5,
+                7
+              ],
+              "jdd310": [
+                19,
+                5,
+                7
+              ]
+            },
+            {
+              "label": "boundary-stratum-1",
+              "height": 960,
+              "settings": {
+                "size": 8.7499999,
+                "thickness": 1.4277321298141032,
+                "gap": 1.3983278986997902
+              },
+              "ours": [
+                18,
+                3,
+                7
+              ],
+              "jdd310": [
+                17,
+                3,
+                7
+              ]
+            },
+            {
+              "label": "boundary-stratum-1",
+              "height": 960,
+              "settings": {
+                "size": 9.7499999,
+                "thickness": 2.613946944475174,
+                "gap": -7.432370521593839
+              },
+              "ours": [
+                20,
+                5,
+                0
+              ],
+              "jdd310": [
+                19,
+                5,
+                0
+              ]
+            },
+            {
+              "label": "boundary-stratum-1",
+              "height": 960,
+              "settings": {
+                "size": 3.2500001,
+                "thickness": 4.579190866788849,
+                "gap": -5.71260919701308
+              },
+              "ours": [
+                6,
+                9,
+                4
+              ],
+              "jdd310": [
+                7,
+                9,
+                4
+              ]
+            },
+            {
+              "label": "boundary-stratum-1",
+              "height": 960,
+              "settings": {
+                "size": 4.7499999,
+                "thickness": 1.3004129368346184,
+                "gap": -6.668773705139756
+              },
+              "ours": [
+                10,
+                3,
+                0
+              ],
+              "jdd310": [
+                9,
+                3,
+                0
+              ]
+            }
+          ]
+        },
+        "binary32-gap-offset": {
+          "rows": 1359,
+          "examples": [
+            {
+              "label": "boundary-stratum-3",
+              "height": 1440,
+              "settings": {
+                "size": 7.0958843431435525,
+                "thickness": 2.4317048268858343,
+                "gap": 0.9999999
+              },
+              "ours": [
+                21,
+                7,
+                9
+              ],
+              "jdd310": [
+                21,
+                7,
+                8
+              ]
+            },
+            {
+              "label": "boundary-stratum-3",
+              "height": 1440,
+              "settings": {
+                "size": 8.543605436570942,
+                "thickness": 4.055120712146163,
+                "gap": -5.9999999
+              },
+              "ours": [
+                26,
+                12,
+                4
+              ],
+              "jdd310": [
+                26,
+                12,
+                5
+              ]
+            },
+            {
+              "label": "boundary-stratum-3",
+              "height": 1440,
+              "settings": {
+                "size": 5.720058598089963,
+                "thickness": 3.609972409904003,
+                "gap": -1.0000001
+              },
+              "ours": [
+                17,
+                11,
+                9
+              ],
+              "jdd310": [
+                17,
+                11,
+                8
+              ]
+            },
+            {
+              "label": "boundary-stratum-3",
+              "height": 1440,
+              "settings": {
+                "size": 8.952552189584821,
+                "thickness": 2.5412264664191753,
+                "gap": 1.9999999
+              },
+              "ours": [
+                27,
+                8,
+                10
+              ],
+              "jdd310": [
+                27,
+                8,
+                9
+              ]
+            },
+            {
+              "label": "boundary-stratum-3",
+              "height": 1440,
+              "settings": {
+                "size": 7.868134314194322,
+                "thickness": 4.210804678732529,
+                "gap": 1.9999999
+              },
+              "ours": [
+                24,
+                13,
+                13
+              ],
+              "jdd310": [
+                24,
+                13,
+                12
+              ]
+            },
+            {
+              "label": "boundary-stratum-3",
+              "height": 1440,
+              "settings": {
+                "size": 9.702072269283235,
+                "thickness": 2.0229587028734386,
+                "gap": 0.9999999
+              },
+              "ours": [
+                29,
+                6,
+                8
+              ],
+              "jdd310": [
+                29,
+                6,
+                7
+              ]
+            },
+            {
+              "label": "boundary-stratum-3",
+              "height": 1440,
+              "settings": {
+                "size": 7.68746436573565,
+                "thickness": 3.655110008548945,
+                "gap": -2.0000001
+              },
+              "ours": [
+                23,
+                11,
+                8
+              ],
+              "jdd310": [
+                23,
+                11,
+                7
+              ]
+            },
+            {
+              "label": "boundary-stratum-3",
+              "height": 1440,
+              "settings": {
+                "size": 5.929964187089354,
+                "thickness": 3.986622814554721,
+                "gap": -6.9999999
+              },
+              "ours": [
+                18,
+                12,
+                3
+              ],
+              "jdd310": [
+                18,
+                12,
+                4
+              ]
+            },
+            {
+              "label": "boundary-stratum-3",
+              "height": 1440,
+              "settings": {
+                "size": 3.3390859933570027,
+                "thickness": 3.8505160727072507,
+                "gap": 0.9999999
+              },
+              "ours": [
+                10,
+                12,
+                11
+              ],
+              "jdd310": [
+                10,
+                12,
+                10
+              ]
+            },
+            {
+              "label": "boundary-stratum-3",
+              "height": 1440,
+              "settings": {
+                "size": 7.1898180968128145,
+                "thickness": 2.479848542716354,
+                "gap": -3.0000001
+              },
+              "ours": [
+                22,
+                7,
+                5
+              ],
+              "jdd310": [
+                22,
+                7,
+                4
+              ]
+            },
+            {
+              "label": "boundary-stratum-3",
+              "height": 1440,
+              "settings": {
+                "size": 9.095442311372608,
+                "thickness": 4.024625947931781,
+                "gap": 1.9999999
+              },
+              "ours": [
+                27,
+                12,
+                12
+              ],
+              "jdd310": [
+                27,
+                12,
+                11
+              ]
+            },
+            {
+              "label": "boundary-stratum-3",
+              "height": 1440,
+              "settings": {
+                "size": 6.342280423268676,
+                "thickness": 3.4268136334139854,
+                "gap": -4.9999999
+              },
+              "ours": [
+                19,
+                10,
+                4
+              ],
+              "jdd310": [
+                19,
+                10,
+                5
+              ]
+            }
+          ]
+        }
+      }
+    }
+  },
+  "gapOriginSensitivity": {
+    "scope": "Equal heights. Alternative = our exported gap minus (thickness % 2), clamped to 0: the floor(W/2) odd-width origin. clampedAtZeroRows have an odd width and gap 0, so the cvar cannot move although the intended geometry would.",
+    "corpus": {
+      "records": 135,
+      "rows": 945,
+      "oddWidthRows": 391,
+      "changedRows": 388,
+      "clampedAtZeroRows": 3,
+      "recordsChangedAtAnyHeight": 132,
+      "signaturesChangedAtAnyHeight": 46,
+      "at1080": {
+        "rows": 135,
+        "changed": 46
+      },
+      "changed": [
+        "pro-001",
+        "pro-002",
+        "pro-003",
+        "pro-004",
+        "pro-005",
+        "pro-007",
+        "pro-008",
+        "pro-010",
+        "pro-011",
+        "pro-012",
+        "pro-013",
+        "pro-014",
+        "pro-015",
+        "pro-016",
+        "pro-017",
+        "pro-018",
+        "pro-019",
+        "pro-020",
+        "pro-021",
+        "pro-022",
+        "pro-023",
+        "pro-024",
+        "pro-025",
+        "pro-026",
+        "pro-027",
+        "pro-028",
+        "pro-029",
+        "pro-030",
+        "pro-031",
+        "pro-032",
+        "pro-033",
+        "pro-035",
+        "pro-036",
+        "pro-037",
+        "pro-038",
+        "pro-039",
+        "pro-040",
+        "pro-041",
+        "pro-042",
+        "pro-043",
+        "pro-044",
+        "pro-045",
+        "pro-046",
+        "pro-047",
+        "pro-048",
+        "pro-049",
+        "pro-050",
+        "pro-051",
+        "pro-052",
+        "pro-053",
+        "pro-054",
+        "pro-055",
+        "pro-056",
+        "pro-057",
+        "pro-059",
+        "pro-060",
+        "pro-062",
+        "pro-063",
+        "pro-064",
+        "pro-065",
+        "pro-066",
+        "pro-067",
+        "pro-068",
+        "pro-069",
+        "pro-070",
+        "pro-071",
+        "pro-072",
+        "pro-073",
+        "pro-074",
+        "pro-075",
+        "pro-076",
+        "pro-077",
+        "pro-078",
+        "pro-079",
+        "pro-080",
+        "pro-081",
+        "pro-082",
+        "pro-083",
+        "pro-084",
+        "pro-085",
+        "pro-086",
+        "pro-087",
+        "pro-088",
+        "pro-089",
+        "pro-090",
+        "pro-091",
+        "pro-092",
+        "pro-093",
+        "pro-094",
+        "pro-095",
+        "pro-096",
+        "pro-097",
+        "pro-098",
+        "pro-099",
+        "pro-100",
+        "pro-101",
+        "pro-102",
+        "pro-103",
+        "pro-104",
+        "pro-105",
+        "pro-106",
+        "pro-107",
+        "pro-108",
+        "pro-109",
+        "pro-110",
+        "pro-111",
+        "pro-113",
+        "pro-114",
+        "pro-115",
+        "pro-116",
+        "pro-117",
+        "pro-118",
+        "pro-119",
+        "pro-120",
+        "pro-121",
+        "pro-122",
+        "pro-123",
+        "pro-124",
+        "pro-125",
+        "pro-126",
+        "pro-127",
+        "pro-128",
+        "pro-129",
+        "pro-130",
+        "pro-131",
+        "pro-132",
+        "pro-133",
+        "pro-134",
+        "pro-135",
+        "pro-136",
+        "pro-137",
+        "pro-138"
+      ]
+    },
+    "presets": {
+      "records": 8,
+      "rows": 56,
+      "oddWidthRows": 24,
+      "changedRows": 24,
+      "clampedAtZeroRows": 0,
+      "recordsChangedAtAnyHeight": 8,
+      "signaturesChangedAtAnyHeight": 8,
+      "at1080": {
+        "rows": 8,
+        "changed": 3
+      },
+      "changed": [
+        "NiKo",
+        "XANTARES",
+        "ZywOo",
+        "donk",
+        "karrigan",
+        "m0NESY",
+        "ropz",
+        "s1mple"
+      ]
+    }
+  },
+  "outlineEvaluation": {
+    "scope": "Research only; the solver objective and compareMasks stay core-only. Old outline = legacyOutlineExtent (source rule); new outline = nativeOutlineExtent (assumed, unverified). ruleOnly draws both extents around the same old core. Aligned metrics move the whole new crosshair by the <=1 px shift that best matches the old core.",
+    "corpus": {
+      "total": {
+        "rows": 77,
+        "cropped": 0,
+        "extentDifferent": 0,
+        "ruleOnlyDifferent": 0,
+        "raw": {
+          "coreDifferent": 44,
+          "outlineDifferent": 44,
+          "combinedDifferent": 44,
+          "meanOutlineIou": 0.6989216247688983
+        },
+        "aligned": {
+          "coreDifferent": 10,
+          "outlineDifferent": 10,
+          "combinedDifferent": 10,
+          "outlineOnlyDifferent": 0,
+          "meanOutlineIou": 0.9603305785123966,
+          "meanCombinedIou": 0.9603305785123966
+        }
+      },
+      "byClass": {
+        "sharecode-rounded-0": {
+          "rows": 49,
+          "cropped": 0,
+          "extentDifferent": 0,
+          "ruleOnlyDifferent": 0,
+          "raw": {
+            "coreDifferent": 29,
+            "outlineDifferent": 29,
+            "combinedDifferent": 29,
+            "meanOutlineIou": 0.6845847380537549
+          },
+          "aligned": {
+            "coreDifferent": 10,
+            "outlineDifferent": 10,
+            "combinedDifferent": 10,
+            "outlineOnlyDifferent": 0,
+            "meanOutlineIou": 0.9376623376623378,
+            "meanCombinedIou": 0.9376623376623378
+          }
+        },
+        "width-1": {
+          "rows": 21,
+          "cropped": 0,
+          "extentDifferent": 0,
+          "ruleOnlyDifferent": 0,
+          "raw": {
+            "coreDifferent": 14,
+            "outlineDifferent": 14,
+            "combinedDifferent": 14,
+            "meanOutlineIou": 0.6548720448843417
+          },
+          "aligned": {
+            "coreDifferent": 0,
+            "outlineDifferent": 0,
+            "combinedDifferent": 0,
+            "outlineOnlyDifferent": 0,
+            "meanOutlineIou": 1,
+            "meanCombinedIou": 1
+          }
+        },
+        "width-0.5": {
+          "rows": 7,
+          "cropped": 0,
+          "extentDifferent": 0,
+          "ruleOnlyDifferent": 0,
+          "raw": {
+            "coreDifferent": 1,
+            "outlineDifferent": 1,
+            "combinedDifferent": 1,
+            "meanOutlineIou": 0.9314285714285714
+          },
+          "aligned": {
+            "coreDifferent": 0,
+            "outlineDifferent": 0,
+            "combinedDifferent": 0,
+            "outlineOnlyDifferent": 0,
+            "meanOutlineIou": 1,
+            "meanCombinedIou": 1
+          }
+        }
+      },
+      "differingExamples": [
+        {
+          "label": "sharecode-rounded-0",
+          "mode": 2,
+          "oldExtent": {
+            "low": 1,
+            "high": 0
+          },
+          "newExtent": {
+            "low": 1,
+            "high": 0
+          },
+          "cropped": false,
+          "extentEqual": true,
+          "ruleOnly": {
+            "different": 0,
+            "iou": 1
+          },
+          "raw": {
+            "core": {
+              "different": 8,
+              "iou": 0.6
+            },
+            "outline": {
+              "different": 12,
+              "iou": 0.6363636363636364
+            },
+            "combined": {
+              "different": 12,
+              "iou": 0.6363636363636364
+            }
+          },
+          "aligned": {
+            "shift": [
+              0,
+              0
+            ],
+            "core": {
+              "different": 8,
+              "iou": 0.6
+            },
+            "outline": {
+              "different": 12,
+              "iou": 0.6363636363636364
+            },
+            "combined": {
+              "different": 12,
+              "iou": 0.6363636363636364
+            }
+          }
+        },
+        {
+          "label": "sharecode-rounded-0",
+          "mode": 2,
+          "oldExtent": {
+            "low": 1,
+            "high": 0
+          },
+          "newExtent": {
+            "low": 1,
+            "high": 0
+          },
+          "cropped": false,
+          "extentEqual": true,
+          "ruleOnly": {
+            "different": 0,
+            "iou": 1
+          },
+          "raw": {
+            "core": {
+              "different": 8,
+              "iou": 0.6
+            },
+            "outline": {
+              "different": 12,
+              "iou": 0.6363636363636364
+            },
+            "combined": {
+              "different": 12,
+              "iou": 0.6363636363636364
+            }
+          },
+          "aligned": {
+            "shift": [
+              0,
+              0
+            ],
+            "core": {
+              "different": 8,
+              "iou": 0.6
+            },
+            "outline": {
+              "different": 12,
+              "iou": 0.6363636363636364
+            },
+            "combined": {
+              "different": 12,
+              "iou": 0.6363636363636364
+            }
+          }
+        },
+        {
+          "label": "sharecode-rounded-0",
+          "mode": 2,
+          "oldExtent": {
+            "low": 1,
+            "high": 0
+          },
+          "newExtent": {
+            "low": 1,
+            "high": 0
+          },
+          "cropped": false,
+          "extentEqual": true,
+          "ruleOnly": {
+            "different": 0,
+            "iou": 1
+          },
+          "raw": {
+            "core": {
+              "different": 8,
+              "iou": 0.7142857142857143
+            },
+            "outline": {
+              "different": 12,
+              "iou": 0.7333333333333333
+            },
+            "combined": {
+              "different": 12,
+              "iou": 0.7333333333333333
+            }
+          },
+          "aligned": {
+            "shift": [
+              0,
+              0
+            ],
+            "core": {
+              "different": 8,
+              "iou": 0.7142857142857143
+            },
+            "outline": {
+              "different": 12,
+              "iou": 0.7333333333333333
+            },
+            "combined": {
+              "different": 12,
+              "iou": 0.7333333333333333
+            }
+          }
+        },
+        {
+          "label": "sharecode-rounded-0",
+          "mode": 2,
+          "oldExtent": {
+            "low": 1,
+            "high": 0
+          },
+          "newExtent": {
+            "low": 1,
+            "high": 0
+          },
+          "cropped": false,
+          "extentEqual": true,
+          "ruleOnly": {
+            "different": 0,
+            "iou": 1
+          },
+          "raw": {
+            "core": {
+              "different": 8,
+              "iou": 0.7142857142857143
+            },
+            "outline": {
+              "different": 12,
+              "iou": 0.7333333333333333
+            },
+            "combined": {
+              "different": 12,
+              "iou": 0.7333333333333333
+            }
+          },
+          "aligned": {
+            "shift": [
+              0,
+              0
+            ],
+            "core": {
+              "different": 8,
+              "iou": 0.7142857142857143
+            },
+            "outline": {
+              "different": 12,
+              "iou": 0.7333333333333333
+            },
+            "combined": {
+              "different": 12,
+              "iou": 0.7333333333333333
+            }
+          }
+        },
+        {
+          "label": "sharecode-rounded-0",
+          "mode": 2,
+          "oldExtent": {
+            "low": 1,
+            "high": 0
+          },
+          "newExtent": {
+            "low": 1,
+            "high": 0
+          },
+          "cropped": false,
+          "extentEqual": true,
+          "ruleOnly": {
+            "different": 0,
+            "iou": 1
+          },
+          "raw": {
+            "core": {
+              "different": 8,
+              "iou": 0.7142857142857143
+            },
+            "outline": {
+              "different": 12,
+              "iou": 0.7333333333333333
+            },
+            "combined": {
+              "different": 12,
+              "iou": 0.7333333333333333
+            }
+          },
+          "aligned": {
+            "shift": [
+              0,
+              0
+            ],
+            "core": {
+              "different": 8,
+              "iou": 0.7142857142857143
+            },
+            "outline": {
+              "different": 12,
+              "iou": 0.7333333333333333
+            },
+            "combined": {
+              "different": 12,
+              "iou": 0.7333333333333333
+            }
+          }
+        },
+        {
+          "label": "sharecode-rounded-0",
+          "mode": 2,
+          "oldExtent": {
+            "low": 1,
+            "high": 0
+          },
+          "newExtent": {
+            "low": 1,
+            "high": 0
+          },
+          "cropped": false,
+          "extentEqual": true,
+          "ruleOnly": {
+            "different": 0,
+            "iou": 1
+          },
+          "raw": {
+            "core": {
+              "different": 8,
+              "iou": 0.6
+            },
+            "outline": {
+              "different": 12,
+              "iou": 0.6363636363636364
+            },
+            "combined": {
+              "different": 12,
+              "iou": 0.6363636363636364
+            }
+          },
+          "aligned": {
+            "shift": [
+              0,
+              0
+            ],
+            "core": {
+              "different": 8,
+              "iou": 0.6
+            },
+            "outline": {
+              "different": 12,
+              "iou": 0.6363636363636364
+            },
+            "combined": {
+              "different": 12,
+              "iou": 0.6363636363636364
+            }
+          }
+        }
+      ]
+    },
+    "syntheticGrid": {
+      "design": "synthetic: 13 outline widths x size {0,1,2.5} x thickness {0,.5,1,1.5,3.4} x gap {-5,-4,-2.5,0,1} x heights {720,1080,1440} x {plain, dot, T}",
+      "total": {
+        "rows": 8775,
+        "cropped": 0,
+        "extentDifferent": 3375,
+        "ruleOnlyDifferent": 3375,
+        "raw": {
+          "coreDifferent": 3640,
+          "outlineDifferent": 5895,
+          "combinedDifferent": 6175,
+          "meanOutlineIou": 0.5886507035198136
+        },
+        "aligned": {
+          "coreDifferent": 0,
+          "outlineDifferent": 3375,
+          "combinedDifferent": 3375,
+          "outlineOnlyDifferent": 3375,
+          "meanOutlineIou": 0.8024068818632294,
+          "meanCombinedIou": 0.8144342890541633
+        }
+      },
+      "byClass": {
+        "1": {
+          "rows": 675,
+          "cropped": 0,
+          "extentDifferent": 0,
+          "ruleOnlyDifferent": 0,
+          "raw": {
+            "coreDifferent": 280,
+            "outlineDifferent": 360,
+            "combinedDifferent": 360,
+            "meanOutlineIou": 0.6970583830775582
+          },
+          "aligned": {
+            "coreDifferent": 0,
+            "outlineDifferent": 0,
+            "combinedDifferent": 0,
+            "outlineOnlyDifferent": 0,
+            "meanOutlineIou": 1,
+            "meanCombinedIou": 1
+          }
+        },
+        "2": {
+          "rows": 675,
+          "cropped": 0,
+          "extentDifferent": 675,
+          "ruleOnlyDifferent": 675,
+          "raw": {
+            "coreDifferent": 280,
+            "outlineDifferent": 675,
+            "combinedDifferent": 675,
+            "meanOutlineIou": 0.5130330780295627
+          },
+          "aligned": {
+            "coreDifferent": 0,
+            "outlineDifferent": 675,
+            "combinedDifferent": 675,
+            "outlineOnlyDifferent": 675,
+            "meanOutlineIou": 0.5130330780295627,
+            "meanCombinedIou": 0.5130330780295627
+          }
+        },
+        "3": {
+          "rows": 675,
+          "cropped": 0,
+          "extentDifferent": 675,
+          "ruleOnlyDifferent": 675,
+          "raw": {
+            "coreDifferent": 280,
+            "outlineDifferent": 675,
+            "combinedDifferent": 675,
+            "meanOutlineIou": 0.3371062957399307
+          },
+          "aligned": {
+            "coreDifferent": 0,
+            "outlineDifferent": 675,
+            "combinedDifferent": 675,
+            "outlineOnlyDifferent": 675,
+            "meanOutlineIou": 0.3371062957399307,
+            "meanCombinedIou": 0.3371062957399307
+          }
+        },
+        "sharecode-rounded-0": {
+          "rows": 675,
+          "cropped": 0,
+          "extentDifferent": 0,
+          "ruleOnlyDifferent": 0,
+          "raw": {
+            "coreDifferent": 280,
+            "outlineDifferent": 360,
+            "combinedDifferent": 360,
+            "meanOutlineIou": 0.6229779128002574
+          },
+          "aligned": {
+            "coreDifferent": 0,
+            "outlineDifferent": 0,
+            "combinedDifferent": 0,
+            "outlineOnlyDifferent": 0,
+            "meanOutlineIou": 1,
+            "meanCombinedIou": 1
+          }
+        },
+        "cfg-0": {
+          "rows": 675,
+          "cropped": 0,
+          "extentDifferent": 0,
+          "ruleOnlyDifferent": 0,
+          "raw": {
+            "coreDifferent": 280,
+            "outlineDifferent": 0,
+            "combinedDifferent": 280,
+            "meanOutlineIou": null
+          },
+          "aligned": {
+            "coreDifferent": 0,
+            "outlineDifferent": 0,
+            "combinedDifferent": 0,
+            "outlineOnlyDifferent": 0,
+            "meanOutlineIou": null,
+            "meanCombinedIou": 1
+          }
+        },
+        "0.01": {
+          "rows": 675,
+          "cropped": 0,
+          "extentDifferent": 0,
+          "ruleOnlyDifferent": 0,
+          "raw": {
+            "coreDifferent": 280,
+            "outlineDifferent": 360,
+            "combinedDifferent": 360,
+            "meanOutlineIou": 0.6229779128002574
+          },
+          "aligned": {
+            "coreDifferent": 0,
+            "outlineDifferent": 0,
+            "combinedDifferent": 0,
+            "outlineOnlyDifferent": 0,
+            "meanOutlineIou": 1,
+            "meanCombinedIou": 1
+          }
+        },
+        "0.25": {
+          "rows": 675,
+          "cropped": 0,
+          "extentDifferent": 0,
+          "ruleOnlyDifferent": 0,
+          "raw": {
+            "coreDifferent": 280,
+            "outlineDifferent": 360,
+            "combinedDifferent": 360,
+            "meanOutlineIou": 0.6229779128002574
+          },
+          "aligned": {
+            "coreDifferent": 0,
+            "outlineDifferent": 0,
+            "combinedDifferent": 0,
+            "outlineOnlyDifferent": 0,
+            "meanOutlineIou": 1,
+            "meanCombinedIou": 1
+          }
+        },
+        "0.5": {
+          "rows": 675,
+          "cropped": 0,
+          "extentDifferent": 0,
+          "ruleOnlyDifferent": 0,
+          "raw": {
+            "coreDifferent": 280,
+            "outlineDifferent": 360,
+            "combinedDifferent": 360,
+            "meanOutlineIou": 0.6229779128002574
+          },
+          "aligned": {
+            "coreDifferent": 0,
+            "outlineDifferent": 0,
+            "combinedDifferent": 0,
+            "outlineOnlyDifferent": 0,
+            "meanOutlineIou": 1,
+            "meanCombinedIou": 1
+          }
+        },
+        "0.75": {
+          "rows": 675,
+          "cropped": 0,
+          "extentDifferent": 0,
+          "ruleOnlyDifferent": 0,
+          "raw": {
+            "coreDifferent": 280,
+            "outlineDifferent": 360,
+            "combinedDifferent": 360,
+            "meanOutlineIou": 0.6229779128002574
+          },
+          "aligned": {
+            "coreDifferent": 0,
+            "outlineDifferent": 0,
+            "combinedDifferent": 0,
+            "outlineOnlyDifferent": 0,
+            "meanOutlineIou": 1,
+            "meanCombinedIou": 1
+          }
+        },
+        "0.99": {
+          "rows": 675,
+          "cropped": 0,
+          "extentDifferent": 0,
+          "ruleOnlyDifferent": 0,
+          "raw": {
+            "coreDifferent": 280,
+            "outlineDifferent": 360,
+            "combinedDifferent": 360,
+            "meanOutlineIou": 0.6229779128002574
+          },
+          "aligned": {
+            "coreDifferent": 0,
+            "outlineDifferent": 0,
+            "combinedDifferent": 0,
+            "outlineOnlyDifferent": 0,
+            "meanOutlineIou": 1,
+            "meanCombinedIou": 1
+          }
+        },
+        "1.25": {
+          "rows": 675,
+          "cropped": 0,
+          "extentDifferent": 675,
+          "ruleOnlyDifferent": 675,
+          "raw": {
+            "coreDifferent": 280,
+            "outlineDifferent": 675,
+            "combinedDifferent": 675,
+            "meanOutlineIou": 0.6857014301722256
+          },
+          "aligned": {
+            "coreDifferent": 0,
+            "outlineDifferent": 675,
+            "combinedDifferent": 675,
+            "outlineOnlyDifferent": 675,
+            "meanOutlineIou": 0.6857014301722256,
+            "meanCombinedIou": 0.6857014301722256
+          }
+        },
+        "1.5": {
+          "rows": 675,
+          "cropped": 0,
+          "extentDifferent": 675,
+          "ruleOnlyDifferent": 675,
+          "raw": {
+            "coreDifferent": 280,
+            "outlineDifferent": 675,
+            "combinedDifferent": 675,
+            "meanOutlineIou": 0.6857014301722256
+          },
+          "aligned": {
+            "coreDifferent": 0,
+            "outlineDifferent": 675,
+            "combinedDifferent": 675,
+            "outlineOnlyDifferent": 675,
+            "meanOutlineIou": 0.6857014301722256,
+            "meanCombinedIou": 0.6857014301722256
+          }
+        },
+        "2.5": {
+          "rows": 675,
+          "cropped": 0,
+          "extentDifferent": 675,
+          "ruleOnlyDifferent": 675,
+          "raw": {
+            "coreDifferent": 280,
+            "outlineDifferent": 675,
+            "combinedDifferent": 675,
+            "meanOutlineIou": 0.40734034824474513
+          },
+          "aligned": {
+            "coreDifferent": 0,
+            "outlineDifferent": 675,
+            "combinedDifferent": 675,
+            "outlineOnlyDifferent": 675,
+            "meanOutlineIou": 0.40734034824474513,
+            "meanCombinedIou": 0.40734034824474513
+          }
+        }
+      },
+      "differingExamples": [
+        {
+          "label": "1.25",
+          "mode": 1,
+          "oldExtent": {
+            "low": 2,
+            "high": 1
+          },
+          "newExtent": {
+            "low": 1,
+            "high": 1
+          },
+          "cropped": false,
+          "extentEqual": false,
+          "ruleOnly": {
+            "different": 7,
+            "iou": 0.5625
+          },
+          "raw": {
+            "core": {
+              "different": 0,
+              "iou": null
+            },
+            "outline": {
+              "different": 7,
+              "iou": 0.5625
+            },
+            "combined": {
+              "different": 7,
+              "iou": 0.5625
+            }
+          },
+          "aligned": {
+            "shift": [
+              0,
+              0
+            ],
+            "core": {
+              "different": 0,
+              "iou": null
+            },
+            "outline": {
+              "different": 7,
+              "iou": 0.5625
+            },
+            "combined": {
+              "different": 7,
+              "iou": 0.5625
+            }
+          }
+        },
+        {
+          "label": "1.25",
+          "mode": 1,
+          "oldExtent": {
+            "low": 2,
+            "high": 1
+          },
+          "newExtent": {
+            "low": 1,
+            "high": 1
+          },
+          "cropped": false,
+          "extentEqual": false,
+          "ruleOnly": {
+            "different": 7,
+            "iou": 0.5625
+          },
+          "raw": {
+            "core": {
+              "different": 2,
+              "iou": 0
+            },
+            "outline": {
+              "different": 7,
+              "iou": 0.5625
+            },
+            "combined": {
+              "different": 7,
+              "iou": 0.5625
+            }
+          },
+          "aligned": {
+            "shift": [
+              1,
+              1
+            ],
+            "core": {
+              "different": 0,
+              "iou": 1
+            },
+            "outline": {
+              "different": 7,
+              "iou": 0.5625
+            },
+            "combined": {
+              "different": 7,
+              "iou": 0.5625
+            }
+          }
+        },
+        {
+          "label": "1.25",
+          "mode": 1,
+          "oldExtent": {
+            "low": 2,
+            "high": 1
+          },
+          "newExtent": {
+            "low": 1,
+            "high": 1
+          },
+          "cropped": false,
+          "extentEqual": false,
+          "ruleOnly": {
+            "different": 7,
+            "iou": 0.5625
+          },
+          "raw": {
+            "core": {
+              "different": 0,
+              "iou": null
+            },
+            "outline": {
+              "different": 7,
+              "iou": 0.5625
+            },
+            "combined": {
+              "different": 7,
+              "iou": 0.5625
+            }
+          },
+          "aligned": {
+            "shift": [
+              0,
+              0
+            ],
+            "core": {
+              "different": 0,
+              "iou": null
+            },
+            "outline": {
+              "different": 7,
+              "iou": 0.5625
+            },
+            "combined": {
+              "different": 7,
+              "iou": 0.5625
+            }
+          }
+        },
+        {
+          "label": "1.25",
+          "mode": 1,
+          "oldExtent": {
+            "low": 2,
+            "high": 1
+          },
+          "newExtent": {
+            "low": 1,
+            "high": 1
+          },
+          "cropped": false,
+          "extentEqual": false,
+          "ruleOnly": {
+            "different": 7,
+            "iou": 0.5625
+          },
+          "raw": {
+            "core": {
+              "different": 0,
+              "iou": null
+            },
+            "outline": {
+              "different": 7,
+              "iou": 0.5625
+            },
+            "combined": {
+              "different": 7,
+              "iou": 0.5625
+            }
+          },
+          "aligned": {
+            "shift": [
+              0,
+              0
+            ],
+            "core": {
+              "different": 0,
+              "iou": null
+            },
+            "outline": {
+              "different": 7,
+              "iou": 0.5625
+            },
+            "combined": {
+              "different": 7,
+              "iou": 0.5625
+            }
+          }
+        },
+        {
+          "label": "1.25",
+          "mode": 1,
+          "oldExtent": {
+            "low": 2,
+            "high": 1
+          },
+          "newExtent": {
+            "low": 1,
+            "high": 1
+          },
+          "cropped": false,
+          "extentEqual": false,
+          "ruleOnly": {
+            "different": 7,
+            "iou": 0.5625
+          },
+          "raw": {
+            "core": {
+              "different": 2,
+              "iou": 0
+            },
+            "outline": {
+              "different": 7,
+              "iou": 0.5625
+            },
+            "combined": {
+              "different": 7,
+              "iou": 0.5625
+            }
+          },
+          "aligned": {
+            "shift": [
+              1,
+              1
+            ],
+            "core": {
+              "different": 0,
+              "iou": 1
+            },
+            "outline": {
+              "different": 7,
+              "iou": 0.5625
+            },
+            "combined": {
+              "different": 7,
+              "iou": 0.5625
+            }
+          }
+        },
+        {
+          "label": "1.25",
+          "mode": 1,
+          "oldExtent": {
+            "low": 2,
+            "high": 1
+          },
+          "newExtent": {
+            "low": 1,
+            "high": 1
+          },
+          "cropped": false,
+          "extentEqual": false,
+          "ruleOnly": {
+            "different": 7,
+            "iou": 0.5625
+          },
+          "raw": {
+            "core": {
+              "different": 0,
+              "iou": null
+            },
+            "outline": {
+              "different": 7,
+              "iou": 0.5625
+            },
+            "combined": {
+              "different": 7,
+              "iou": 0.5625
+            }
+          },
+          "aligned": {
+            "shift": [
+              0,
+              0
+            ],
+            "core": {
+              "different": 0,
+              "iou": null
+            },
+            "outline": {
+              "different": 7,
+              "iou": 0.5625
+            },
+            "combined": {
+              "different": 7,
+              "iou": 0.5625
+            }
+          }
+        }
+      ]
+    }
   }
 }

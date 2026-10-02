@@ -1,15 +1,15 @@
 import { $,el,download,copy,fmt } from '../ui/dom.js';
 import { decodeLegacy,encodeLegacy } from '../../lib/settings/sharecode.js';
-import { parseLegacyText } from '../../lib/settings/import.js';
+import { parseLegacyTextWithNotes } from '../../lib/settings/import.js';
 import { convert,DEFAULT_MODEL,TARGET_BUILD,predictedGeometry,exportCFG } from '../../lib/manual/conversion.js';
-import { rgba,validateNative } from '../../lib/settings/native.js';
+import { rgba,validateNative,legacyOutlineExtent,nativeOutlineExtent,effectiveOutlineMode } from '../../lib/settings/native.js';
 import { raster,compareMasks } from '../../lib/geometry/raster.js';
 import { paint } from './preview.js';
 import { decimal } from '../../lib/settings/validation.js';
 
 export function initEditor(presets) {
   let settings=decodeLegacy(presets[0].code),result,manual=null,design=false,difference=false,lastValidNative,activeCalibration=null;
-  const opts={oldHeight:1080,currentHeight:1080,authoredHeight:1080,goal:'pixels',model:{...DEFAULT_MODEL}};
+  const opts={oldHeight:1080,currentHeight:1080,authoredHeight:1080,goal:'pixels',outlineMode:'auto',model:{...DEFAULT_MODEL}};
   const view={zoom:12,stretch:1,grid:true};
   for(const p of presets)$('preset').append(el('option',{value:p.id},`${p.player} · ${p.observed_date}`));
   function reflectLegacy() {
@@ -40,9 +40,9 @@ export function initEditor(presets) {
       for(const [id,key] of [['new-length','length'],['new-thickness','thickness'],['new-gap','gap']])if(document.activeElement!==$(id))$(id).value=n[key];
       $('old-res-label').textContent=`${opts.oldHeight}p`;
       $('old-preview-title').textContent=design?'Legacy reference (not a target)':'Legacy reconstruction';
-      $('candidate-caption').textContent=difference?'Light = overlap · amber = new only · blue = old only':`${opts.currentHeight}p target / ${n.authoredHeight}p authored · ${opts.model.gapBaseline} gap`;
-      paint($('old-canvas'),result.old,settings,color,view);
-      paint($('new-canvas'),prediction,settings,color,view,difference?result.old:null);
+      $('candidate-caption').textContent=difference?'Light = overlap · amber = new only · blue = old only':`${opts.currentHeight}p target / ${n.authoredHeight}p authored · ${opts.model.gapBaseline} gap${effectiveOutlineMode(settings,opts.outlineMode)?' · new outline assumed':''}`;
+      paint($('old-canvas'),result.old,settings,color,view,null,legacyOutlineExtent(settings));
+      paint($('new-canvas'),prediction,settings,color,view,difference?result.old:null,nativeOutlineExtent(settings,opts.outlineMode));
       const labels=[['Arm length',result.old.length,prediction.length],['Line thickness',result.old.width,prediction.width],['Near inner edge',result.old.near,prediction.near]];
       $('geometry-stats').replaceChildren(...labels.map(([label,a,b])=>el('div',{class:'metric'},el('span',{},label),el('strong',{},`${fmt(a)} → ${fmt(b)}`),el('small',{},'old → simulated · game pixels'))));
   }
@@ -80,9 +80,10 @@ export function initEditor(presets) {
   function loadPreset(){settings=decodeLegacy(presets.find(p=>p.id===$('preset').value).code);manual=null;reflectLegacy();reflectSource();render();}
   $('preset').addEventListener('change',loadPreset);$('reset').addEventListener('click',loadPreset);
   $('import-legacy').addEventListener('click',()=>{
-    try {const val=$('legacy-import').value.trim();const next=parseLegacyText(val);convert(next,opts);rgba(next);settings=next;
+    try {const val=$('legacy-import').value.trim();
+      const {config:next,notes}=parseLegacyTextWithNotes(val);convert(next,opts);rgba(next);settings=next;
       manual=null;reflectLegacy();$('preset-source').textContent='Imported legacy settings · player provenance not inferred.';
-      $('import-status').textContent='Imported as data only. No commands were executed.';render();}
+      $('import-status').textContent=['Imported as data only. No commands were executed.',...notes].join(' ');render();}
     catch(e){$('import-status').textContent=e.message;}
   });
   for(const [id,key] of [['old-size','size'],['old-thickness','thickness'],['old-gap','gap']])$(id).addEventListener('input',()=>edit(()=>{settings={...settings,[key]:decimal($(id).value,key)};manual=null;$('preset-source').textContent='Edited settings · no longer the dated preset.';}));
@@ -91,6 +92,8 @@ export function initEditor(presets) {
     if(key==='currentHeight'){opts.authoredHeight=opts.currentHeight;$('authored-height').value=opts.currentHeight;}
   }));
   $('match-goal').addEventListener('change',()=>edit(()=>{opts.goal=$('match-goal').value;manual=null;}));
+  $('outline-mode').addEventListener('change',()=>edit(()=>{
+    const v=$('outline-mode').value;opts.outlineMode=v==='auto'?'auto':Number(v);}));
   $('gap-model').addEventListener('change',()=>edit(()=>{opts.model.gapBaseline=$('gap-model').value;activeCalibration=null;$('measured-fields').hidden=opts.model.gapBaseline!=='measured';manual=null;}));
   $('rounding').addEventListener('change',()=>edit(()=>{opts.model.rounding=$('rounding').value;manual=null;}));
   for(const [id,key] of [['measured-base','measuredBase'],['measured-step','measuredStep']])$(id).addEventListener('input',()=>edit(()=>{opts.model[key]=decimal($(id).value,key);activeCalibration=null;manual=null;}));
@@ -117,7 +120,9 @@ export function initEditor(presets) {
       calibration:activeCalibration,actualPreview:predictedGeometry(native(),opts.currentHeight,opts.model)};
     download('small-indie-math-report.json',JSON.stringify(report,null,2)+'\n');
   });
-  $('legacy-code').addEventListener('click',()=>{try{copy(encodeLegacy(settings),$('export-status'));}catch(e){$('export-status').textContent=e.message;}});
+  $('legacy-code').addEventListener('click',()=>{try{const status=$('export-status');
+    copy(encodeLegacy(settings),status).then(()=>{if(settings.outline&&settings.outline_width<.5)status.textContent+=' Codes store outline width in 0.5 steps, so a width below 0.5 (or 0) is read back as a rounded 0 and converts to the half outline.';});
+  }catch(e){$('export-status').textContent=e.message;}});
   const observer=new ResizeObserver(schedule);observer.observe($('new-canvas'));
   reflectLegacy();reflectSource();render();
   return {refresh:render,applyCalibration(fit,scope,evidence){

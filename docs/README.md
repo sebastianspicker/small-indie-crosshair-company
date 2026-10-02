@@ -4,14 +4,19 @@ This project converts crosshair settings under stated renderer assumptions.
 These docs describe the models, how the results were produced, and what evidence
 would be needed to check them in CS2.
 
-The default converter uses **`community-static-v4`**, inspected build **2000922**,
+The default converter uses **`community-static-v5`**, inspected build **2000922**,
 with six UI choices. The historical corpus snapshot is **2026-09-23** and the
 manual lab uses `conditional-static-v4`. Neither is a
 verified native renderer. No original old/new game capture pairs are included.
 
 The [October 1 build 2000922 note](research/build-2000922-update-2026-10-01.md)
 records the crosshair update, its shader diff, the v4 decisions and a native
-capture protocol. The v4 equations are an unverified carry-over from v3.
+capture protocol. The v4 equations are an unverified carry-over from v3; v5
+keeps them and ranks tied choices by shift-aligned overlap, so the odd-width
+centring shift no longer decides ties. The
+[October 2 learner findings](research/learners-2026-10-02.md) and
+[capture protocol](research/capture-protocol-2026-10-02.md) cover the outline
+evidence, the retrained learners and the next native captures.
 The [September 29 audit](research/converter-audit-2026-09-29.md) records the
 latest inspected dump and detector improvements. The [accuracy study](research/accuracy-improvements-2026-09-29.md)
 explains v3 dimension ties; the [structured-learning study](research/structured-learning-2026-09-29.md)
