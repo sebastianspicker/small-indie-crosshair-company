@@ -1,5 +1,5 @@
 import { DEFAULT_SETTINGS } from '../../lib/settings/cfg.js';
-import { parseLegacyText } from '../../lib/settings/import.js';
+import { parseLegacyTextWithNotes } from '../../lib/settings/import.js';
 import { rgba } from '../../lib/settings/native.js';
 import { copy, download } from '../ui/dom.js';
 import { exportQuantCFG } from '../../lib/solver/export.js';
@@ -9,6 +9,7 @@ import { COMMUNITY_MODEL } from '../../lib/geometry/community.js';
 import { clearResult, renderResult, renderPreviews, renderDerivation, renderScenarios, renderTrace, renderSimple, renderDiscriminating } from './presentation.js';
 import { bindSources, fillPresets } from './sources.js';
 import { bindFeedback } from './feedback.js';
+import { renderOutcomes } from './outcomes.js';
 import { toggleMode } from '../ui/mode.js';
 
 const SETTING_KEYS = Object.keys(DEFAULT_SETTINGS);
@@ -17,12 +18,14 @@ export class QuantController {
     Object.assign(this, { view, worker, records, meta, generation: 0, closed: false, timer: null,
       importTimer: null, frame: null, dirtyDetails: new Set(), listeners: new AbortController(),
       discriminating: null, discriminatingPending: null });
-    this.state = { settings: {}, result: null, measurements: [], targetOverride: null, targetMask: null, screenshotMeta: null, source: null };
+    this.state = { settings: {}, result: null, measurements: [], targetOverride: null, targetMask: null, screenshotMeta: null, source: null, importNotes: [] };
   }
   get(id) { return this.view.get(id); }
   on(id, event, handler) { this.get(id).addEventListener(event, handler, { signal: this.listeners.signal }); }
   options() { return { oldHeight: this.get('q-old-height').valueAsNumber, currentHeight: this.get('q-new-height').valueAsNumber,
-    authoredHeight: this.get('q-new-height').valueAsNumber, goal: this.get('q-goal').value }; }
+    authoredHeight: this.get('q-new-height').valueAsNumber, goal: this.get('q-goal').value,
+    outlineMode: this.outlineValue(), styleTarget: this.get('q-style').value }; }
+  outlineValue() { const value = this.get('q-outline').value; return value === 'auto' ? 'auto' : Number(value); }
 
   start() {
     fillPresets(this); bindSources(this); bindFeedback(this); this.bindOutput(); this.bindSimple();
@@ -35,7 +38,7 @@ export class QuantController {
   }
 
   bindOutput() {
-    for (const id of ['q-model', 'q-decision', 'q-goal', 'q-certify']) this.on(id, 'change', () => this.schedule());
+    for (const id of ['q-model', 'q-decision', 'q-goal', 'q-certify', 'q-outline', 'q-style']) this.on(id, 'change', () => this.schedule());
     for (const id of ['q-zoom', 'q-grid', 'q-difference']) this.on(id, 'change', () => this.refresh());
     for (const id of ['q-scenarios', 'q-trace-panel', 'q-derivation-panel', 'q-feedback']) this.on(id, 'toggle', () => this.renderDetails());
     this.on('q-copy', 'click', () => copy(this.get('q-cfg').value, this.get('q-status')));
@@ -51,7 +54,9 @@ export class QuantController {
     const pairs = [
       ['qs-size', 'q-size', 'input', 'value'], ['qs-thickness', 'q-thickness', 'input', 'value'], ['qs-gap', 'q-gap', 'input', 'value'],
       ['qs-old-height', 'q-old-height', 'input', 'value'], ['qs-new-height', 'q-new-height', 'input', 'value'],
-      ['qs-goal', 'q-goal', 'change', 'value'], ['qs-color', 'q-color', 'input', 'value'], ['qs-alpha', 'q-alpha', 'input', 'value'],
+      ['qs-goal', 'q-goal', 'change', 'value'],
+      ['qs-outline', 'q-outline', 'change', 'value'], ['qs-style', 'q-style', 'change', 'value'],
+      ['qs-color', 'q-color', 'input', 'value'], ['qs-alpha', 'q-alpha', 'input', 'value'],
       ['qs-dot', 'q-dot', 'change', 'checked'], ['qs-t', 'q-t', 'change', 'checked'],
     ];
     for (const [from, to, event, prop] of pairs) this.on(from, event, () => {
@@ -65,6 +70,7 @@ export class QuantController {
   }
 
   setSettings(values) {
+    this.state.importNotes = [];
     this.state.settings = Object.fromEntries(SETTING_KEYS.map(key => [key, values[key] ?? DEFAULT_SETTINGS[key]]));
     this.clearImageTarget();
     for (const [id, key] of [['q-size', 'size'], ['q-thickness', 'thickness'], ['q-gap', 'gap']]) this.get(id).value = values[key];
@@ -108,7 +114,7 @@ export class QuantController {
         selectedModelId, decision, certify: this.get('q-certify').checked });
       if (ticket !== this.generation || this.closed) return;
       this.state.result = report; this.dirtyDetails.clear();
-      renderResult(this.view, report); this.refresh(); this.renderDetails();
+      renderResult(this.view, report); renderOutcomes(this.view, report, this.state.importNotes); this.refresh(); this.renderDetails();
     } catch (error) {
       if (ticket === this.generation && !this.closed) this.fail(error);
     }
@@ -161,11 +167,17 @@ export class QuantController {
     clearTimeout(this.importTimer); this.invalidate();
     try {
       const text = this.get('q-import').value.trim();
-      const values = parseLegacyText(text, this.state.settings);
-      this.setSettings(values); this.state.source = { type: 'user-input' };
-      this.get('q-input-status').textContent = this.get('qs-input-status').textContent = 'Old settings loaded.';
+      const { config: values, notes } = parseLegacyTextWithNotes(text, this.state.settings);
+      this.setSettings(values); this.state.source = { type: 'user-input' }; this.state.importNotes = notes;
+      const short = notes.map(note => note.replace(/^Ignored (\d+) cvar\(s\).*$/, '$1 unrelated cvars ignored (see the table).'));
+      this.get('q-input-status').textContent = this.get('qs-input-status').textContent = ['Old settings loaded.', ...short].join(' ');
       this.get('q-provenance').replaceChildren(); this.schedule();
-    } catch (error) { this.get('q-input-status').textContent = this.get('qs-input-status').textContent = error.message; this.fail(error); }
+    } catch (error) {
+      this.get('q-input-status').textContent = this.get('qs-input-status').textContent = error.message;
+      // A valid current-format share code is not an error: nothing is wrong with the result panel.
+      if (error.code !== 'current-share-code') this.fail(error);
+      else this.schedule(); // the previous settings are still the ones shown, so restore their result
+    }
   }
 
   close() {

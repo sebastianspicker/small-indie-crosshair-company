@@ -18,7 +18,8 @@ export function initResearch() {
     el('p',{},'The new reconstruction matches 12 diagnostic and 12 later comparison tuples from crosshair.club; ' +
       'the previous default matches none. These are external-software comparisons, not game captures. ' +
       'The direct solver uses exact monotone axis searches and preserves minimum dimension errors. ' +
-      'It compares up to eight tied shapes: 750 of 8,640 synthetic cases improve versus v2, with zero regressions. ' +
+      'It compares up to eight tied shapes by overlap, ignoring the one-pixel odd-width centring shift (v5): ' +
+      '731 of 8,640 synthetic cases improve versus v2, with zero regressions in shift-aligned overlap. ' +
       'Six UI choices replace the former 27 alternatives; the historical study remains below.'),
     docLink('research/build-2000922-update-2026-10-01.md','Read the October 1 build 2000922 update and its limitations'),
     docLink('research/accuracy-improvements-2026-09-29.md','V3 conversion and learning accuracy, with evaluation limits'),
@@ -66,27 +67,44 @@ export function initResearch() {
   }$('bucket-size').addEventListener('input',update);update();
   root.append(el('article',{class:'math-sheet'},el('h2',{},'Precision is not certainty'),table(['Question','Status'],[
     ['Old static length / thickness / gap equations','Source-derived community reconstruction'],
-    ['56-case comparisons','Recorded numerical comparison'],['New convar names and ranges','Pinned build inventory'],
+    ['56-case comparisons','Reproducible numerical tests'],['New convar names and ranges','Pinned build inventory'],
     ['New native pixel snapping / parity / migration','Community evidence, not independently native-validated'],
     ['Current transverse centring','Source-labelled reconstruction; historical previews remain illustrative'],
     ['Custom outline equivalence / dynamic motion','Outside the implemented equivalence claim'],
   ]),el('p',{},'A low test error only validates the thing the test observes. A code regression test cannot validate a renderer that was never executed.')));
   root.append(el('section',{class:'math-sheet'},el('h2',{},'Improved learning, with a fair comparison'),
     el('p',{},'The new research-only emulator learns the current deterministic converter, not Valve’s renderer. ' +
-      'Quantization-aware features raise exact tuple fidelity from 95.21% to 96.99% on the same reserved test groups (v4 labels). ' +
+      'Quantization-aware features raise exact tuple fidelity from 94.75% to 96.40% on the same reserved test groups (v5 labels). ' +
       'Training, capacity selection, interval calibration and testing use separate setting groups.'),
     el('pre',{class:'formula'},'12800 synthetic development rows · 320 new setting groups\n' +
       '198 train / 34 validation / 29 calibration / 59 test groups\n' +
       'heights, goals and shape flags stay within their setting group\n' +
       'capacity chosen on validation only; final refit on train + validation\n' +
-      'test: 2360 rows, but only 59 setting groups\nexact tuple: residual 95.21% → quantization-aware 96.99%\n' +
-      'rendered exact masks: 95.30% → 96.99%\nspeed gate closed · nativeEvidence = false'),
+      'test: 2360 rows, but only 59 setting groups\nexact tuple: residual 94.75% → quantization-aware 96.40%\n' +
+      'rendered exact masks: 95.00% → 96.48%\nspeed gate closed · nativeEvidence = false'),
     el('p',{},'On 80 additional groups at unseen resolutions, the new features improve interior fidelity ' +
-      'from 51.48% to 69.92%, and exterior fidelity from 57.89% to 77.89%. Interior intervals accept only 8/80 complete ' +
+      'from 71.41% to 82.11%, and exterior fidelity from 62.19% to 83.59%. Interior intervals accept only 8/80 complete ' +
       'groups; all exterior groups abstain. These are solver-imitation results, not in-game accuracy. ' +
-      'The fixed experiment was rerun on v4 labels (thickness up to 32) without retuning; no ML choices were tuned on test scores. ' +
+      'The fixed experiment was rerun on v5 labels (shift-aligned ties) without retuning; no ML choices were tuned on test scores. ' +
       'The exact solver remains authoritative.'),
     docLink('research/accuracy-improvements-2026-09-29.md','Training protocol, correction history and selective coverage')));
+  root.append(el('section',{class:'math-sheet'},el('h2',{},'Learning the complete export, and where the solver looks fragile'),
+    el('p',{},'The October 2 export-state learner imitates everything the converter exports for the shape: length, thickness, ' +
+      'gap, screen height, outline mode and outline opacity. Earlier learners predicted the first three only. ' +
+      'Holdout groups were fixed before fitting; development and challenge inputs are synthetic.'),
+    el('pre',{class:'formula'},'400 new setting groups · 86 test groups · 3784 test rows\n' +
+      'exact export state: frozen structured learner 23.73% → export-state learner 97.30%\n' +
+      'exact length/thickness/gap: 95.48% → 98.36%\n' +
+      'real published settings, cross-height (810 rows): 88.77% → 100%\n' +
+      'boundary outline widths (challenge): 78.28%, the learner misses thresholds at 0 and 1\n' +
+      'speed gate closed · nativeEvidence = false'),
+    el('p',{},'Every disagreement with the solver lies inside the solver’s own tie set. One cluster pointed at the solver: ' +
+      'tied shapes were scored on absolute pixels, so the one-pixel odd-width centring shift swayed 468 of 2108 synthetic ties ' +
+      'and 74 of 222 tied cross-height conversions of real settings. Version 5 ranks ties with that shift removed. ' +
+      'Odd widths are also where other converters disagree: ' +
+      'a floor instead of ceil gap origin would change 46 of 135 published crosshairs at 1080p. These are findings ' +
+      'about the declared reconstruction, not game captures.'),
+    docLink('research/learners-2026-10-02.md','Learner audit, edge-case slices, cross-tool baselines and proposed fixes')));
   root.append(el('section',{class:'math-sheet'},el('h2',{},'Historical learning experiment (different target)'),
     el('p',{},'We trained a small dependency-free learned model to imitate the exact solver. Its labels are the solver’s own output, not game measurements. A capacity revision raised its held-out full-tuple fidelity from about 11.6% to about 35.7%, but it is still wrong on the full tuple about two times out of three, so it is not wired into the app. The exact solver stays authoritative.'),
     el('pre',{class:'formula'},'training: 5000 samples · 607 distinct legacy settings\nsplit: group-disjoint by setting signature → 3991 train / 1009 test\nmodel: depth-3 boosted trees · 120 rounds · 26 declared features\nexact full tuple: learned 0.35679 vs naive 0.03568 (earlier revision 0.11596)\nexact per dimension: length 0.563 · thickness 0.783 · gap 0.644\nMAE (px): length 0.561 · thickness 0.308 · gap 0.575 vs naive 2.610\nablation: the 7 extra declared-math features did NOT help; capacity did\nforward surrogate held-out MAE: 0.392 / 0.286 / 0.540 / 0.540 px\nfingerprint: 137061144 · speedGate = "closed-not-exact-equivalent" · nativeEvidence = false'),

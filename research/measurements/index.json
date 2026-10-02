@@ -1,9 +1,16 @@
 {
   "schema": "sicc-measurement-index-v1",
-  "snapshot": "2026-10-01",
+  "snapshot": "2026-10-02",
   "nativeMeasurements": [],
   "reviewedNativeCount": 0,
   "note": "No native captures or independently reviewed renderer measurements are included.",
   "targetBuild": "2000922",
-  "captureProtocol": "docs/research/build-2000922-update-2026-10-01.md#native-capture-protocol"
+  "captureProtocol": "docs/research/capture-protocol-2026-10-02.md",
+  "unregisteredObservations": [
+    {
+      "file": "research/measurements/old-client-issue-11.json",
+      "kind": "user-supplied old-client observation",
+      "reason": "pre-update client; outside the intake schema and outside every holdout"
+    }
+  ]
 }

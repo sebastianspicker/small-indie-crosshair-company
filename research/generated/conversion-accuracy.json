@@ -1,7 +1,7 @@
 {
   "schema": "sicc-conversion-accuracy-v1",
   "before": "community-static-v2",
-  "after": "community-static-v4",
+  "after": "community-static-v5",
   "nativeEvidence": false,
   "scopes": [
     [
@@ -38,35 +38,69 @@
   "totals": {
     "cases": 8640,
     "visibleTargets": 7768,
-    "improved": 750,
-    "regressed": 0,
-    "changedTuples": 750,
+    "improved": 496,
+    "rawRegressed": 96,
+    "maxRawLoss": 0.47058823529411764,
+    "alignedImproved": 731,
+    "alignedRegressed": 0,
+    "changedTuples": 731,
     "exactBefore": 1498,
     "exactAfter": 1640,
     "meanIouBefore": 0.4603476736046748,
-    "meanIouAfter": 0.48721458794101186,
+    "meanIouAfter": 0.4758349821389833,
+    "meanAlignedIouBefore": 0.7936869616800575,
+    "meanAlignedIouAfter": 0.8176241622055893,
     "maxGain": 0.8461538461538461,
     "maxShapes": 8
+  },
+  "worstRawRegression": {
+    "settings": {
+      "size": 0.5,
+      "thickness": 3,
+      "gap": -3,
+      "dot": false,
+      "t_style": true
+    },
+    "options": {
+      "oldHeight": 1080,
+      "currentHeight": 720,
+      "authoredHeight": 1440,
+      "goal": "screen"
+    },
+    "before": {
+      "length": 1,
+      "thickness": 9,
+      "gap": 7,
+      "authoredHeight": 1440
+    },
+    "after": {
+      "length": 1,
+      "thickness": 9,
+      "gap": 6,
+      "authoredHeight": 1440
+    },
+    "beforeIou": 0.47058823529411764,
+    "afterIou": 0
   },
   "examples": [
     {
       "settings": {
         "size": 0,
-        "thickness": 0,
+        "thickness": 1,
         "gap": -5.5,
         "dot": true,
         "t_style": false
       },
       "options": {
         "oldHeight": 720,
-        "currentHeight": 1080,
+        "currentHeight": 900,
         "authoredHeight": 960,
         "goal": "screen"
       },
       "before": {
         "length": 0,
-        "thickness": 1,
-        "gap": 0,
+        "thickness": 3,
+        "gap": 1,
         "authoredHeight": 960
       },
       "after": {
@@ -75,27 +109,27 @@
         "gap": 0,
         "authoredHeight": 960
       },
-      "beforeIou": 0,
-      "afterIou": 0.25
+      "beforeIou": 0.4444444444444444,
+      "afterIou": 1
     },
     {
       "settings": {
         "size": 0,
-        "thickness": 0,
+        "thickness": 1,
         "gap": -5.5,
         "dot": true,
         "t_style": true
       },
       "options": {
         "oldHeight": 720,
-        "currentHeight": 1080,
+        "currentHeight": 900,
         "authoredHeight": 960,
         "goal": "screen"
       },
       "before": {
         "length": 0,
-        "thickness": 1,
-        "gap": 0,
+        "thickness": 3,
+        "gap": 1,
         "authoredHeight": 960
       },
       "after": {
@@ -104,27 +138,27 @@
         "gap": 0,
         "authoredHeight": 960
       },
-      "beforeIou": 0,
-      "afterIou": 0.25
+      "beforeIou": 0.4444444444444444,
+      "afterIou": 1
     },
     {
       "settings": {
         "size": 0,
-        "thickness": 0,
+        "thickness": 1,
         "gap": -4.25,
         "dot": true,
         "t_style": false
       },
       "options": {
         "oldHeight": 720,
-        "currentHeight": 1080,
+        "currentHeight": 900,
         "authoredHeight": 960,
         "goal": "screen"
       },
       "before": {
         "length": 0,
-        "thickness": 1,
-        "gap": 1,
+        "thickness": 3,
+        "gap": 2,
         "authoredHeight": 960
       },
       "after": {
@@ -133,27 +167,27 @@
         "gap": 1,
         "authoredHeight": 960
       },
-      "beforeIou": 0,
-      "afterIou": 0.25
+      "beforeIou": 0.4444444444444444,
+      "afterIou": 1
     },
     {
       "settings": {
         "size": 0,
-        "thickness": 0,
+        "thickness": 1,
         "gap": -4.25,
         "dot": true,
         "t_style": true
       },
       "options": {
         "oldHeight": 720,
-        "currentHeight": 1080,
+        "currentHeight": 900,
         "authoredHeight": 960,
         "goal": "screen"
       },
       "before": {
         "length": 0,
-        "thickness": 1,
-        "gap": 1,
+        "thickness": 3,
+        "gap": 2,
         "authoredHeight": 960
       },
       "after": {
@@ -162,125 +196,171 @@
         "gap": 1,
         "authoredHeight": 960
       },
-      "beforeIou": 0,
-      "afterIou": 0.25
+      "beforeIou": 0.4444444444444444,
+      "afterIou": 1
     },
     {
       "settings": {
         "size": 0,
-        "thickness": 0,
+        "thickness": 1,
         "gap": -3,
         "dot": true,
         "t_style": false
       },
       "options": {
         "oldHeight": 720,
-        "currentHeight": 1080,
+        "currentHeight": 900,
         "authoredHeight": 960,
         "goal": "screen"
       },
       "before": {
         "length": 0,
-        "thickness": 1,
+        "thickness": 3,
         "gap": 3,
         "authoredHeight": 960
       },
       "after": {
         "length": 0,
         "thickness": 2,
-        "gap": 2,
+        "gap": 3,
         "authoredHeight": 960
       },
-      "beforeIou": 0,
-      "afterIou": 0.25
+      "beforeIou": 0.4444444444444444,
+      "afterIou": 1
     },
     {
       "settings": {
         "size": 0,
-        "thickness": 0,
+        "thickness": 1,
         "gap": -3,
         "dot": true,
         "t_style": true
       },
       "options": {
         "oldHeight": 720,
-        "currentHeight": 1080,
+        "currentHeight": 900,
         "authoredHeight": 960,
         "goal": "screen"
       },
       "before": {
         "length": 0,
-        "thickness": 1,
+        "thickness": 3,
         "gap": 3,
         "authoredHeight": 960
       },
       "after": {
         "length": 0,
         "thickness": 2,
-        "gap": 2,
+        "gap": 3,
         "authoredHeight": 960
       },
-      "beforeIou": 0,
-      "afterIou": 0.25
+      "beforeIou": 0.4444444444444444,
+      "afterIou": 1
     },
     {
       "settings": {
         "size": 0,
-        "thickness": 0,
+        "thickness": 1,
         "gap": -2,
         "dot": true,
         "t_style": false
       },
       "options": {
         "oldHeight": 720,
-        "currentHeight": 1080,
+        "currentHeight": 900,
         "authoredHeight": 960,
         "goal": "screen"
       },
       "before": {
         "length": 0,
-        "thickness": 1,
+        "thickness": 3,
         "gap": 4,
         "authoredHeight": 960
       },
       "after": {
         "length": 0,
         "thickness": 2,
-        "gap": 3,
+        "gap": 4,
         "authoredHeight": 960
       },
-      "beforeIou": 0,
-      "afterIou": 0.25
+      "beforeIou": 0.4444444444444444,
+      "afterIou": 1
     },
     {
       "settings": {
         "size": 0,
-        "thickness": 0,
+        "thickness": 1,
         "gap": -2,
         "dot": true,
         "t_style": true
       },
       "options": {
         "oldHeight": 720,
-        "currentHeight": 1080,
+        "currentHeight": 900,
         "authoredHeight": 960,
         "goal": "screen"
       },
       "before": {
         "length": 0,
-        "thickness": 1,
+        "thickness": 3,
         "gap": 4,
         "authoredHeight": 960
       },
       "after": {
         "length": 0,
         "thickness": 2,
-        "gap": 3,
+        "gap": 4,
         "authoredHeight": 960
       },
-      "beforeIou": 0,
-      "afterIou": 0.25
+      "beforeIou": 0.4444444444444444,
+      "afterIou": 1
     }
   ],
-  "scope": "Synthetic declared-model geometry only. All cases preserve minimum length/width error; means exclude empty targets."
+  "alignedTieAudit": {
+    "tiedCases": 2108,
+    "changed": 0,
+    "oddWidthChanged": 0,
+    "meanAlignedGain": null,
+    "byScope": {
+      "720/1080/960/screen": {
+        "tied": 384,
+        "changed": 0
+      },
+      "1080/2160/720/screen": {
+        "tied": 200,
+        "changed": 0
+      },
+      "1080/720/1440/screen": {
+        "tied": 200,
+        "changed": 0
+      },
+      "1080/1440/1080/pixels": {
+        "tied": 368,
+        "changed": 0
+      },
+      "1440/960/1080/screen": {
+        "tied": 120,
+        "changed": 0
+      },
+      "720/900/960/screen": {
+        "tied": 456,
+        "changed": 0
+      },
+      "1080/1440/1080/screen": {
+        "tied": 120,
+        "changed": 0
+      },
+      "1080/2160/720/pixels": {
+        "tied": 120,
+        "changed": 0
+      },
+      "720/1080/960/pixels": {
+        "tied": 140,
+        "changed": 0
+      }
+    },
+    "examples": [],
+    "scope": "Research only. Same tied alternatives as the solver, re-scored by IoU maximised over whole-shape shifts of at most 1 px (odd widths are centred -floor(W/2) old versus -ceil(W/2) new). changed = the aligned-best alternative differs from the shipped choice and strictly improves aligned IoU. Synthetic; not native evidence."
+  },
+  "scope": "Synthetic declared-model geometry only. All cases preserve minimum length/width error; means exclude empty targets. Aligned IoU is maximised over whole-shape shifts of at most 1 px; it is the v5 tie objective and must not regress."
 }

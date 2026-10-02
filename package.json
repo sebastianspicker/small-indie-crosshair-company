@@ -1,6 +1,6 @@
 {
   "name": "small-indie-crosshair-company",
-  "version": "0.9.1",
+  "version": "0.11.0",
   "private": true,
   "description": "Local CS2 crosshair converter with pixel previews and documented research.",
   "type": "module",

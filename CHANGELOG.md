@@ -2,6 +2,102 @@
 
 ## Unreleased
 
+## 0.11.0 — 2026-10-02
+
+- Advance to `community-static-v5`: tied shapes are ranked by pixel
+  overlap maximised over whole-shape shifts of at most 1 px, then plain overlap,
+  then the canonical order, so the odd-width centring shift no longer decides
+  ties. 74 of 1,755 corpus record-scope rows (48 records) change, all at cross
+  heights; equal-height exports and the 24 crosshair.club tuples are unchanged.
+  Example: ZywOo 1.5/0/-3 at 720 → 1080 (authored 960) now exports 3/1/3, not
+  3/2/2. Reports add `tieBreak.ranking` and aligned scores; `searchPolicy` is
+  `finite-dimension-ties-v4`.
+- Old styles 2, 3 and 5 now export `cl_crosshairstyle 4` by default: the old
+  source draws them exactly like style 4 at rest (weapon_csbase.cpp L2002-2050).
+  They warn `style-dynamic-at-rest` and the "What changed" style row is
+  `approximated`. Old styles 0 and 1 and the weapon gap stay blocked. This
+  applies to the automatic, historical and manual paths; the family option is
+  unchanged.
+- Report schema bumped to `sicc-quant-report-v6` (contract change): reports
+  carry `clamped[]`, `options {outlineMode, styleTarget}` and, in `settings`,
+  `outline_width_rounded`.
+- Old share-code colour indexes 6 and 7 convert with the stored RGB and the
+  warning `color-index-unknown` instead of failing (corpus pro-064).
+- Old outline widths 2 and 3 warn `outline-width-reduced` and are listed in
+  `report.clamped`; unequal widths keep `outline-asymmetric-approx`.
+- Regression tests pin binary32 old arithmetic and the thickness-32 inner-edge clamp.
+- Simple view "What changed" table with a status per setting (converted,
+  approximated, assumed, dropped, ignored, user-choice) and its reason, also in
+  the expert lab; stacked rows on narrow screens.
+- Per-value confidence chips, a plain-text warnings list, a limits line next to
+  Copy/Download, the checked build (2000922, convar dump 2026-10-01), a "save
+  your current crosshair first" hint and a short import status.
+- Pure `lib/settings/outcomes.js` (`settingOutcomes`, `confidenceLabel`).
+- Opt-in export options: outline mode (Auto/None/Full/Half) and style target
+  (Static Cross by default; "Keep old style family (experimental)" maps old
+  2/3 → 2 and 5 → 5). They warn `outline-user-override` and
+  `style-family-experimental` and are recorded in `report.options`; the manual
+  lab gets the outline select.
+- A pasted current `CS…` share code (read-only decoder) is explained
+  as already using the new settings, with its values listed; not an error.
+- Specific share-code errors (format, characters, length, overflow, checksum,
+  version); `CSGO-` version-3 codes get a new-format message.
+- Style labels follow the 2000922 UI.
+- Historical models report `outline-only-legacy`; new
+  `outline-asymmetric-approx`; `report.clamped` lists clamped or approximated
+  outputs.
+- Shared raster arm placement, checked per pixel against a reference.
+- New regression tests cover the export contract (screen height last, allowlisted
+  lines, legacy gap -5 → 3) and a 2000922 range snapshot.
+- Research: export-state learner (`research/generated/export-emulator.json`); cross-tool baselines (JDD310, cursed, Horizzon1,
+  crosshairrestore); gap-origin sensitivity (floor versus ceil changes 388 of
+  945 corpus rows); outline mask evaluation; tie-break audit; capture protocol
+  2026-10-02 with a calibration harness (research tooling, not
+  published; the issue #11 screenshot matches the old outline
+  model exactly at a +3 px x offset); the old-client observation; research note
+  addendum and source ledger S12–S14.
+- Learners labelled by the public solver are retrained on v5 labels (accuracy
+  889, structured 835 and export 882 labels change); the frozen v2 distillation
+  is unchanged. The conversion-accuracy study now guards aligned overlap.
+- Third-party notice for cursed-crosshair-generator (MIT).
+- Fixed after review:
+  - Outline warnings and `clamped` follow the exported outline mode, including the export override; one shared
+    `outlineWarnings` helper serves the community and historical reports, so the hedge path now also emits
+    `outline-sharecode-rounded`, `outline-half-mapping` and `outline-alpha-unverified`.
+  - What-changed outcomes and confidence chips read `report.clamped` (hedge size 400, gap 200, gap -10 are approximated).
+  - `clamped` lists thickness 0 only if the export differs; historical models are judged against build 2000914 (0..31).
+  - The CFG parser accepts only `crosshair` and `cl_*` names and uses own-property lookup (`constructor`, `__proto__` rejected).
+  - A `CS` code whose payload starts with `GO` is read as a current share code.
+  - `encodeLegacy` accepts colour indexes 6 and 7; the lab's copy note explains the 0.5-step outline width.
+  - The conversion-accuracy study records the raw-IoU regression (96 cases, worst 0.471) and fails if it grows; the
+    tie-search regression test uses an independent raw-mask shift oracle.
+
+## 0.10.0 — 2026-10-02
+
+- Outline opacity: the old outline used the crosshair opacity (cstrike15
+  `DrawCrosshairRect`, confirmed by a user screenshot), so exports now write
+  `cl_crosshairoutline_a` as the old crosshair opacity instead of 255 whenever the
+  outline is on. This changes the exported values of every outlined crosshair. The
+  `outline-alpha-unverified` warning now states that, if 2000922 also multiplies the
+  outline by `cl_crosshaircolor_a`, it will be lighter (unverified).
+- Outline geometry: the old outline rect grows by ceil(t) on the left/top and floor(t)
+  on the right/bottom. `lib/geometry/raster.js` gains `outlineRectangles`,
+  `outlineRaster` and `outlineOnly`, and the previews draw the outline in black at the
+  crosshair alpha beneath the core (new outline assumed). The core-shape objective,
+  solver and model ids are unchanged. Outline-only crosshairs (size 0 with an
+  outline) warn `outline-only-legacy` instead of `empty-geometry`.
+
+- Share-code outline width 0 (issue #11): old share codes store
+  `cl_crosshair_outlinethickness` in 0.5 steps, so an enabled outline with stored
+  width 0 means any thickness below 0.5 and now exports `cl_crosshair_drawoutline 2`
+  with the warning `outline-sharecode-rounded` instead of dropping the outline.
+  A width of exactly 0 typed in a CFG still exports no outline. Decoded settings
+  carry `outline_width_rounded`; a CFG that sets the thickness clears it.
+- CFG import accepts `true`/`false` for boolean cvars and skips known non-shape
+  cvars from a console `find crosshair` dump (grenade, ironsight, observer, sniper
+  and the bare `crosshair`), listing each ignored name in the import status.
+  Binds, exec, alias, unknown cvars and expressions are still rejected.
+
 ## 0.9.1 — 2026-10-01
 
 - Map old outline widths to the new outline modes (issue #11): an enabled outline
