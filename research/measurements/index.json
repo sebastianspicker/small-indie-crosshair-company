@@ -3,7 +3,7 @@
   "snapshot": "2026-10-02",
   "nativeMeasurements": [],
   "reviewedNativeCount": 0,
-  "note": "No native captures or independently reviewed renderer measurements are included.",
+  "note": "No native captures or independently reviewed renderer measurements are included. Build 2000924 captures are accepted as build 2000922 (no crosshair change in the 2026-10-03 dump comparison, source ledger S19; RENDERER_EQUIVALENT_BUILDS in lib/solver/observations.js).",
   "targetBuild": "2000922",
   "captureProtocol": "docs/research/capture-protocol-2026-10-02.md",
   "unregisteredObservations": [
@@ -11,6 +11,11 @@
       "file": "research/measurements/old-client-issue-11.json",
       "kind": "user-supplied old-client observation",
       "reason": "pre-update client; outside the intake schema and outside every holdout"
+    },
+    {
+      "file": "research/measurements/current-client-issue-11.json",
+      "kind": "user-supplied current-client observations",
+      "reason": "hand-read pixel rows without stored images or hashes; outside the intake schema and outside every holdout"
     }
   ]
 }

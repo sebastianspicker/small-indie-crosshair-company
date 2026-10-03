@@ -107,6 +107,7 @@ is implied. Original game measurements remain the central evidence gap.
 Development verification retrained both frozen-v2 and current-v3 artifacts with
 bytewise checks and exercised grouped-label/feature/interval tests. The public
 release retains results and protocols; training implementation is kept separately.
-Artifacts: [ML](../../research/generated/accuracy-emulator.json),
+Artifacts: the ML results (`accuracy-emulator.json`, a research artifact
+that is not published because of its size),
 [conversion](../../research/generated/conversion-accuracy.json).
 Final ML fingerprint: `a7ef8624ed43eb05cf768cf367776d0784eeaf5177d225efe5fb72d7dfec8593`.

@@ -12,6 +12,7 @@ const EXCLUDED_SUBPATHS = [
   'research/scripts',
   'research/generated/complexity-comparison.json',
   'research/generated/performance-local.json',
+  'research/generated/accuracy-emulator.json',
 ];
 const isExcludedSubpath = rel => EXCLUDED_SUBPATHS.some(sub => rel === sub || rel.startsWith(sub + '/'));
 const directoryPattern = new RegExp(`^(?:${PUBLISHED_DIRECTORIES.join('|')})/`);

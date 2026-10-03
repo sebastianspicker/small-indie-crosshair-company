@@ -898,6 +898,84 @@
     "holdoutCaptures": 0,
     "actualConversionAccuracy": null
   },
+  "evidence": {
+    "captures": {
+      "total": 2,
+      "reproduced": 2,
+      "source": "current-client-issue-11-length1",
+      "date": "2026-10-02",
+      "resolution": {
+        "width": 1920,
+        "height": 1080
+      },
+      "note": "User-supplied captures of the current game, re-rendered with the shipped forward model and outline rule up to one whole-shape translation. Not independent holdouts."
+    },
+    "crossTool": {
+      "total": 24,
+      "agree": 22,
+      "differSizeZeroDot": 2,
+      "source": "https://crosshair.club/convert",
+      "note": "Same length/thickness/gap/height as crosshair.club exports under the shipped model. Software agreement, not game captures."
+    },
+    "mlCrossCheck": {
+      "model": "export-state-learner-v2",
+      "learner": "sicc-export-emulator-v2",
+      "targetVersion": "community-static-v6",
+      "parametersHash": 3815179069,
+      "partition": "fresh",
+      "evaluated": "2026-10-02",
+      "exactRate": 0.9898792613636364,
+      "lower": 0.9856178977272728,
+      "upper": 0.9936079545454549,
+      "cases": 5632,
+      "groups": 128,
+      "keys": [
+        "length",
+        "thickness",
+        "gap",
+        "drawoutline",
+        "outlineAlpha",
+        "color",
+        "fillAlpha",
+        "t_style"
+      ],
+      "scope": {
+        "sameHeights": [
+          720,
+          960,
+          1080,
+          1440,
+          2160
+        ],
+        "crossScopes": [
+          [
+            720,
+            1080,
+            960
+          ],
+          [
+            1080,
+            1440,
+            1080
+          ],
+          [
+            1440,
+            1080,
+            2160
+          ]
+        ],
+        "note": "Evaluated design: equal old, current and screen heights at the pixel goal, plus the listed old/current/screen-height scopes at either goal. The rate is not claimed outside it."
+      },
+      "edgeChallenge": {
+        "exactRate": 0.9860795454545455,
+        "lower": 0.978693181818182,
+        "upper": 0.9923295454545455,
+        "cases": 3520,
+        "groups": 80
+      },
+      "note": "Whole-export agreement (length, thickness, gap, outline mode and alpha, colour, fill alpha, T) of the export-state learner v2 with the converter on a fresh reserved synthetic set, scored after training; relabelled and rescored after the 0.12.0 solver changes; interval is a group-resampling stability interval. Its inference never runs the solver. Agreement with our own method, not game accuracy."
+    }
+  },
   "interpretation": "Every target in this corpus study is a source-derived legacy prediction. Cross-validation and bootstrap describe that benchmark, not undisclosed new-client rendering.",
   "regression": [
     {

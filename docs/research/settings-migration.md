@@ -100,9 +100,10 @@ explicit alpha value, so edits have predictable data meaning.
 
 ## Export policy
 
-The tool generates integer settings inside its chosen native UI ranges. It includes
-model version, build, source/target heights, selected gap/rounding hypotheses and any
-conversion warnings in comments. It sets authored height last because the inventory
+The tool generates integer settings inside its chosen native UI ranges. The export is
+one line of commands separated by `;` with no comments, so it pastes straight into the
+console (limit 510 characters per line); model version, build, heights, hypotheses and
+conversion warnings stay in the UI and the JSON report. It sets authored height last because the inventory
 says geometry edits can update that reference. Read the values back after applying.
 
 No config changes your game resolution, runs `exec`, changes key binds, connects to a
@@ -134,6 +135,31 @@ range at 0..128 and clamps a negative old gap to 0 with the warning
 `negative-gap-static-unverified`; the next section is a 2000914 record. Native
 negative-gap behaviour on static styles is unverified; see the
 [capture protocol](build-2000922-update-2026-10-01.md#native-capture-protocol).
+
+## Update, October 3 2026: what the dumps say about migration (2000908 to 2000924)
+
+A comparison of the GameTracking-CS2 dumps from the last pre-update build 2000908
+(`d8e2c7a`) to 2000924 (`7193ca8`) adds three facts
+([S13](source-ledger.md#s13-game-dumps-before-and-after-the-update),
+[S19](source-ledger.md#s19-build-2000924)):
+
+- **Valve's only migration hint is a tooltip.** From 2000913 (`10f3693`)
+  `csgo_english.txt` carries `GameUI_CrosshairUpdated_Info`: "The scale of this
+  setting has changed. You may want to adjust it to your liking." No migration
+  script or formula appears in the Panorama files (`settingsmenu_crosshair.js`
+  only toggles visibility), so the old-to-new mapping stays compiled and unknown.
+- **`cl_crosshairusealpha` has no string after 2000913.** The name disappears from
+  the convar dump and the string tables from `10f3693` on, so the new game keeps no
+  trace of the additive mode; the usealpha-0 export rule is ours.
+- **The workshop cvar whitelist changed in 2000924** (lines 85 to 111): the old
+  `cl_crosshairalpha`, `cl_crosshaircolor`, `cl_crosshairgap`,
+  `cl_crosshairgap_useweaponvalue`, `cl_crosshairsize`, `cl_crosshairthickness` and
+  `cl_crosshairusealpha` were removed; `cl_crosshaircolor_a`,
+  `cl_crosshairoutline_r/g/b/a`, `cl_crosshair_gap`, `cl_crosshair_length`,
+  `cl_crosshair_thickness`, `cl_crosshair_dynamic_spread_limit` and the ironsight
+  cvars were added. The stale `cl_crosshair_outlinethickness` is still listed, and
+  `cl_crosshair_screen_height` was never whitelisted. No crosshair convar, renderer
+  or shader changed in 2000924.
 
 ## Post-update evidence fixes the gap sign and the shipped default (build 2000914)
 

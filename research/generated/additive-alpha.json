@@ -1,0 +1,379 @@
+{
+  "schema": "sicc-additive-alpha-v1",
+  "adr": "docs/engineering/decisions/0015-old-draw-order-and-blending.md",
+  "oldAdditiveAlpha": 200,
+  "background": {
+    "levels": 256,
+    "space": "srgb-uniform-neutral-grey",
+    "description": "Neutral grey backgrounds, every sRGB level 0-255 once, decoded to linear light (IEC 61966-2-1)."
+  },
+  "additive": "min(1, bg + c * 200 / 255) per channel, linear light",
+  "normal": "a * c + (1 - a) * bg per channel, linear light",
+  "closedForm": "a = sum(T * (c - bg)) / sum((c - bg)^2), T = min(1, bg + c * 200 / 255) - bg; clamp to [0, 1], round to 0-255",
+  "presets": [
+    {
+      "color": 0,
+      "rgb": [
+        250,
+        50,
+        50
+      ],
+      "exportAlpha": 133,
+      "closedForm": 133,
+      "luminanceFit": 4,
+      "rmse": {
+        "optimum": 0.2451174205939288,
+        "alpha200": 0.2810535938050515,
+        "alpha255": 0.35085345579761357
+      }
+    },
+    {
+      "color": 1,
+      "rgb": [
+        50,
+        250,
+        50
+      ],
+      "exportAlpha": 133,
+      "closedForm": 133,
+      "luminanceFit": 232,
+      "rmse": {
+        "optimum": 0.24511742059392883,
+        "alpha200": 0.2810535938050515,
+        "alpha255": 0.35085345579761357
+      }
+    },
+    {
+      "color": 2,
+      "rgb": [
+        250,
+        250,
+        50
+      ],
+      "exportAlpha": 194,
+      "closedForm": 194,
+      "luminanceFit": 230,
+      "rmse": {
+        "optimum": 0.21307574224991063,
+        "alpha200": 0.2135702592208764,
+        "alpha255": 0.26010199564674746
+      }
+    },
+    {
+      "color": 3,
+      "rgb": [
+        50,
+        50,
+        250
+      ],
+      "exportAlpha": 133,
+      "closedForm": 133,
+      "luminanceFit": 0,
+      "rmse": {
+        "optimum": 0.24511742059392877,
+        "alpha200": 0.2810535938050517,
+        "alpha255": 0.35085345579761357
+      }
+    },
+    {
+      "color": 4,
+      "rgb": [
+        50,
+        250,
+        250
+      ],
+      "exportAlpha": 194,
+      "closedForm": 194,
+      "luminanceFit": 233,
+      "rmse": {
+        "optimum": 0.21307574224991055,
+        "alpha200": 0.21357025922087655,
+        "alpha255": 0.26010199564674724
+      }
+    }
+  ],
+  "extra": [
+    {
+      "rgb": [
+        0,
+        255,
+        0
+      ],
+      "exportAlpha": 135,
+      "closedForm": 135,
+      "luminanceFit": 231,
+      "rmse": {
+        "optimum": 0.24064574414096115,
+        "alpha200": 0.27921577498369254,
+        "alpha255": 0.35539395303905064
+      }
+    },
+    {
+      "rgb": [
+        0,
+        255,
+        255
+      ],
+      "exportAlpha": 192,
+      "closedForm": 192,
+      "luminanceFit": 231,
+      "rmse": {
+        "optimum": 0.20693696165770203,
+        "alpha200": 0.20799437896800949,
+        "alpha255": 0.26356176017263455
+      }
+    },
+    {
+      "rgb": [
+        255,
+        255,
+        255
+      ],
+      "exportAlpha": 223,
+      "closedForm": 223,
+      "luminanceFit": 223,
+      "rmse": {
+        "optimum": 0.0625280125467445,
+        "alpha200": 0.09253039697759752,
+        "alpha255": 0.11235987270316723
+      }
+    }
+  ],
+  "grid": {
+    "colours": 216,
+    "zeroAlpha": [
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        51
+      ],
+      [
+        0,
+        0,
+        102
+      ],
+      [
+        0,
+        51,
+        0
+      ],
+      [
+        0,
+        51,
+        51
+      ],
+      [
+        0,
+        51,
+        102
+      ],
+      [
+        0,
+        102,
+        0
+      ],
+      [
+        0,
+        102,
+        51
+      ],
+      [
+        0,
+        102,
+        102
+      ],
+      [
+        0,
+        102,
+        153
+      ],
+      [
+        0,
+        153,
+        102
+      ],
+      [
+        51,
+        0,
+        0
+      ],
+      [
+        51,
+        0,
+        51
+      ],
+      [
+        51,
+        0,
+        102
+      ],
+      [
+        51,
+        51,
+        0
+      ],
+      [
+        51,
+        51,
+        51
+      ],
+      [
+        51,
+        51,
+        102
+      ],
+      [
+        51,
+        51,
+        153
+      ],
+      [
+        51,
+        102,
+        0
+      ],
+      [
+        51,
+        102,
+        51
+      ],
+      [
+        51,
+        102,
+        102
+      ],
+      [
+        51,
+        102,
+        153
+      ],
+      [
+        51,
+        153,
+        51
+      ],
+      [
+        51,
+        153,
+        102
+      ],
+      [
+        102,
+        0,
+        0
+      ],
+      [
+        102,
+        0,
+        51
+      ],
+      [
+        102,
+        0,
+        102
+      ],
+      [
+        102,
+        0,
+        153
+      ],
+      [
+        102,
+        51,
+        0
+      ],
+      [
+        102,
+        51,
+        51
+      ],
+      [
+        102,
+        51,
+        102
+      ],
+      [
+        102,
+        51,
+        153
+      ],
+      [
+        102,
+        102,
+        0
+      ],
+      [
+        102,
+        102,
+        51
+      ],
+      [
+        102,
+        102,
+        102
+      ],
+      [
+        102,
+        102,
+        153
+      ],
+      [
+        102,
+        153,
+        0
+      ],
+      [
+        102,
+        153,
+        51
+      ],
+      [
+        102,
+        153,
+        102
+      ],
+      [
+        153,
+        0,
+        102
+      ],
+      [
+        153,
+        51,
+        51
+      ],
+      [
+        153,
+        51,
+        102
+      ],
+      [
+        153,
+        102,
+        0
+      ],
+      [
+        153,
+        102,
+        51
+      ],
+      [
+        153,
+        102,
+        102
+      ]
+    ],
+    "range": [
+      0,
+      225
+    ]
+  },
+  "disagreements": 0,
+  "decision": "Not used by the converter: the fitted alpha depends on the error measure (per-channel RGB vs luminance, e.g. 133 vs 232 for the default green, 133 vs 4 for red). The export uses fill alpha 255 and warns: the additive fill never dimmed the background, the luminance fit gives about 230 for the bright presets, and the other converters export 255. The outline keeps 200, as the old outline was a normal black blend at 200.",
+  "scope": "Declared blend models over a declared background set. Not a capture: neither the old additive path nor the new blend space was measured here. Dark and grey colours, which the additive fill could only brighten, get low or zero alpha because a normal blend darkens light backgrounds."
+}

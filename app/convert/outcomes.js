@@ -25,6 +25,9 @@ function outcomeTable(rows) {
       el('td', {}, el('span', { class: 'status-chip', 'data-status': row.status }, row.status)))))));
 }
 
+/** Warnings listed in both the Simple and the expert view: every one but the internal notes. */
+export const shownWarnings = report => report.warnings.filter(w => !INTERNAL.has(w.code)).map(warningText);
+
 export function clearOutcomes(view) {
   for (const id of ['qs-outcomes', 'q-outcomes', 'qs-warnings']) view.get(id).replaceChildren();
   for (const id of Object.values(CHIP_IDS)) { const chip = view.get(id); chip.textContent = ''; chip.removeAttribute('data-confidence'); }
@@ -40,7 +43,7 @@ export function renderOutcomes(view, report, importNotes = []) {
     const chip = view.get(id);
     chip.textContent = CONFIDENCE_LABELS[confidence[key]]; chip.dataset.confidence = confidence[key];
   }
-  const shown = report.warnings.filter(w => !INTERNAL.has(w.code)).map(warningText);
+  const shown = shownWarnings(report);
   view.get('qs-warnings').replaceChildren(...(shown.length ? shown : ['No extra limits were found for this crosshair.'])
     .map(text => el('li', {}, text)));
 }

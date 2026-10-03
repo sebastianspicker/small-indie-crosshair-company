@@ -6,7 +6,11 @@ The original archive provides the chain of custody for the prior research.
 
 The [October 1 note](build-2000922-update-2026-10-01.md) adds build 2000922
 (see [S11](#s11-build-2000922-inventory)). The 2026-10-02 additions are
-[S12](#s12-other-converters-and-calibration-tools) to [S14](#s14-leaked-old-renderer-source-and-the-reporters-screenshot).
+[S12](#s12-other-converters-and-calibration-tools) to [S14](#s14-leaked-old-renderer-source-and-the-reporters-screenshot), and
+[S15](#s15-bindr) to [S18](#s18-valve-statements-via-secondary-outlets) from the
+[October 2 survey](competitor-survey-2026-10-02.md). [S19](#s19-build-2000924) adds
+build 2000924 (2026-10-03 dump comparison). The entries below otherwise retain
+their original snapshot scope.
 
 ## S01 Old static geometry
 
@@ -205,6 +209,75 @@ float truncation, outline alpha equal to crosshair alpha, and the rows of the re
 or any holdout use: the observation is outside every holdout and outside the measurement
 intake.
 
+## S15 bindr
+
+`percdotdev/bindr` `17e906d` (2026-10-01), PR #1 by kWAYTV,
+`packages/cs2/src/crosshair/legacy/migrate-legacy-crosshair.ts`. No licence file found;
+read only, formula restated ([survey](competitor-survey-2026-10-02.md)).
+
+**Supports** (code-derived): another reimplementation with the common old-side model,
+`Math.round` (half up, so half away from zero for these non-negative values) instead of
+half-even, thickness at least 1, gap origin `ceil(thickness / 2)`, negative gaps only for
+Classic Dynamic, outline black at the crosshair alpha, usealpha 0 exported as 255. Used as
+the `bindr` cross-tool baseline in the converter comparison.
+
+**Does not support:** any native pixel claim.
+
+## S16 Closed converter pages
+
+cstools.io/crosshair and crosshair.club/convert, fetched 2026-10-02 (closed source).
+
+**Supports** (stated): cstools.io says conversion needs the play resolution;
+crosshair.club says its renderers were rebuilt from the game and labels results
+identical or almost identical.
+
+**Does not support:** any formula or pixel claim; neither page shows its method.
+
+## S17 Decompile notes of the new renderer (cursed-crosshair-generator)
+
+`patriqcs/cursed-crosshair-generator` `fa88525`, `public/js/preview.js` (MIT). Stated by its
+author as Ghidra on libclient.so build 2000922 and a shader reconstructed from SPIR-V; the
+calibration screenshots it cites are not in the repository.
+
+**Supports** (stated decompile, not measured): odd widths sit one pixel up-left of centre;
+length or thickness 0 draws no bar and no outline; negative static gaps clamp to 0; fill
+composited over outline per pixel, normal blending in linear light, no additive mode; the
+dot is a thickness square drawn when `cl_crosshairdot` is set, **independent of length**.
+The last claim conflicts with the user statement behind the edge-case rules (nothing at
+length 0) as far as the dot goes; it is recorded as conflicting secondary evidence.
+
+**Does not support:** a measured result: no capture of a length-0 dot or a half outline is
+published.
+
+## S18 Valve statements via secondary outlets
+
+Patch-note text for builds 2000914 (2026-09-22), the 2026-09-23/24 hotfix and 2000922
+(2026-09-30 / 10-01), quoted by timesaver, skinsmonkey, fpshub, fragster and pley (Steam
+pages were not reachable).
+
+**Supports** (stated): pixel units with automatic rescaling; half outline draws only the
+top-left portions; gap 0 respected only after the 2026-09-24 hotfix; negative gaps only for
+Classic Dynamic; outline colour, Static Quadrant and a new share-code format on 2000922; no
+official migration tool.
+
+**Does not support:** exact quotes from Valve's own pages, or any pixel arithmetic.
+
+## S19 Build 2000924
+
+SteamDatabase / GameTracking-CS2, build 2000924, commit `7193ca8` (2026-10-02;
+`steam.inf` VersionDate Oct 02 2026, SourceRevision 11076591), compared file by file
+with 2000922 (`6ac2479`) and the pre-update 2000908 (`d8e2c7a`).
+
+**Supports** (verified in the dumps): no crosshair change. Convars, renderer class,
+Panorama crosshair files, schemas and `csgo_crosshair.slang` are unchanged, and the
+crosshair string set is byte-identical to 2000922; `csgo_english.txt` changes one
+unrelated token. `workshop_cvar_whitelist.txt` (lines 85 to 111) swaps the old crosshair
+cvars for the new ones (details in
+[settings migration](settings-migration.md#update-october-3-2026-what-the-dumps-say-about-migration-2000908-to-2000924)).
+
+**Does not support:** any pixel behaviour beyond what 2000922 already leaves open.
+Captures of 2000924 count as 2000922 captures.
+
 ## Claim-to-artifact traceability
 
 | Claim / hypothesis | Evidence | Implementation / artifact |
@@ -225,6 +298,13 @@ intake.
 | Old outline grows low edges by ceil(t), high by floor(t) | S14 (stated leak) + reporter's rows | `legacyOutlineExtent`; `research/measurements/old-client-issue-11.json` |
 | Reporter `#` matches the old model up to +3 px in x | S14 | `research/measurements/old-client-issue-11.json` |
 | Shader rect bounds are inclusive with separate outline min/max | S13 (verified) | Documentation only; no code depends on it |
+| Old elements draw left, right, top, bottom, dot, each outline then fill | S14 (stated leak) | `legacyElements`, `legacyAppearance` |
+| Old usealpha 0 fill is additive at alpha 200, outline normal at 200 | S14 (stated leak) | `additiveExportAlpha`; `research/generated/additive-alpha.json` |
+| Old outline thickness is bounded 0.1..3 | S14 (stated leak) + S13 pre-update dump (0..3) | `clampOldRanges` |
+| New outline alpha is not multiplied by the crosshair alpha | User capture (issue #11, `alphaAnalysis`) | `nativeCommands` outline alpha |
+| New dot draws at length 0 | S17 (stated decompile), conflicts with the issue #11 user statement | Not relied on: dot-only exports draw the same pixels either way |
+| Zero-length bars draw no outline | User statement (issue #11) + S17; the dumped shader alone would outline an empty rect (S13, slang lines 339 to 349) | `outlinesZeroLength` |
+| Build 2000924 renders like 2000922 | S19 (verified dump comparison) | `RENDERER_EQUIVALENT_BUILDS` |
 | Exact game compatibility | No shipped evidence | No production claim or native-verified fixture |
 
 

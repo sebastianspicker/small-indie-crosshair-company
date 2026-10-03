@@ -1,5 +1,5 @@
 import { $,el,download,copy,fmt } from '../ui/dom.js';
-import { decodeLegacy,encodeLegacy } from '../../lib/settings/sharecode.js';
+import { decodeLegacy,encodeLegacy,legacyCodeOutlineNote } from '../../lib/settings/sharecode.js';
 import { parseLegacyTextWithNotes } from '../../lib/settings/import.js';
 import { convert,DEFAULT_MODEL,TARGET_BUILD,predictedGeometry,exportCFG } from '../../lib/manual/conversion.js';
 import { rgba,validateNative,legacyOutlineExtent,nativeOutlineExtent,effectiveOutlineMode } from '../../lib/settings/native.js';
@@ -41,7 +41,7 @@ export function initEditor(presets) {
       $('old-res-label').textContent=`${opts.oldHeight}p`;
       $('old-preview-title').textContent=design?'Legacy reference (not a target)':'Legacy reconstruction';
       $('candidate-caption').textContent=difference?'Light = overlap · amber = new only · blue = old only':`${opts.currentHeight}p target / ${n.authoredHeight}p authored · ${opts.model.gapBaseline} gap${effectiveOutlineMode(settings,opts.outlineMode)?' · new outline assumed':''}`;
-      paint($('old-canvas'),result.old,settings,color,view,null,legacyOutlineExtent(settings));
+      paint($('old-canvas'),result.old,settings,color,view,null,legacyOutlineExtent(settings),true);
       paint($('new-canvas'),prediction,settings,color,view,difference?result.old:null,nativeOutlineExtent(settings,opts.outlineMode));
       const labels=[['Arm length',result.old.length,prediction.length],['Line thickness',result.old.width,prediction.width],['Near inner edge',result.old.near,prediction.near]];
       $('geometry-stats').replaceChildren(...labels.map(([label,a,b])=>el('div',{class:'metric'},el('span',{},label),el('strong',{},`${fmt(a)} → ${fmt(b)}`),el('small',{},'old → simulated · game pixels'))));
@@ -112,7 +112,7 @@ export function initEditor(presets) {
   $('mode-design').addEventListener('click',()=>{design=true;manual={...lastValidNative};settings={...settings,style:4,weapon_gap:false};setMode();render();});
   $('mode-restore').addEventListener('click',()=>{design=false;manual=null;setMode();render();});
   $('copy-cfg').addEventListener('click',()=>copy($('cfg-output').value,$('export-status')));
-  $('download-cfg').addEventListener('click',()=>download('small-indie-candidate.cfg',$('cfg-output').value,'text/plain'));
+  $('download-cfg').addEventListener('click',()=>download('small-indie-candidate.cfg',$('cfg-output').value+'\n','text/plain'));
   $('download-report').addEventListener('click',()=>{
     const report={schema:'sicc-report-v1',createdAt:new Date().toISOString(),researchSnapshot:'2026-09-23',
       statement:'No native renderer validation. Synthetic predictions are not independent evidence.',
@@ -120,8 +120,9 @@ export function initEditor(presets) {
       calibration:activeCalibration,actualPreview:predictedGeometry(native(),opts.currentHeight,opts.model)};
     download('small-indie-math-report.json',JSON.stringify(report,null,2)+'\n');
   });
-  $('legacy-code').addEventListener('click',()=>{try{const status=$('export-status');
-    copy(encodeLegacy(settings),status).then(()=>{if(settings.outline&&settings.outline_width<.5)status.textContent+=' Codes store outline width in 0.5 steps, so a width below 0.5 (or 0) is read back as a rounded 0 and converts to the half outline.';});
+  $('legacy-code').addEventListener('click',()=>{try{const status=$('export-status'),note=legacyCodeOutlineNote(settings);
+    if(note&&!note.representable){status.textContent=note.text;return;}
+    copy(encodeLegacy(settings),status,note?.text);
   }catch(e){$('export-status').textContent=e.message;}});
   const observer=new ResizeObserver(schedule);observer.observe($('new-canvas'));
   reflectLegacy();reflectSource();render();

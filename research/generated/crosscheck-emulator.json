@@ -1,0 +1,5273 @@
+{
+  "schema": "sicc-export-emulator-v2",
+  "targetVersion": "community-static-v6",
+  "targetBuild": "2000922",
+  "design": {
+    "schema": "sicc-export-emulator-v2",
+    "developmentSeed": 2026100211,
+    "freshSeed": 2026100212,
+    "edgeSeed": 2026100213,
+    "developmentGroups": 640,
+    "freshGroups": 128,
+    "edgeGroups": 80,
+    "regimeWeights": {
+      "regular": 4,
+      "crossed-full": 2,
+      "crossed-partial": 2,
+      "crossing-boundary": 1,
+      "size-0": 2,
+      "zero-length": 1,
+      "thickness-0": 1,
+      "boundary": 1,
+      "large": 1,
+      "weapon-gap": 1
+    },
+    "edgeRegimeWeights": {
+      "crossed-full": 2,
+      "crossed-partial": 2,
+      "crossing-boundary": 1,
+      "size-0": 1,
+      "zero-length": 1,
+      "weapon-gap": 1
+    },
+    "appearanceWeights": {
+      "outline-off": 3,
+      "sharecode-zero": 1,
+      "sub-1": 1,
+      "width-1": 1,
+      "steps": 1,
+      "continuous": 1,
+      "clamp-3": 1,
+      "cfg-zero": 1
+    },
+    "edgeAppearanceWeights": {
+      "outline-off": 1,
+      "sharecode-zero": 1,
+      "sub-1": 1,
+      "width-1": 1,
+      "clamp-3": 1
+    },
+    "colour": "preset 0-4 with probability 0.8, else custom index 5 with random RGB; usealpha 0 with probability 0.25; alpha 255 with probability 0.4, else uniform 0-255",
+    "sameHeights": [
+      720,
+      960,
+      1080,
+      1440,
+      2160
+    ],
+    "crossScopes": [
+      [
+        720,
+        1080,
+        960
+      ],
+      [
+        1080,
+        1440,
+        1080
+      ],
+      [
+        1440,
+        1080,
+        2160
+      ]
+    ],
+    "flags": "every group at every scope with the four dot/T combinations",
+    "split": "development: hash(crosscheck-v1:size/thickness/gap)%10: 0-1 validation, 2-9 train. Fresh test and edge challenge are separate draws with their own seeds, generated and hashed before any fitting.",
+    "rankerCapacities": [
+      {
+        "rounds": 24,
+        "maxDepth": 3,
+        "learningRate": 0.2
+      },
+      {
+        "rounds": 48,
+        "maxDepth": 4,
+        "learningRate": 0.2
+      },
+      {
+        "rounds": 64,
+        "maxDepth": 5,
+        "learningRate": 0.2
+      }
+    ],
+    "headCapacities": [
+      {
+        "rounds": 12,
+        "maxDepth": 2,
+        "learningRate": 0.3
+      },
+      {
+        "rounds": 24,
+        "maxDepth": 3,
+        "learningRate": 0.3
+      },
+      {
+        "rounds": 48,
+        "maxDepth": 4,
+        "learningRate": 0.3
+      }
+    ],
+    "freshInputsSha256": "baef9124b2ae7854f5b6ca6bfccd188ead80dae79eccc586ab0a3e31a2e0e4d2"
+  },
+  "training": {
+    "partitions": {
+      "train": {
+        "rows": 23012,
+        "groups": 523,
+        "labelsSha256": "0d572034abb9f25963a6eed9a3857dba7a8016853eed15eb32059a6261162037"
+      },
+      "validation": {
+        "rows": 5148,
+        "groups": 117,
+        "labelsSha256": "dc6c4d467f0ea1960ea762c5e4a63d1c4ae1724dd848fcdb07a8d2b1ceafde75"
+      },
+      "fresh": {
+        "rows": 5632,
+        "groups": 128,
+        "labelsSha256": "36334764f15846172d592f09d35600311bad38700c4b1ed8eaff0e3feebaf184"
+      },
+      "edgeChallenge": {
+        "rows": 3520,
+        "groups": 80,
+        "labelsSha256": "a68f59413850f04bfec5347e234a7a360410b77ed502463ea6d766407b7ba535"
+      }
+    },
+    "freshInputsSha256": "baef9124b2ae7854f5b6ca6bfccd188ead80dae79eccc586ab0a3e31a2e0e4d2",
+    "freeze": {
+      "featureFiles": {
+        "lib/solver/ml-crosscheck.js": "a0991d8fcaae498bfba483ed031924e9365b84cc7ba1ba5ab21d97137fa48063",
+        "research/lib/crosscheck-emulator.js": "4aaed9ca8d80905e370d384aab5da197b9533ba908c4fd99198b9e92a21bb7d5"
+      },
+      "capacitiesSha256": "aab41d884568b6bfb5d4bd96ac6f08fbb3ab6acebf10156d7e219b9468750f07",
+      "rule": "The trainer refuses to run when these hashes differ from the committed artifact; npm run emulator:crosscheck -- --refreeze records a deliberate change of the feature code or capacity lists."
+    },
+    "excludedPriorGroups": 1517,
+    "regimeGroups": {
+      "development": {
+        "boundary": 40,
+        "crossed-full": 80,
+        "crossed-partial": 80,
+        "crossing-boundary": 40,
+        "large": 40,
+        "regular": 160,
+        "size-0": 80,
+        "thickness-0": 40,
+        "weapon-gap": 40,
+        "zero-length": 40
+      },
+      "fresh": {
+        "boundary": 8,
+        "crossed-full": 16,
+        "crossed-partial": 16,
+        "crossing-boundary": 8,
+        "large": 8,
+        "regular": 32,
+        "size-0": 16,
+        "thickness-0": 8,
+        "weapon-gap": 8,
+        "zero-length": 8
+      },
+      "edgeChallenge": {
+        "crossed-full": 20,
+        "crossed-partial": 20,
+        "crossing-boundary": 10,
+        "size-0": 10,
+        "weapon-gap": 10,
+        "zero-length": 10
+      }
+    },
+    "ranker": {
+      "trainingRows": 15412,
+      "labelMisses": 160,
+      "singleCandidate": 22471
+    }
+  },
+  "trials": {
+    "ranker": [
+      {
+        "config": {
+          "rounds": 24,
+          "maxDepth": 3,
+          "learningRate": 0.2
+        },
+        "validationCoreExact": 0.9172494172494172
+      },
+      {
+        "config": {
+          "rounds": 48,
+          "maxDepth": 4,
+          "learningRate": 0.2
+        },
+        "validationCoreExact": 0.9275446775446775
+      },
+      {
+        "config": {
+          "rounds": 64,
+          "maxDepth": 5,
+          "learningRate": 0.2
+        },
+        "validationCoreExact": 0.9300699300699301
+      }
+    ],
+    "heads": [
+      {
+        "config": {
+          "rounds": 12,
+          "maxDepth": 2,
+          "learningRate": 0.3
+        },
+        "validationExact": {
+          "drawoutline": 1,
+          "outlineAlpha": 1,
+          "color": 1,
+          "fillAlpha": 1
+        }
+      },
+      {
+        "config": {
+          "rounds": 24,
+          "maxDepth": 3,
+          "learningRate": 0.3
+        },
+        "validationExact": {
+          "drawoutline": 1,
+          "outlineAlpha": 1,
+          "color": 1,
+          "fillAlpha": 1
+        }
+      },
+      {
+        "config": {
+          "rounds": 48,
+          "maxDepth": 4,
+          "learningRate": 0.3
+        },
+        "validationExact": {
+          "drawoutline": 1,
+          "outlineAlpha": 1,
+          "color": 1,
+          "fillAlpha": 1
+        }
+      }
+    ]
+  },
+  "selected": {
+    "ranker": {
+      "rounds": 64,
+      "maxDepth": 5,
+      "learningRate": 0.2
+    },
+    "heads": {
+      "drawoutline": {
+        "rounds": 12,
+        "maxDepth": 2,
+        "learningRate": 0.3
+      },
+      "outlineAlpha": {
+        "rounds": 12,
+        "maxDepth": 2,
+        "learningRate": 0.3
+      },
+      "color": {
+        "rounds": 12,
+        "maxDepth": 2,
+        "learningRate": 0.3
+      },
+      "fillAlpha": {
+        "rounds": 12,
+        "maxDepth": 2,
+        "learningRate": 0.3
+      }
+    }
+  },
+  "parameters": {
+    "file": "data/ml-crosscheck.json",
+    "parametersHash": 3815179069,
+    "bytes": 81786,
+    "parityRows": 9152,
+    "freshPredictionsSha256": "f071f68f0df7d6905364875e100498d084314a0c45f1ff98eed80bc76843bcbf"
+  },
+  "evaluations": {
+    "regression": {
+      "exportV1Test": {
+        "rows": 3784,
+        "groups": 86,
+        "scores": {
+          "ruleBaseline": {
+            "keys": [
+              "length",
+              "thickness",
+              "gap",
+              "drawoutline",
+              "outlineAlpha",
+              "color",
+              "fillAlpha",
+              "t_style"
+            ],
+            "coreExact": 0.8538583509513742,
+            "appearanceExact": 0.9349894291754757,
+            "exportExact": 0.7983615221987315,
+            "perKeyExact": {
+              "length": 0.927061310782241,
+              "thickness": 0.9558668076109936,
+              "gap": 0.9233615221987315,
+              "drawoutline": 0.9349894291754757,
+              "outlineAlpha": 0.9656448202959831,
+              "color": 0.9349894291754757,
+              "fillAlpha": 0.9883720930232558,
+              "t_style": 1
+            },
+            "groupStability": {
+              "lower": 0.7608218816067653,
+              "upper": 0.8332518498942916,
+              "clusters": 86
+            }
+          },
+          "crosscheck": {
+            "keys": [
+              "length",
+              "thickness",
+              "gap",
+              "drawoutline",
+              "outlineAlpha",
+              "color",
+              "fillAlpha",
+              "t_style"
+            ],
+            "coreExact": 0.992600422832981,
+            "appearanceExact": 1,
+            "exportExact": 0.992600422832981,
+            "perKeyExact": {
+              "length": 0.9989429175475687,
+              "thickness": 0.9989429175475687,
+              "gap": 0.9944503171247357,
+              "drawoutline": 1,
+              "outlineAlpha": 1,
+              "color": 1,
+              "fillAlpha": 1,
+              "t_style": 1
+            },
+            "groupStability": {
+              "lower": 0.988107822410148,
+              "upper": 0.9965644820295982,
+              "clusters": 86
+            }
+          },
+          "exportV1": {
+            "keys": [
+              "length",
+              "thickness",
+              "gap",
+              "drawoutline",
+              "outlineAlpha"
+            ],
+            "coreExact": 0.9355179704016914,
+            "appearanceExact": 1,
+            "exportExact": 0.9355179704016914,
+            "perKeyExact": {
+              "length": 0.959830866807611,
+              "thickness": 0.9886363636363636,
+              "gap": 0.9682875264270613,
+              "drawoutline": 1,
+              "outlineAlpha": 1
+            },
+            "groupStability": {
+              "lower": 0.9156976744186042,
+              "upper": 0.9516450845665959,
+              "clusters": 86
+            }
+          }
+        },
+        "regimes": {
+          "all": {
+            "rows": 3784,
+            "ruleBaseline": {
+              "coreExact": 0.8538583509513742,
+              "exportExact": 0.7983615221987315
+            },
+            "crosscheck": {
+              "coreExact": 0.992600422832981,
+              "exportExact": 0.992600422832981
+            },
+            "exportV1": {
+              "coreExact": 0.9355179704016914,
+              "exportExact": 0.9355179704016914
+            }
+          },
+          "size0-outline-only": {
+            "rows": 246,
+            "ruleBaseline": {
+              "coreExact": 0.8536585365853658,
+              "exportExact": 0
+            },
+            "crosscheck": {
+              "coreExact": 0.9796747967479674,
+              "exportExact": 0.9796747967479674
+            },
+            "exportV1": {
+              "coreExact": 0.8983739837398373,
+              "exportExact": 0.8983739837398373
+            }
+          },
+          "outline-only-override": {
+            "rows": 246,
+            "ruleBaseline": {
+              "coreExact": 0.8536585365853658,
+              "exportExact": 0
+            },
+            "crosscheck": {
+              "coreExact": 0.9796747967479674,
+              "exportExact": 0.9796747967479674
+            },
+            "exportV1": {
+              "coreExact": 0.8983739837398373,
+              "exportExact": 0.8983739837398373
+            }
+          },
+          "usealpha-0": {
+            "rows": 1408,
+            "ruleBaseline": {
+              "coreExact": 0.8380681818181818,
+              "exportExact": 0.8082386363636364
+            },
+            "crosscheck": {
+              "coreExact": 0.9907670454545454,
+              "exportExact": 0.9907670454545454
+            },
+            "exportV1": {
+              "coreExact": 0.9410511363636364,
+              "exportExact": 0.9410511363636364
+            }
+          },
+          "equal-height": {
+            "rows": 1720,
+            "ruleBaseline": {
+              "coreExact": 0.9430232558139535,
+              "exportExact": 0.8790697674418605
+            },
+            "crosscheck": {
+              "coreExact": 0.9965116279069768,
+              "exportExact": 0.9965116279069768
+            },
+            "exportV1": {
+              "coreExact": 0.9720930232558139,
+              "exportExact": 0.9720930232558139
+            }
+          },
+          "size0-dot-outline": {
+            "rows": 246,
+            "ruleBaseline": {
+              "coreExact": 0.8821138211382114,
+              "exportExact": 0.8821138211382114
+            },
+            "crosscheck": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "exportV1": {
+              "coreExact": 0.9186991869918699,
+              "exportExact": 0.9186991869918699
+            }
+          },
+          "cross-height": {
+            "rows": 2064,
+            "ruleBaseline": {
+              "coreExact": 0.7795542635658915,
+              "exportExact": 0.7311046511627907
+            },
+            "crosscheck": {
+              "coreExact": 0.9893410852713178,
+              "exportExact": 0.9893410852713178
+            },
+            "exportV1": {
+              "coreExact": 0.9050387596899225,
+              "exportExact": 0.9050387596899225
+            }
+          },
+          "regular-odd": {
+            "rows": 1556,
+            "ruleBaseline": {
+              "coreExact": 0.890745501285347,
+              "exportExact": 0.890745501285347
+            },
+            "crosscheck": {
+              "coreExact": 0.9955012853470437,
+              "exportExact": 0.9955012853470437
+            },
+            "exportV1": {
+              "coreExact": 0.9652956298200515,
+              "exportExact": 0.9652956298200515
+            }
+          },
+          "regular-even": {
+            "rows": 1516,
+            "ruleBaseline": {
+              "coreExact": 0.7928759894459103,
+              "exportExact": 0.7928759894459103
+            },
+            "crosscheck": {
+              "coreExact": 0.9894459102902374,
+              "exportExact": 0.9894459102902374
+            },
+            "exportV1": {
+              "coreExact": 0.908311345646438,
+              "exportExact": 0.908311345646438
+            }
+          },
+          "size0-empty": {
+            "rows": 88,
+            "ruleBaseline": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "crosscheck": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "exportV1": {
+              "coreExact": 0.9545454545454546,
+              "exportExact": 0.9545454545454546
+            }
+          },
+          "size0-dot": {
+            "rows": 88,
+            "ruleBaseline": {
+              "coreExact": 0.9545454545454546,
+              "exportExact": 0.9545454545454546
+            },
+            "crosscheck": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "exportV1": {
+              "coreExact": 0.9772727272727273,
+              "exportExact": 0.9772727272727273
+            }
+          },
+          "crossed-partial": {
+            "rows": 44,
+            "ruleBaseline": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "crosscheck": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "exportV1": {
+              "coreExact": 1,
+              "exportExact": 1
+            }
+          },
+          "overpaint": {
+            "rows": 822,
+            "ruleBaseline": {
+              "coreExact": 0.8832116788321168,
+              "exportExact": 0.8832116788321168
+            },
+            "crosscheck": {
+              "coreExact": 0.9829683698296837,
+              "exportExact": 0.9829683698296837
+            },
+            "exportV1": {
+              "coreExact": 0.9549878345498783,
+              "exportExact": 0.9549878345498783
+            }
+          },
+          "inverted-t": {
+            "rows": 22,
+            "ruleBaseline": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "crosscheck": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "exportV1": {
+              "coreExact": 1,
+              "exportExact": 1
+            }
+          },
+          "zero-length": {
+            "rows": 184,
+            "ruleBaseline": {
+              "coreExact": 0.9021739130434783,
+              "exportExact": 0.4891304347826087
+            },
+            "crosscheck": {
+              "coreExact": 0.9891304347826086,
+              "exportExact": 0.9891304347826086
+            },
+            "exportV1": {
+              "coreExact": 0.9510869565217391,
+              "exportExact": 0.9510869565217391
+            }
+          }
+        }
+      },
+      "exportV1Challenge": {
+        "rows": 1920,
+        "groups": 80,
+        "scores": {
+          "ruleBaseline": {
+            "keys": [
+              "length",
+              "thickness",
+              "gap",
+              "drawoutline",
+              "outlineAlpha",
+              "color",
+              "fillAlpha",
+              "t_style"
+            ],
+            "coreExact": 0.8578125,
+            "appearanceExact": 0.934375,
+            "exportExact": 0.809375,
+            "perKeyExact": {
+              "length": 0.9177083333333333,
+              "thickness": 0.9677083333333333,
+              "gap": 0.9229166666666667,
+              "drawoutline": 0.934375,
+              "outlineAlpha": 0.959375,
+              "color": 0.934375,
+              "fillAlpha": 0.975,
+              "t_style": 1
+            },
+            "groupStability": {
+              "lower": 0.7578125000000002,
+              "upper": 0.8572916666666668,
+              "clusters": 80
+            }
+          },
+          "crosscheck": {
+            "keys": [
+              "length",
+              "thickness",
+              "gap",
+              "drawoutline",
+              "outlineAlpha",
+              "color",
+              "fillAlpha",
+              "t_style"
+            ],
+            "coreExact": 0.9734375,
+            "appearanceExact": 1,
+            "exportExact": 0.9734375,
+            "perKeyExact": {
+              "length": 0.9901041666666667,
+              "thickness": 0.99375,
+              "gap": 0.9828125,
+              "drawoutline": 1,
+              "outlineAlpha": 1,
+              "color": 1,
+              "fillAlpha": 1,
+              "t_style": 1
+            },
+            "groupStability": {
+              "lower": 0.959375,
+              "upper": 0.9859374999999998,
+              "clusters": 80
+            }
+          },
+          "exportV1": {
+            "keys": [
+              "length",
+              "thickness",
+              "gap",
+              "drawoutline",
+              "outlineAlpha"
+            ],
+            "coreExact": 0.8953125,
+            "appearanceExact": 1,
+            "exportExact": 0.8953125,
+            "perKeyExact": {
+              "length": 0.9395833333333333,
+              "thickness": 0.9848958333333333,
+              "gap": 0.9364583333333333,
+              "drawoutline": 1,
+              "outlineAlpha": 1
+            },
+            "groupStability": {
+              "lower": 0.8666666666666668,
+              "upper": 0.9213541666666666,
+              "clusters": 80
+            }
+          }
+        },
+        "regimes": {
+          "all": {
+            "rows": 1920,
+            "ruleBaseline": {
+              "coreExact": 0.8578125,
+              "exportExact": 0.809375
+            },
+            "crosscheck": {
+              "coreExact": 0.9734375,
+              "exportExact": 0.9734375
+            },
+            "exportV1": {
+              "coreExact": 0.8953125,
+              "exportExact": 0.8953125
+            }
+          },
+          "size0-outline-only": {
+            "rows": 126,
+            "ruleBaseline": {
+              "coreExact": 0.7380952380952381,
+              "exportExact": 0
+            },
+            "crosscheck": {
+              "coreExact": 0.9047619047619048,
+              "exportExact": 0.9047619047619048
+            },
+            "exportV1": {
+              "coreExact": 0.8174603174603174,
+              "exportExact": 0.8174603174603174
+            }
+          },
+          "outline-only-override": {
+            "rows": 126,
+            "ruleBaseline": {
+              "coreExact": 0.7380952380952381,
+              "exportExact": 0
+            },
+            "crosscheck": {
+              "coreExact": 0.9047619047619048,
+              "exportExact": 0.9047619047619048
+            },
+            "exportV1": {
+              "coreExact": 0.8174603174603174,
+              "exportExact": 0.8174603174603174
+            }
+          },
+          "usealpha-0": {
+            "rows": 456,
+            "ruleBaseline": {
+              "coreExact": 0.831140350877193,
+              "exportExact": 0.7543859649122807
+            },
+            "crosscheck": {
+              "coreExact": 0.9627192982456141,
+              "exportExact": 0.9627192982456141
+            },
+            "exportV1": {
+              "coreExact": 0.8859649122807017,
+              "exportExact": 0.8859649122807017
+            }
+          },
+          "equal-height": {
+            "rows": 640,
+            "ruleBaseline": {
+              "coreExact": 0.9265625,
+              "exportExact": 0.8609375
+            },
+            "crosscheck": {
+              "coreExact": 0.99375,
+              "exportExact": 0.99375
+            },
+            "exportV1": {
+              "coreExact": 0.9328125,
+              "exportExact": 0.9328125
+            }
+          },
+          "size0-dot-outline": {
+            "rows": 126,
+            "ruleBaseline": {
+              "coreExact": 0.6587301587301587,
+              "exportExact": 0.6587301587301587
+            },
+            "crosscheck": {
+              "coreExact": 0.8809523809523809,
+              "exportExact": 0.8809523809523809
+            },
+            "exportV1": {
+              "coreExact": 0.7698412698412699,
+              "exportExact": 0.7698412698412699
+            }
+          },
+          "cross-height": {
+            "rows": 1280,
+            "ruleBaseline": {
+              "coreExact": 0.8234375,
+              "exportExact": 0.78359375
+            },
+            "crosscheck": {
+              "coreExact": 0.96328125,
+              "exportExact": 0.96328125
+            },
+            "exportV1": {
+              "coreExact": 0.8765625,
+              "exportExact": 0.8765625
+            }
+          },
+          "regular-odd": {
+            "rows": 848,
+            "ruleBaseline": {
+              "coreExact": 0.847877358490566,
+              "exportExact": 0.847877358490566
+            },
+            "crosscheck": {
+              "coreExact": 0.9764150943396226,
+              "exportExact": 0.9764150943396226
+            },
+            "exportV1": {
+              "coreExact": 0.8962264150943396,
+              "exportExact": 0.8962264150943396
+            }
+          },
+          "regular-even": {
+            "rows": 748,
+            "ruleBaseline": {
+              "coreExact": 0.9184491978609626,
+              "exportExact": 0.9184491978609626
+            },
+            "crosscheck": {
+              "coreExact": 0.9946524064171123,
+              "exportExact": 0.9946524064171123
+            },
+            "exportV1": {
+              "coreExact": 0.929144385026738,
+              "exportExact": 0.929144385026738
+            }
+          },
+          "overpaint": {
+            "rows": 617,
+            "ruleBaseline": {
+              "coreExact": 0.8703403565640194,
+              "exportExact": 0.8703403565640194
+            },
+            "crosscheck": {
+              "coreExact": 0.9773095623987034,
+              "exportExact": 0.9773095623987034
+            },
+            "exportV1": {
+              "coreExact": 0.8784440842787682,
+              "exportExact": 0.8784440842787682
+            }
+          },
+          "outline-3": {
+            "rows": 192,
+            "ruleBaseline": {
+              "coreExact": 0.9166666666666666,
+              "exportExact": 0.9166666666666666
+            },
+            "crosscheck": {
+              "coreExact": 0.9791666666666666,
+              "exportExact": 0.9791666666666666
+            },
+            "exportV1": {
+              "coreExact": 0.9479166666666666,
+              "exportExact": 0.9479166666666666
+            }
+          },
+          "crossed-partial": {
+            "rows": 48,
+            "ruleBaseline": {
+              "coreExact": 0.9166666666666666,
+              "exportExact": 0.9166666666666666
+            },
+            "crosscheck": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "exportV1": {
+              "coreExact": 0.9166666666666666,
+              "exportExact": 0.9166666666666666
+            }
+          },
+          "inverted-t": {
+            "rows": 24,
+            "ruleBaseline": {
+              "coreExact": 0.9166666666666666,
+              "exportExact": 0.9166666666666666
+            },
+            "crosscheck": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "exportV1": {
+              "coreExact": 0.9166666666666666,
+              "exportExact": 0.9166666666666666
+            }
+          },
+          "zero-length": {
+            "rows": 36,
+            "ruleBaseline": {
+              "coreExact": 0.9166666666666666,
+              "exportExact": 0.75
+            },
+            "crosscheck": {
+              "coreExact": 0.9444444444444444,
+              "exportExact": 0.9444444444444444
+            },
+            "exportV1": {
+              "coreExact": 0.8888888888888888,
+              "exportExact": 0.8888888888888888
+            }
+          },
+          "size0-empty": {
+            "rows": 12,
+            "ruleBaseline": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "crosscheck": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "exportV1": {
+              "coreExact": 0.8333333333333334,
+              "exportExact": 0.8333333333333334
+            }
+          },
+          "size0-dot": {
+            "rows": 12,
+            "ruleBaseline": {
+              "coreExact": 0.75,
+              "exportExact": 0.75
+            },
+            "crosscheck": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "exportV1": {
+              "coreExact": 0.8333333333333334,
+              "exportExact": 0.8333333333333334
+            }
+          }
+        }
+      },
+      "corpus": {
+        "rows": 945,
+        "groups": 46,
+        "scores": {
+          "ruleBaseline": {
+            "keys": [
+              "length",
+              "thickness",
+              "gap",
+              "drawoutline",
+              "outlineAlpha",
+              "color",
+              "fillAlpha",
+              "t_style"
+            ],
+            "coreExact": 0.9925925925925926,
+            "appearanceExact": 1,
+            "exportExact": 0.9925925925925926,
+            "perKeyExact": {
+              "length": 1,
+              "thickness": 1,
+              "gap": 0.9925925925925926,
+              "drawoutline": 1,
+              "outlineAlpha": 1,
+              "color": 1,
+              "fillAlpha": 1,
+              "t_style": 1
+            },
+            "groupStability": {
+              "lower": 0.9347826086956522,
+              "upper": 1,
+              "clusters": 46
+            }
+          },
+          "crosscheck": {
+            "keys": [
+              "length",
+              "thickness",
+              "gap",
+              "drawoutline",
+              "outlineAlpha",
+              "color",
+              "fillAlpha",
+              "t_style"
+            ],
+            "coreExact": 1,
+            "appearanceExact": 1,
+            "exportExact": 1,
+            "perKeyExact": {
+              "length": 1,
+              "thickness": 1,
+              "gap": 1,
+              "drawoutline": 1,
+              "outlineAlpha": 1,
+              "color": 1,
+              "fillAlpha": 1,
+              "t_style": 1
+            },
+            "groupStability": {
+              "lower": 1,
+              "upper": 1,
+              "clusters": 46
+            }
+          },
+          "exportV1": {
+            "keys": [
+              "length",
+              "thickness",
+              "gap",
+              "drawoutline",
+              "outlineAlpha"
+            ],
+            "coreExact": 0.9925925925925926,
+            "appearanceExact": 1,
+            "exportExact": 0.9925925925925926,
+            "perKeyExact": {
+              "length": 1,
+              "thickness": 1,
+              "gap": 0.9925925925925926,
+              "drawoutline": 1,
+              "outlineAlpha": 1
+            },
+            "groupStability": {
+              "lower": 0.9347826086956522,
+              "upper": 1,
+              "clusters": 46
+            }
+          }
+        },
+        "regimes": {
+          "all": {
+            "rows": 945,
+            "ruleBaseline": {
+              "coreExact": 0.9925925925925926,
+              "exportExact": 0.9925925925925926
+            },
+            "crosscheck": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "exportV1": {
+              "coreExact": 0.9925925925925926,
+              "exportExact": 0.9925925925925926
+            }
+          },
+          "regular-even": {
+            "rows": 531,
+            "ruleBaseline": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "crosscheck": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "exportV1": {
+              "coreExact": 1,
+              "exportExact": 1
+            }
+          },
+          "usealpha-0": {
+            "rows": 63,
+            "ruleBaseline": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "crosscheck": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "exportV1": {
+              "coreExact": 1,
+              "exportExact": 1
+            }
+          },
+          "equal-height": {
+            "rows": 945,
+            "ruleBaseline": {
+              "coreExact": 0.9925925925925926,
+              "exportExact": 0.9925925925925926
+            },
+            "crosscheck": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "exportV1": {
+              "coreExact": 0.9925925925925926,
+              "exportExact": 0.9925925925925926
+            }
+          },
+          "regular-odd": {
+            "rows": 373,
+            "ruleBaseline": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "crosscheck": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "exportV1": {
+              "coreExact": 1,
+              "exportExact": 1
+            }
+          },
+          "crossed-partial": {
+            "rows": 18,
+            "ruleBaseline": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "crosscheck": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "exportV1": {
+              "coreExact": 1,
+              "exportExact": 1
+            }
+          },
+          "overpaint": {
+            "rows": 42,
+            "ruleBaseline": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "crosscheck": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "exportV1": {
+              "coreExact": 1,
+              "exportExact": 1
+            }
+          },
+          "size0-dot-outline": {
+            "rows": 7,
+            "ruleBaseline": {
+              "coreExact": 0,
+              "exportExact": 0
+            },
+            "crosscheck": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "exportV1": {
+              "coreExact": 0,
+              "exportExact": 0
+            }
+          },
+          "size0-dot": {
+            "rows": 14,
+            "ruleBaseline": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "crosscheck": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "exportV1": {
+              "coreExact": 1,
+              "exportExact": 1
+            }
+          },
+          "size0-empty": {
+            "rows": 2,
+            "ruleBaseline": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "crosscheck": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "exportV1": {
+              "coreExact": 1,
+              "exportExact": 1
+            }
+          },
+          "zero-length": {
+            "rows": 2,
+            "ruleBaseline": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "crosscheck": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "exportV1": {
+              "coreExact": 1,
+              "exportExact": 1
+            }
+          }
+        }
+      },
+      "corpusCrossHeight": {
+        "rows": 810,
+        "groups": 46,
+        "scores": {
+          "ruleBaseline": {
+            "keys": [
+              "length",
+              "thickness",
+              "gap",
+              "drawoutline",
+              "outlineAlpha",
+              "color",
+              "fillAlpha",
+              "t_style"
+            ],
+            "coreExact": 0.8012345679012346,
+            "appearanceExact": 1,
+            "exportExact": 0.8012345679012346,
+            "perKeyExact": {
+              "length": 0.8382716049382716,
+              "thickness": 0.8851851851851852,
+              "gap": 0.9691358024691358,
+              "drawoutline": 1,
+              "outlineAlpha": 1,
+              "color": 1,
+              "fillAlpha": 1,
+              "t_style": 1
+            },
+            "groupStability": {
+              "lower": 0.7463768115942028,
+              "upper": 0.8260869565217392,
+              "clusters": 46
+            }
+          },
+          "crosscheck": {
+            "keys": [
+              "length",
+              "thickness",
+              "gap",
+              "drawoutline",
+              "outlineAlpha",
+              "color",
+              "fillAlpha",
+              "t_style"
+            ],
+            "coreExact": 1,
+            "appearanceExact": 1,
+            "exportExact": 1,
+            "perKeyExact": {
+              "length": 1,
+              "thickness": 1,
+              "gap": 1,
+              "drawoutline": 1,
+              "outlineAlpha": 1,
+              "color": 1,
+              "fillAlpha": 1,
+              "t_style": 1
+            },
+            "groupStability": {
+              "lower": 1,
+              "upper": 1,
+              "clusters": 46
+            }
+          },
+          "exportV1": {
+            "keys": [
+              "length",
+              "thickness",
+              "gap",
+              "drawoutline",
+              "outlineAlpha"
+            ],
+            "coreExact": 0.9407407407407408,
+            "appearanceExact": 1,
+            "exportExact": 0.9407407407407408,
+            "perKeyExact": {
+              "length": 0.9555555555555556,
+              "thickness": 0.9938271604938271,
+              "gap": 0.9827160493827161,
+              "drawoutline": 1,
+              "outlineAlpha": 1
+            },
+            "groupStability": {
+              "lower": 0.8750000000000001,
+              "upper": 0.9454710144927536,
+              "clusters": 46
+            }
+          }
+        },
+        "regimes": {
+          "all": {
+            "rows": 810,
+            "ruleBaseline": {
+              "coreExact": 0.8012345679012346,
+              "exportExact": 0.8012345679012346
+            },
+            "crosscheck": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "exportV1": {
+              "coreExact": 0.9407407407407408,
+              "exportExact": 0.9407407407407408
+            }
+          },
+          "regular-even": {
+            "rows": 366,
+            "ruleBaseline": {
+              "coreExact": 0.7486338797814208,
+              "exportExact": 0.7486338797814208
+            },
+            "crosscheck": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "exportV1": {
+              "coreExact": 0.9754098360655737,
+              "exportExact": 0.9754098360655737
+            }
+          },
+          "usealpha-0": {
+            "rows": 54,
+            "ruleBaseline": {
+              "coreExact": 0.8148148148148148,
+              "exportExact": 0.8148148148148148
+            },
+            "crosscheck": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "exportV1": {
+              "coreExact": 0.9629629629629629,
+              "exportExact": 0.9629629629629629
+            }
+          },
+          "cross-height": {
+            "rows": 810,
+            "ruleBaseline": {
+              "coreExact": 0.8012345679012346,
+              "exportExact": 0.8012345679012346
+            },
+            "crosscheck": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "exportV1": {
+              "coreExact": 0.9407407407407408,
+              "exportExact": 0.9407407407407408
+            }
+          },
+          "regular-odd": {
+            "rows": 406,
+            "ruleBaseline": {
+              "coreExact": 0.8669950738916257,
+              "exportExact": 0.8669950738916257
+            },
+            "crosscheck": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "exportV1": {
+              "coreExact": 0.9285714285714286,
+              "exportExact": 0.9285714285714286
+            }
+          },
+          "crossed-partial": {
+            "rows": 18,
+            "ruleBaseline": {
+              "coreExact": 0.4444444444444444,
+              "exportExact": 0.4444444444444444
+            },
+            "crosscheck": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "exportV1": {
+              "coreExact": 0.6111111111111112,
+              "exportExact": 0.6111111111111112
+            }
+          },
+          "overpaint": {
+            "rows": 36,
+            "ruleBaseline": {
+              "coreExact": 0.6666666666666666,
+              "exportExact": 0.6666666666666666
+            },
+            "crosscheck": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "exportV1": {
+              "coreExact": 0.8055555555555556,
+              "exportExact": 0.8055555555555556
+            }
+          },
+          "size0-dot-outline": {
+            "rows": 6,
+            "ruleBaseline": {
+              "coreExact": 0.5,
+              "exportExact": 0.5
+            },
+            "crosscheck": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "exportV1": {
+              "coreExact": 0.5,
+              "exportExact": 0.5
+            }
+          },
+          "size0-dot": {
+            "rows": 12,
+            "ruleBaseline": {
+              "coreExact": 0.8333333333333334,
+              "exportExact": 0.8333333333333334
+            },
+            "crosscheck": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "exportV1": {
+              "coreExact": 1,
+              "exportExact": 1
+            }
+          },
+          "size0-empty": {
+            "rows": 2,
+            "ruleBaseline": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "crosscheck": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "exportV1": {
+              "coreExact": 1,
+              "exportExact": 1
+            }
+          },
+          "zero-length": {
+            "rows": 2,
+            "ruleBaseline": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "crosscheck": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "exportV1": {
+              "coreExact": 1,
+              "exportExact": 1
+            }
+          }
+        }
+      },
+      "presets": {
+        "rows": 56,
+        "groups": 7,
+        "scores": {
+          "ruleBaseline": {
+            "keys": [
+              "length",
+              "thickness",
+              "gap",
+              "drawoutline",
+              "outlineAlpha",
+              "color",
+              "fillAlpha",
+              "t_style"
+            ],
+            "coreExact": 1,
+            "appearanceExact": 1,
+            "exportExact": 1,
+            "perKeyExact": {
+              "length": 1,
+              "thickness": 1,
+              "gap": 1,
+              "drawoutline": 1,
+              "outlineAlpha": 1,
+              "color": 1,
+              "fillAlpha": 1,
+              "t_style": 1
+            },
+            "groupStability": {
+              "lower": 1,
+              "upper": 1,
+              "clusters": 7
+            }
+          },
+          "crosscheck": {
+            "keys": [
+              "length",
+              "thickness",
+              "gap",
+              "drawoutline",
+              "outlineAlpha",
+              "color",
+              "fillAlpha",
+              "t_style"
+            ],
+            "coreExact": 1,
+            "appearanceExact": 1,
+            "exportExact": 1,
+            "perKeyExact": {
+              "length": 1,
+              "thickness": 1,
+              "gap": 1,
+              "drawoutline": 1,
+              "outlineAlpha": 1,
+              "color": 1,
+              "fillAlpha": 1,
+              "t_style": 1
+            },
+            "groupStability": {
+              "lower": 1,
+              "upper": 1,
+              "clusters": 7
+            }
+          },
+          "exportV1": {
+            "keys": [
+              "length",
+              "thickness",
+              "gap",
+              "drawoutline",
+              "outlineAlpha"
+            ],
+            "coreExact": 1,
+            "appearanceExact": 1,
+            "exportExact": 1,
+            "perKeyExact": {
+              "length": 1,
+              "thickness": 1,
+              "gap": 1,
+              "drawoutline": 1,
+              "outlineAlpha": 1
+            },
+            "groupStability": {
+              "lower": 1,
+              "upper": 1,
+              "clusters": 7
+            }
+          }
+        },
+        "regimes": {
+          "all": {
+            "rows": 56,
+            "ruleBaseline": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "crosscheck": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "exportV1": {
+              "coreExact": 1,
+              "exportExact": 1
+            }
+          },
+          "regular-even": {
+            "rows": 28,
+            "ruleBaseline": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "crosscheck": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "exportV1": {
+              "coreExact": 1,
+              "exportExact": 1
+            }
+          },
+          "usealpha-0": {
+            "rows": 14,
+            "ruleBaseline": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "crosscheck": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "exportV1": {
+              "coreExact": 1,
+              "exportExact": 1
+            }
+          },
+          "equal-height": {
+            "rows": 56,
+            "ruleBaseline": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "crosscheck": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "exportV1": {
+              "coreExact": 1,
+              "exportExact": 1
+            }
+          },
+          "regular-odd": {
+            "rows": 21,
+            "ruleBaseline": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "crosscheck": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "exportV1": {
+              "coreExact": 1,
+              "exportExact": 1
+            }
+          },
+          "size0-dot": {
+            "rows": 7,
+            "ruleBaseline": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "crosscheck": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "exportV1": {
+              "coreExact": 1,
+              "exportExact": 1
+            }
+          }
+        }
+      },
+      "accuracyTest": {
+        "rows": 2360,
+        "groups": 59,
+        "scores": {
+          "ruleBaseline": {
+            "keys": [
+              "length",
+              "thickness",
+              "gap"
+            ],
+            "coreExact": 0.9241525423728814,
+            "exportExact": 0.9241525423728814,
+            "perKeyExact": {
+              "length": 0.9788135593220338,
+              "thickness": 0.9906779661016949,
+              "gap": 0.9453389830508474
+            },
+            "groupStability": {
+              "lower": 0.9080508474576267,
+              "upper": 0.9406779661016946,
+              "clusters": 59
+            }
+          },
+          "crosscheck": {
+            "keys": [
+              "length",
+              "thickness",
+              "gap"
+            ],
+            "coreExact": 0.9080508474576271,
+            "exportExact": 0.9080508474576271,
+            "perKeyExact": {
+              "length": 0.9360169491525424,
+              "thickness": 0.9885593220338983,
+              "gap": 0.9508474576271186
+            },
+            "groupStability": {
+              "lower": 0.8885593220338988,
+              "upper": 0.9266949152542375,
+              "clusters": 59
+            }
+          },
+          "exportV1": {
+            "keys": [
+              "length",
+              "thickness",
+              "gap"
+            ],
+            "coreExact": 0.9567796610169491,
+            "exportExact": 0.9567796610169491,
+            "perKeyExact": {
+              "length": 0.9949152542372881,
+              "thickness": 0.997457627118644,
+              "gap": 0.9597457627118644
+            },
+            "groupStability": {
+              "lower": 0.9432203389830506,
+              "upper": 0.9695021186440679,
+              "clusters": 59
+            }
+          },
+          "accuracyRegime": {
+            "keys": [
+              "length",
+              "thickness",
+              "gap"
+            ],
+            "coreExact": 0.9775423728813559,
+            "exportExact": 0.9775423728813559,
+            "perKeyExact": {
+              "length": 0.9940677966101695,
+              "thickness": 0.997457627118644,
+              "gap": 0.9826271186440678
+            },
+            "groupStability": {
+              "lower": 0.9669491525423728,
+              "upper": 0.9872881355932204,
+              "clusters": 59
+            }
+          },
+          "accuracyQuantized": {
+            "keys": [
+              "length",
+              "thickness",
+              "gap"
+            ],
+            "coreExact": 0.9627118644067797,
+            "exportExact": 0.9627118644067797,
+            "perKeyExact": {
+              "length": 0.9898305084745763,
+              "thickness": 0.9940677966101695,
+              "gap": 0.9682203389830508
+            },
+            "groupStability": {
+              "lower": 0.9423728813559321,
+              "upper": 0.9805084745762712,
+              "clusters": 59
+            }
+          },
+          "structuredRanker": {
+            "keys": [
+              "length",
+              "thickness",
+              "gap"
+            ],
+            "coreExact": 0.9771186440677966,
+            "exportExact": 0.9771186440677966,
+            "perKeyExact": {
+              "length": 0.9940677966101695,
+              "thickness": 0.9957627118644068,
+              "gap": 0.9800847457627119
+            },
+            "groupStability": {
+              "lower": 0.9648305084745767,
+              "upper": 0.9877118644067798,
+              "clusters": 59
+            }
+          }
+        },
+        "regimes": {
+          "all": {
+            "rows": 2360,
+            "ruleBaseline": {
+              "coreExact": 0.9241525423728814,
+              "exportExact": 0.9241525423728814
+            },
+            "crosscheck": {
+              "coreExact": 0.9080508474576271,
+              "exportExact": 0.9080508474576271
+            },
+            "exportV1": {
+              "coreExact": 0.9567796610169491,
+              "exportExact": 0.9567796610169491
+            },
+            "accuracyRegime": {
+              "coreExact": 0.9775423728813559,
+              "exportExact": 0.9775423728813559
+            },
+            "accuracyQuantized": {
+              "coreExact": 0.9627118644067797,
+              "exportExact": 0.9627118644067797
+            },
+            "structuredRanker": {
+              "coreExact": 0.9771186440677966,
+              "exportExact": 0.9771186440677966
+            }
+          },
+          "regular-odd": {
+            "rows": 1280,
+            "ruleBaseline": {
+              "coreExact": 0.925,
+              "exportExact": 0.925
+            },
+            "crosscheck": {
+              "coreExact": 0.8890625,
+              "exportExact": 0.8890625
+            },
+            "exportV1": {
+              "coreExact": 0.96015625,
+              "exportExact": 0.96015625
+            },
+            "accuracyRegime": {
+              "coreExact": 0.97734375,
+              "exportExact": 0.97734375
+            },
+            "accuracyQuantized": {
+              "coreExact": 0.9765625,
+              "exportExact": 0.9765625
+            },
+            "structuredRanker": {
+              "coreExact": 0.9828125,
+              "exportExact": 0.9828125
+            }
+          },
+          "usealpha-0": {
+            "rows": 2360,
+            "ruleBaseline": {
+              "coreExact": 0.9241525423728814,
+              "exportExact": 0.9241525423728814
+            },
+            "crosscheck": {
+              "coreExact": 0.9080508474576271,
+              "exportExact": 0.9080508474576271
+            },
+            "exportV1": {
+              "coreExact": 0.9567796610169491,
+              "exportExact": 0.9567796610169491
+            },
+            "accuracyRegime": {
+              "coreExact": 0.9775423728813559,
+              "exportExact": 0.9775423728813559
+            },
+            "accuracyQuantized": {
+              "coreExact": 0.9627118644067797,
+              "exportExact": 0.9627118644067797
+            },
+            "structuredRanker": {
+              "coreExact": 0.9771186440677966,
+              "exportExact": 0.9771186440677966
+            }
+          },
+          "equal-height": {
+            "rows": 472,
+            "ruleBaseline": {
+              "coreExact": 0.9703389830508474,
+              "exportExact": 0.9703389830508474
+            },
+            "crosscheck": {
+              "coreExact": 0.9703389830508474,
+              "exportExact": 0.9703389830508474
+            },
+            "exportV1": {
+              "coreExact": 0.9872881355932204,
+              "exportExact": 0.9872881355932204
+            },
+            "accuracyRegime": {
+              "coreExact": 0.9957627118644068,
+              "exportExact": 0.9957627118644068
+            },
+            "accuracyQuantized": {
+              "coreExact": 0.9745762711864406,
+              "exportExact": 0.9745762711864406
+            },
+            "structuredRanker": {
+              "coreExact": 0.9872881355932204,
+              "exportExact": 0.9872881355932204
+            }
+          },
+          "cross-height": {
+            "rows": 1888,
+            "ruleBaseline": {
+              "coreExact": 0.9126059322033898,
+              "exportExact": 0.9126059322033898
+            },
+            "crosscheck": {
+              "coreExact": 0.892478813559322,
+              "exportExact": 0.892478813559322
+            },
+            "exportV1": {
+              "coreExact": 0.9491525423728814,
+              "exportExact": 0.9491525423728814
+            },
+            "accuracyRegime": {
+              "coreExact": 0.9729872881355932,
+              "exportExact": 0.9729872881355932
+            },
+            "accuracyQuantized": {
+              "coreExact": 0.9597457627118644,
+              "exportExact": 0.9597457627118644
+            },
+            "structuredRanker": {
+              "coreExact": 0.9745762711864406,
+              "exportExact": 0.9745762711864406
+            }
+          },
+          "regular-even": {
+            "rows": 752,
+            "ruleBaseline": {
+              "coreExact": 0.913563829787234,
+              "exportExact": 0.913563829787234
+            },
+            "crosscheck": {
+              "coreExact": 0.9202127659574468,
+              "exportExact": 0.9202127659574468
+            },
+            "exportV1": {
+              "coreExact": 0.9428191489361702,
+              "exportExact": 0.9428191489361702
+            },
+            "accuracyRegime": {
+              "coreExact": 0.9707446808510638,
+              "exportExact": 0.9707446808510638
+            },
+            "accuracyQuantized": {
+              "coreExact": 0.9654255319148937,
+              "exportExact": 0.9654255319148937
+            },
+            "structuredRanker": {
+              "coreExact": 0.9601063829787234,
+              "exportExact": 0.9601063829787234
+            }
+          },
+          "size0-empty": {
+            "rows": 124,
+            "ruleBaseline": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "crosscheck": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "exportV1": {
+              "coreExact": 0.9838709677419355,
+              "exportExact": 0.9838709677419355
+            },
+            "accuracyRegime": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "accuracyQuantized": {
+              "coreExact": 0.9838709677419355,
+              "exportExact": 0.9838709677419355
+            },
+            "structuredRanker": {
+              "coreExact": 0.9838709677419355,
+              "exportExact": 0.9838709677419355
+            }
+          },
+          "size0-dot": {
+            "rows": 124,
+            "ruleBaseline": {
+              "coreExact": 0.8870967741935484,
+              "exportExact": 0.8870967741935484
+            },
+            "crosscheck": {
+              "coreExact": 0.9435483870967742,
+              "exportExact": 0.9435483870967742
+            },
+            "exportV1": {
+              "coreExact": 0.9516129032258065,
+              "exportExact": 0.9516129032258065
+            },
+            "accuracyRegime": {
+              "coreExact": 0.9838709677419355,
+              "exportExact": 0.9838709677419355
+            },
+            "accuracyQuantized": {
+              "coreExact": 0.7580645161290323,
+              "exportExact": 0.7580645161290323
+            },
+            "structuredRanker": {
+              "coreExact": 1,
+              "exportExact": 1
+            }
+          },
+          "crossed-partial": {
+            "rows": 80,
+            "ruleBaseline": {
+              "coreExact": 0.95,
+              "exportExact": 0.95
+            },
+            "crosscheck": {
+              "coreExact": 0.9,
+              "exportExact": 0.9
+            },
+            "exportV1": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "accuracyRegime": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "accuracyQuantized": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "structuredRanker": {
+              "coreExact": 1,
+              "exportExact": 1
+            }
+          },
+          "inverted-t": {
+            "rows": 40,
+            "ruleBaseline": {
+              "coreExact": 0.95,
+              "exportExact": 0.95
+            },
+            "crosscheck": {
+              "coreExact": 0.9,
+              "exportExact": 0.9
+            },
+            "exportV1": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "accuracyRegime": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "accuracyQuantized": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "structuredRanker": {
+              "coreExact": 1,
+              "exportExact": 1
+            }
+          },
+          "zero-length": {
+            "rows": 8,
+            "ruleBaseline": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "crosscheck": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "exportV1": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "accuracyRegime": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "accuracyQuantized": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "structuredRanker": {
+              "coreExact": 1,
+              "exportExact": 1
+            }
+          }
+        }
+      },
+      "accuracyInterior": {
+        "rows": 1280,
+        "groups": 80,
+        "scores": {
+          "ruleBaseline": {
+            "keys": [
+              "length",
+              "thickness",
+              "gap"
+            ],
+            "coreExact": 0.76953125,
+            "exportExact": 0.76953125,
+            "perKeyExact": {
+              "length": 0.8578125,
+              "thickness": 0.9171875,
+              "gap": 0.95390625
+            },
+            "groupStability": {
+              "lower": 0.7234375,
+              "upper": 0.8140820312499999,
+              "clusters": 80
+            }
+          },
+          "crosscheck": {
+            "keys": [
+              "length",
+              "thickness",
+              "gap"
+            ],
+            "coreExact": 0.86484375,
+            "exportExact": 0.86484375,
+            "perKeyExact": {
+              "length": 0.9046875,
+              "thickness": 0.96484375,
+              "gap": 0.940625
+            },
+            "groupStability": {
+              "lower": 0.8328125,
+              "upper": 0.8953125,
+              "clusters": 80
+            }
+          },
+          "exportV1": {
+            "keys": [
+              "length",
+              "thickness",
+              "gap"
+            ],
+            "coreExact": 0.91875,
+            "exportExact": 0.91875,
+            "perKeyExact": {
+              "length": 0.97734375,
+              "thickness": 0.96875,
+              "gap": 0.95234375
+            },
+            "groupStability": {
+              "lower": 0.89296875,
+              "upper": 0.94375,
+              "clusters": 80
+            }
+          },
+          "accuracyRegime": {
+            "keys": [
+              "length",
+              "thickness",
+              "gap"
+            ],
+            "coreExact": 0.77578125,
+            "exportExact": 0.77578125,
+            "perKeyExact": {
+              "length": 0.92890625,
+              "thickness": 0.86875,
+              "gap": 0.91328125
+            },
+            "groupStability": {
+              "lower": 0.73591796875,
+              "upper": 0.81796875,
+              "clusters": 80
+            }
+          },
+          "accuracyQuantized": {
+            "keys": [
+              "length",
+              "thickness",
+              "gap"
+            ],
+            "coreExact": 0.7890625,
+            "exportExact": 0.7890625,
+            "perKeyExact": {
+              "length": 0.903125,
+              "thickness": 0.94765625,
+              "gap": 0.91640625
+            },
+            "groupStability": {
+              "lower": 0.75390625,
+              "upper": 0.821875,
+              "clusters": 80
+            }
+          },
+          "structuredRanker": {
+            "keys": [
+              "length",
+              "thickness",
+              "gap"
+            ],
+            "coreExact": 0.88515625,
+            "exportExact": 0.88515625,
+            "perKeyExact": {
+              "length": 0.9625,
+              "thickness": 0.984375,
+              "gap": 0.91640625
+            },
+            "groupStability": {
+              "lower": 0.85546875,
+              "upper": 0.9140625,
+              "clusters": 80
+            }
+          }
+        },
+        "regimes": {
+          "all": {
+            "rows": 1280,
+            "ruleBaseline": {
+              "coreExact": 0.76953125,
+              "exportExact": 0.76953125
+            },
+            "crosscheck": {
+              "coreExact": 0.86484375,
+              "exportExact": 0.86484375
+            },
+            "exportV1": {
+              "coreExact": 0.91875,
+              "exportExact": 0.91875
+            },
+            "accuracyRegime": {
+              "coreExact": 0.77578125,
+              "exportExact": 0.77578125
+            },
+            "accuracyQuantized": {
+              "coreExact": 0.7890625,
+              "exportExact": 0.7890625
+            },
+            "structuredRanker": {
+              "coreExact": 0.88515625,
+              "exportExact": 0.88515625
+            }
+          },
+          "size0-empty": {
+            "rows": 96,
+            "ruleBaseline": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "crosscheck": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "exportV1": {
+              "coreExact": 0.7916666666666666,
+              "exportExact": 0.7916666666666666
+            },
+            "accuracyRegime": {
+              "coreExact": 0.75,
+              "exportExact": 0.75
+            },
+            "accuracyQuantized": {
+              "coreExact": 0.75,
+              "exportExact": 0.75
+            },
+            "structuredRanker": {
+              "coreExact": 0.7916666666666666,
+              "exportExact": 0.7916666666666666
+            }
+          },
+          "usealpha-0": {
+            "rows": 1280,
+            "ruleBaseline": {
+              "coreExact": 0.76953125,
+              "exportExact": 0.76953125
+            },
+            "crosscheck": {
+              "coreExact": 0.86484375,
+              "exportExact": 0.86484375
+            },
+            "exportV1": {
+              "coreExact": 0.91875,
+              "exportExact": 0.91875
+            },
+            "accuracyRegime": {
+              "coreExact": 0.77578125,
+              "exportExact": 0.77578125
+            },
+            "accuracyQuantized": {
+              "coreExact": 0.7890625,
+              "exportExact": 0.7890625
+            },
+            "structuredRanker": {
+              "coreExact": 0.88515625,
+              "exportExact": 0.88515625
+            }
+          },
+          "cross-height": {
+            "rows": 1280,
+            "ruleBaseline": {
+              "coreExact": 0.76953125,
+              "exportExact": 0.76953125
+            },
+            "crosscheck": {
+              "coreExact": 0.86484375,
+              "exportExact": 0.86484375
+            },
+            "exportV1": {
+              "coreExact": 0.91875,
+              "exportExact": 0.91875
+            },
+            "accuracyRegime": {
+              "coreExact": 0.77578125,
+              "exportExact": 0.77578125
+            },
+            "accuracyQuantized": {
+              "coreExact": 0.7890625,
+              "exportExact": 0.7890625
+            },
+            "structuredRanker": {
+              "coreExact": 0.88515625,
+              "exportExact": 0.88515625
+            }
+          },
+          "size0-dot": {
+            "rows": 96,
+            "ruleBaseline": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "crosscheck": {
+              "coreExact": 0.875,
+              "exportExact": 0.875
+            },
+            "exportV1": {
+              "coreExact": 0.8333333333333334,
+              "exportExact": 0.8333333333333334
+            },
+            "accuracyRegime": {
+              "coreExact": 0.8333333333333334,
+              "exportExact": 0.8333333333333334
+            },
+            "accuracyQuantized": {
+              "coreExact": 0.625,
+              "exportExact": 0.625
+            },
+            "structuredRanker": {
+              "coreExact": 0.9375,
+              "exportExact": 0.9375
+            }
+          },
+          "regular-odd": {
+            "rows": 672,
+            "ruleBaseline": {
+              "coreExact": 0.7157738095238095,
+              "exportExact": 0.7157738095238095
+            },
+            "crosscheck": {
+              "coreExact": 0.8958333333333334,
+              "exportExact": 0.8958333333333334
+            },
+            "exportV1": {
+              "coreExact": 0.9806547619047619,
+              "exportExact": 0.9806547619047619
+            },
+            "accuracyRegime": {
+              "coreExact": 0.7872023809523809,
+              "exportExact": 0.7872023809523809
+            },
+            "accuracyQuantized": {
+              "coreExact": 0.8244047619047619,
+              "exportExact": 0.8244047619047619
+            },
+            "structuredRanker": {
+              "coreExact": 0.9211309523809523,
+              "exportExact": 0.9211309523809523
+            }
+          },
+          "regular-even": {
+            "rows": 416,
+            "ruleBaseline": {
+              "coreExact": 0.75,
+              "exportExact": 0.75
+            },
+            "crosscheck": {
+              "coreExact": 0.78125,
+              "exportExact": 0.78125
+            },
+            "exportV1": {
+              "coreExact": 0.8677884615384616,
+              "exportExact": 0.8677884615384616
+            },
+            "accuracyRegime": {
+              "coreExact": 0.75,
+              "exportExact": 0.75
+            },
+            "accuracyQuantized": {
+              "coreExact": 0.7788461538461539,
+              "exportExact": 0.7788461538461539
+            },
+            "structuredRanker": {
+              "coreExact": 0.8365384615384616,
+              "exportExact": 0.8365384615384616
+            }
+          },
+          "zero-length": {
+            "rows": 32,
+            "ruleBaseline": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "crosscheck": {
+              "coreExact": 0.9375,
+              "exportExact": 0.9375
+            },
+            "exportV1": {
+              "coreExact": 0.875,
+              "exportExact": 0.875
+            },
+            "accuracyRegime": {
+              "coreExact": 0.875,
+              "exportExact": 0.875
+            },
+            "accuracyQuantized": {
+              "coreExact": 0.75,
+              "exportExact": 0.75
+            },
+            "structuredRanker": {
+              "coreExact": 0.9375,
+              "exportExact": 0.9375
+            }
+          }
+        }
+      },
+      "accuracyExterior": {
+        "rows": 1280,
+        "groups": 80,
+        "scores": {
+          "ruleBaseline": {
+            "keys": [
+              "length",
+              "thickness",
+              "gap"
+            ],
+            "coreExact": 0.92578125,
+            "exportExact": 0.92578125,
+            "perKeyExact": {
+              "length": 0.975,
+              "thickness": 0.9640625,
+              "gap": 0.97265625
+            },
+            "groupStability": {
+              "lower": 0.8984375,
+              "upper": 0.94921875,
+              "clusters": 80
+            }
+          },
+          "crosscheck": {
+            "keys": [
+              "length",
+              "thickness",
+              "gap"
+            ],
+            "coreExact": 0.8703125,
+            "exportExact": 0.8703125,
+            "perKeyExact": {
+              "length": 0.88828125,
+              "thickness": 0.98046875,
+              "gap": 0.92890625
+            },
+            "groupStability": {
+              "lower": 0.83828125,
+              "upper": 0.90078125,
+              "clusters": 80
+            }
+          },
+          "exportV1": {
+            "keys": [
+              "length",
+              "thickness",
+              "gap"
+            ],
+            "coreExact": 0.92421875,
+            "exportExact": 0.92421875,
+            "perKeyExact": {
+              "length": 0.9703125,
+              "thickness": 0.990625,
+              "gap": 0.96171875
+            },
+            "groupStability": {
+              "lower": 0.89921875,
+              "upper": 0.94765625,
+              "clusters": 80
+            }
+          },
+          "accuracyRegime": {
+            "keys": [
+              "length",
+              "thickness",
+              "gap"
+            ],
+            "coreExact": 0.71875,
+            "exportExact": 0.71875,
+            "perKeyExact": {
+              "length": 0.83515625,
+              "thickness": 0.878125,
+              "gap": 0.8765625
+            },
+            "groupStability": {
+              "lower": 0.68435546875,
+              "upper": 0.7547070312499998,
+              "clusters": 80
+            }
+          },
+          "accuracyQuantized": {
+            "keys": [
+              "length",
+              "thickness",
+              "gap"
+            ],
+            "coreExact": 0.76796875,
+            "exportExact": 0.76796875,
+            "perKeyExact": {
+              "length": 0.85625,
+              "thickness": 0.91484375,
+              "gap": 0.91640625
+            },
+            "groupStability": {
+              "lower": 0.728125,
+              "upper": 0.8047070312499999,
+              "clusters": 80
+            }
+          },
+          "structuredRanker": {
+            "keys": [
+              "length",
+              "thickness",
+              "gap"
+            ],
+            "coreExact": 0.94375,
+            "exportExact": 0.94375,
+            "perKeyExact": {
+              "length": 0.9859375,
+              "thickness": 0.9765625,
+              "gap": 0.978125
+            },
+            "groupStability": {
+              "lower": 0.921875,
+              "upper": 0.96328125,
+              "clusters": 80
+            }
+          }
+        },
+        "regimes": {
+          "all": {
+            "rows": 1280,
+            "ruleBaseline": {
+              "coreExact": 0.92578125,
+              "exportExact": 0.92578125
+            },
+            "crosscheck": {
+              "coreExact": 0.8703125,
+              "exportExact": 0.8703125
+            },
+            "exportV1": {
+              "coreExact": 0.92421875,
+              "exportExact": 0.92421875
+            },
+            "accuracyRegime": {
+              "coreExact": 0.71875,
+              "exportExact": 0.71875
+            },
+            "accuracyQuantized": {
+              "coreExact": 0.76796875,
+              "exportExact": 0.76796875
+            },
+            "structuredRanker": {
+              "coreExact": 0.94375,
+              "exportExact": 0.94375
+            }
+          },
+          "size0-empty": {
+            "rows": 88,
+            "ruleBaseline": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "crosscheck": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "exportV1": {
+              "coreExact": 0.9318181818181818,
+              "exportExact": 0.9318181818181818
+            },
+            "accuracyRegime": {
+              "coreExact": 0.7954545454545454,
+              "exportExact": 0.7954545454545454
+            },
+            "accuracyQuantized": {
+              "coreExact": 0.8409090909090909,
+              "exportExact": 0.8409090909090909
+            },
+            "structuredRanker": {
+              "coreExact": 0.9545454545454546,
+              "exportExact": 0.9545454545454546
+            }
+          },
+          "usealpha-0": {
+            "rows": 1280,
+            "ruleBaseline": {
+              "coreExact": 0.92578125,
+              "exportExact": 0.92578125
+            },
+            "crosscheck": {
+              "coreExact": 0.8703125,
+              "exportExact": 0.8703125
+            },
+            "exportV1": {
+              "coreExact": 0.92421875,
+              "exportExact": 0.92421875
+            },
+            "accuracyRegime": {
+              "coreExact": 0.71875,
+              "exportExact": 0.71875
+            },
+            "accuracyQuantized": {
+              "coreExact": 0.76796875,
+              "exportExact": 0.76796875
+            },
+            "structuredRanker": {
+              "coreExact": 0.94375,
+              "exportExact": 0.94375
+            }
+          },
+          "cross-height": {
+            "rows": 1280,
+            "ruleBaseline": {
+              "coreExact": 0.92578125,
+              "exportExact": 0.92578125
+            },
+            "crosscheck": {
+              "coreExact": 0.8703125,
+              "exportExact": 0.8703125
+            },
+            "exportV1": {
+              "coreExact": 0.92421875,
+              "exportExact": 0.92421875
+            },
+            "accuracyRegime": {
+              "coreExact": 0.71875,
+              "exportExact": 0.71875
+            },
+            "accuracyQuantized": {
+              "coreExact": 0.76796875,
+              "exportExact": 0.76796875
+            },
+            "structuredRanker": {
+              "coreExact": 0.94375,
+              "exportExact": 0.94375
+            }
+          },
+          "size0-dot": {
+            "rows": 88,
+            "ruleBaseline": {
+              "coreExact": 0.9772727272727273,
+              "exportExact": 0.9772727272727273
+            },
+            "crosscheck": {
+              "coreExact": 0.9318181818181818,
+              "exportExact": 0.9318181818181818
+            },
+            "exportV1": {
+              "coreExact": 0.7954545454545454,
+              "exportExact": 0.7954545454545454
+            },
+            "accuracyRegime": {
+              "coreExact": 0.4772727272727273,
+              "exportExact": 0.4772727272727273
+            },
+            "accuracyQuantized": {
+              "coreExact": 0.4090909090909091,
+              "exportExact": 0.4090909090909091
+            },
+            "structuredRanker": {
+              "coreExact": 0.8636363636363636,
+              "exportExact": 0.8636363636363636
+            }
+          },
+          "regular-odd": {
+            "rows": 640,
+            "ruleBaseline": {
+              "coreExact": 0.971875,
+              "exportExact": 0.971875
+            },
+            "crosscheck": {
+              "coreExact": 0.88125,
+              "exportExact": 0.88125
+            },
+            "exportV1": {
+              "coreExact": 0.959375,
+              "exportExact": 0.959375
+            },
+            "accuracyRegime": {
+              "coreExact": 0.74375,
+              "exportExact": 0.74375
+            },
+            "accuracyQuantized": {
+              "coreExact": 0.76875,
+              "exportExact": 0.76875
+            },
+            "structuredRanker": {
+              "coreExact": 0.965625,
+              "exportExact": 0.965625
+            }
+          },
+          "regular-even": {
+            "rows": 464,
+            "ruleBaseline": {
+              "coreExact": 0.8383620689655172,
+              "exportExact": 0.8383620689655172
+            },
+            "crosscheck": {
+              "coreExact": 0.8189655172413793,
+              "exportExact": 0.8189655172413793
+            },
+            "exportV1": {
+              "coreExact": 0.8987068965517241,
+              "exportExact": 0.8987068965517241
+            },
+            "accuracyRegime": {
+              "coreExact": 0.7155172413793104,
+              "exportExact": 0.7155172413793104
+            },
+            "accuracyQuantized": {
+              "coreExact": 0.8211206896551724,
+              "exportExact": 0.8211206896551724
+            },
+            "structuredRanker": {
+              "coreExact": 0.9267241379310345,
+              "exportExact": 0.9267241379310345
+            }
+          },
+          "zero-length": {
+            "rows": 16,
+            "ruleBaseline": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "crosscheck": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "exportV1": {
+              "coreExact": 0.875,
+              "exportExact": 0.875
+            },
+            "accuracyRegime": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "accuracyQuantized": {
+              "coreExact": 0.875,
+              "exportExact": 0.875
+            },
+            "structuredRanker": {
+              "coreExact": 1,
+              "exportExact": 1
+            }
+          }
+        }
+      },
+      "structuredTest": {
+        "rows": 2400,
+        "groups": 60,
+        "scores": {
+          "ruleBaseline": {
+            "keys": [
+              "length",
+              "thickness",
+              "gap"
+            ],
+            "coreExact": 0.9216666666666666,
+            "exportExact": 0.9216666666666666,
+            "perKeyExact": {
+              "length": 0.9675,
+              "thickness": 0.985,
+              "gap": 0.9558333333333333
+            },
+            "groupStability": {
+              "lower": 0.9041666666666662,
+              "upper": 0.9391666666666664,
+              "clusters": 60
+            }
+          },
+          "crosscheck": {
+            "keys": [
+              "length",
+              "thickness",
+              "gap"
+            ],
+            "coreExact": 0.925,
+            "exportExact": 0.925,
+            "perKeyExact": {
+              "length": 0.955,
+              "thickness": 0.9816666666666667,
+              "gap": 0.9608333333333333
+            },
+            "groupStability": {
+              "lower": 0.9066666666666666,
+              "upper": 0.9424999999999998,
+              "clusters": 60
+            }
+          },
+          "exportV1": {
+            "keys": [
+              "length",
+              "thickness",
+              "gap"
+            ],
+            "coreExact": 0.96,
+            "exportExact": 0.96,
+            "perKeyExact": {
+              "length": 0.9841666666666666,
+              "thickness": 0.9945833333333334,
+              "gap": 0.96625
+            },
+            "groupStability": {
+              "lower": 0.9462395833333331,
+              "upper": 0.9720833333333334,
+              "clusters": 60
+            }
+          },
+          "accuracyRegime": {
+            "keys": [
+              "length",
+              "thickness",
+              "gap"
+            ],
+            "coreExact": 0.97625,
+            "exportExact": 0.97625,
+            "perKeyExact": {
+              "length": 0.9933333333333333,
+              "thickness": 0.9983333333333333,
+              "gap": 0.9820833333333333
+            },
+            "groupStability": {
+              "lower": 0.9674999999999999,
+              "upper": 0.9841666666666667,
+              "clusters": 60
+            }
+          },
+          "accuracyQuantized": {
+            "keys": [
+              "length",
+              "thickness",
+              "gap"
+            ],
+            "coreExact": 0.9583333333333334,
+            "exportExact": 0.9583333333333334,
+            "perKeyExact": {
+              "length": 0.9845833333333334,
+              "thickness": 0.9958333333333333,
+              "gap": 0.9716666666666667
+            },
+            "groupStability": {
+              "lower": 0.9370833333333332,
+              "upper": 0.9745833333333335,
+              "clusters": 60
+            }
+          },
+          "structuredRanker": {
+            "keys": [
+              "length",
+              "thickness",
+              "gap"
+            ],
+            "coreExact": 0.9816666666666667,
+            "exportExact": 0.9816666666666667,
+            "perKeyExact": {
+              "length": 0.9908333333333333,
+              "thickness": 0.9941666666666666,
+              "gap": 0.9875
+            },
+            "groupStability": {
+              "lower": 0.9733333333333332,
+              "upper": 0.9891666666666669,
+              "clusters": 60
+            }
+          }
+        },
+        "regimes": {
+          "all": {
+            "rows": 2400,
+            "ruleBaseline": {
+              "coreExact": 0.9216666666666666,
+              "exportExact": 0.9216666666666666
+            },
+            "crosscheck": {
+              "coreExact": 0.925,
+              "exportExact": 0.925
+            },
+            "exportV1": {
+              "coreExact": 0.96,
+              "exportExact": 0.96
+            },
+            "accuracyRegime": {
+              "coreExact": 0.97625,
+              "exportExact": 0.97625
+            },
+            "accuracyQuantized": {
+              "coreExact": 0.9583333333333334,
+              "exportExact": 0.9583333333333334
+            },
+            "structuredRanker": {
+              "coreExact": 0.9816666666666667,
+              "exportExact": 0.9816666666666667
+            }
+          },
+          "regular-odd": {
+            "rows": 1144,
+            "ruleBaseline": {
+              "coreExact": 0.9230769230769231,
+              "exportExact": 0.9230769230769231
+            },
+            "crosscheck": {
+              "coreExact": 0.9178321678321678,
+              "exportExact": 0.9178321678321678
+            },
+            "exportV1": {
+              "coreExact": 0.9807692307692307,
+              "exportExact": 0.9807692307692307
+            },
+            "accuracyRegime": {
+              "coreExact": 0.9825174825174825,
+              "exportExact": 0.9825174825174825
+            },
+            "accuracyQuantized": {
+              "coreExact": 0.9798951048951049,
+              "exportExact": 0.9798951048951049
+            },
+            "structuredRanker": {
+              "coreExact": 0.9895104895104895,
+              "exportExact": 0.9895104895104895
+            }
+          },
+          "usealpha-0": {
+            "rows": 2400,
+            "ruleBaseline": {
+              "coreExact": 0.9216666666666666,
+              "exportExact": 0.9216666666666666
+            },
+            "crosscheck": {
+              "coreExact": 0.925,
+              "exportExact": 0.925
+            },
+            "exportV1": {
+              "coreExact": 0.96,
+              "exportExact": 0.96
+            },
+            "accuracyRegime": {
+              "coreExact": 0.97625,
+              "exportExact": 0.97625
+            },
+            "accuracyQuantized": {
+              "coreExact": 0.9583333333333334,
+              "exportExact": 0.9583333333333334
+            },
+            "structuredRanker": {
+              "coreExact": 0.9816666666666667,
+              "exportExact": 0.9816666666666667
+            }
+          },
+          "equal-height": {
+            "rows": 480,
+            "ruleBaseline": {
+              "coreExact": 0.9833333333333333,
+              "exportExact": 0.9833333333333333
+            },
+            "crosscheck": {
+              "coreExact": 0.9916666666666667,
+              "exportExact": 0.9916666666666667
+            },
+            "exportV1": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "accuracyRegime": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "accuracyQuantized": {
+              "coreExact": 0.9833333333333333,
+              "exportExact": 0.9833333333333333
+            },
+            "structuredRanker": {
+              "coreExact": 1,
+              "exportExact": 1
+            }
+          },
+          "regular-even": {
+            "rows": 744,
+            "ruleBaseline": {
+              "coreExact": 0.9059139784946236,
+              "exportExact": 0.9059139784946236
+            },
+            "crosscheck": {
+              "coreExact": 0.9112903225806451,
+              "exportExact": 0.9112903225806451
+            },
+            "exportV1": {
+              "coreExact": 0.9341397849462365,
+              "exportExact": 0.9341397849462365
+            },
+            "accuracyRegime": {
+              "coreExact": 0.9690860215053764,
+              "exportExact": 0.9690860215053764
+            },
+            "accuracyQuantized": {
+              "coreExact": 0.9690860215053764,
+              "exportExact": 0.9690860215053764
+            },
+            "structuredRanker": {
+              "coreExact": 0.9811827956989247,
+              "exportExact": 0.9811827956989247
+            }
+          },
+          "cross-height": {
+            "rows": 1920,
+            "ruleBaseline": {
+              "coreExact": 0.90625,
+              "exportExact": 0.90625
+            },
+            "crosscheck": {
+              "coreExact": 0.9083333333333333,
+              "exportExact": 0.9083333333333333
+            },
+            "exportV1": {
+              "coreExact": 0.95,
+              "exportExact": 0.95
+            },
+            "accuracyRegime": {
+              "coreExact": 0.9703125,
+              "exportExact": 0.9703125
+            },
+            "accuracyQuantized": {
+              "coreExact": 0.9520833333333333,
+              "exportExact": 0.9520833333333333
+            },
+            "structuredRanker": {
+              "coreExact": 0.9770833333333333,
+              "exportExact": 0.9770833333333333
+            }
+          },
+          "size0-empty": {
+            "rows": 240,
+            "ruleBaseline": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "crosscheck": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "exportV1": {
+              "coreExact": 0.975,
+              "exportExact": 0.975
+            },
+            "accuracyRegime": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "accuracyQuantized": {
+              "coreExact": 0.9833333333333333,
+              "exportExact": 0.9833333333333333
+            },
+            "structuredRanker": {
+              "coreExact": 0.9833333333333333,
+              "exportExact": 0.9833333333333333
+            }
+          },
+          "size0-dot": {
+            "rows": 240,
+            "ruleBaseline": {
+              "coreExact": 0.875,
+              "exportExact": 0.875
+            },
+            "crosscheck": {
+              "coreExact": 0.9166666666666666,
+              "exportExact": 0.9166666666666666
+            },
+            "exportV1": {
+              "coreExact": 0.9375,
+              "exportExact": 0.9375
+            },
+            "accuracyRegime": {
+              "coreExact": 0.9416666666666667,
+              "exportExact": 0.9416666666666667
+            },
+            "accuracyQuantized": {
+              "coreExact": 0.8166666666666667,
+              "exportExact": 0.8166666666666667
+            },
+            "structuredRanker": {
+              "coreExact": 0.9583333333333334,
+              "exportExact": 0.9583333333333334
+            }
+          },
+          "zero-length": {
+            "rows": 40,
+            "ruleBaseline": {
+              "coreExact": 0.95,
+              "exportExact": 0.95
+            },
+            "crosscheck": {
+              "coreExact": 0.95,
+              "exportExact": 0.95
+            },
+            "exportV1": {
+              "coreExact": 0.95,
+              "exportExact": 0.95
+            },
+            "accuracyRegime": {
+              "coreExact": 0.95,
+              "exportExact": 0.95
+            },
+            "accuracyQuantized": {
+              "coreExact": 0.65,
+              "exportExact": 0.65
+            },
+            "structuredRanker": {
+              "coreExact": 0.95,
+              "exportExact": 0.95
+            }
+          },
+          "crossed-partial": {
+            "rows": 32,
+            "ruleBaseline": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "crosscheck": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "exportV1": {
+              "coreExact": 0.875,
+              "exportExact": 0.875
+            },
+            "accuracyRegime": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "accuracyQuantized": {
+              "coreExact": 0.8125,
+              "exportExact": 0.8125
+            },
+            "structuredRanker": {
+              "coreExact": 0.875,
+              "exportExact": 0.875
+            }
+          },
+          "inverted-t": {
+            "rows": 16,
+            "ruleBaseline": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "crosscheck": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "exportV1": {
+              "coreExact": 0.875,
+              "exportExact": 0.875
+            },
+            "accuracyRegime": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "accuracyQuantized": {
+              "coreExact": 0.75,
+              "exportExact": 0.75
+            },
+            "structuredRanker": {
+              "coreExact": 0.875,
+              "exportExact": 0.875
+            }
+          }
+        }
+      },
+      "structuredInterior": {
+        "rows": 1280,
+        "groups": 80,
+        "scores": {
+          "ruleBaseline": {
+            "keys": [
+              "length",
+              "thickness",
+              "gap"
+            ],
+            "coreExact": 0.72578125,
+            "exportExact": 0.72578125,
+            "perKeyExact": {
+              "length": 0.8375,
+              "thickness": 0.88984375,
+              "gap": 0.9453125
+            },
+            "groupStability": {
+              "lower": 0.68123046875,
+              "upper": 0.7734375,
+              "clusters": 80
+            }
+          },
+          "crosscheck": {
+            "keys": [
+              "length",
+              "thickness",
+              "gap"
+            ],
+            "coreExact": 0.8859375,
+            "exportExact": 0.8859375,
+            "perKeyExact": {
+              "length": 0.9296875,
+              "thickness": 0.95703125,
+              "gap": 0.9421875
+            },
+            "groupStability": {
+              "lower": 0.85390625,
+              "upper": 0.91484375,
+              "clusters": 80
+            }
+          },
+          "exportV1": {
+            "keys": [
+              "length",
+              "thickness",
+              "gap"
+            ],
+            "coreExact": 0.9078125,
+            "exportExact": 0.9078125,
+            "perKeyExact": {
+              "length": 0.9796875,
+              "thickness": 0.9609375,
+              "gap": 0.9453125
+            },
+            "groupStability": {
+              "lower": 0.87888671875,
+              "upper": 0.93515625,
+              "clusters": 80
+            }
+          },
+          "accuracyRegime": {
+            "keys": [
+              "length",
+              "thickness",
+              "gap"
+            ],
+            "coreExact": 0.74921875,
+            "exportExact": 0.74921875,
+            "perKeyExact": {
+              "length": 0.90390625,
+              "thickness": 0.8609375,
+              "gap": 0.9015625
+            },
+            "groupStability": {
+              "lower": 0.70078125,
+              "upper": 0.7953125,
+              "clusters": 80
+            }
+          },
+          "accuracyQuantized": {
+            "keys": [
+              "length",
+              "thickness",
+              "gap"
+            ],
+            "coreExact": 0.75546875,
+            "exportExact": 0.75546875,
+            "perKeyExact": {
+              "length": 0.87421875,
+              "thickness": 0.9265625,
+              "gap": 0.8984375
+            },
+            "groupStability": {
+              "lower": 0.71482421875,
+              "upper": 0.7937695312499998,
+              "clusters": 80
+            }
+          },
+          "structuredRanker": {
+            "keys": [
+              "length",
+              "thickness",
+              "gap"
+            ],
+            "coreExact": 0.90078125,
+            "exportExact": 0.90078125,
+            "perKeyExact": {
+              "length": 0.975,
+              "thickness": 0.97421875,
+              "gap": 0.9359375
+            },
+            "groupStability": {
+              "lower": 0.8765625,
+              "upper": 0.9234375,
+              "clusters": 80
+            }
+          }
+        },
+        "regimes": {
+          "all": {
+            "rows": 1280,
+            "ruleBaseline": {
+              "coreExact": 0.72578125,
+              "exportExact": 0.72578125
+            },
+            "crosscheck": {
+              "coreExact": 0.8859375,
+              "exportExact": 0.8859375
+            },
+            "exportV1": {
+              "coreExact": 0.9078125,
+              "exportExact": 0.9078125
+            },
+            "accuracyRegime": {
+              "coreExact": 0.74921875,
+              "exportExact": 0.74921875
+            },
+            "accuracyQuantized": {
+              "coreExact": 0.75546875,
+              "exportExact": 0.75546875
+            },
+            "structuredRanker": {
+              "coreExact": 0.90078125,
+              "exportExact": 0.90078125
+            }
+          },
+          "size0-empty": {
+            "rows": 104,
+            "ruleBaseline": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "crosscheck": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "exportV1": {
+              "coreExact": 0.8076923076923077,
+              "exportExact": 0.8076923076923077
+            },
+            "accuracyRegime": {
+              "coreExact": 0.8076923076923077,
+              "exportExact": 0.8076923076923077
+            },
+            "accuracyQuantized": {
+              "coreExact": 0.7307692307692307,
+              "exportExact": 0.7307692307692307
+            },
+            "structuredRanker": {
+              "coreExact": 0.8269230769230769,
+              "exportExact": 0.8269230769230769
+            }
+          },
+          "usealpha-0": {
+            "rows": 1280,
+            "ruleBaseline": {
+              "coreExact": 0.72578125,
+              "exportExact": 0.72578125
+            },
+            "crosscheck": {
+              "coreExact": 0.8859375,
+              "exportExact": 0.8859375
+            },
+            "exportV1": {
+              "coreExact": 0.9078125,
+              "exportExact": 0.9078125
+            },
+            "accuracyRegime": {
+              "coreExact": 0.74921875,
+              "exportExact": 0.74921875
+            },
+            "accuracyQuantized": {
+              "coreExact": 0.75546875,
+              "exportExact": 0.75546875
+            },
+            "structuredRanker": {
+              "coreExact": 0.90078125,
+              "exportExact": 0.90078125
+            }
+          },
+          "cross-height": {
+            "rows": 1280,
+            "ruleBaseline": {
+              "coreExact": 0.72578125,
+              "exportExact": 0.72578125
+            },
+            "crosscheck": {
+              "coreExact": 0.8859375,
+              "exportExact": 0.8859375
+            },
+            "exportV1": {
+              "coreExact": 0.9078125,
+              "exportExact": 0.9078125
+            },
+            "accuracyRegime": {
+              "coreExact": 0.74921875,
+              "exportExact": 0.74921875
+            },
+            "accuracyQuantized": {
+              "coreExact": 0.75546875,
+              "exportExact": 0.75546875
+            },
+            "structuredRanker": {
+              "coreExact": 0.90078125,
+              "exportExact": 0.90078125
+            }
+          },
+          "size0-dot": {
+            "rows": 104,
+            "ruleBaseline": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "crosscheck": {
+              "coreExact": 0.9134615384615384,
+              "exportExact": 0.9134615384615384
+            },
+            "exportV1": {
+              "coreExact": 0.8461538461538461,
+              "exportExact": 0.8461538461538461
+            },
+            "accuracyRegime": {
+              "coreExact": 0.8173076923076923,
+              "exportExact": 0.8173076923076923
+            },
+            "accuracyQuantized": {
+              "coreExact": 0.5192307692307693,
+              "exportExact": 0.5192307692307693
+            },
+            "structuredRanker": {
+              "coreExact": 0.9038461538461539,
+              "exportExact": 0.9038461538461539
+            }
+          },
+          "crossed-partial": {
+            "rows": 16,
+            "ruleBaseline": {
+              "coreExact": 0.75,
+              "exportExact": 0.75
+            },
+            "crosscheck": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "exportV1": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "accuracyRegime": {
+              "coreExact": 0.75,
+              "exportExact": 0.75
+            },
+            "accuracyQuantized": {
+              "coreExact": 0.75,
+              "exportExact": 0.75
+            },
+            "structuredRanker": {
+              "coreExact": 1,
+              "exportExact": 1
+            }
+          },
+          "inverted-t": {
+            "rows": 8,
+            "ruleBaseline": {
+              "coreExact": 0.75,
+              "exportExact": 0.75
+            },
+            "crosscheck": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "exportV1": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "accuracyRegime": {
+              "coreExact": 0.75,
+              "exportExact": 0.75
+            },
+            "accuracyQuantized": {
+              "coreExact": 0.75,
+              "exportExact": 0.75
+            },
+            "structuredRanker": {
+              "coreExact": 1,
+              "exportExact": 1
+            }
+          },
+          "regular-odd": {
+            "rows": 744,
+            "ruleBaseline": {
+              "coreExact": 0.6733870967741935,
+              "exportExact": 0.6733870967741935
+            },
+            "crosscheck": {
+              "coreExact": 0.8991935483870968,
+              "exportExact": 0.8991935483870968
+            },
+            "exportV1": {
+              "coreExact": 0.9381720430107527,
+              "exportExact": 0.9381720430107527
+            },
+            "accuracyRegime": {
+              "coreExact": 0.7365591397849462,
+              "exportExact": 0.7365591397849462
+            },
+            "accuracyQuantized": {
+              "coreExact": 0.8064516129032258,
+              "exportExact": 0.8064516129032258
+            },
+            "structuredRanker": {
+              "coreExact": 0.9193548387096774,
+              "exportExact": 0.9193548387096774
+            }
+          },
+          "regular-even": {
+            "rows": 312,
+            "ruleBaseline": {
+              "coreExact": 0.6666666666666666,
+              "exportExact": 0.6666666666666666
+            },
+            "crosscheck": {
+              "coreExact": 0.8012820512820513,
+              "exportExact": 0.8012820512820513
+            },
+            "exportV1": {
+              "coreExact": 0.8846153846153846,
+              "exportExact": 0.8846153846153846
+            },
+            "accuracyRegime": {
+              "coreExact": 0.7371794871794872,
+              "exportExact": 0.7371794871794872
+            },
+            "accuracyQuantized": {
+              "coreExact": 0.7211538461538461,
+              "exportExact": 0.7211538461538461
+            },
+            "structuredRanker": {
+              "coreExact": 0.875,
+              "exportExact": 0.875
+            }
+          },
+          "zero-length": {
+            "rows": 48,
+            "ruleBaseline": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "crosscheck": {
+              "coreExact": 0.9375,
+              "exportExact": 0.9375
+            },
+            "exportV1": {
+              "coreExact": 0.75,
+              "exportExact": 0.75
+            },
+            "accuracyRegime": {
+              "coreExact": 0.7291666666666666,
+              "exportExact": 0.7291666666666666
+            },
+            "accuracyQuantized": {
+              "coreExact": 0.5416666666666666,
+              "exportExact": 0.5416666666666666
+            },
+            "structuredRanker": {
+              "coreExact": 0.8333333333333334,
+              "exportExact": 0.8333333333333334
+            }
+          }
+        }
+      },
+      "structuredExterior": {
+        "rows": 1280,
+        "groups": 80,
+        "scores": {
+          "ruleBaseline": {
+            "keys": [
+              "length",
+              "thickness",
+              "gap"
+            ],
+            "coreExact": 0.93984375,
+            "exportExact": 0.93984375,
+            "perKeyExact": {
+              "length": 0.96953125,
+              "thickness": 0.9859375,
+              "gap": 0.9703125
+            },
+            "groupStability": {
+              "lower": 0.91640625,
+              "upper": 0.9609375,
+              "clusters": 80
+            }
+          },
+          "crosscheck": {
+            "keys": [
+              "length",
+              "thickness",
+              "gap"
+            ],
+            "coreExact": 0.89296875,
+            "exportExact": 0.89296875,
+            "perKeyExact": {
+              "length": 0.909375,
+              "thickness": 0.990625,
+              "gap": 0.9328125
+            },
+            "groupStability": {
+              "lower": 0.8625,
+              "upper": 0.92109375,
+              "clusters": 80
+            }
+          },
+          "exportV1": {
+            "keys": [
+              "length",
+              "thickness",
+              "gap"
+            ],
+            "coreExact": 0.92890625,
+            "exportExact": 0.92890625,
+            "perKeyExact": {
+              "length": 0.96953125,
+              "thickness": 0.990625,
+              "gap": 0.959375
+            },
+            "groupStability": {
+              "lower": 0.90625,
+              "upper": 0.9515625,
+              "clusters": 80
+            }
+          },
+          "accuracyRegime": {
+            "keys": [
+              "length",
+              "thickness",
+              "gap"
+            ],
+            "coreExact": 0.7328125,
+            "exportExact": 0.7328125,
+            "perKeyExact": {
+              "length": 0.86953125,
+              "thickness": 0.9,
+              "gap": 0.8765625
+            },
+            "groupStability": {
+              "lower": 0.69765625,
+              "upper": 0.7703125,
+              "clusters": 80
+            }
+          },
+          "accuracyQuantized": {
+            "keys": [
+              "length",
+              "thickness",
+              "gap"
+            ],
+            "coreExact": 0.74296875,
+            "exportExact": 0.74296875,
+            "perKeyExact": {
+              "length": 0.8484375,
+              "thickness": 0.91015625,
+              "gap": 0.89609375
+            },
+            "groupStability": {
+              "lower": 0.703125,
+              "upper": 0.78359375,
+              "clusters": 80
+            }
+          },
+          "structuredRanker": {
+            "keys": [
+              "length",
+              "thickness",
+              "gap"
+            ],
+            "coreExact": 0.9421875,
+            "exportExact": 0.9421875,
+            "perKeyExact": {
+              "length": 0.96640625,
+              "thickness": 0.984375,
+              "gap": 0.98203125
+            },
+            "groupStability": {
+              "lower": 0.92263671875,
+              "upper": 0.96171875,
+              "clusters": 80
+            }
+          }
+        },
+        "regimes": {
+          "all": {
+            "rows": 1280,
+            "ruleBaseline": {
+              "coreExact": 0.93984375,
+              "exportExact": 0.93984375
+            },
+            "crosscheck": {
+              "coreExact": 0.89296875,
+              "exportExact": 0.89296875
+            },
+            "exportV1": {
+              "coreExact": 0.92890625,
+              "exportExact": 0.92890625
+            },
+            "accuracyRegime": {
+              "coreExact": 0.7328125,
+              "exportExact": 0.7328125
+            },
+            "accuracyQuantized": {
+              "coreExact": 0.74296875,
+              "exportExact": 0.74296875
+            },
+            "structuredRanker": {
+              "coreExact": 0.9421875,
+              "exportExact": 0.9421875
+            }
+          },
+          "size0-empty": {
+            "rows": 96,
+            "ruleBaseline": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "crosscheck": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "exportV1": {
+              "coreExact": 0.8958333333333334,
+              "exportExact": 0.8958333333333334
+            },
+            "accuracyRegime": {
+              "coreExact": 0.8958333333333334,
+              "exportExact": 0.8958333333333334
+            },
+            "accuracyQuantized": {
+              "coreExact": 0.8958333333333334,
+              "exportExact": 0.8958333333333334
+            },
+            "structuredRanker": {
+              "coreExact": 0.9375,
+              "exportExact": 0.9375
+            }
+          },
+          "usealpha-0": {
+            "rows": 1280,
+            "ruleBaseline": {
+              "coreExact": 0.93984375,
+              "exportExact": 0.93984375
+            },
+            "crosscheck": {
+              "coreExact": 0.89296875,
+              "exportExact": 0.89296875
+            },
+            "exportV1": {
+              "coreExact": 0.92890625,
+              "exportExact": 0.92890625
+            },
+            "accuracyRegime": {
+              "coreExact": 0.7328125,
+              "exportExact": 0.7328125
+            },
+            "accuracyQuantized": {
+              "coreExact": 0.74296875,
+              "exportExact": 0.74296875
+            },
+            "structuredRanker": {
+              "coreExact": 0.9421875,
+              "exportExact": 0.9421875
+            }
+          },
+          "cross-height": {
+            "rows": 1280,
+            "ruleBaseline": {
+              "coreExact": 0.93984375,
+              "exportExact": 0.93984375
+            },
+            "crosscheck": {
+              "coreExact": 0.89296875,
+              "exportExact": 0.89296875
+            },
+            "exportV1": {
+              "coreExact": 0.92890625,
+              "exportExact": 0.92890625
+            },
+            "accuracyRegime": {
+              "coreExact": 0.7328125,
+              "exportExact": 0.7328125
+            },
+            "accuracyQuantized": {
+              "coreExact": 0.74296875,
+              "exportExact": 0.74296875
+            },
+            "structuredRanker": {
+              "coreExact": 0.9421875,
+              "exportExact": 0.9421875
+            }
+          },
+          "size0-dot": {
+            "rows": 96,
+            "ruleBaseline": {
+              "coreExact": 0.9166666666666666,
+              "exportExact": 0.9166666666666666
+            },
+            "crosscheck": {
+              "coreExact": 0.9895833333333334,
+              "exportExact": 0.9895833333333334
+            },
+            "exportV1": {
+              "coreExact": 0.8333333333333334,
+              "exportExact": 0.8333333333333334
+            },
+            "accuracyRegime": {
+              "coreExact": 0.625,
+              "exportExact": 0.625
+            },
+            "accuracyQuantized": {
+              "coreExact": 0.25,
+              "exportExact": 0.25
+            },
+            "structuredRanker": {
+              "coreExact": 0.8125,
+              "exportExact": 0.8125
+            }
+          },
+          "crossed-partial": {
+            "rows": 16,
+            "ruleBaseline": {
+              "coreExact": 0.875,
+              "exportExact": 0.875
+            },
+            "crosscheck": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "exportV1": {
+              "coreExact": 0.875,
+              "exportExact": 0.875
+            },
+            "accuracyRegime": {
+              "coreExact": 0.5,
+              "exportExact": 0.5
+            },
+            "accuracyQuantized": {
+              "coreExact": 0.3125,
+              "exportExact": 0.3125
+            },
+            "structuredRanker": {
+              "coreExact": 0.875,
+              "exportExact": 0.875
+            }
+          },
+          "inverted-t": {
+            "rows": 8,
+            "ruleBaseline": {
+              "coreExact": 0.875,
+              "exportExact": 0.875
+            },
+            "crosscheck": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "exportV1": {
+              "coreExact": 0.875,
+              "exportExact": 0.875
+            },
+            "accuracyRegime": {
+              "coreExact": 0.5,
+              "exportExact": 0.5
+            },
+            "accuracyQuantized": {
+              "coreExact": 0.25,
+              "exportExact": 0.25
+            },
+            "structuredRanker": {
+              "coreExact": 0.875,
+              "exportExact": 0.875
+            }
+          },
+          "regular-odd": {
+            "rows": 760,
+            "ruleBaseline": {
+              "coreExact": 0.9723684210526315,
+              "exportExact": 0.9723684210526315
+            },
+            "crosscheck": {
+              "coreExact": 0.8947368421052632,
+              "exportExact": 0.8947368421052632
+            },
+            "exportV1": {
+              "coreExact": 0.975,
+              "exportExact": 0.975
+            },
+            "accuracyRegime": {
+              "coreExact": 0.7065789473684211,
+              "exportExact": 0.7065789473684211
+            },
+            "accuracyQuantized": {
+              "coreExact": 0.7578947368421053,
+              "exportExact": 0.7578947368421053
+            },
+            "structuredRanker": {
+              "coreExact": 0.9723684210526315,
+              "exportExact": 0.9723684210526315
+            }
+          },
+          "regular-even": {
+            "rows": 312,
+            "ruleBaseline": {
+              "coreExact": 0.8525641025641025,
+              "exportExact": 0.8525641025641025
+            },
+            "crosscheck": {
+              "coreExact": 0.8205128205128205,
+              "exportExact": 0.8205128205128205
+            },
+            "exportV1": {
+              "coreExact": 0.8589743589743589,
+              "exportExact": 0.8589743589743589
+            },
+            "accuracyRegime": {
+              "coreExact": 0.7916666666666666,
+              "exportExact": 0.7916666666666666
+            },
+            "accuracyQuantized": {
+              "coreExact": 0.8333333333333334,
+              "exportExact": 0.8333333333333334
+            },
+            "structuredRanker": {
+              "coreExact": 0.9134615384615384,
+              "exportExact": 0.9134615384615384
+            }
+          },
+          "zero-length": {
+            "rows": 32,
+            "ruleBaseline": {
+              "coreExact": 0.875,
+              "exportExact": 0.875
+            },
+            "crosscheck": {
+              "coreExact": 1,
+              "exportExact": 1
+            },
+            "exportV1": {
+              "coreExact": 0.875,
+              "exportExact": 0.875
+            },
+            "accuracyRegime": {
+              "coreExact": 0.875,
+              "exportExact": 0.875
+            },
+            "accuracyQuantized": {
+              "coreExact": 0.5,
+              "exportExact": 0.5
+            },
+            "structuredRanker": {
+              "coreExact": 0.875,
+              "exportExact": 0.875
+            }
+          }
+        }
+      }
+    },
+    "fresh": {
+      "rows": 5632,
+      "groups": 128,
+      "scores": {
+        "ruleBaseline": {
+          "keys": [
+            "length",
+            "thickness",
+            "gap",
+            "drawoutline",
+            "outlineAlpha",
+            "color",
+            "fillAlpha",
+            "t_style"
+          ],
+          "coreExact": 0.8552911931818182,
+          "appearanceExact": 0.9453125,
+          "exportExact": 0.8069957386363636,
+          "perKeyExact": {
+            "length": 0.9224076704545454,
+            "thickness": 0.94921875,
+            "gap": 0.9298650568181818,
+            "drawoutline": 0.9453125,
+            "outlineAlpha": 0.9623579545454546,
+            "color": 0.9453125,
+            "fillAlpha": 0.98046875,
+            "t_style": 1
+          },
+          "groupStability": {
+            "lower": 0.7785866477272723,
+            "upper": 0.8341708096590904,
+            "clusters": 128
+          }
+        },
+        "crosscheck": {
+          "keys": [
+            "length",
+            "thickness",
+            "gap",
+            "drawoutline",
+            "outlineAlpha",
+            "color",
+            "fillAlpha",
+            "t_style"
+          ],
+          "coreExact": 0.9898792613636364,
+          "appearanceExact": 1,
+          "exportExact": 0.9898792613636364,
+          "perKeyExact": {
+            "length": 0.9939630681818182,
+            "thickness": 0.9982244318181818,
+            "gap": 0.9920099431818182,
+            "drawoutline": 1,
+            "outlineAlpha": 1,
+            "color": 1,
+            "fillAlpha": 1,
+            "t_style": 1
+          },
+          "groupStability": {
+            "lower": 0.9856178977272728,
+            "upper": 0.9936079545454549,
+            "clusters": 128
+          }
+        },
+        "exportV1": {
+          "keys": [
+            "length",
+            "thickness",
+            "gap",
+            "drawoutline",
+            "outlineAlpha"
+          ],
+          "coreExact": 0.9186789772727273,
+          "appearanceExact": 1,
+          "exportExact": 0.9186789772727273,
+          "perKeyExact": {
+            "length": 0.947265625,
+            "thickness": 0.9827769886363636,
+            "gap": 0.9540127840909091,
+            "drawoutline": 1,
+            "outlineAlpha": 1
+          },
+          "groupStability": {
+            "lower": 0.9018066406249996,
+            "upper": 0.9351962002840907,
+            "clusters": 128
+          }
+        },
+        "accuracyRegime": {
+          "keys": [
+            "length",
+            "thickness",
+            "gap"
+          ],
+          "coreExact": 0.8295454545454546,
+          "exportExact": 0.8295454545454546,
+          "perKeyExact": {
+            "length": 0.9145951704545454,
+            "thickness": 0.9350142045454546,
+            "gap": 0.9000355113636364
+          },
+          "groupStability": {
+            "lower": 0.8096590909090903,
+            "upper": 0.8490811434659088,
+            "clusters": 128
+          }
+        },
+        "accuracyQuantized": {
+          "keys": [
+            "length",
+            "thickness",
+            "gap"
+          ],
+          "coreExact": 0.6741832386363636,
+          "exportExact": 0.6741832386363636,
+          "perKeyExact": {
+            "length": 0.8297230113636364,
+            "thickness": 0.8920454545454546,
+            "gap": 0.7817826704545454
+          },
+          "groupStability": {
+            "lower": 0.6200284090909087,
+            "upper": 0.7263849431818173,
+            "clusters": 128
+          }
+        },
+        "structuredRanker": {
+          "keys": [
+            "length",
+            "thickness",
+            "gap"
+          ],
+          "coreExact": 0.9025213068181818,
+          "exportExact": 0.9025213068181818,
+          "perKeyExact": {
+            "length": 0.9440696022727273,
+            "thickness": 0.9678622159090909,
+            "gap": 0.9334161931818182
+          },
+          "groupStability": {
+            "lower": 0.8861816406249995,
+            "upper": 0.9181507457386362,
+            "clusters": 128
+          }
+        }
+      },
+      "regimes": {
+        "all": {
+          "rows": 5632,
+          "ruleBaseline": {
+            "coreExact": 0.8552911931818182,
+            "exportExact": 0.8069957386363636
+          },
+          "crosscheck": {
+            "coreExact": 0.9898792613636364,
+            "exportExact": 0.9898792613636364
+          },
+          "exportV1": {
+            "coreExact": 0.9186789772727273,
+            "exportExact": 0.9186789772727273
+          },
+          "accuracyRegime": {
+            "coreExact": 0.8295454545454546,
+            "exportExact": 0.8295454545454546
+          },
+          "accuracyQuantized": {
+            "coreExact": 0.6741832386363636,
+            "exportExact": 0.6741832386363636
+          },
+          "structuredRanker": {
+            "coreExact": 0.9025213068181818,
+            "exportExact": 0.9025213068181818
+          }
+        },
+        "regular-even": {
+          "rows": 1676,
+          "ruleBaseline": {
+            "coreExact": 0.8215990453460621,
+            "exportExact": 0.8215990453460621
+          },
+          "crosscheck": {
+            "coreExact": 0.9850835322195705,
+            "exportExact": 0.9850835322195705
+          },
+          "exportV1": {
+            "coreExact": 0.9075178997613366,
+            "exportExact": 0.9075178997613366
+          },
+          "accuracyRegime": {
+            "coreExact": 0.8162291169451074,
+            "exportExact": 0.8162291169451074
+          },
+          "accuracyQuantized": {
+            "coreExact": 0.8478520286396182,
+            "exportExact": 0.8478520286396182
+          },
+          "structuredRanker": {
+            "coreExact": 0.8729116945107399,
+            "exportExact": 0.8729116945107399
+          }
+        },
+        "equal-height": {
+          "rows": 2560,
+          "ruleBaseline": {
+            "coreExact": 0.9515625,
+            "exportExact": 0.89765625
+          },
+          "crosscheck": {
+            "coreExact": 1,
+            "exportExact": 1
+          },
+          "exportV1": {
+            "coreExact": 0.9609375,
+            "exportExact": 0.9609375
+          },
+          "accuracyRegime": {
+            "coreExact": 0.95234375,
+            "exportExact": 0.95234375
+          },
+          "accuracyQuantized": {
+            "coreExact": 0.773046875,
+            "exportExact": 0.773046875
+          },
+          "structuredRanker": {
+            "coreExact": 0.9609375,
+            "exportExact": 0.9609375
+          }
+        },
+        "regular-odd": {
+          "rows": 1872,
+          "ruleBaseline": {
+            "coreExact": 0.8787393162393162,
+            "exportExact": 0.8787393162393162
+          },
+          "crosscheck": {
+            "coreExact": 0.9957264957264957,
+            "exportExact": 0.9957264957264957
+          },
+          "exportV1": {
+            "coreExact": 0.9449786324786325,
+            "exportExact": 0.9449786324786325
+          },
+          "accuracyRegime": {
+            "coreExact": 0.8552350427350427,
+            "exportExact": 0.8552350427350427
+          },
+          "accuracyQuantized": {
+            "coreExact": 0.8461538461538461,
+            "exportExact": 0.8461538461538461
+          },
+          "structuredRanker": {
+            "coreExact": 0.9428418803418803,
+            "exportExact": 0.9428418803418803
+          }
+        },
+        "cross-height": {
+          "rows": 3072,
+          "ruleBaseline": {
+            "coreExact": 0.7750651041666666,
+            "exportExact": 0.7314453125
+          },
+          "crosscheck": {
+            "coreExact": 0.9814453125,
+            "exportExact": 0.9814453125
+          },
+          "exportV1": {
+            "coreExact": 0.8834635416666666,
+            "exportExact": 0.8834635416666666
+          },
+          "accuracyRegime": {
+            "coreExact": 0.7272135416666666,
+            "exportExact": 0.7272135416666666
+          },
+          "accuracyQuantized": {
+            "coreExact": 0.591796875,
+            "exportExact": 0.591796875
+          },
+          "structuredRanker": {
+            "coreExact": 0.8538411458333334,
+            "exportExact": 0.8538411458333334
+          }
+        },
+        "usealpha-0": {
+          "rows": 1496,
+          "ruleBaseline": {
+            "coreExact": 0.8836898395721925,
+            "exportExact": 0.8168449197860963
+          },
+          "crosscheck": {
+            "coreExact": 0.9926470588235294,
+            "exportExact": 0.9926470588235294
+          },
+          "exportV1": {
+            "coreExact": 0.9378342245989305,
+            "exportExact": 0.9378342245989305
+          },
+          "accuracyRegime": {
+            "coreExact": 0.8455882352941176,
+            "exportExact": 0.8455882352941176
+          },
+          "accuracyQuantized": {
+            "coreExact": 0.6811497326203209,
+            "exportExact": 0.6811497326203209
+          },
+          "structuredRanker": {
+            "coreExact": 0.9157754010695187,
+            "exportExact": 0.9157754010695187
+          }
+        },
+        "overpaint": {
+          "rows": 1147,
+          "ruleBaseline": {
+            "coreExact": 0.7925021795989537,
+            "exportExact": 0.7925021795989537
+          },
+          "crosscheck": {
+            "coreExact": 0.974716652136007,
+            "exportExact": 0.974716652136007
+          },
+          "exportV1": {
+            "coreExact": 0.8596338273757629,
+            "exportExact": 0.8596338273757629
+          },
+          "accuracyRegime": {
+            "coreExact": 0.7611159546643418,
+            "exportExact": 0.7611159546643418
+          },
+          "accuracyQuantized": {
+            "coreExact": 0.6390584132519617,
+            "exportExact": 0.6390584132519617
+          },
+          "structuredRanker": {
+            "coreExact": 0.8299912816041848,
+            "exportExact": 0.8299912816041848
+          }
+        },
+        "crossed-full": {
+          "rows": 516,
+          "ruleBaseline": {
+            "coreExact": 0.8294573643410853,
+            "exportExact": 0.8294573643410853
+          },
+          "crosscheck": {
+            "coreExact": 0.9767441860465116,
+            "exportExact": 0.9767441860465116
+          },
+          "exportV1": {
+            "coreExact": 0.9166666666666666,
+            "exportExact": 0.9166666666666666
+          },
+          "accuracyRegime": {
+            "coreExact": 0.8178294573643411,
+            "exportExact": 0.8178294573643411
+          },
+          "accuracyQuantized": {
+            "coreExact": 0,
+            "exportExact": 0
+          },
+          "structuredRanker": {
+            "coreExact": 0.9147286821705426,
+            "exportExact": 0.9147286821705426
+          }
+        },
+        "inverted-t": {
+          "rows": 492,
+          "ruleBaseline": {
+            "coreExact": 0.7987804878048781,
+            "exportExact": 0.7987804878048781
+          },
+          "crosscheck": {
+            "coreExact": 0.9796747967479674,
+            "exportExact": 0.9796747967479674
+          },
+          "exportV1": {
+            "coreExact": 0.8333333333333334,
+            "exportExact": 0.8333333333333334
+          },
+          "accuracyRegime": {
+            "coreExact": 0.6951219512195121,
+            "exportExact": 0.6951219512195121
+          },
+          "accuracyQuantized": {
+            "coreExact": 0.21747967479674796,
+            "exportExact": 0.21747967479674796
+          },
+          "structuredRanker": {
+            "coreExact": 0.8313008130081301,
+            "exportExact": 0.8313008130081301
+          }
+        },
+        "crossed-at-zero": {
+          "rows": 56,
+          "ruleBaseline": {
+            "coreExact": 0.8035714285714286,
+            "exportExact": 0.8035714285714286
+          },
+          "crosscheck": {
+            "coreExact": 1,
+            "exportExact": 1
+          },
+          "exportV1": {
+            "coreExact": 0.8392857142857143,
+            "exportExact": 0.8392857142857143
+          },
+          "accuracyRegime": {
+            "coreExact": 0.75,
+            "exportExact": 0.75
+          },
+          "accuracyQuantized": {
+            "coreExact": 0.39285714285714285,
+            "exportExact": 0.39285714285714285
+          },
+          "structuredRanker": {
+            "coreExact": 0.8392857142857143,
+            "exportExact": 0.8392857142857143
+          }
+        },
+        "crossed-partial": {
+          "rows": 412,
+          "ruleBaseline": {
+            "coreExact": 0.7961165048543689,
+            "exportExact": 0.7961165048543689
+          },
+          "crosscheck": {
+            "coreExact": 0.9927184466019418,
+            "exportExact": 0.9927184466019418
+          },
+          "exportV1": {
+            "coreExact": 0.7985436893203883,
+            "exportExact": 0.7985436893203883
+          },
+          "accuracyRegime": {
+            "coreExact": 0.6844660194174758,
+            "exportExact": 0.6844660194174758
+          },
+          "accuracyQuantized": {
+            "coreExact": 0.4830097087378641,
+            "exportExact": 0.4830097087378641
+          },
+          "structuredRanker": {
+            "coreExact": 0.7864077669902912,
+            "exportExact": 0.7864077669902912
+          }
+        },
+        "outline-3": {
+          "rows": 616,
+          "ruleBaseline": {
+            "coreExact": 0.8457792207792207,
+            "exportExact": 0.7483766233766234
+          },
+          "crosscheck": {
+            "coreExact": 0.961038961038961,
+            "exportExact": 0.961038961038961
+          },
+          "exportV1": {
+            "coreExact": 0.9383116883116883,
+            "exportExact": 0.9383116883116883
+          },
+          "accuracyRegime": {
+            "coreExact": 0.8376623376623377,
+            "exportExact": 0.8376623376623377
+          },
+          "accuracyQuantized": {
+            "coreExact": 0.6818181818181818,
+            "exportExact": 0.6818181818181818
+          },
+          "structuredRanker": {
+            "coreExact": 0.9237012987012987,
+            "exportExact": 0.9237012987012987
+          }
+        },
+        "size0-outline-only": {
+          "rows": 308,
+          "ruleBaseline": {
+            "coreExact": 0.8831168831168831,
+            "exportExact": 0
+          },
+          "crosscheck": {
+            "coreExact": 0.9772727272727273,
+            "exportExact": 0.9772727272727273
+          },
+          "exportV1": {
+            "coreExact": 0.9155844155844156,
+            "exportExact": 0.9155844155844156
+          },
+          "accuracyRegime": {
+            "coreExact": 0.814935064935065,
+            "exportExact": 0.814935064935065
+          },
+          "accuracyQuantized": {
+            "coreExact": 0,
+            "exportExact": 0
+          },
+          "structuredRanker": {
+            "coreExact": 0.922077922077922,
+            "exportExact": 0.922077922077922
+          }
+        },
+        "outline-only-override": {
+          "rows": 308,
+          "ruleBaseline": {
+            "coreExact": 0.8831168831168831,
+            "exportExact": 0
+          },
+          "crosscheck": {
+            "coreExact": 0.9772727272727273,
+            "exportExact": 0.9772727272727273
+          },
+          "exportV1": {
+            "coreExact": 0.9155844155844156,
+            "exportExact": 0.9155844155844156
+          },
+          "accuracyRegime": {
+            "coreExact": 0.814935064935065,
+            "exportExact": 0.814935064935065
+          },
+          "accuracyQuantized": {
+            "coreExact": 0,
+            "exportExact": 0
+          },
+          "structuredRanker": {
+            "coreExact": 0.922077922077922,
+            "exportExact": 0.922077922077922
+          }
+        },
+        "size0-dot-outline": {
+          "rows": 308,
+          "ruleBaseline": {
+            "coreExact": 0.8506493506493507,
+            "exportExact": 0.8506493506493507
+          },
+          "crosscheck": {
+            "coreExact": 0.9935064935064936,
+            "exportExact": 0.9935064935064936
+          },
+          "exportV1": {
+            "coreExact": 0.9025974025974026,
+            "exportExact": 0.9025974025974026
+          },
+          "accuracyRegime": {
+            "coreExact": 0.8636363636363636,
+            "exportExact": 0.8636363636363636
+          },
+          "accuracyQuantized": {
+            "coreExact": 0.6201298701298701,
+            "exportExact": 0.6201298701298701
+          },
+          "structuredRanker": {
+            "coreExact": 0.8571428571428571,
+            "exportExact": 0.8571428571428571
+          }
+        },
+        "size0-empty": {
+          "rows": 242,
+          "ruleBaseline": {
+            "coreExact": 1,
+            "exportExact": 1
+          },
+          "crosscheck": {
+            "coreExact": 1,
+            "exportExact": 1
+          },
+          "exportV1": {
+            "coreExact": 0.9752066115702479,
+            "exportExact": 0.9752066115702479
+          },
+          "accuracyRegime": {
+            "coreExact": 0.9008264462809917,
+            "exportExact": 0.9008264462809917
+          },
+          "accuracyQuantized": {
+            "coreExact": 0.9173553719008265,
+            "exportExact": 0.9173553719008265
+          },
+          "structuredRanker": {
+            "coreExact": 0.9586776859504132,
+            "exportExact": 0.9586776859504132
+          }
+        },
+        "size0-dot": {
+          "rows": 242,
+          "ruleBaseline": {
+            "coreExact": 0.9008264462809917,
+            "exportExact": 0.9008264462809917
+          },
+          "crosscheck": {
+            "coreExact": 1,
+            "exportExact": 1
+          },
+          "exportV1": {
+            "coreExact": 0.987603305785124,
+            "exportExact": 0.987603305785124
+          },
+          "accuracyRegime": {
+            "coreExact": 0.9173553719008265,
+            "exportExact": 0.9173553719008265
+          },
+          "accuracyQuantized": {
+            "coreExact": 0.6528925619834711,
+            "exportExact": 0.6528925619834711
+          },
+          "structuredRanker": {
+            "coreExact": 0.9586776859504132,
+            "exportExact": 0.9586776859504132
+          }
+        },
+        "zero-length": {
+          "rows": 396,
+          "ruleBaseline": {
+            "coreExact": 0.8964646464646465,
+            "exportExact": 0.5555555555555556
+          },
+          "crosscheck": {
+            "coreExact": 0.98989898989899,
+            "exportExact": 0.98989898989899
+          },
+          "exportV1": {
+            "coreExact": 0.9419191919191919,
+            "exportExact": 0.9419191919191919
+          },
+          "accuracyRegime": {
+            "coreExact": 0.851010101010101,
+            "exportExact": 0.851010101010101
+          },
+          "accuracyQuantized": {
+            "coreExact": 0.42424242424242425,
+            "exportExact": 0.42424242424242425
+          },
+          "structuredRanker": {
+            "coreExact": 0.9217171717171717,
+            "exportExact": 0.9217171717171717
+          }
+        },
+        "weapon-gap": {
+          "rows": 352,
+          "ruleBaseline": {
+            "coreExact": 0.8295454545454546,
+            "exportExact": 0.8295454545454546
+          },
+          "crosscheck": {
+            "coreExact": 0.9971590909090909,
+            "exportExact": 0.9971590909090909
+          },
+          "exportV1": {
+            "coreExact": 0.9517045454545454,
+            "exportExact": 0.9517045454545454
+          },
+          "accuracyRegime": {
+            "coreExact": 0.8607954545454546,
+            "exportExact": 0.8607954545454546
+          },
+          "accuracyQuantized": {
+            "coreExact": 0.8721590909090909,
+            "exportExact": 0.8721590909090909
+          },
+          "structuredRanker": {
+            "coreExact": 0.9289772727272727,
+            "exportExact": 0.9289772727272727
+          }
+        }
+      }
+    },
+    "edgeChallenge": {
+      "rows": 3520,
+      "groups": 80,
+      "scores": {
+        "ruleBaseline": {
+          "keys": [
+            "length",
+            "thickness",
+            "gap",
+            "drawoutline",
+            "outlineAlpha",
+            "color",
+            "fillAlpha",
+            "t_style"
+          ],
+          "coreExact": 0.8178977272727272,
+          "appearanceExact": 0.8761363636363636,
+          "exportExact": 0.7147727272727272,
+          "perKeyExact": {
+            "length": 0.8880681818181818,
+            "thickness": 0.9400568181818182,
+            "gap": 0.9119318181818182,
+            "drawoutline": 0.8761363636363636,
+            "outlineAlpha": 0.9136363636363637,
+            "color": 0.8761363636363636,
+            "fillAlpha": 1,
+            "t_style": 1
+          },
+          "groupStability": {
+            "lower": 0.6656249999999999,
+            "upper": 0.7661931818181817,
+            "clusters": 80
+          }
+        },
+        "crosscheck": {
+          "keys": [
+            "length",
+            "thickness",
+            "gap",
+            "drawoutline",
+            "outlineAlpha",
+            "color",
+            "fillAlpha",
+            "t_style"
+          ],
+          "coreExact": 0.9860795454545455,
+          "appearanceExact": 1,
+          "exportExact": 0.9860795454545455,
+          "perKeyExact": {
+            "length": 0.9948863636363636,
+            "thickness": 0.9965909090909091,
+            "gap": 0.9897727272727272,
+            "drawoutline": 1,
+            "outlineAlpha": 1,
+            "color": 1,
+            "fillAlpha": 1,
+            "t_style": 1
+          },
+          "groupStability": {
+            "lower": 0.978693181818182,
+            "upper": 0.9923295454545455,
+            "clusters": 80
+          }
+        },
+        "exportV1": {
+          "keys": [
+            "length",
+            "thickness",
+            "gap",
+            "drawoutline",
+            "outlineAlpha"
+          ],
+          "coreExact": 0.8752840909090909,
+          "appearanceExact": 1,
+          "exportExact": 0.8752840909090909,
+          "perKeyExact": {
+            "length": 0.9147727272727273,
+            "thickness": 0.9732954545454545,
+            "gap": 0.9252840909090909,
+            "drawoutline": 1,
+            "outlineAlpha": 1
+          },
+          "groupStability": {
+            "lower": 0.8380681818181814,
+            "upper": 0.9079616477272727,
+            "clusters": 80
+          }
+        },
+        "accuracyRegime": {
+          "keys": [
+            "length",
+            "thickness",
+            "gap"
+          ],
+          "coreExact": 0.7832386363636363,
+          "exportExact": 0.7832386363636363,
+          "perKeyExact": {
+            "length": 0.86875,
+            "thickness": 0.9321022727272728,
+            "gap": 0.8639204545454545
+          },
+          "groupStability": {
+            "lower": 0.7494318181818185,
+            "upper": 0.8133522727272726,
+            "clusters": 80
+          }
+        },
+        "accuracyQuantized": {
+          "keys": [
+            "length",
+            "thickness",
+            "gap"
+          ],
+          "coreExact": 0.48409090909090907,
+          "exportExact": 0.48409090909090907,
+          "perKeyExact": {
+            "length": 0.703125,
+            "thickness": 0.8264204545454545,
+            "gap": 0.6278409090909091
+          },
+          "groupStability": {
+            "lower": 0.4070809659090909,
+            "upper": 0.5653480113636365,
+            "clusters": 80
+          }
+        },
+        "structuredRanker": {
+          "keys": [
+            "length",
+            "thickness",
+            "gap"
+          ],
+          "coreExact": 0.8613636363636363,
+          "exportExact": 0.8613636363636363,
+          "perKeyExact": {
+            "length": 0.9102272727272728,
+            "thickness": 0.9542613636363636,
+            "gap": 0.9045454545454545
+          },
+          "groupStability": {
+            "lower": 0.8244247159090905,
+            "upper": 0.8940340909090908,
+            "clusters": 80
+          }
+        }
+      },
+      "regimes": {
+        "all": {
+          "rows": 3520,
+          "ruleBaseline": {
+            "coreExact": 0.8178977272727272,
+            "exportExact": 0.7147727272727272
+          },
+          "crosscheck": {
+            "coreExact": 0.9860795454545455,
+            "exportExact": 0.9860795454545455
+          },
+          "exportV1": {
+            "coreExact": 0.8752840909090909,
+            "exportExact": 0.8752840909090909
+          },
+          "accuracyRegime": {
+            "coreExact": 0.7832386363636363,
+            "exportExact": 0.7832386363636363
+          },
+          "accuracyQuantized": {
+            "coreExact": 0.48409090909090907,
+            "exportExact": 0.48409090909090907
+          },
+          "structuredRanker": {
+            "coreExact": 0.8613636363636363,
+            "exportExact": 0.8613636363636363
+          }
+        },
+        "crossed-at-zero": {
+          "rows": 96,
+          "ruleBaseline": {
+            "coreExact": 0.6770833333333334,
+            "exportExact": 0.6770833333333334
+          },
+          "crosscheck": {
+            "coreExact": 0.9791666666666666,
+            "exportExact": 0.9791666666666666
+          },
+          "exportV1": {
+            "coreExact": 0.6666666666666666,
+            "exportExact": 0.6666666666666666
+          },
+          "accuracyRegime": {
+            "coreExact": 0.6770833333333334,
+            "exportExact": 0.6770833333333334
+          },
+          "accuracyQuantized": {
+            "coreExact": 0.09375,
+            "exportExact": 0.09375
+          },
+          "structuredRanker": {
+            "coreExact": 0.6458333333333334,
+            "exportExact": 0.6458333333333334
+          }
+        },
+        "overpaint": {
+          "rows": 1215,
+          "ruleBaseline": {
+            "coreExact": 0.7563786008230453,
+            "exportExact": 0.7563786008230453
+          },
+          "crosscheck": {
+            "coreExact": 0.9794238683127572,
+            "exportExact": 0.9794238683127572
+          },
+          "exportV1": {
+            "coreExact": 0.8041152263374486,
+            "exportExact": 0.8041152263374486
+          },
+          "accuracyRegime": {
+            "coreExact": 0.7020576131687243,
+            "exportExact": 0.7020576131687243
+          },
+          "accuracyQuantized": {
+            "coreExact": 0.6074074074074074,
+            "exportExact": 0.6074074074074074
+          },
+          "structuredRanker": {
+            "coreExact": 0.7950617283950617,
+            "exportExact": 0.7950617283950617
+          }
+        },
+        "equal-height": {
+          "rows": 1600,
+          "ruleBaseline": {
+            "coreExact": 0.916875,
+            "exportExact": 0.795
+          },
+          "crosscheck": {
+            "coreExact": 1,
+            "exportExact": 1
+          },
+          "exportV1": {
+            "coreExact": 0.916875,
+            "exportExact": 0.916875
+          },
+          "accuracyRegime": {
+            "coreExact": 0.903125,
+            "exportExact": 0.903125
+          },
+          "accuracyQuantized": {
+            "coreExact": 0.57,
+            "exportExact": 0.57
+          },
+          "structuredRanker": {
+            "coreExact": 0.916875,
+            "exportExact": 0.916875
+          }
+        },
+        "inverted-t": {
+          "rows": 596,
+          "ruleBaseline": {
+            "coreExact": 0.7550335570469798,
+            "exportExact": 0.7550335570469798
+          },
+          "crosscheck": {
+            "coreExact": 0.9916107382550335,
+            "exportExact": 0.9916107382550335
+          },
+          "exportV1": {
+            "coreExact": 0.7818791946308725,
+            "exportExact": 0.7818791946308725
+          },
+          "accuracyRegime": {
+            "coreExact": 0.6610738255033557,
+            "exportExact": 0.6610738255033557
+          },
+          "accuracyQuantized": {
+            "coreExact": 0.20134228187919462,
+            "exportExact": 0.20134228187919462
+          },
+          "structuredRanker": {
+            "coreExact": 0.7701342281879194,
+            "exportExact": 0.7701342281879194
+          }
+        },
+        "crossed-partial": {
+          "rows": 532,
+          "ruleBaseline": {
+            "coreExact": 0.7142857142857143,
+            "exportExact": 0.7142857142857143
+          },
+          "crosscheck": {
+            "coreExact": 0.9943609022556391,
+            "exportExact": 0.9943609022556391
+          },
+          "exportV1": {
+            "coreExact": 0.731203007518797,
+            "exportExact": 0.731203007518797
+          },
+          "accuracyRegime": {
+            "coreExact": 0.6296992481203008,
+            "exportExact": 0.6296992481203008
+          },
+          "accuracyQuantized": {
+            "coreExact": 0.44548872180451127,
+            "exportExact": 0.44548872180451127
+          },
+          "structuredRanker": {
+            "coreExact": 0.7199248120300752,
+            "exportExact": 0.7199248120300752
+          }
+        },
+        "cross-height": {
+          "rows": 1920,
+          "ruleBaseline": {
+            "coreExact": 0.7354166666666667,
+            "exportExact": 0.6479166666666667
+          },
+          "crosscheck": {
+            "coreExact": 0.9744791666666667,
+            "exportExact": 0.9744791666666667
+          },
+          "exportV1": {
+            "coreExact": 0.840625,
+            "exportExact": 0.840625
+          },
+          "accuracyRegime": {
+            "coreExact": 0.6833333333333333,
+            "exportExact": 0.6833333333333333
+          },
+          "accuracyQuantized": {
+            "coreExact": 0.4125,
+            "exportExact": 0.4125
+          },
+          "structuredRanker": {
+            "coreExact": 0.8151041666666666,
+            "exportExact": 0.8151041666666666
+          }
+        },
+        "crossed-full": {
+          "rows": 564,
+          "ruleBaseline": {
+            "coreExact": 0.8599290780141844,
+            "exportExact": 0.8599290780141844
+          },
+          "crosscheck": {
+            "coreExact": 0.9929078014184397,
+            "exportExact": 0.9929078014184397
+          },
+          "exportV1": {
+            "coreExact": 0.9237588652482269,
+            "exportExact": 0.9237588652482269
+          },
+          "accuracyRegime": {
+            "coreExact": 0.7890070921985816,
+            "exportExact": 0.7890070921985816
+          },
+          "accuracyQuantized": {
+            "coreExact": 0,
+            "exportExact": 0
+          },
+          "structuredRanker": {
+            "coreExact": 0.9060283687943262,
+            "exportExact": 0.9060283687943262
+          }
+        },
+        "outline-3": {
+          "rows": 880,
+          "ruleBaseline": {
+            "coreExact": 0.7965909090909091,
+            "exportExact": 0.7
+          },
+          "crosscheck": {
+            "coreExact": 0.9636363636363636,
+            "exportExact": 0.9636363636363636
+          },
+          "exportV1": {
+            "coreExact": 0.8909090909090909,
+            "exportExact": 0.8909090909090909
+          },
+          "accuracyRegime": {
+            "coreExact": 0.7875,
+            "exportExact": 0.7875
+          },
+          "accuracyQuantized": {
+            "coreExact": 0.6477272727272727,
+            "exportExact": 0.6477272727272727
+          },
+          "structuredRanker": {
+            "coreExact": 0.8681818181818182,
+            "exportExact": 0.8681818181818182
+          }
+        },
+        "regular-even": {
+          "rows": 820,
+          "ruleBaseline": {
+            "coreExact": 0.7987804878048781,
+            "exportExact": 0.7987804878048781
+          },
+          "crosscheck": {
+            "coreExact": 0.974390243902439,
+            "exportExact": 0.974390243902439
+          },
+          "exportV1": {
+            "coreExact": 0.901219512195122,
+            "exportExact": 0.901219512195122
+          },
+          "accuracyRegime": {
+            "coreExact": 0.7914634146341464,
+            "exportExact": 0.7914634146341464
+          },
+          "accuracyQuantized": {
+            "coreExact": 0.8109756097560976,
+            "exportExact": 0.8109756097560976
+          },
+          "structuredRanker": {
+            "coreExact": 0.875609756097561,
+            "exportExact": 0.875609756097561
+          }
+        },
+        "regular-odd": {
+          "rows": 548,
+          "ruleBaseline": {
+            "coreExact": 0.9014598540145985,
+            "exportExact": 0.9014598540145985
+          },
+          "crosscheck": {
+            "coreExact": 0.9890510948905109,
+            "exportExact": 0.9890510948905109
+          },
+          "exportV1": {
+            "coreExact": 0.9397810218978102,
+            "exportExact": 0.9397810218978102
+          },
+          "accuracyRegime": {
+            "coreExact": 0.864963503649635,
+            "exportExact": 0.864963503649635
+          },
+          "accuracyQuantized": {
+            "coreExact": 0.8503649635036497,
+            "exportExact": 0.8503649635036497
+          },
+          "structuredRanker": {
+            "coreExact": 0.9452554744525548,
+            "exportExact": 0.9452554744525548
+          }
+        },
+        "size0-outline-only": {
+          "rows": 436,
+          "ruleBaseline": {
+            "coreExact": 0.8325688073394495,
+            "exportExact": 0
+          },
+          "crosscheck": {
+            "coreExact": 0.9747706422018348,
+            "exportExact": 0.9747706422018348
+          },
+          "exportV1": {
+            "coreExact": 0.9151376146788991,
+            "exportExact": 0.9151376146788991
+          },
+          "accuracyRegime": {
+            "coreExact": 0.8004587155963303,
+            "exportExact": 0.8004587155963303
+          },
+          "accuracyQuantized": {
+            "coreExact": 0,
+            "exportExact": 0
+          },
+          "structuredRanker": {
+            "coreExact": 0.9105504587155964,
+            "exportExact": 0.9105504587155964
+          }
+        },
+        "outline-only-override": {
+          "rows": 436,
+          "ruleBaseline": {
+            "coreExact": 0.8325688073394495,
+            "exportExact": 0
+          },
+          "crosscheck": {
+            "coreExact": 0.9747706422018348,
+            "exportExact": 0.9747706422018348
+          },
+          "exportV1": {
+            "coreExact": 0.9151376146788991,
+            "exportExact": 0.9151376146788991
+          },
+          "accuracyRegime": {
+            "coreExact": 0.8004587155963303,
+            "exportExact": 0.8004587155963303
+          },
+          "accuracyQuantized": {
+            "coreExact": 0,
+            "exportExact": 0
+          },
+          "structuredRanker": {
+            "coreExact": 0.9105504587155964,
+            "exportExact": 0.9105504587155964
+          }
+        },
+        "size0-dot-outline": {
+          "rows": 436,
+          "ruleBaseline": {
+            "coreExact": 0.8142201834862385,
+            "exportExact": 0.8142201834862385
+          },
+          "crosscheck": {
+            "coreExact": 0.9954128440366973,
+            "exportExact": 0.9954128440366973
+          },
+          "exportV1": {
+            "coreExact": 0.8486238532110092,
+            "exportExact": 0.8486238532110092
+          },
+          "accuracyRegime": {
+            "coreExact": 0.8302752293577982,
+            "exportExact": 0.8302752293577982
+          },
+          "accuracyQuantized": {
+            "coreExact": 0.5848623853211009,
+            "exportExact": 0.5848623853211009
+          },
+          "structuredRanker": {
+            "coreExact": 0.823394495412844,
+            "exportExact": 0.823394495412844
+          }
+        },
+        "zero-length": {
+          "rows": 520,
+          "ruleBaseline": {
+            "coreExact": 0.8173076923076923,
+            "exportExact": 0.4846153846153846
+          },
+          "crosscheck": {
+            "coreExact": 0.9769230769230769,
+            "exportExact": 0.9769230769230769
+          },
+          "exportV1": {
+            "coreExact": 0.8596153846153847,
+            "exportExact": 0.8596153846153847
+          },
+          "accuracyRegime": {
+            "coreExact": 0.7903846153846154,
+            "exportExact": 0.7903846153846154
+          },
+          "accuracyQuantized": {
+            "coreExact": 0.37884615384615383,
+            "exportExact": 0.37884615384615383
+          },
+          "structuredRanker": {
+            "coreExact": 0.8326923076923077,
+            "exportExact": 0.8326923076923077
+          }
+        },
+        "weapon-gap": {
+          "rows": 440,
+          "ruleBaseline": {
+            "coreExact": 0.8522727272727273,
+            "exportExact": 0.8159090909090909
+          },
+          "crosscheck": {
+            "coreExact": 0.9977272727272727,
+            "exportExact": 0.9977272727272727
+          },
+          "exportV1": {
+            "coreExact": 0.9659090909090909,
+            "exportExact": 0.9659090909090909
+          },
+          "accuracyRegime": {
+            "coreExact": 0.8772727272727273,
+            "exportExact": 0.8772727272727273
+          },
+          "accuracyQuantized": {
+            "coreExact": 0.8409090909090909,
+            "exportExact": 0.8409090909090909
+          },
+          "structuredRanker": {
+            "coreExact": 0.9340909090909091,
+            "exportExact": 0.9340909090909091
+          }
+        },
+        "usealpha-0": {
+          "rows": 704,
+          "ruleBaseline": {
+            "coreExact": 0.7798295454545454,
+            "exportExact": 0.7798295454545454
+          },
+          "crosscheck": {
+            "coreExact": 0.9857954545454546,
+            "exportExact": 0.9857954545454546
+          },
+          "exportV1": {
+            "coreExact": 0.8394886363636364,
+            "exportExact": 0.8394886363636364
+          },
+          "accuracyRegime": {
+            "coreExact": 0.7571022727272727,
+            "exportExact": 0.7571022727272727
+          },
+          "accuracyQuantized": {
+            "coreExact": 0.4943181818181818,
+            "exportExact": 0.4943181818181818
+          },
+          "structuredRanker": {
+            "coreExact": 0.8309659090909091,
+            "exportExact": 0.8309659090909091
+          }
+        },
+        "size0-empty": {
+          "rows": 44,
+          "ruleBaseline": {
+            "coreExact": 1,
+            "exportExact": 1
+          },
+          "crosscheck": {
+            "coreExact": 1,
+            "exportExact": 1
+          },
+          "exportV1": {
+            "coreExact": 0.9090909090909091,
+            "exportExact": 0.9090909090909091
+          },
+          "accuracyRegime": {
+            "coreExact": 0.8636363636363636,
+            "exportExact": 0.8636363636363636
+          },
+          "accuracyQuantized": {
+            "coreExact": 0.9090909090909091,
+            "exportExact": 0.9090909090909091
+          },
+          "structuredRanker": {
+            "coreExact": 0.9545454545454546,
+            "exportExact": 0.9545454545454546
+          }
+        },
+        "size0-dot": {
+          "rows": 44,
+          "ruleBaseline": {
+            "coreExact": 0.8636363636363636,
+            "exportExact": 0.8636363636363636
+          },
+          "crosscheck": {
+            "coreExact": 1,
+            "exportExact": 1
+          },
+          "exportV1": {
+            "coreExact": 1,
+            "exportExact": 1
+          },
+          "accuracyRegime": {
+            "coreExact": 0.9090909090909091,
+            "exportExact": 0.9090909090909091
+          },
+          "accuracyQuantized": {
+            "coreExact": 0.7272727272727273,
+            "exportExact": 0.7272727272727273
+          },
+          "structuredRanker": {
+            "coreExact": 0.9545454545454546,
+            "exportExact": 0.9545454545454546
+          }
+        }
+      }
+    }
+  },
+  "provenance": {
+    "nativeEvidence": false,
+    "speedGate": "not-a-substitute: the converter still exports the solver result",
+    "labels": "infer() with community-static-2026-10 (community-static-v6), read back through nativeCommands. All design inputs are SYNTHETIC; corpus and presets are published settings labelled by the same solver, not native captures.",
+    "inference": "lib/solver/ml-crosscheck.js: source arithmetic for the old shape and the regime transforms, a bracketing candidate set of its own, learned ranker and heads. It never calls solveCommunity, searchCommunity, communityAxis or the edge-case planner (checked by tests/tooling/boundaries.test.mjs).",
+    "selection": "Capacities from fixed lists, chosen on validation only (ranker: core exact; each head group: its key exact); refit on train+validation.",
+    "freshEvaluation": "Fresh test (new seed) and edge challenge drawn and hashed (freshInputsSha256) before the first fit. They are scored only after the final refit and never select a feature or capacity. On 2026-10-02 they were scored, one comparator reporting bug (exportV1 scored on keys it does not predict) was fixed, and they were rescored; the repository cannot prove that no other run happened in between. Reruns reproduce the final run byte for byte.",
+    "regression": "evaluations.regression re-scores earlier splits whose labels were already seen (accuracy, structured and export v1 test and challenge splits, corpus, presets). They are regression numbers, not fresh evidence.",
+    "scope": "Agreement with our own converter on designed inputs, never game accuracy. Group intervals are cluster-resampling stability intervals."
+  },
+  "fingerprintSha256": "459312f0beb481cb4f9e8e0c0fa912d02885b3d79c213632ddc703434dc08dd6"
+}

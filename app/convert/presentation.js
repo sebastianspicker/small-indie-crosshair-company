@@ -1,14 +1,19 @@
 import { el, fmt, table } from '../ui/dom.js';
 import { paintQuant, fitZoom } from './preview.js';
-import { rgba, effectiveOutlineMode, legacyOutlineExtent, nativeOutlineExtent } from '../../lib/settings/native.js';
-const RELEVANT_WARNING =
-  /conflict|cropped|large shape|No visible|only outline strokes|outline replacement|half outline|outline off|zero-thickness|shift|limits/;
+import { rgba, legacyOutlineExtent, nativeOutlineExtent, styleTarget } from '../../lib/settings/native.js';
+import { STYLE_ON_BUILD_2000922 } from '../../lib/settings/cvars.js';
 import { scaleOf, EXPERT_MODELS } from '../../lib/solver/renderer.js';
 import { exportQuantCFG } from '../../lib/solver/export.js';
 import { rivalSummary } from '../../lib/solver/migration.js';
 import { modelName } from './view.js';
 import { drawingEdges } from '../../lib/geometry/raster.js';
-import { clearOutcomes } from './outcomes.js';
+import { clearOutcomes, shownWarnings } from './outcomes.js';
+import { exportedLook, confidenceRows, metricNode } from './evidence.js';
+/** Exported style with its current-game name, e.g. "Static Cross (style 4)". */
+export function exportedStyleName(report) {
+  const style = styleTarget(report.settings, report.options?.styleTarget ?? 'static');
+  return `${STYLE_ON_BUILD_2000922.find(entry => entry.id === style)?.uiLabel ?? 'Style'} (style ${style})`;
+}
 export const percent = value => value == null ? 'Undefined' : `${(100 * value).toFixed(1)}%`;
 
 export function clearResult(view, state = 'pending', message = 'Calculating…') {
@@ -20,7 +25,7 @@ export function clearResult(view, state = 'pending', message = 'Calculating…')
   for (const id of ['q-copy', 'q-download-cfg', 'q-download-report']) get(id).disabled = true;
   root.querySelectorAll('#q-values-table td').forEach(node => { node.textContent = '—'; });
   for (const id of ['q-confidence', 'q-target-line', 'q-warnings', 'q-derivation', 'q-model-table', 'q-trace', 'q-certify-note']) get(id).replaceChildren();
-  get('q-discriminating').textContent = '';
+  get('q-discriminating').textContent = ''; get('q-renderer-note').textContent = ''; get('q-experiment').textContent = '';
   for (const id of ['old', 'naive', 'converted']) {
     get(`q-${id}-values`).textContent = '';
     get(`q-${id}-note`).textContent = state === 'error' ? 'Input not accepted.' : 'Waiting for valid input.';
@@ -31,7 +36,7 @@ export function clearResult(view, state = 'pending', message = 'Calculating…')
   clearOutcomes(view);
   get('qs-flags').textContent = ''; get('qs-commands').textContent = ''; get('qs-scale').textContent = '';
   get('qs-live').textContent = '';
-  if (state === 'error') get('qs-note').textContent = '';
+  get('qs-note').textContent = '';
   get('qs-status').textContent = state === 'error' ? message : '';
   get('qs-copy').disabled = get('qs-download').disabled = true;
   for (const id of ['qs-old-canvas', 'qs-new-canvas']) {
@@ -41,37 +46,34 @@ export function clearResult(view, state = 'pending', message = 'Calculating…')
 }
 
 function renderValues(view, report) {
-  const { get } = view, s = report.settings, n = report.chosen.native, a = report.naive;
+  const { get } = view, s = report.settings, n = report.chosen.native, a = report.naive, blocked = Boolean(report.blockers.length);
   for (const [key, oldKey] of [['length', 'size'], ['thickness', 'thickness'], ['gap', 'gap']]) {
     get(`q-value-${key}-legacy`).textContent = fmt(s[oldKey]);
-    get(`q-value-${key}-direct`).textContent = fmt(a[key]);
-    get(`q-value-${key}-new`).textContent = fmt(n[key]);
+    // Blocked: nothing is proposed, so the proposed values stay empty as in the Simple view.
+    get(`q-value-${key}-direct`).textContent = blocked ? '—' : fmt(a[key]);
+    get(`q-value-${key}-new`).textContent = blocked ? '—' : fmt(n[key]);
   }
   const t = report.target;
   const edges = drawingEdges(t);
   get('q-target-line').textContent = `Target in game pixels: length ${fmt(t.length)}, thickness ${fmt(t.width)}${report.targetKind === 'image-derived' ? ', measured image pixels' : `, preview inner edges ${fmt(edges.near)} / ${fmt(edges.far)}`}. New authored height: ${n.authoredHeight}.`;
 }
 
-function renderMetrics(view, r) {
-  view.get('q-confidence').replaceChildren(...[
-    ['Preview overlap', percent(r.convertedFit.iou), 'Under the selected rendering model'],
-    r.provenance ? ['Evidence basis', 'Community', 'External software comparison; not game captures']
-      : ['Model agreement', percent(r.confidence.conditionalFamilyMass), 'Share of weighted models that match'],
-    ['Native confidence', 'Not identified', `${r.posterior.calibrationGroups} calibration · ${r.posterior.holdoutGroups} holdout groups`],
-    ...(r.provenance && r.posterior.validation.total ? [['Holdout agreement', percent(r.posterior.validation.rate),
-      `${r.posterior.validation.successes}/${r.posterior.validation.total} capture groups · ` +
-      `interval ${percent(r.posterior.validation.lower)}–${percent(r.posterior.validation.upper)}; measured fields only`]] : []),
-  ].map(([label, value, note]) => el('div', {}, el('span', {}, label), el('strong', {}, value), el('small', {}, note))));
+function renderMetrics(view, r, evidence) {
+  view.get('q-confidence').replaceChildren(...confidenceRows(r, evidence, percent).map(metricNode));
 }
 
 export function renderPreviews(view, r, measuredMask = null) {
   if (!r) return;
   const { get } = view, c = rgba(r.settings), zoom = Number(get('q-zoom').value), grid = get('q-grid').checked;
   const old = legacyOutlineExtent(r.settings), assumed = nativeOutlineExtent(r.settings, r.options.outlineMode);
-  paintQuant(get('q-old-canvas'), r.target, r.settings, c, zoom, null, { grid, mask: measuredMask, outline: old });
+  const exported = exportedLook(r), exportedOutline = nativeOutlineExtent(exported.settings, exported.outlineMode);
+  paintQuant(get('q-old-canvas'), r.target, r.settings, c, zoom, null, { grid, mask: measuredMask, outline: old, legacy: true });
   paintQuant(get('q-naive-canvas'), r.naiveGeometry, r.settings, c, zoom, null, { grid, outline: assumed });
   const reference = get('q-difference').checked ? measuredMask ?? r.target : null;
-  paintQuant(get('q-converted-canvas'), r.converted, r.settings, c, zoom, reference, { grid, outline: assumed });
+  // The converted plate shows what the export draws: its colour, outline mode and T flag, not the old ones.
+  const converted = get('q-converted-canvas');
+  if (r.blockers?.length) converted.getContext('2d').clearRect(0, 0, converted.width, converted.height);
+  else paintQuant(converted, r.converted, exported.settings, exported.color, zoom, reference, { grid, outline: exportedOutline });
 }
 
 function previewLabels(view, r) {
@@ -79,44 +81,51 @@ function previewLabels(view, r) {
   get('q-old-values').textContent = r.targetKind === 'image-derived' ? `Measured L ${fmt(r.target.length)} · W ${fmt(r.target.width)}`
     : `size ${fmt(s.size)} / thickness ${fmt(s.thickness)} / gap ${fmt(s.gap)}`;
   for (const [id, n] of [['naive', r.naive], ['converted', r.chosen.native]])
-    get(`q-${id}-values`).textContent = `length ${n.length} / thickness ${n.thickness} / gap ${n.gap}`;
+    get(`q-${id}-values`).textContent = r.blockers.length ? '—' : `length ${n.length} / thickness ${n.thickness} / gap ${n.gap}`;
   get('q-old-note').textContent = r.targetKind === 'image-derived' ? 'Measured from the image; the old settings may have more than one answer.' : 'Reconstructed from the old settings.';
-  get('q-naive-note').textContent = `${percent(r.naiveFit.iou)} overlap in the preview. Copied with new integer limits.`;
-  get('q-converted-note').textContent = `${percent(r.convertedFit.iou)} overlap in the selected model.`;
+  get('q-naive-note').textContent = `${percent(r.naiveFit.iou)} core overlap (no shift). Copied with new integer limits.`;
+  get('q-converted-note').textContent = `${percent(r.convertedFit.iou)} core overlap (no shift) in the selected model.`;
   get('q-renderer-note').textContent = `New preview: ${modelName(r.renderer)}. ` +
-    'Difference colors: light = shared, amber = extra, blue = missing. Outlines (black, beneath the core) are not compared; ' +
-    'the new outline is assumed: 1 px all round, half = top and left. ' +
+    'Difference colors: light = shared, amber = extra, blue = missing. Core overlap compares the coloured core only, ' +
+    'without a shift; the Shape check also compares outlines and allows a 1 px shift. New outline: full = 1 px all round ' +
+    '(unverified in game), half = top and left (matches one user capture, issue #11). ' +
     (r.provenance ? r.provenance.scope : 'Gap scaling remains a hypothesis in the historical build 2000914 study.');
 }
 
-export function renderSimple(view, report) {
+/** `status: false` (a resize or font refresh) leaves the status line alone, e.g. "Copied to clipboard.". */
+export function renderSimple(view, report, { status = true } = {}) {
   if (!report) return;
-  const { get } = view, s = report.settings, n = report.chosen.native, c = rgba(s);
-  get('qs-length').textContent = fmt(n.length);
-  get('qs-out-thickness').textContent = fmt(n.thickness);
-  get('qs-out-gap').textContent = fmt(n.gap);
-  const flags = [s.dot ? 'center dot' : 'no center dot', s.t_style ? 'T shape' : 'cross', ['no outline', 'outline', 'half outline'][effectiveOutlineMode(s, report.options.outlineMode)],
-    s.recoil ? 'follow recoil (not simulated)' : 'static'];
-  get('qs-flags').textContent = `${flags.join(' · ')} · rgba(${c.rgb.join(', ')}, ${c.alpha})`;
+  const { get } = view, s = report.settings, n = report.chosen.native, c = rgba(s), exported = exportedLook(report);
+  const exportedOutline = nativeOutlineExtent(exported.settings, exported.outlineMode);
+  const blocked = Boolean(report.blockers.length);
+  // Blocked: nothing is exported, so no values or flags are shown either.
+  get('qs-length').textContent = blocked ? '—' : fmt(n.length);
+  get('qs-out-thickness').textContent = blocked ? '—' : fmt(n.thickness);
+  get('qs-out-gap').textContent = blocked ? '—' : fmt(n.gap);
+  const flags = [s.dot ? 'center dot' : 'no center dot', exported.settings.t_style ? 'T shape' : 'cross',
+    ['no outline', 'outline', 'half outline'][exported.outlineMode], exportedStyleName(report),
+    s.recoil ? 'follows recoil (not simulated)' : 'no recoil'];
+  get('qs-flags').textContent = blocked ? ''
+    : `${flags.join(' · ')} · rgba(${exported.color.rgb.join(', ')}, ${exported.color.alpha})`;
   const warningText = report.warnings.map(w => typeof w === 'string' ? w : w.text);
   const gapScale = warningText.find(w => /Gap scaling is not stated in the build 2000914/.test(w));
   get('qs-note').textContent = (gapScale ?? (report.provenance && 'Community reconstruction; not checked against game captures.'))
     || 'Conditional preview under the selected model.';
-  const oldCanvas = get('qs-old-canvas'), zoom = fitZoom(oldCanvas, [report.target, report.converted], s,
-    [legacyOutlineExtent(s), nativeOutlineExtent(s, report.options.outlineMode)]);
-  paintQuant(oldCanvas, report.target, s, c, zoom, null, { grid: zoom >= 6, annotate: true, outline: legacyOutlineExtent(s) });
-  paintQuant(get('qs-new-canvas'), report.converted, s, c, zoom, null,
-    { grid: zoom >= 6, annotate: true, outline: nativeOutlineExtent(s, report.options.outlineMode) });
-  get('qs-scale').textContent = `×${zoom} · one cell = one game pixel` +
-    (effectiveOutlineMode(s, report.options.outlineMode) ? ' · outline black at crosshair opacity; new outline assumed, unverified' : '');
-  const blocked = Boolean(report.blockers.length);
+  const oldCanvas = get('qs-old-canvas'), zoom = fitZoom(oldCanvas, [report.target, report.converted], [s, exported.settings],
+    [legacyOutlineExtent(s), exportedOutline]);
+  paintQuant(oldCanvas, report.target, s, c, zoom, null,
+    { grid: zoom >= 6, annotate: true, outline: legacyOutlineExtent(s), legacy: true });
+  paintQuant(get('qs-new-canvas'), report.converted, exported.settings, exported.color, zoom, null,
+    { grid: zoom >= 6, annotate: true, outline: exportedOutline });
+  get('qs-scale').textContent = `×${zoom} · one cell = one game pixel` + (exported.outlineMode ? ' · outline black at crosshair ' +
+    `opacity; ${exported.outlineMode === 2 ? 'half outline matches one user capture' : 'full outline unverified in game'}` : '');
   view.root.dataset.blocked = String(blocked);
-  const lines = blocked ? [] : exportQuantCFG(report).split('\n').filter(line => line && !line.startsWith('//'));
+  const lines = blocked ? [] : exportQuantCFG(report).split(';').filter(Boolean);
   get('qs-commands').replaceChildren(...(blocked ? ['No commands until the issue is resolved in the expert lab.'] : lines.flatMap(line => {
     const [name, ...value] = line.split(' ');
     return [el('span', { class: 'cvar-name' }, name), ' ', el('span', { class: 'cvar-value' }, value.join(' ')), '\n'];
   })));
-  get('qs-status').textContent = blocked ? `${report.blockers[0]} Nothing can be exported until this is resolved.` : '';
+  if (status) get('qs-status').textContent = blocked ? `${report.blockers[0]} Nothing can be exported until this is resolved.` : '';
   get('qs-copy').disabled = blocked; get('qs-download').disabled = blocked;
   const announcement = blocked ? '' : `New settings: length ${fmt(n.length)}, thickness ${fmt(n.thickness)}, gap ${fmt(n.gap)}.`;
   if (get('qs-live').textContent !== announcement) get('qs-live').textContent = announcement;
@@ -137,16 +146,15 @@ function renderCertificate(view, r) {
     `Certificate for the declared loss: method ${c.method}; global ${c.global ? 'yes' : 'no'}; improved on the bounded best ${c.improved ? 'yes' : 'no'}. ${method}. Scope: ${c.scope}`;
 }
 
-export function renderResult(view, r) {
+export function renderResult(view, r, evidence = null) {
   const { get, root } = view;
-  renderValues(view, r); renderSimple(view, r); renderMetrics(view, r); previewLabels(view, r); renderCertificate(view, r);
+  renderValues(view, r); renderSimple(view, r); renderMetrics(view, r, evidence); previewLabels(view, r); renderCertificate(view, r);
   get('q-cfg').value = r.blockers.length ? '' : exportQuantCFG(r);
   get('q-copy').disabled = get('q-download-cfg').disabled = Boolean(r.blockers.length);
   get('q-download-report').disabled = false;
   get('q-status').textContent = r.blockers.length ? 'No export until the issues below are resolved.' : 'Settings ready to copy or download.';
-  const warningText = r.warnings.map(w => typeof w === 'string' ? w : w.text);
-  const relevant = warningText.filter(w =>
-    RELEVANT_WARNING.test(w));
+  // The same list as the Simple view, so neither hides a warning the other shows.
+  const relevant = shownWarnings(r);
   if (root.dataset.strategy === 'hedge' && r.convertedFit.iou !== 1) relevant.unshift('The automatic choice balances several models. Open the pixel measurements to see where this preview differs.');
   get('q-warnings').replaceChildren(...[...r.blockers, ...relevant].map(w => el('p', {}, w)));
   const e = r.experiment;
@@ -179,9 +187,12 @@ export function renderDerivation(view, r) {
 
 export function renderScenarios(view, r, onSelect) {
   const models = r.models.filter(m => r.provenance || EXPERT_MODELS.some(visible => visible.id === m.id));
+  const mass = r.confidence.conditionalFamilyMass;
   view.get('q-model-table').replaceChildren(el('p', { class: 'small' }, r.posterior.warning),
+    ...(mass == null ? [] : [el('p', { class: 'small' }, `Hypothesis agreement: ${percent(mass)} of the weighted renderer hypotheses reproduce this choice. ` +
+      'It is a share of hypotheses, not a probability that the export is correct.')]),
     el('div', { class: 'table-scroll' }, el('table', {},
-      el('thead', {}, el('tr', {}, ...['Model', 'Weight', 'Length / thickness / gap', 'Preview overlap', ''].map(x => el('th', { scope: 'col' }, x)))),
+      el('thead', {}, el('tr', {}, ...['Model', 'Weight', 'Length / thickness / gap', 'Core overlap (no shift)', ''].map(x => el('th', { scope: 'col' }, x)))),
       el('tbody', {}, ...models.map(m => el('tr', {}, el('td', {}, modelName(m)), el('td', {}, percent(m.weight)),
         el('td', {}, `${m.native.length} / ${m.native.thickness} / ${m.native.gap}`), el('td', {}, percent(m.conditionalIou)),
         el('td', {}, el('button', { class: 'text-button', 'aria-label': 'Inspect ' + m.id,

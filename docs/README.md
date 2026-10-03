@@ -4,7 +4,7 @@ This project converts crosshair settings under stated renderer assumptions.
 These docs describe the models, how the results were produced, and what evidence
 would be needed to check them in CS2.
 
-The default converter uses **`community-static-v5`**, inspected build **2000922**,
+The default converter uses **`community-static-v6`**, inspected build **2000922**,
 with six UI choices. The historical corpus snapshot is **2026-09-23** and the
 manual lab uses `conditional-static-v4`. Neither is a
 verified native renderer. No original old/new game capture pairs are included.
@@ -13,7 +13,8 @@ The [October 1 build 2000922 note](research/build-2000922-update-2026-10-01.md)
 records the crosshair update, its shader diff, the v4 decisions and a native
 capture protocol. The v4 equations are an unverified carry-over from v3; v5
 keeps them and ranks tied choices by shift-aligned overlap, so the odd-width
-centring shift no longer decides ties. The
+centring shift no longer decides ties; v6 keeps the equations and adds the
+old-appearance rules and an appearance window. The
 [October 2 learner findings](research/learners-2026-10-02.md) and
 [capture protocol](research/capture-protocol-2026-10-02.md) cover the outline
 evidence, the retrained learners and the next native captures.
@@ -53,6 +54,7 @@ or read the source chapters on GitHub:
 | [10 — Learned emulator](math/10-learned-emulator.md) | Can a small learned model replace the exact solver, and why was it rejected? |
 | [11 — Certified inverse](math/11-certified-inverse-and-capture-plan.md) | Is the shipped search the declared optimum, and which captures would separate the models? |
 | [12 — Community reconstruction](math/12-community-conversion.md) | What changed after the external comparison, and how did the learning experiment improve? |
+| [13 — What decides the export](math/13-what-decides-the-export.md) | Which parts of a result are closed-form math, which are rules, and what does each ML model do? |
 
 Chapter 09 updates the earlier optimizer descriptions. Chapter 10 documents a
 dependency-free learned emulator that **distills the declared solver**; its labels
@@ -63,7 +65,9 @@ adds an **opt-in** certificate for the declared loss (`infer({ certify: true })`
 complete integer preimages, the `cvar` decision rule, a behavioural partition of
 the 27 historical scenarios, and a synthetic capture plan. Chapter 12 records
 the new source-labelled default and the project still ships **zero native capture pairs**, so
-none of this is native accuracy. Prior derivations remain available so changes can
+none of this is native accuracy. Chapter 13 maps every learned and fitted
+component to its role: **no ML decides an exported value**; the export-state
+learner v2 only checks each input, and the other learners are research evidence. Prior derivations remain available so changes can
 be traced through the [formula history](research/formula-evolution.md).
 The [source ledger](research/quant-sources.md) records provenance and limitations.
 

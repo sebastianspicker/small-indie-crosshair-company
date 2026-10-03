@@ -10,8 +10,8 @@ function acceptOld(c, { fit, meta }) {
   Object.assign(c.state, { targetOverride: fit.geometry, targetMask: fit.mask,
     screenshotMeta: { ...meta, buckets: fit.buckets, templateIou: fit.templateIou, quality: fit.quality,
       measurementMethod: fit.measurementMethod, declaredOldHeight: c.options().oldHeight }, source: { type: 'image' } });
-  c.get('q-import').value = '';
-  c.get('q-input-status').textContent = 'Image measured. Several old settings may produce the same pixels.';
+  c.get('q-import').value = c.get('qs-import').value = '';
+  c.setInputStatus('Image measured. Several old settings may produce the same pixels.');
   c.schedule();
 }
 
@@ -45,7 +45,8 @@ async function openImage(c, kind) {
 async function loadEvidence(c) {
   try {
     const file = c.get('q-measurements').files[0];
-    if (!file || file.size > 1024 * 1024) throw new Error('Evidence JSON must be below 1 MB.');
+    if (!file) throw new Error('Choose an evidence JSON file.');
+    if (file.size > 1024 * 1024) throw new Error('Evidence JSON must be below 1 MB.');
     const parsed = JSON.parse(await file.text());
     c.state.measurements = validateMeasurements(parsed, null);
     c.get('q-evidence-status').textContent = `Loaded ${parsed.length} measurements. Generated examples do not change the model weights.`;

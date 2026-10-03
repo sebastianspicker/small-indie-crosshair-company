@@ -63,6 +63,7 @@ research/lib/
 research/scripts/
 research/generated/complexity-comparison.json
 research/generated/performance-local.json
+research/generated/accuracy-emulator.json
 scripts/check.mjs
 scripts/import-graph.mjs
 scripts/line-length.mjs

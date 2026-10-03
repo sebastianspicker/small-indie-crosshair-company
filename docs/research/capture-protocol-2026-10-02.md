@@ -10,7 +10,10 @@ evidence.
 
 ## Setup
 
-- Build 2000922 or newer (record `steam.inf` / the in-game version). Native
+- Build 2000922 or 2000924 (record `steam.inf` / the in-game version). A dump
+  comparison found no crosshair change in 2000924 (source ledger S19), so its
+  captures count as 2000922 captures; for a later build, say so and wait for a
+  dump comparison before the record is used. Native
   1920x1080, no scaling, `cl_crosshair_screen_height 1080`, default HUD scale.
 - A static position facing a flat, neutral, evenly lit wall; no weapon sway, no
   other HUD element within 40 px of the screen centre. Fixed weapon, standing
@@ -21,6 +24,10 @@ evidence.
   re-encode. Compute the SHA-256 of each file straight after saving it
   (`shasum -a 256 *.png`) and keep the files outside this repository.
 - Retake rather than edit. Record every failed capture and the reason.
+- **Menu preview as well.** For every case also screenshot the crosshair preview
+  in the settings menu (same PNG and SHA-256 rules). The preview is drawn by the
+  same `CCSGO_CrosshairPreview` renderer class; a match between preview and
+  in-game capture lets later sessions use the menu alone, a mismatch is a finding.
 
 ## Roles are fixed in advance
 
@@ -107,13 +114,33 @@ branch or an old install), capture the reporter's settings
 +3 px x offset in [issue #11's screenshot](../../research/measurements/old-client-issue-11.json)
 comes from the old renderer or from that capture.
 
+## Still needed (dump comparison, 2026-10-03)
+
+The 2000924 dumps settle the shader and ranges but not the CPU-side layout. These
+questions stay open and need captures; the cases above cover them:
+
+- **A dot at length 0** (step 8 with `cl_crosshairdot 1`): the edge-case rules assume
+  length 0 may draw nothing; the S17 decompile says the dot still draws.
+- **Zero-length bars and their outline** (step 8): the shader alone would outline an
+  empty rect, so only CPU culling can drop it.
+- **Odd-width origin** (step 9).
+- **Rounding of `cl_crosshair_screen_height` and gap scaling at other heights**:
+  repeat step 1 at 720 and 1440 (or 2160) with `cl_crosshair_screen_height 1080`.
+- **A negative static gap** (step 1, `s1-t2-gm2`): the cvar accepts -3840..3840 for
+  every style, the Static Cross UI only 0..128.
+- **Full outline width** (step 10 with drawoutline 1), including 2160p, to see
+  whether mode 1 stays one pixel.
+- **Thickness 0**: length 8, gap 4, thickness 0. The ranges allow 0; whether it draws
+  a 1 px minimum or nothing is unverified (`raster.js` draws nothing for width 0).
+
 ## Submitting
 
 Open a GitHub issue per session titled `Native capture: build NNNNNNN`. For each
 capture give: case id, role, the exact console lines (paste the tool output), game
 build, resolution, the SHA-256 of the unedited PNG, an attestation that it is
 unedited, and the PNG itself or a link. Mention the comparer output. Records enter
-the repository only through the measurement import (`native-user`, build 2000922)
+the repository only through the measurement import (`native-user`, build 2000922;
+2000924 is accepted as the same renderer)
 and stay user-attested until reviewed. Old-client observations cannot enter that
 import; they are stored as documented, unregistered files next to
 `research/measurements/index.json`.

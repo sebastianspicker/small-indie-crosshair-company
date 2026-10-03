@@ -22,8 +22,9 @@ const exportSelects = prefix => [
   el('select', { id: `${prefix}-outline` }, ...OUTLINE_OPTIONS.map(([value, name]) => option(value, name))),
   el('label', { for: `${prefix}-style` }, 'Style'),
   el('select', { id: `${prefix}-style` }, ...STYLE_OPTIONS.map(([value, name]) => option(value, name))),
-  el('p', { class: 'small' }, 'Both mappings are unverified in game. Auto derives the outline mode from the old settings; ' +
-    'the experimental style keeps old styles 2, 3 and 5 as new 2 or 5, which move with inaccuracy and shots.')];
+  el('p', { class: 'small' }, 'Auto derives the outline mode from the old settings. The half outline matches one user capture ' +
+    'of the current game (issue #11); the full outline is unverified in game. The experimental style keeps old styles 2, 3 ' +
+    'and 5 as new 2 or 5, which move with inaccuracy and shots.')];
 const status = id => el('p', { id, class: 'small', role: 'status' });
 const simpleField = (id, label, attrs) => el('div', {}, el('label', { for: id }, label), el('input', { id, ...attrs }));
 const step = (index, title, ...children) => el('fieldset', { class: 'qs-step' },
@@ -66,7 +67,7 @@ function simplePanel() {
       el('div', { class: 'console-block' },
         el('div', { class: 'console-head' }, el('h3', { id: 'qs-commands-title' }, 'Console lines'),
           el('span', { class: 'small' }, 'Paste or type them in order')),
-        el('pre', { id: 'qs-commands', class: 'command-list', tabindex: 0, 'aria-labelledby': 'qs-commands-title' })),
+        el('pre', { id: 'qs-commands', class: 'command-list', tabindex: 0, role: 'region', 'aria-labelledby': 'qs-commands-title' })),
       el('p', { id: 'qs-note', class: 'qs-note' }),
       el('section', { class: 'qs-changes', 'aria-labelledby': 'qs-changes-title' },
         el('h3', { id: 'qs-changes-title' }, 'What changed'),
@@ -99,7 +100,7 @@ function sourcePanel(meta) {
     el('textarea', { id: 'q-import', rows: 2, maxlength: 32768, spellcheck: false,
       placeholder: 'CSGO-… or cl_crosshairsize 2', 'aria-describedby': 'q-input-status' }),
     el('button', { id: 'q-load', class: 'button secondary' }, 'Load crosshair'), status('q-input-status'),
-    detail('q-presets-panel', `Published player settings · ${meta.players} players`,
+    detail('q-presets-panel', `Published player settings · ${meta.records} entries from ${meta.players} players`,
       el('input', { id: 'q-preset-search', type: 'search', placeholder: 'Find a player', 'aria-label': 'Search pro presets', maxlength: 128 }),
       el('select', { id: 'q-preset', 'aria-label': 'Pro crosshair snapshot' }), el('p', { id: 'q-provenance', class: 'small' })),
     el('div', { class: 'input-grid triple' },
@@ -126,14 +127,20 @@ function appearanceControls() {
       option('expected', 'Lowest weighted mismatch'), option('worst', 'Limit the largest mismatch'),
       option('cvar', 'Limit weighted worst tail (CVaR)')),
     el('p', { class: 'small' }, 'Historical models only. The community default preserves dimensions, then fits the centre radius.'),
-    el('h3', {}, 'Export options (unverified)'), ...exportSelects('q'));
+    el('label', { class: 'check', for: 'q-corrections' }, el('input', { id: 'q-corrections', type: 'checkbox', checked: true }),
+      'Automatic appearance corrections'),
+    el('p', { class: 'small' }, 'Automatic model only. On: crossed arms, outline-only and dot-only shapes are redrawn and a ' +
+      'nearby length, thickness or gap may draw the old pixels better. Off: the plain dimension-first conversion. ' +
+      'The Simple view always keeps them on.'),
+    el('h3', {}, 'Export options'), ...exportSelects('q'));
 }
 
 function valueTable() {
   return el('div', { class: 'value-table-wrap' }, el('table', { id: 'q-values-table', class: 'value-table', 'aria-label': 'Conversion values' },
     el('thead', {}, el('tr', {}, ...['Setting', 'Old value', 'Copied value', 'Proposed value'].map(label => el('th', { scope: 'col' }, label)))),
     el('tbody', {}, ...[['length', 'Length', 'cl_crosshair_length'], ['thickness', 'Thickness', 'cl_crosshair_thickness'], ['gap', 'Gap', 'cl_crosshair_gap']].map(([key, title, cvar]) =>
-      el('tr', {}, el('th', { scope: 'row' }, title, el('code', {}, cvar)),
+      // Break the cvar name after its prefix on narrow screens instead of inside a word.
+      el('tr', {}, el('th', { scope: 'row' }, title, el('code', {}, 'cl_crosshair_', el('wbr'), cvar.slice(13))),
         ...['legacy', 'direct', 'new'].map(kind => el('td', { id: `q-value-${key}-${kind}`, class: kind === 'new' ? 'converted-value' : '' }, '—')))))));
 }
 
@@ -179,7 +186,7 @@ function resultsPanel() {
     detail('q-outcomes-panel', 'What happened to each old setting', el('div', { id: 'q-outcomes' })),
     detail('q-derivation-panel', 'Pixel measurements and differences', el('div', { id: 'q-derivation' }),
       docLink('math/12-community-conversion.md', 'How the current values are calculated')),
-    status('q-status'), el('div', { id: 'q-warnings', class: 'warnings', role: 'alert' }), previewPanel(),
+    status('q-status'), el('div', { id: 'q-warnings', class: 'warnings', role: 'status' }), previewPanel(),
     detail('q-scenarios', 'Compare selected models', el('div', { id: 'q-model-table' })),
     detail('q-trace-panel', 'Search details and uncertainty',
       el('label', { class: 'check' }, el('input', { id: 'q-certify', type: 'checkbox' }), 'Certify global optimum (slower)'),

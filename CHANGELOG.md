@@ -2,6 +2,299 @@
 
 ## Unreleased
 
+## 0.12.0 (unreleased)
+
+- Advance to `community-static-v6`: the automatic converter
+  reproduces the old visible appearance in three edge cases. Crossed arms
+  from negative gaps (issue #15) are folded to the same pixels with a
+  non-negative gap instead of clamping to a solid plus (`crossed-arms-folded`;
+  a crossed T keeps T and warns `inverted-t-unrepresentable`). Size 0
+  with an outline and no dot (issue #11) exports the old strokes as black bars
+  with the outline off (`outline-only-as-core`; issue #11 at 1080: length 1,
+  thickness 9, gap 3, colour 0 0 0 230). Size 0 with a dot adds arms at gap 0
+  inside the dot square (`dot-only-as-arms`, and `zero-length-outline-dropped`
+  with an outline). The new-game model draws nothing for zero-length bars,
+  outline included (user capture, issue #11). Reports add `shapeCheck`,
+  `canonicalTarget`, `edgeCase` and `exportOverrides` (colour, outline mode;
+  `t_style` is accepted but no longer set), which `nativeCommands` accepts. A new edge-case audit
+  (part of the corpus study): published rows `approximate` were 16 at v5. After
+  the edge-case rules only Jame (pro-049, 4 rows) stayed approximate; with the
+  draw-order rules and the appearance window the final count is 28 of 552 corpus rows (Jame x4, and pro-006,
+  016, 055, 061, 074, 129 x4 for `outline-overpaint-lost`) and 0 of 32 preset
+  rows (`research/generated/edge-case-audit.json`). 39 of 938 equal-height corpus exports and 2 of the 24
+  crosshair.club tuples change on purpose (the two size-0 dot cases, where
+  crosshair.club exports length 0); the rest are unchanged.
+- Second round of old-game edge cases (still `community-static-v6`),
+  from a survey of other converters and the leaked old renderer
+  (`docs/research/competitor-survey-2026-10-02.md`, ledger S15 to S18):
+  - The old side of the shape check and the old previews paint in the old
+    order (left, right, top, bottom, dot; each outline, then its fill), so a
+    later outline covers earlier fills. Six corpus rows (pro-006, 016, 055,
+    061, 074, 129) become `approximate` with `outline-overpaint-lost`; their
+    exports are unchanged.
+  - `cl_crosshairusealpha 0`: the old fill was additive at 200; the current
+    game blends normally. The export keeps the colour at fill alpha 255
+    (`cl_crosshaircolor_a 255`; the outline keeps 200, as the old outline was
+    a normal black blend at 200) and warns `additive-blend-approximated`. The
+    old fill never dimmed the background, a normal blend at 200 looks dimmer
+    than it ever did, a luminance-weighted fit gives about 230 for the bright
+    presets, and all five other converters export 255. A fitted alpha was
+    rejected because it depends on the error measure
+    (`research/generated/additive-alpha.json`). Example, a usealpha-0 preset
+    (donk, green): `…;cl_crosshaircolor_r 50;cl_crosshaircolor_g 250;cl_crosshaircolor_b 50;cl_crosshaircolor_a 255;…`.
+  - Outline thickness above 3 is clamped to 3 on import, with a note; 0 stays 0.
+  - `cl_crosshairgap_useweaponvalue 1` converts with the non-weapon gap and
+    warns `weapon-gap-dropped` instead of blocking. Old styles 0 and 1 stay
+    blocked with a message that suggests old style 4.
+  - A capture of the current game shows the outline alpha is not multiplied by
+    the crosshair alpha, so `outline-alpha-unverified` is gone.
+  - bindr joins the cross-tool baselines; the edge-case audit
+    (`sicc-edge-case-audit-v2`) tallies each rule.
+- Appearance refinement (still `community-static-v6`), from an
+  independent geometry audit. At the pixel goal, when the old outline draws at
+  most 1 px on each side and the shape check of the dimension-first export is
+  approximate, the converter scores every tuple within length ±3, thickness ±3
+  and gap ±4 by the shape check's aligned colour overlap. A tuple replaces the
+  export only if it draws the old visible pixels strictly better
+  (`decision.refinement`, warning `appearance-refined`). Exact and shifted
+  exports never change. Screen goals and wider old outlines keep the
+  dimension-first result.
+  - A dot outline over short arms now exports the arms it covers (size 1,
+    thickness 2, gap -4, dot, outline 1 at 1080: 2/4/2 → 1/4/3, exact).
+  - Jame (pro-049, size 0, dot, outline) exports 1/1/1, aligned IoU 0.43 →
+    0.81 (17 of 21 pixels). It is the only corpus or preset export that
+    changes. `zero-length-outline-dropped` and `outline-overpaint-lost` now
+    appear only while the check stays approximate, and call the export the
+    closest shape found within the search window.
+  - On the edge-case audit grid (34,560 synthetic rows at four equal heights)
+    the window changes 1,817 exports, and approximate rows fall from 19,378
+    to 18,787. Screen goals keep the dimension-first result, an accepted
+    limitation.
+  - Outline widths above 3 draw as 3 for direct `infer()` callers too.
+  - The shape check compares coordinate-compressed grids, each shape painted
+    once.
+- Plain-language summary of the community model changes. A negative gap that
+  crosses the arms (issue #15, for example size 2, gap -11.5, dot) keeps the
+  crossed cross and its hole instead of a solid plus. An old outline-only `#`
+  (size 0 with an outline, issue #11) becomes length-1 black bars with the
+  outline off. A size-0 dot is drawn with short arms at gap 0 that fill the dot.
+  Zero-length bars draw nothing in the new game, outline included. An inverted
+  T (crossed T style) keeps T: the old crossed arms put its single vertical arm
+  above the centre, and the new game draws it below, with a warning (for
+  example size 2, thickness 1, gap -11.5, T at 1080 exports length 4, thickness 2, gap 2,
+  `cl_crosshair_t 1`). The preview of the converted crosshair and the colour and
+  flags line in the Simple view now show what is exported (colour, opacity,
+  outline mode and T flag), not the old settings.
+- Expert switch "Automatic appearance corrections" (Appearance and matching
+  panel, default on). Off, the automatic converter skips the
+  crossed-arm fold, the outline-only and dot-only redraws and the appearance
+  window, and exports the plain dimension-first conversion with the warning
+  `corrections-off` ("Automatic appearance corrections are off…"); the shape
+  check shows what this loses. Issue #15 pasted alone exports gap 0 with
+  corrections off (`cl_crosshair_length 4;cl_crosshair_thickness 1;cl_crosshair_gap 0;…`,
+  with `negative-gap-static-unverified`), and issue #11 exports length 0 with
+  the half outline, which draws nothing. Reports record `options.corrections`
+  (schema unchanged, field added); the ML cross-check row reads "Not checked:
+  corrections off". Historical models ignore it and the switch is disabled for
+  them; the Simple view always keeps the corrections on.
+- A console dump of current-game cvars is rejected as new-format input even
+  when `cl_crosshair_drawoutline 2` comes first, instead of being read as an
+  old crosshair.
+- Confidence panel: the "Model agreement" row (the share of renderer
+  hypotheses that match, which is not correctness) is gone from the main
+  panel; it stays in the expert model table as "Hypothesis agreement". New
+  rows: Shape check (old against converted pixels, colours and outline:
+  Exact, Exact after 1 px shift, NN% overlap or Nothing visible), Game
+  captures (the two user captures of the current game, re-rendered by the
+  generator), Cross-tool (agreement with crosshair.club exports: 22 of 24) and
+  a separately labelled ML cross-check (agreement with our own method, not
+  game accuracy; per input, see below). Evidence counts live in `data/quant-summary.json`
+  `evidence`, regenerated by the corpus study.
+- Per-input ML cross-check. The confidence panel's "ML
+  cross-check" row now checks the input on screen. It reads "Agrees on this
+  input (L/T/G)" or "Differs on this input: predicts L/T/G". The note gives
+  the held-out rate: 98.99% (98.56–99.36%) whole-export agreement on a fresh
+  reserved set of 5,632 synthetic rows and 98.61% on an edge-case challenge
+  (after the hunt fixes below; 99.18% and 98.49% before them).
+  The rows were scored after training, then relabelled and rescored after
+  the 0.12.0 solver changes (99.17% and 98.64% before the appearance window,
+  which the evaluator now re-derives from geometry helpers; 99.09% and 98.78%
+  before the T and usealpha decisions, after which it was retrained without
+  the T head: the T flag is copied). The wording says
+  this is agreement with our own method, not game accuracy.
+  - The learner is the export-state learner v2 (`sicc-export-emulator-v2`,
+    `research/generated/crosscheck-emulator.json`). Its evaluator,
+    `lib/solver/ml-crosscheck.js`, never runs the solver.
+  - The parameters live in `data/ml-crosscheck.json` (about 80 KB, generated;
+    `app/data.js` fetches them). Stale or edited parameters show "not
+    retrained for this version".
+  - `quant-summary.json` `evidence.mlCrossCheck` now carries the
+    fresh-evaluation numbers.
+- Research learners gained v6 regime features: crossing kind and folded
+  edges, dot-only, outline-only, zero length, outline extent, usealpha,
+  weapon gap, width parity and T-stem extent. All of these splits were seen
+  before, so these are regression numbers. First run (2026-10-02) → current
+  artifacts (2026-10-03, after the appearance window and its amendment):
+  - accuracy emulator test: 91.95% → 97.71% → 97.75% (new `regime` variant;
+    it is worse on the shifted challenges, 77.58% / 71.88% now);
+  - structured ranker test: 98.46% → 99.04% → 98.17%;
+  - export-state learner v1 full export on its test split: 70.53% → 98.68%
+    → 93.55% (drawoutline 71.41% → 100%). The 98.68% predates the appearance
+    window; the window and the plain-conversion fallback relabelled rows with
+    tuples outside its ranker's candidate set (581 training labels skipped,
+    `labelMisses`), so 93.55% is the current figure
+    (`research/generated/export-emulator.json`).
+  - See `docs/research/learners-2026-10-02.md` section 11.
+- Leftovers from the audits (2026-10-03, still `community-static-v6`; no
+  corpus, preset, issue #11 or issue #15 export changes):
+  - Plain-language warning texts: `legacy-rounding-disagreement` ("Two readings
+    of the old game give your size or thickness different whole pixels…"),
+    `pixel-centering-shift`, and the share-code outline pair, where
+    `outline-sharecode-rounded` no longer repeats the half outline that
+    `outline-half-mapping` names. Codes are unchanged.
+  - A paste that sets only the hidden leftovers the current game still stores
+    (`cl_crosshairsize`, `cl_crosshairthickness`, `cl_crosshairalpha`) and a
+    style of 6 or more is rejected as "hidden leftovers from the current game"
+    instead of importing as an old crosshair and blocking on the style.
+  - New warning `outline-choice-moot` when a hand-chosen outline mode cannot
+    draw (export length 0 and no dot).
+  - Outcome rows: a gap whose edges moved by one pixel under a shifted shape
+    check is `approximated` ("the same shape one pixel over"), as the shape
+    check says.
+  - Reports carry `exportedOverrides`, the full override set the export passes
+    to `nativeCommands` (style, a hand-chosen outline mode, the edge-case
+    colour and outline mode), and `exportBuild` 2000922. Historical reports
+    add `shapeCheck` and an empty `exportOverrides`; their `targetBuild`
+    stays 2000914, the build their hypotheses and native measurements
+    describe. Their numbers are unchanged.
+  - Workbench "Copy share code": an outline thickness off the 0.5 grid (for
+    example 0.01 or 0.25) gets a message that old codes store 0.5 steps and
+    has no code; widths below 0.5 note that the code reads back as a rounded
+    0 (half outline).
+  - Narrow screens: the confidence rows stack label, value and note, and the
+    value table breaks cvar names after `cl_crosshair_` with the header
+    fitting its column.
+  - Accuracy emulator: capacity list extended (64×6, 96×6, 128×7), selected on
+    validation (128×7 for every variant); new scale-free `regimeAxis`
+    variant (validation 98.68% against 98.24%; test 97.50%, interior 80.70%,
+    exterior 74.30%, regression numbers). The cross-check artifact records a
+    freeze of its feature code and capacity lists; the trainer refuses to run
+    on drift unless the freeze is renewed explicitly.
+  - The remaining black-fill cases are documented (all size-0 dots with an
+    outline whose better tuple lies 5 to 14 gap steps outside the window);
+    `zero-thickness-branch` in `lib/solver/structural.js` matches the report
+    text; `lib/settings/cvars.js` notes that build 2000924 was checked.
+  - A regression test checks the headline learner numbers in
+    `app/pages/research.js` and chapter 13 against the artifacts.
+- Copying or downloading the converted settings (issue #16) now gives one line of commands
+  separated by `;` with no `//` comments, so it can be pasted straight into the
+  CS2 console (limit 510 characters per pasted line; `commandLine` throws above
+  it, and the longest legal export is shorter). The `.cfg` download is that
+  line plus a newline. Warnings and provenance stay in the UI and the JSON
+  report. This applies to the automatic converter and the manual lab.
+- Import follows the old game (audit fixes, still `community-static-v6`):
+  - A pasted CFG block is complete on its own. Cvars it does not set take the
+    pre-update CS2 defaults (build 2000908, `GAME_DEFAULTS_2000908`: size 3.9,
+    thickness 0.6, gap -2.2, style 2, outline 1, alpha 200, colour 5 with
+    0/255/0, recoil 1, weapon gap 1), not the previous crosshair, in the
+    converter, the workbench and `parseLegacyText`. A note lists them; the
+    status line gives a count and the outcome table the list. The converter
+    also adds the warning `defaults-filled` ("Added from the old game's
+    defaults because your paste did not set them: …") to the report and to
+    the Simple and expert warning lists, and marks those "What changed" rows
+    "added (game default)". Share codes and complete pastes get none. Issue #15 pasted
+    alone (`cl_crosshairdot 1`, gap -11.5, size 2) now exports
+    `cl_crosshairstyle 4;cl_crosshair_length 4;cl_crosshair_thickness 1;cl_crosshair_gap 3;cl_crosshairdot 1;…;cl_crosshair_drawoutline 1;…;cl_crosshair_recoil 1;cl_crosshaircolor_r 0;cl_crosshaircolor_g 255;cl_crosshaircolor_b 0;cl_crosshaircolor_a 200;cl_crosshair_screen_height 1080`
+    with the static-style and weapon-gap warnings.
+  - Bounded cvars clamp to the pre-update dump ranges with a note (alpha and
+    RGB 0–255, outline thickness 0–3, split values); alpha and RGB drop a
+    fraction; bool cvars are on for any non-zero number. Share codes clamp
+    their stored split values the same way.
+  - Specific errors for a colour index outside 0–7, a negative size or
+    thickness, and hex, NaN or Infinity values. Cvar names are
+    case-insensitive and `1e2` is accepted. Repeated cvars give one note with
+    counts. A `CSGO` code without dashes gets a legacy-code error.
+  - The new-build error names the cvars that triggered it and says the input
+    already looks like current-game settings; `cl_crosshair_dynamic_spread_limit`
+    and `cl_crosshaircolor_a` now trigger it.
+  - A rejected crosshair no longer replaces the previous valid one, and a
+    current `CS…` code leaves no stale export enabled.
+- Warnings and labels match the export:
+  - Old styles other than 0 to 5 (6, 7, 9, -1) are blocked as unknown to
+    the old game instead of with the styles 0 and 1 text. A typed 4.5 imports as
+    4 (the game reads the cvar with GetInt, which truncates).
+  - `outline-sharecode-rounded` fires only when the automatic half outline is
+    exported; `outline-only-as-core` names a hand-chosen outline mode;
+    `empty-geometry` needs an export that draws nothing; the outline confidence
+    is not "assumed" for an export without an outline.
+  - Outline texts state the evidence: the half outline matches one user
+    capture of the current game (issue #11), the full outline has none, and the
+    shape check compares outline pixels.
+  - Historical-model exports with length 0 and no dot warn
+    `export-draws-nothing`.
+  - Outcome rows no longer say "approximated" when old and new pixels are
+    equal; pixel values show at most two decimals.
+  - Every warning code is listed in `docs/engineering/architecture.md`;
+    a regression test checks it.
+- Converter UI: the blocked state blanks the length, thickness and gap
+  readouts and the flags line; the flags line names the exported style (for
+  example "Static Cross (style 4)"); the main panel shows the Shape check
+  instead of "Preview overlap", which is renamed "Core overlap (no shift)"
+  where it remains; non-automatic models note that the captures, cross-tool
+  and ML rows apply to the automatic model; "Copied to clipboard." clears
+  after four seconds; the preset heading counts entries and players
+  (138 entries from 106 players). The downloaded report adds
+  `exportedCommands`, the exact one-line export.
+- Fixes from a hunt over about 760,000 new inputs (audit D; amended appearance window,
+  still `community-static-v6`, schema unchanged, fields added):
+  - With the automatic appearance corrections on, the export never has a lower
+    aligned shape check than the same input with them off. When a fold, a dot
+    redraw, an outline-only redraw or the appearance window applied, the
+    solver also solves the plain conversion and exports it only when it is
+    strictly better (`decision.correctionsFallback`, warning
+    `corrections-fallback`: "The plain conversion matched the old crosshair
+    better here…"). Corrections worse than off: 284 → 0 of 40,000 random
+    pairs, 2,835 → 0 of 58,320 dot-sweep pairs, 1,731 → 0 of 108,000
+    crossed-sweep pairs.
+  - A screen goal applies the fold and the dot and outline-only redraws to the
+    whole current pixels the scaled old shape covers, so redrawn arms stay
+    inside the dot (size 0, thickness 2, gap -4, dot, 768 → 1080: 3/4/0 at
+    50% → 2/4/0, exact after a 1 px shift). Screen-goal dot sweep mean
+    aligned overlap 0.66 → 0.75, crossed sweep 0.77 → 0.80.
+  - The appearance window is defined in drawn current pixels (±3 px length,
+    ±3 px width, ±4 px gap edge), mapped to native values by the
+    authored/current ratio, keeping as many native steps where that reaches
+    further. A screen height above the current one now reaches exact tuples
+    (size 4, thickness 2, gap -4, dot, outline 1 at 240 with screen height
+    1440: 12/6/6 at 87.9% → 8/6/9, exact after a 1 px shift). Equal heights
+    are unchanged. The ML cross-check uses the same window.
+  - `zero-length-outline-dropped` and `outline-overpaint-lost` say "closest
+    shape found within the search window".
+  - Warnings follow the shape-check status: no `dimension-limit` on an exact
+    export; an old outline-only shape with the corrections off warns
+    `export-draws-nothing` instead of `empty-geometry`; every approximate
+    export names a cause (new `shape-approximate` with the overlap when no
+    other warning does); every shifted export warns `pixel-centering-shift`.
+    Contradictions 579 → 0 of 40,000.
+  - `infer()` copies the settings into the report (`structuredClone`, `rgb`
+    included), so changing the input object later no longer changes the
+    export.
+  - The ML cross-check note states the rate only inside the evaluated scope
+    (equal heights 720–2160 at the pixel goal and three cross-height scopes);
+    outside it the note says "this input is outside the evaluated scope (…)"
+    and that the rate does not apply. The per-input result still shows. The
+    evaluator also re-derives the plain-conversion fallback. Learners
+    retrained.
+  - Build 2000924 (no crosshair change; only the workshop cvar whitelist)
+    measurements are accepted as build 2000922 (source ledger S19). Capture
+    protocol, edge-case notes (the dumped shader alone would outline an empty
+    rect), draw-order notes (max-alpha outline layer) and the
+    settings-migration notes (Valve's "The scale of this setting has changed…"
+    tooltip, no `cl_crosshairusealpha` string after 2000913) updated. The
+    historical `zero-thickness-branch` warning no longer claims a one-pixel
+    minimum: thickness 0 is unverified in game.
+  - Corpus, preset, issue #11 and issue #15 exports are unchanged.
+
 ## 0.11.0 — 2026-10-02
 
 - Advance to `community-static-v5`: tied shapes are ranked by pixel

@@ -1,12 +1,17 @@
 # 12 — Source-labelled static conversion and smaller choices
 
-The default is now `community-static-v5` for inspected build 2000922
+The default is now `community-static-v6` for inspected build 2000922
 (thickness range 0..32; the equations below are unchanged from v3 and an
 unverified carry-over, see the
-[October 1 note](../research/build-2000922-update-2026-10-01.md)).
+[October 1 note](../research/build-2000922-update-2026-10-01.md)). Version 5
+changed the tie ranking and version 6 added the old-appearance rules and a
+refinement window; both are described below.
 [The September 28 audit](../research/converter-audit-2026-09-28.md) records
 sources, immutable data references and the external comparison. The previous
 chapters remain the historical reconstruction and 27-hypothesis study.
+[Chapter 13](13-what-decides-the-export.md) walks through the whole pipeline and
+separates the closed-form math and rules that decide the export from the
+learned models, which only check it or served as research evidence.
 
 ## Old dimensions and signed gap
 
@@ -44,8 +49,12 @@ boundary searches recover all nearest plateaus without scanning every value.
 Version 3 retains all minimum-error lengths and widths, recomputes radius for
 each width's parity, then compares at most eight distinct shapes by exact overlap.
 Equal overlap retains the old length/width/gap canonical ordering. Edge loss is
-diagnostic, not globally minimized across widths. This improves 750 of 8,640
-synthetic cases versus v2 with no regressions. It does not establish global visual
+diagnostic, not globally minimized across widths. At v3 this improved 750 of
+8,640 synthetic cases versus v2 with no regressions. In the current artifact
+(`research/generated/conversion-accuracy.json`, v6) 1,196 of those cases are
+v6 edge cases with another target and are excluded; of the other 7,444, 671
+improve in shift-aligned overlap with none worse (436 better and 96 worse in
+plain overlap, the trade the v5 tie ranking accepts). It does not establish global visual
 optimality over arbitrary dimensions or gaps. V2 and its study remain frozen.
 
 Version 5 changes only the tie ranking. Old odd-width bars are centred on
@@ -70,14 +79,40 @@ For the screen-relative goal, scale old *drawn* edges and transverse origin
 before rasterizing. Scaling raw arithmetic offsets and then applying a parity
 correction would create a false extra pixel for doubled even-width bars.
 
+Version 6 changes the legacy target before that search and adds an appearance
+window after it. Crossed arms are folded into the same pixels with a
+non-negative gap, outline-only and dot-only shapes export drawable cores, and
+zero-length bars draw nothing in the new game.
+The old shape is painted in the old draw order (each outline, then its fill),
+`cl_crosshairusealpha 0` exports fill alpha 255 with the outline at 200, outline
+thickness above 3 is clamped on import, and a weapon gap converts with the non-weapon goal.
+The appearance window comes last. When the
+colour-aware shape check of the chosen tuple (old core and outline in the old
+draw order against the new core and outline) is neither exact nor exact after
+a 1 px shift, every tuple within 3 drawn pixels of bar length, 3 of bar width
+and 4 of the gap edge (at least the same number of native steps; at equal
+heights exactly length ±3, thickness ±3 and gap ±4) is scored by that check's
+aligned overlap. A neighbour replaces the choice only if it scores strictly
+higher; ties keep the dimension-first result. Whenever a v6 rule or the window
+changed the export, the plain conversion is solved too and exported instead
+if its aligned overlap is strictly higher (`corrections-fallback`). Thickness stays at least 1, and length at least 1 when the choice draws
+arms. Scope: legacy inputs at the pixel goal whose old outline draws at most
+1 px on each side. A screen goal keeps the dimension-first result, because its
+fractionally scaled target is a model artefact. Wider old outlines also keep
+it, because there the window would widen the coloured bars to fill the black
+outline. The window is local: it does not change the dot, T or outline flags,
+and it is not a global optimum.
+
 ## Open calibration questions (October 2, 2026)
 
 The v4 equations stay unverified on build 2000922. The shader's integer-bounds rule is
 verified for rectangles, but the CPU layout that supplies the bounds is not observable
 (see the [build note addendum](../research/build-2000922-update-2026-10-01.md#2026-10-02-addendum)).
-Open: the gap origin at odd thickness (ceil against floor, `s9-*`), negative gaps on
-static styles (`s1-t2-gm2`), zero-length bars with outlines (`s8-*`), the outline alpha
-rule (`s10-*`) and the styles 2, 3, 5, 6, 8 and 9 without a model. The research-only
+The issue #11 captures settle two earlier questions: the outline alpha
+rule (`s10-*`, outline alpha equals the old crosshair opacity, not multiplied) and zero-length
+bars with outlines (`s8-*`, they draw nothing in the new game, on one user capture
+and statement). Open: the gap origin at odd thickness (ceil against floor, `s9-*`), negative gaps on
+static styles (`s1-t2-gm2`), and the styles 2, 3, 5, 6, 8 and 9 without a model. The research-only
 harness (development tooling, not published) prints the console lines and the
 predicted mask for each case and scores a screenshot against it, including a
 best-offset search. Neither enters the runtime.
@@ -92,6 +127,13 @@ The report schema is `sicc-quant-report-v6`. An unavailable pixel preimage has
 `complete: false` and `count: null`, never an unrelated exact-match count.
 
 ## Learning after the audit
+
+**Historical values.** This section and the next keep the numbers measured on
+the v3 and v4 labels when the experiments were first run. The current
+`community-static-v6` values (accuracy emulator, structured ranker, export-state
+learners v1 and v2) and the role of each learner are in
+[chapter 13](13-what-decides-the-export.md), section 3. None of these learners
+decides an exported value.
 
 The September 28 experiment reached 90.48% synthetic tuple fidelity with geometry
 features. The [September 29 audit](../research/converter-audit-2026-09-29.md) adds

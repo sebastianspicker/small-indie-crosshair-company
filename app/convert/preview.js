@@ -1,4 +1,4 @@
-import { raster, rectangles, outlineRaster } from '../../lib/geometry/raster.js';
+import { raster, rectangles, outlineRaster, legacyRaster } from '../../lib/geometry/raster.js';
 
 /** Plate colours come from the CSS tokens so the canvas and the page stay one system. */
 function palette() {
@@ -76,12 +76,13 @@ function dimensions(context, geometry, settings, width, height, zoom, colors) {
   context.stroke();
 }
 
-/** Largest integer magnification at which every mask fits comfortably on the canvas. */
+/** Largest integer magnification at which every mask fits comfortably on the canvas. `settings` may be one per geometry. */
 export function fitZoom(canvas, geometries, settings, outlines = []) {
   const rect = canvas.getBoundingClientRect(), room = Math.max(40, Math.min(rect.width, rect.height || 150)) / 2 * .56;
   let extent = 1;
-  const masks = geometries.flatMap((geometry, index) => !geometry ? [] : [geometry.data ? geometry : raster(geometry, settings),
-    ...(outlines[index] && !geometry.data ? [outlineRaster(geometry, settings, outlines[index])] : [])]);
+  const of = index => Array.isArray(settings) ? settings[index] : settings;
+  const masks = geometries.flatMap((geometry, index) => !geometry ? [] : [geometry.data ? geometry : raster(geometry, of(index)),
+    ...(outlines[index] && !geometry.data ? [outlineRaster(geometry, of(index), outlines[index])] : [])]);
   for (const mask of masks) {
     const half = (mask.side - 1) / 2;
     for (let i = 0; i < mask.data.length; i++) {
@@ -100,12 +101,15 @@ export function paintQuant(canvas, geometry, settings, color, zoom = 6, differen
   context.scale(dpr, dpr); context.imageSmoothingEnabled = false;
   context.fillStyle = colors.plate; context.fillRect(0, 0, width, height);
   const reference = difference?.data ? difference : difference ? raster(difference, settings) : null;
-  const mask = options.mask ?? raster(geometry, settings, reference?.side ?? 161);
+  // Old plates paint element by element, outline then fill, so a later outline covers earlier fills.
+  const legacy = options.legacy && options.outline && !reference && !options.mask
+    ? legacyRaster(geometry, settings, options.outline) : null;
+  const mask = options.mask ?? legacy?.core ?? raster(geometry, settings, reference?.side ?? 161);
   const ox = Math.floor(width / 2), oy = Math.floor(height / 2);
   if (options.grid && zoom >= 4) grid(context, width, height, ox, oy, zoom, colors);
   registration(context, width, height, ox, oy, zoom, colors);
   if (options.outline && !reference && !options.mask)
-    drawOutline(context, outlineRaster(geometry, settings, options.outline), width, height, zoom, color);
+    drawOutline(context, legacy?.outline ?? outlineRaster(geometry, settings, options.outline), width, height, zoom, color);
   drawCells(context, mask, reference, width, height, zoom, color, colors);
   if (options.annotate && !reference && !options.mask) dimensions(context, geometry, settings, width, height, zoom, colors);
 }

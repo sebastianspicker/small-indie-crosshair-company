@@ -230,8 +230,8 @@ thickness without any warning. Observed case: old thickness 0.5, old height 1080
 target height 2160 with the same-pixel goal. The legacy one-pixel width is matched only
 by the stored zero, because at `r = H_n/A = 2` the next legal integer renders two pixels.
 
-The v5 report now names that branch in its warning list, and the `.cfg` export carries
-the same comment; the manual lab already warned. The renderer arithmetic, model family,
+The v5 report now names that branch in its warning list, and the manual lab already warned (the
+`.cfg` export no longer carries comments since 0.12.0). The renderer arithmetic, model family,
 inverse certificate and native-evidence status are unchanged. Clamping to thickness 1
 was rejected as a fix: at the same scale it converts a disclosed one-pixel under-shoot
 into a hidden two-pixel over-shoot.

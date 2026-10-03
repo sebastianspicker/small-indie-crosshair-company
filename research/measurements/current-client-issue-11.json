@@ -1,0 +1,81 @@
+{
+  "schema": "sicc-current-client-observation-v1",
+  "id": "current-client-issue-11-length1",
+  "label": "user-supplied current-client observations",
+  "evidenceClass": "user-entered observations; screenshots of the current game read by hand, not independently reviewed",
+  "registered": false,
+  "registrationNote": "Not in index.json nativeMeasurements and not accepted by lib/solver/observations.js: the intake takes observed length/width/near/far readings with a capture hash, and these records carry hand-read pixel rows without stored images or hashes.",
+  "role": "calibration",
+  "roleNote": "Outside every holdout set. Used to check the new-game forward model, its half outline and the zero-length rule (ADR-0014).",
+  "source": {
+    "issue": "issue #11 of this repository (comments of 2026-10-02)",
+    "imageStored": false,
+    "imageNote": "The images are not committed and their hashes were not recorded; only the screenshot ids below were noted.",
+    "attested": "reporter-supplied; unedited status not verifiable"
+  },
+  "client": "current game (after the October 1 2026 update, build 2000922 assumed); exact build not recorded",
+  "resolution": { "width": 1920, "height": 1080 },
+  "centrePixel": { "x": 960, "y": 540 },
+  "legend": { "#": "crosshair colour (white, alpha 230)", "o": "outline or dark pixels", ".": "background" },
+  "userStatement": "cl_crosshair_length has to be 1; the outline is dependent on it, outline cannot be shown without the length applied. Read as: length 0 draws no bars and no bar outlines. No capture of a dot at length 0.",
+  "captures": [
+    {
+      "id": "issue-11-current-no-outline",
+      "screenshot": "a7e10918",
+      "settings": {
+        "cl_crosshairstyle": 4, "cl_crosshair_length": 1, "cl_crosshair_thickness": 8, "cl_crosshair_gap": 2,
+        "cl_crosshair_drawoutline": 0, "cl_crosshairdot": 0, "cl_crosshair_t": 0,
+        "cl_crosshaircolor": "255 255 255", "cl_crosshaircolor_a": 230, "cl_crosshair_screen_height": 1080
+      },
+      "origin": { "x": 948, "y": 536 },
+      "rows": [
+        ".........#....#.........",
+        "........########........",
+        ".........#....#.........",
+        ".........#....#.........",
+        ".........#....#.........",
+        ".........#....#.........",
+        "........########........",
+        ".........#....#........."
+      ]
+    },
+    {
+      "id": "issue-11-current-half-outline",
+      "screenshot": "640f0695",
+      "settings": {
+        "cl_crosshairstyle": 4, "cl_crosshair_length": 1, "cl_crosshair_thickness": 8, "cl_crosshair_gap": 2,
+        "cl_crosshair_drawoutline": 2, "cl_crosshairoutline": "70 70 0", "cl_crosshairoutline_a": 230,
+        "cl_crosshairdot": 0, "cl_crosshair_t": 0,
+        "cl_crosshaircolor": "255 255 255", "cl_crosshaircolor_a": 230, "cl_crosshair_screen_height": 1080
+      },
+      "origin": { "x": 948, "y": 535 },
+      "rows": [
+        "........oo...oo.........",
+        ".......oo#oooo#o........",
+        ".......o########........",
+        "........o#...o#.........",
+        "........o#...o#.........",
+        "........o#...o#.........",
+        ".......oo#oooo#o........",
+        ".......o########........",
+        "........o#...o#........."
+      ]
+    }
+  ],
+  "alphaAnalysis": {
+    "capture": "issue-11-current-half-outline",
+    "method": "Orchestrator re-analysis (2026-10-02) of the screenshot pixel values: effective alpha = (observed - background) / (outline colour - background) per channel, in linear light (sRGB decoded), over outline pixels next to background. A reading from 8-bit pixel values, not a colour-managed measurement.",
+    "outlineColour": { "rgb": [70, 70, 0], "cl_crosshairoutline_a": 230, "cl_crosshaircolor_a": 230 },
+    "effectiveOutlineAlpha": { "low": 0.88, "high": 0.90 },
+    "hypotheses": {
+      "outlineAlphaAlone": { "value": 0.902, "formula": "230 / 255", "fits": true },
+      "outlineTimesCrosshairAlpha": { "value": 0.813, "formula": "230 * 230 / 255^2", "fits": false }
+    },
+    "conclusion": "The current game does not multiply cl_crosshairoutline_a by cl_crosshaircolor_a. Exporting cl_crosshairoutline_a = old crosshair opacity reproduces the old outline opacity (ADR-0015)."
+  },
+  "modelComparison": {
+    "model": "communityForward length 1, thickness 8, gap 2 at 1080 (width 8, near 2, far 2); half outline as nativeOutlineExtent mode 2 {low 1, high 0}",
+    "result": "Both captures match the core raster and the half-outline raster pixel for pixel up to a whole-shape translation (tests/lib/edge-cases.test.mjs).",
+    "translationNote": "Absolute position is not compared: the hand-read crop origin is not a calibrated centre."
+  }
+}

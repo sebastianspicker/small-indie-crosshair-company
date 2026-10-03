@@ -41,11 +41,18 @@
     "luma": { "background": "about 170 to 190", "stroke": "about 60", "crossings": "about 15" },
     "lumaNote": "Fits black at alpha 230 blended in linear light; a reading from pixel values, not a colour-managed measurement."
   },
+  "alphaAnalysis": {
+    "method": "Orchestrator re-analysis (2026-10-02) of the screenshot pixel values: effective alpha of black = 1 - observed / background, in linear light (sRGB decoded), for stroke pixels and for the four stroke crossings. A reading from 8-bit pixel values, not a colour-managed measurement.",
+    "crosshairAlpha": { "value": 230, "fraction": 0.902 },
+    "effectiveAlpha": { "strokes": 0.88, "crossings": 0.99 },
+    "doubleBlendPrediction": { "value": 0.990, "formula": "1 - (1 - 230 / 255)^2" },
+    "conclusion": "Strokes fit one black blend at the crosshair opacity; crossings fit two. Each old element drew its own outline rect, so overlapping outlines blended twice. The new renderer composites the outline once per pixel, so the four crossing pixels of the issue #11 # are slightly darker in the old game (accepted nuance, ADR-0015)."
+  },
   "modelComparison": {
     "model": "old-renderer: communityLegacy geometry (length 0, width 8, near 3) with legacyOutlineExtent {low 1, high 0}",
     "predicted": { "rows": [-4, 2], "columnSpan": [-5, 3], "columns": [-4, 2], "rowSpan": [-5, 3] },
     "result": "Rows match exactly. Columns are offset by +3 px in x (observed minus predicted); the cause is unexplained (equal to floor(7/2) under the truncation width model).",
-    "tool": "research calibration comparison (development tooling, not published), size0.png against case old-reporter-issue11, threshold 40",
+    "tool": "python3 research/scripts/calibration_compare.py size0.png old-reporter-issue11 --threshold 40",
     "toolResult": { "bestOffset": { "dx": 3, "dy": 0 }, "iouAtBest": 1.0, "iouAtZero": 0.231, "pixelsObserved": 32, "pixelsPredicted": 32 }
   }
 }

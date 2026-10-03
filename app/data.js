@@ -15,9 +15,19 @@ export function loadPresets() {
   return presetsPromise;
 }
 
-/** Corpus records and metadata, as used by the automatic converter (#quant). */
+/** Corpus records, metadata and study summary (its `evidence` feeds the confidence panel), for the converter (#quant). */
 export function loadQuantCorpus() {
-  return Promise.all(['corpus.json', 'corpus-meta.json'].map(name => fetchJSON(name, 'Bundled research data could not load.')));
+  const load = name => fetchJSON(name, 'Bundled research data could not load.');
+  // The summary only feeds the confidence panel; the converter still works without it.
+  return Promise.all([load('corpus.json'), load('corpus-meta.json'), load('quant-summary.json').catch(() => null)]);
+}
+
+let crossCheckPromise;
+/** Parameters of the per-input ML cross-check, or null when they cannot load: the converter works without them. */
+export function loadCrossCheck() {
+  if (!crossCheckPromise) crossCheckPromise = fetchJSON('ml-crosscheck.json', 'ML cross-check parameters could not load.')
+    .catch(() => null);
+  return crossCheckPromise;
 }
 
 /** Corpus records, metadata and the quant study summary, as used by the corpus page (#corpus). */

@@ -15,8 +15,14 @@ export function download(name,text,type='application/json') {
   const url=URL.createObjectURL(new Blob([text],{type}));
   const a=el('a',{href:url,download:name});a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
 }
-export async function copy(text,status) {
-  try {await navigator.clipboard.writeText(text);status.textContent='Copied to clipboard.';}
+/** How long the "Copied" confirmation stays before it clears itself. */
+export const COPIED_MS = 4000;
+export async function copy(text,status,note='') {
+  try {
+    const message='Copied to clipboard.'+(note?' '+note:'');
+    await navigator.clipboard.writeText(text);status.textContent=message;
+    setTimeout(()=>{if(status.textContent===message)status.textContent='';},COPIED_MS);
+  }
   catch {status.textContent='Clipboard is unavailable. Select the command text, or use the download button.';}
 }
 /** Snapshot facts shared by every sheet's title block. */

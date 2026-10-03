@@ -4,11 +4,13 @@ export function initResearch() {
   const root=$('research');
   root.append(heading('How the conversion works',
     'The equations, tests and open questions behind each proposed setting, from the first shortcut to the current solver.',
-    {sheet:'03',label:'Mathematics',fields:[['Build','2000922'],['Chapters','12'],['Cases','945'],['Capture pairs','0','tb-flag']]}));
+    {sheet:'03',label:'Mathematics',fields:[['Build','2000922'],['Chapters','13'],['Cases','945'],['Capture pairs','0','tb-flag']]}));
   root.append(el('section',{class:'math-sheet'},el('h2',{},'The current default: a source-labelled reconstruction'),
     el('p',{},'The October 1 update (build 2000922) widens thickness to 32 and the gap cvar to −3840…3840, adds outline colour cvars, ' +
       'and moves layout to a new native renderer; the equations are carried over from 2000918 unverified. ' +
-      'Negative gaps are only enabled for Classic Dynamic, so Static Cross clamps them to 0; exports pin the outline to opaque black. ' +
+      'Negative gaps are only enabled for Classic Dynamic, so Static Cross cannot store them; ' +
+      'since v6, crossed arms are folded into the same pixels with a non-negative gap instead of being clamped. ' +
+      'The exported outline is black at the old crosshair opacity, not multiplied by it (one user capture). ' +
       'The default now uses round-to-even old dimensions and a centre-based new gap. ' +
       'It preserves the visible old minimum thickness with a positive new value. Odd-width centring can still shift pixels.'),
     el('pre',{class:'formula'},'old scale = f32(H / 480)\nold length = roundEven(f32(scale × f32(size)))\n' +
@@ -19,11 +21,32 @@ export function initResearch() {
       'the previous default matches none. These are external-software comparisons, not game captures. ' +
       'The direct solver uses exact monotone axis searches and preserves minimum dimension errors. ' +
       'It compares up to eight tied shapes by overlap, ignoring the one-pixel odd-width centring shift (v5): ' +
-      '731 of 8,640 synthetic cases improve versus v2, with zero regressions in shift-aligned overlap. ' +
+      '671 of the 7,444 synthetic cases outside the v6 edge cases improve versus v2, with zero regressions in shift-aligned overlap. ' +
+      'Version 6 then tries tuples within a small window around the choice ' +
+      'and keeps a neighbour only if it draws the old visible pixels strictly better. ' +
       'Six UI choices replace the former 27 alternatives; the historical study remains below.'),
     docLink('research/build-2000922-update-2026-10-01.md','Read the October 1 build 2000922 update and its limitations'),
     docLink('research/accuracy-improvements-2026-09-29.md','V3 conversion and learning accuracy, with evaluation limits'),
     docLink('math/12-community-conversion.md','12 · Current equations, rounding and pixel centres')));
+  root.append(el('section',{class:'math-sheet'},el('h2',{},'Math, rules and ML: what decides your export'),
+    el('p',{},'No machine-learned model decides any exported value. Every number in the console line comes from ' +
+      'closed-form arithmetic, an exact search and fixed rules. A learned model only checks each input; the other ' +
+      'learners were research evidence. All learned scores are agreement with our own converter on synthetic inputs ' +
+      'labelled by our own solver, not game accuracy.'),
+    table(['Part','Kind','Decides the export?','Evidence'],[
+      ['Old settings → old pixels','Closed-form math (binary32)','Yes','Source-derived reconstruction of the old game'],
+      ['Crossed arms, outline-only #, size-0 dot','Fixed rules','Yes','Issue #11 captures; issue #11 and #15 reports'],
+      ['Length and width first, then gap; tie-break','Closed form and exact search','Yes',
+        'Matches other converters at equal heights except where the v6 rules redraw'],
+      ['Appearance window','Bounded exact search','Yes, pixel goal and thin outlines only',
+        'Geometry audit: 3,211 exports better, none worse'],
+      ['Shape check','Closed-form pixel comparison','No: shown as a status','Declared old and new models'],
+      ['ML cross-check (export-state learner v2)','Learned (boosted trees)','No: check only',
+        'Fresh 98.99% agreement (98.56–99.36%); shares our models, so partly by construction'],
+      ['Other learners and emulators','Learned','No: research only','Fidelity to our solver; found the cross-height ties fixed in v5'],
+      ['Least-squares alpha for usealpha 0','Fitted','No: rejected','Green gives 133 or 232 depending on the error measure; 255 chosen'],
+    ]),
+    docLink('math/13-what-decides-the-export.md','13 · What decides the export: math, rules and ML, with worked examples')));
   const entries=[
     ['v0 · the shortcut','Multiply everything by two.','It fails against the reconstructed old geometry in 32 of 56 numerical cases. Matching a few resolutions does not make it a general rule.'],
     ['v1 · reconstruct pixels','Scale by H / 480, then truncate.','Retained for old static geometry. Gap stays in raw pixels; rounding and truncation are not interchangeable.'],
@@ -73,32 +96,36 @@ export function initResearch() {
     ['Custom outline equivalence / dynamic motion','Outside the implemented equivalence claim'],
   ]),el('p',{},'A low test error only validates the thing the test observes. A code regression test cannot validate a renderer that was never executed.')));
   root.append(el('section',{class:'math-sheet'},el('h2',{},'Improved learning, with a fair comparison'),
-    el('p',{},'The new research-only emulator learns the current deterministic converter, not Valve’s renderer. ' +
-      'Quantization-aware features raise exact tuple fidelity from 94.75% to 96.40% on the same reserved test groups (v5 labels). ' +
-      'Training, capacity selection, interval calibration and testing use separate setting groups.'),
+    el('p',{},'The research-only accuracy emulator learns the current deterministic converter, not Valve’s renderer. ' +
+      'Training, capacity selection, interval calibration and testing use separate setting groups. ' +
+      'Retrained on v6 labels, these test labels had already been seen, so the scores are regression numbers.'),
     el('pre',{class:'formula'},'12800 synthetic development rows · 320 new setting groups\n' +
       '198 train / 34 validation / 29 calibration / 59 test groups\n' +
       'heights, goals and shape flags stay within their setting group\n' +
       'capacity chosen on validation only; final refit on train + validation\n' +
-      'test: 2360 rows, but only 59 setting groups\nexact tuple: residual 94.75% → quantization-aware 96.40%\n' +
-      'rendered exact masks: 95.00% → 96.48%\nspeed gate closed · nativeEvidence = false'),
-    el('p',{},'On 80 additional groups at unseen resolutions, the new features improve interior fidelity ' +
-      'from 71.41% to 82.11%, and exterior fidelity from 62.19% to 83.59%. Interior intervals accept only 8/80 complete ' +
-      'groups; all exterior groups abstain. These are solver-imitation results, not in-game accuracy. ' +
-      'The fixed experiment was rerun on v5 labels (shift-aligned ties) without retuning; no ML choices were tuned on test scores. ' +
-      'The exact solver remains authoritative.'),
+      'test: 2360 rows, but only 59 setting groups (v6 labels, already seen)\n' +
+      'exact tuple: residual 93.94% → quantization-aware 96.27% → regime 97.75% (regime, scale-free 97.50%)\n' +
+      'before v6 (v5 labels): quantization-aware 96.40%\n' +
+      'rendered exact masks: 94.62% → 96.44% → 97.75% (97.50%)\nspeed gate closed · nativeEvidence = false'),
+    el('p',{},'On 80 additional groups at unseen resolutions, quantization-aware features raise interior fidelity ' +
+      'from 65.00% to 78.91%, and exterior fidelity from 53.91% to 76.80%. The regime variant overfits the training ' +
+      'heights (77.58% and 71.88%); its scale-free revision reaches 80.70% and 74.30%. ' +
+      'Interior intervals accept only 8/80 complete groups; all exterior groups abstain. ' +
+      'These are solver-imitation results, not in-game accuracy, and no learner decides an exported value.'),
     docLink('research/accuracy-improvements-2026-09-29.md','Training protocol, correction history and selective coverage')));
   root.append(el('section',{class:'math-sheet'},el('h2',{},'Learning the complete export, and where the solver looks fragile'),
-    el('p',{},'The October 2 export-state learner imitates everything the converter exports for the shape: length, thickness, ' +
-      'gap, screen height, outline mode and outline opacity. Earlier learners predicted the first three only. ' +
-      'Holdout groups were fixed before fitting; development and challenge inputs are synthetic.'),
-    el('pre',{class:'formula'},'400 new setting groups · 86 test groups · 3784 test rows\n' +
-      'exact export state: frozen structured learner 23.73% → export-state learner 97.30%\n' +
-      'exact length/thickness/gap: 95.48% → 98.36%\n' +
-      'real published settings, cross-height (810 rows): 88.77% → 100%\n' +
-      'boundary outline widths (challenge): 78.28%, the learner misses thresholds at 0 and 1\n' +
+    el('p',{},'The export-state learner v2 ships as the per-input ML cross-check in the confidence panel. It predicts everything ' +
+      'the converter exports for the shape: length, thickness, gap, outline mode and opacity, colour, fill opacity and T. ' +
+      'It never changes the export, and it shares the converter’s rendering models and refinement rule, so agreement is partly ' +
+      'by construction. Holdout groups were fixed before fitting; all inputs are synthetic and labelled by our own converter, ' +
+      'so the rates measure agreement with our method, not game accuracy.'),
+    el('pre',{class:'formula'},'fresh test: 5632 rows · 128 setting groups\n' +
+      'exact export state: rule baseline 80.70% → export-state learner 98.99% (98.56–99.36%)\n' +
+      'edge-case challenge: 3520 rows · 80 groups\n' +
+      'exact export state: rule baseline 71.48% → export-state learner 98.61% (97.87–99.23%)\n' +
+      'real published settings, cross-height (810 rows): 100.00%\n' +
       'speed gate closed · nativeEvidence = false'),
-    el('p',{},'Every disagreement with the solver lies inside the solver’s own tie set. One cluster pointed at the solver: ' +
+    el('p',{},'One cluster of disagreements pointed at the solver: ' +
       'tied shapes were scored on absolute pixels, so the one-pixel odd-width centring shift swayed 468 of 2108 synthetic ties ' +
       'and 74 of 222 tied cross-height conversions of real settings. Version 5 ranks ties with that shift removed. ' +
       'Odd widths are also where other converters disagree: ' +
@@ -125,6 +152,7 @@ export function initResearch() {
     docLink('math/10-learned-emulator.md','10 — Learned emulator and the closed speed gate'),
     docLink('math/11-certified-inverse-and-capture-plan.md','11 — Certified inverse and capture plan'),
     docLink('math/12-community-conversion.md','12 — Current conversion, external comparison and centring'),
+    docLink('math/13-what-decides-the-export.md','13 — What decides the export: math, rules and ML'),
     docLink('research/formula-evolution.md','Formula evolution and correction log'),
     docLink('research/source-ledger.md','Pinned sources and claim-level evidence')));
 }

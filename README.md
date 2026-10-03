@@ -11,12 +11,14 @@ settings. The app runs in your browser without an account or backend.
 > the new renderers are hypotheses. No original old/new game capture pairs are
 > included. A perfect preview match does not establish an in-game match.
 
-Default model **`community-static-v5`** · inspected build **2000922** ·
+Default model **`community-static-v6`** · inspected build **2000922** ·
 [build update, October 1](docs/research/build-2000922-update-2026-10-01.md) ·
 [learner findings, October 2](docs/research/learners-2026-10-02.md) ·
 [conversion audit, September 29](docs/research/converter-audit-2026-09-29.md).
 The forward equations are an unverified carry-over from v3 across Valve's renderer rewrite;
 v5 only ranks equally accurate choices with the odd-width centring shift removed.
+v6 redraws old shapes the new game cannot draw literally (crossed arms, outline-only `#`, size-0 dot) and
+drops zero-length bars, from two user captures of the current game and the community converter.
 The September 23 corpus, historical `quant-static-v6` family and manual
 `conditional-static-v4` lab remain separate comparisons.
 
@@ -48,10 +50,12 @@ saved to your device. The interface follows your system's light or dark theme.
 Static style 4 is supported, including dots and T shapes. Old styles 2, 3 and 5
 export as Static Cross by default, because the old source draws them like style 4
 at rest; an opt-in style option keeps the old family (experimental). Old styles 0
-and 1 and weapon-dependent gaps are blocked. Outlines are drawn beneath the
+and 1 are blocked; weapon-dependent gaps convert with the non-weapon gap and a warning. Outlines are drawn beneath the
 core, but blending and recoil motion are not certified by colored-core matching.
 Outline mode (Auto, None, Full, Half) can be overridden; the choice is recorded in
-the report. New share-code encoding is not implemented; export uses cvar commands.
+the report. New share-code encoding is not implemented;
+export is one console line of cvar commands separated by `;`, with no comments,
+ready to paste (the console takes up to 510 characters per line).
 A pasted current `CS…` share code is read-only: the app lists its values and says
 it already uses the new settings.
 
