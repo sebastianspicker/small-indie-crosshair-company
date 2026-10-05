@@ -168,7 +168,14 @@ Supporting directories:
   warnings and limits line from the report. `controller.js` owns the state (settings, result, measurements,
   target override and mask, source), request generations and the 90 ms
   analysis debounce; text import has its own 250 ms debounce in `sources.js`.
-  `view.js` builds the controls, `presentation.js` renders values, canvases,
+  `view.js` builds one page: inputs (one paste box and one set of `qs-`
+  value fields), the old/new plate with readouts and commands, and what
+  happened to each setting (`.quant-simple`); Expert mode reveals the lab
+  below it in place (`.quant-layout`, `q-` ids for expert-only controls).
+  Simple mode exports the automatic model with auto outline, Static Cross,
+  the pixel goal and the corrections; Expert mode applies the chosen
+  options. `samples.js` paints the empty-state "What this handles" plates.
+  `presentation.js` renders values, canvases,
   scenario tables and rival rows, `preview.js` paints canvases, and
   `feedback.js` handles screenshot and native-evidence input. The controller
   resolves the model choice on the main thread and asks the worker to solve.
@@ -304,6 +311,7 @@ helpers in `lib/solver/structural.js` and `lib/solver/migration.js`.
 | `zero-thickness-branch` | H, structural | Positive old thickness exports thickness 0 | How the current game draws thickness 0 is unverified; the historical model previews 1 px, the community renderer and `raster.js` draw nothing for width 0. |
 | `crossed-arms-folded` | C | A negative gap made the old arms cross the centre | The export draws the same pixels with a non-negative gap |
 | `inverted-t-unrepresentable` | C | Crossed arms with T style and the shape check approximate | The old single vertical arm was above the centre; the export keeps T, so it is drawn below. |
+| `t-flipped-for-shape` | C | Crossed arms with T style, and a full cross draws the old pixels strictly better than any T (ADR-0019) | The export turns T off (`cl_crosshair_t 0`): its top arm reproduces the old arm above the centre; the extra bottom arm is the difference. |
 | `outline-only-as-core` | C | Size 0 drew only outline strokes | The strokes export as black bars, outline off unless chosen by hand. |
 | `outline-only-legacy` | H | Size 0 drew only outline strokes | The historical export keeps length 0, which draws nothing now. |
 | `dot-only-as-arms` | C | Size 0 with a dot | Arms inside the dot square are added; length 0 may draw nothing. |
@@ -321,6 +329,7 @@ helpers in `lib/solver/structural.js` and `lib/solver/migration.js`.
 | `outline-choice-moot` | both | Outline mode 1 or 2 chosen by hand, exported length 0 and no dot | The current game draws no bars and no outline for this export, so the choice has no effect. |
 | `style-family-experimental` | both | Style target `family` exports style 2 or 5 | At-rest shape assumed; motion is not modelled. |
 | `style-dynamic-at-rest` | both | Old style 2, 3 or 5 exported as Static Cross | Matches the at-rest shape but does not move. |
+| `legacy-style-5-gap` | C | Old style 5 | Style 5 rested at its own gap, a height-scaled rounded distance (ADR-0018); the export uses that gap, and the warning states both numbers. |
 | `additive-blend-approximated` | both | `cl_crosshairusealpha 0` and no colour override | The additive fill exports as fill opacity 255 with normal blending; the outline keeps 200. |
 | `weapon-gap-dropped` | both | `cl_crosshairgap_useweaponvalue 1` | The gap without the weapon value is used. |
 | `color-index-unknown` | both | Share-code colour index 6 or 7 | Not a game preset; the stored RGB is used. |

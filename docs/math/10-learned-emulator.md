@@ -333,8 +333,8 @@ solver:
 On a fresh reserved set, scored after training and relabelled and rescored
 after the 0.12.0 solver changes and the 0.12.0 user decisions (a crossed T
 keeps T, usealpha 0 exports fill alpha 255), it reproduces the whole export on
-98.99% of 5,632 synthetic rows (group interval 98.56–99.36%). On an edge-case
-challenge it reproduces 98.61% of 3,520 rows (97.87–99.23%). This is agreement
+99.38% of 5,632 synthetic rows (group interval 99.08–99.63%). On an edge-case
+challenge it reproduces 99.49% of 3,520 rows (99.12–99.77%). This is agreement
 between two implementations of the same declared method, never game
 accuracy, and partly by construction, since the learner shares the rendering
 models and the window rule. The converter still exports the solver result;
