@@ -29,20 +29,16 @@ export async function copy(text,status,note='') {
 export const SNAPSHOT = { build: '2000914', date: '2026-09-23' };
 
 /**
- * Page header in the "inspection sheet" form: eyebrow with sheet number, title, lede,
- * and a title block of [term, value] fields. A field may be [term, value, 'tb-flag'].
+ * Page header: title, lede, and a title block of [term, value] fields. A field may be [term, value, 'tb-flag'].
  */
-export function sheetHead({ sheet, label, title, lede, fields = [] }) {
+export function sheetHead({ title, lede, fields = [] }) {
   return el('header', { class: 'sheet-head' },
-    el('div', { class: 'sheet-intro' },
-      el('p', { class: 'sheet-eyebrow' }, el('span', { class: 'sheet-no' }, sheet), label),
-      el('h1', {}, title), lede ? el('p', { class: 'lede' }, lede) : null),
+    el('div', { class: 'sheet-intro' }, el('h1', {}, title), lede ? el('p', { class: 'lede' }, lede) : null),
     fields.length ? el('dl', { class: 'title-block' }, fields.map(([term, value, className]) =>
       el('div', className ? { class: className } : {}, el('dt', {}, term), el('dd', {}, value)))) : null);
 }
-export function heading(title, description, sheet = { sheet: '', label: '' }) {
-  return sheetHead({ ...sheet, title, lede: description,
-    fields: sheet.fields ?? [['Build', SNAPSHOT.build], ['Snapshot', SNAPSHOT.date]] });
+export function heading(title, description, { fields } = {}) {
+  return sheetHead({ title, lede: description, fields: fields ?? [['Build', SNAPSHOT.build], ['Snapshot', SNAPSHOT.date]] });
 }
 export function docLink(path,label) {const chapter=/^math\/(\d{2})-/.exec(path);return el('a',{href:chapter?'./docs/notebook.html#chapter-'+Number(chapter[1]):'./docs/'+path,target:'_blank',rel:'noopener noreferrer'},label+' ↗');}
 export function table(headers,rows) {

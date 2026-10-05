@@ -3,9 +3,9 @@ import { raster, rectangles, outlineRaster, legacyRaster } from '../../lib/geome
 /** Plate colours come from the CSS tokens so the canvas and the page stay one system. */
 function palette() {
   const css = getComputedStyle(document.documentElement), read = (name, fallback) => css.getPropertyValue(name).trim() || fallback;
-  return { plate: read('--plate', '#0c0e0d'), grid: read('--plate-grid', '#1b1f1c'), axis: read('--plate-axis', '#2f3530'),
-    ink: read('--plate-ink', '#92948c'), annot: read('--plate-annot', '#e8c547'), shared: read('--diff-shared', '#d8d4c8'),
-    extra: read('--diff-extra', '#e8b547'), missing: read('--diff-missing', '#6fa6cf'),
+  return { plate: read('--plate', '#0a0c0f'), plateLight: read('--plate-light', '#1a1e24'), grid: read('--plate-grid', '#171b21'),
+    axis: read('--plate-axis', '#2a303a'), ink: read('--plate-ink', '#8b94a1'), annot: read('--plate-annot', '#f08a24'),
+    shared: read('--diff-shared', '#d9dde3'), extra: read('--diff-extra', '#f08a24'), missing: read('--diff-missing', '#5aa9e6'),
     mono: read('--font-mono', 'monospace') };
 }
 
@@ -16,13 +16,24 @@ function grid(context, width, height, ox, oy, zoom, colors) {
   context.stroke();
 }
 
-/** Registration ticks on the plate edges mark the centre row and column, like a print register. */
-function registration(context, width, height, ox, oy, zoom, colors) {
-  const cx = Math.round(ox + zoom / 2) + .5, cy = Math.round(oy + zoom / 2) + .5, tick = 7;
+/** Registration ticks on the plate edges mark the screen centre, like a print register. The model origin is the
+ * screen centre, which on an even-sized screen (1920×1080) is a pixel corner, not a pixel: a 1 px bar cannot sit on
+ * it, so the old and new games each draw it half a pixel off, the old one right/down, the new one left/up. */
+function registration(context, width, height, ox, oy, colors) {
+  const cx = Math.round(ox) + .5, cy = Math.round(oy) + .5, tick = 7;
   context.strokeStyle = colors.axis; context.lineWidth = 1; context.beginPath();
   context.moveTo(cx, 0); context.lineTo(cx, tick); context.moveTo(cx, height - tick); context.lineTo(cx, height);
   context.moveTo(0, cy); context.lineTo(tick, cy); context.moveTo(width - tick, cy); context.lineTo(width, cy);
   context.stroke();
+}
+
+/** Small ring on the screen centre. Painted beneath the crosshair layers: at low zoom it passes through the four
+ * centre pixels, and the preview must never change a game pixel. */
+function centreMark(context, ox, oy, colors) {
+  for (const [style, lineWidth] of [[colors.plate, 3], [colors.annot, 1.5]]) {
+    context.strokeStyle = style; context.lineWidth = lineWidth;
+    context.beginPath(); context.arc(ox, oy, 3, 0, 2 * Math.PI); context.stroke();
+  }
 }
 
 /** Outline layer: black at the crosshair opacity, drawn beneath the core like the game does. */
@@ -47,13 +58,17 @@ function drawCells(context, mask, reference, width, height, zoom, color, colors)
   context.globalAlpha = 1;
 }
 
-/** Dimension lines for the right arm: length below it, thickness beside it, in game pixels. */
-function dimensions(context, geometry, settings, width, height, zoom, colors) {
+/** Dimension lines for the right arm: length below the whole crosshair (outline included), thickness beside it, in
+ * game pixels. Crossed arms overlap in game, so their ruler spans the visible horizontal stroke instead of one arm. */
+function dimensions(context, geometry, settings, width, height, zoom, colors, outline) {
   if (!(geometry?.length > 0) || !(geometry.width > 0)) return;
-  const arm = rectangles(geometry, settings)[1];
+  const rects = rectangles(geometry, settings), [left, arm] = rects;
   if (!arm) return;
   const ox = Math.floor(width / 2), oy = Math.floor(height / 2), edge = v => Math.ceil(v - .5);
-  const x0 = ox + edge(arm.x) * zoom, x1 = ox + edge(arm.x + arm.w) * zoom;
+  const crossed = left.x + left.w > arm.x;
+  const x0 = ox + edge(crossed ? Math.min(left.x, arm.x) : arm.x) * zoom;
+  const x1 = ox + edge(crossed ? Math.max(left.x + left.w, arm.x + arm.w) : arm.x + arm.w) * zoom;
+  const bottom = oy + (Math.max(...rects.map(r => edge(r.y + r.h))) + (outline?.high ?? 0)) * zoom;
   const y0 = oy + edge(arm.y) * zoom, y1 = oy + edge(arm.y + arm.h) * zoom;
   const length = (x1 - x0) / zoom, thickness = (y1 - y0) / zoom;
   context.strokeStyle = context.fillStyle = colors.annot; context.lineWidth = 1;
@@ -63,10 +78,10 @@ function dimensions(context, geometry, settings, width, height, zoom, colors) {
     context.moveTo(Math.round(ax) + .5, Math.round(ay) + .5); context.lineTo(Math.round(bx) + .5, Math.round(by) + .5);
   };
   context.beginPath();
-  if (x1 - x0 >= 14 && y1 + gap + 18 < height) {
-    const y = y1 + gap;
+  if (x1 - x0 >= 14 && bottom + gap + 18 < height) {
+    const y = bottom + gap;
     line(x0, y, x1, y); line(x0, y - tick, x0, y + tick); line(x1 - 1, y - tick, x1 - 1, y + tick);
-    context.textAlign = 'left'; context.fillText(`${length} px`, x0, y + 12);
+    context.textAlign = 'left'; context.fillText(crossed ? `${length} px across` : `${length} px`, x0, y + 12);
   }
   if (x1 + gap + 44 < width) {
     const x = x1 + gap;
@@ -83,18 +98,22 @@ export function fitZoom(canvas, geometries, settings, outlines = []) {
   const of = index => Array.isArray(settings) ? settings[index] : settings;
   const masks = geometries.flatMap((geometry, index) => !geometry ? [] : [geometry.data ? geometry : raster(geometry, of(index)),
     ...(outlines[index] && !geometry.data ? [outlineRaster(geometry, of(index), outlines[index])] : [])]);
+  // Cell c spans [c, c + 1] around the screen centre (the canvas centre), so its reach is max(-c, c + 1).
   for (const mask of masks) {
     const half = (mask.side - 1) / 2;
     for (let i = 0; i < mask.data.length; i++) {
       if (!mask.data[i]) continue;
-      extent = Math.max(extent, Math.abs(i % mask.side - half) + .5, Math.abs(Math.floor(i / mask.side) - half) + .5);
+      const x = i % mask.side - half, y = Math.floor(i / mask.side) - half;
+      extent = Math.max(extent, -x, x + 1, -y, y + 1);
     }
   }
   return Math.max(1, Math.min(40, Math.floor(room / extent)));
 }
 
 export function paintQuant(canvas, geometry, settings, color, zoom = 6, difference = null, options = {}) {
-  const rect = canvas.getBoundingClientRect(), dpr = Math.min(2, window.devicePixelRatio || 1), colors = palette();
+  const rect = canvas.getBoundingClientRect(), dpr = Math.min(2, window.devicePixelRatio || 1), base = palette();
+  // `lightPlate`: a lighter screen so black outline strokes stay visible (the sample plates only).
+  const colors = options.lightPlate ? { ...base, plate: base.plateLight } : base;
   const width = Math.max(80, rect.width), height = Math.max(100, rect.height || 150);
   canvas.width = Math.round(width * dpr); canvas.height = Math.round(height * dpr);
   const context = canvas.getContext('2d');
@@ -107,9 +126,11 @@ export function paintQuant(canvas, geometry, settings, color, zoom = 6, differen
   const mask = options.mask ?? legacy?.core ?? raster(geometry, settings, reference?.side ?? 161);
   const ox = Math.floor(width / 2), oy = Math.floor(height / 2);
   if (options.grid && zoom >= 4) grid(context, width, height, ox, oy, zoom, colors);
-  registration(context, width, height, ox, oy, zoom, colors);
+  registration(context, width, height, ox, oy, colors);
+  if (zoom >= 4) centreMark(context, ox, oy, colors);
   if (options.outline && !reference && !options.mask)
     drawOutline(context, legacy?.outline ?? outlineRaster(geometry, settings, options.outline), width, height, zoom, color);
   drawCells(context, mask, reference, width, height, zoom, color, colors);
-  if (options.annotate && !reference && !options.mask) dimensions(context, geometry, settings, width, height, zoom, colors);
+  if (options.annotate && !reference && !options.mask)
+    dimensions(context, geometry, settings, width, height, zoom, colors, options.outline);
 }

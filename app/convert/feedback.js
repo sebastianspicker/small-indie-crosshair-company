@@ -10,7 +10,7 @@ function acceptOld(c, { fit, meta }) {
   Object.assign(c.state, { targetOverride: fit.geometry, targetMask: fit.mask,
     screenshotMeta: { ...meta, buckets: fit.buckets, templateIou: fit.templateIou, quality: fit.quality,
       measurementMethod: fit.measurementMethod, declaredOldHeight: c.options().oldHeight }, source: { type: 'image' } });
-  c.get('q-import').value = c.get('qs-import').value = '';
+  c.get('qs-import').value = '';
   c.setInputStatus('Image measured. Several old settings may produce the same pixels.');
   c.schedule();
 }

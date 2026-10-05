@@ -11,11 +11,10 @@ function updateToggle(mode) {
   const button = $('mode-toggle');
   if (!button) return;
   const simple = mode === 'simple';
-  const label = simple ? 'Show the full expert lab' : 'Switch back to the simple view';
+  const label = simple ? 'Show expert detail' : 'Hide expert detail';
   button.setAttribute('aria-pressed', String(!simple));
-  button.textContent = simple ? 'Advanced' : 'Simple';
+  button.textContent = 'Expert';
   button.title = label;
-  button.setAttribute('aria-label', label);
 }
 
 export function setMode(mode, { focus = false } = {}) {
