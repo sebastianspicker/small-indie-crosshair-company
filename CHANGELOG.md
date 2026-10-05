@@ -2,7 +2,55 @@
 
 ## Unreleased
 
-## 0.12.0 (unreleased)
+## 0.13.0 (unreleased)
+
+- Advance the automatic converter to `community-static-v7`
+  (`lib/solver/community.js`); model id, build and report schema are unchanged.
+- Old style 5 uses its own at-rest gap, a height-scaled rounded distance, and
+  always warns `legacy-style-5-gap`; the styles 2/3 `style-dynamic-at-rest`
+  note is reworded and the style 0/1 blocker cites the pre-update dump
+  (ADR-0018, `lib/geometry/community.js`).
+- The appearance window follows the old shape (ADR-0019,
+  `lib/solver/community-refine.js`): its reach extends to the old shape's edges
+  and the dot outline, a second length window keeps the outer edge of the bars,
+  the thickness reach covers thick short bars, a crossed T may export as a
+  plain cross (`t-flipped-for-shape`), the window runs for every old outline
+  width, and the reach cap is 32 px. Against a brute-force oracle
+  (`docs/research/oracle-sweeps-2026-10-05.md`, `research/scripts/oracle-sweep.mjs`),
+  the plain 5,000-input sweep goes from 106 shortfalls to 0 and the exotic
+  2,000-input sweep from 624 to 18, with no export scoring worse.
+- The share-code size field is 13 bits; sizes above 25.5 decoded wrongly before
+  (`lib/settings/sharecode.js`).
+- The CFG importer accepts vcfg quoted names, `name = value` echo lines and
+  `]`/`[Console]` prompts, and skips binds, aliases and unknown cvars with a
+  note (`lib/settings/cfg.js`).
+- The converter is one page with an in-place Expert toggle, a Clear button, an
+  "Examples" strip of exotic shapes and a graphite/orange palette
+  (`app/convert/view.js`, `app/convert/samples.js`, `app/convert.css`).
+- The Simple preview marks the true screen centre with a ring and rules crossed
+  arms by their span, and the expert "Proposed values" note is aligned
+  (`app/convert/preview.js`, `app/convert/presentation.js`).
+- The edge-case audit adds the categories seam, frame, strokes-crossed and
+  thick, and labels size-0 shapes with T as `-t` so a flipped three-stroke T
+  counts as a flip (`research/scripts/edge-case-audit.mjs`).
+- The ML cross-check is retrained on v7 (`lib/solver/ml-crosscheck.js`,
+  `research/generated/crosscheck-emulator.json`): fresh held-out agreement 99.38% (99.08–99.63%, 5,632 rows),
+  edge challenge 99.49% (99.12–99.77%); rule baselines 65.94% and 50.91%.
+- What this release does and does not verify. "Exact" means exact under the
+  reconstructed old renderer (its port matched the leaked source pixel for
+  pixel on 483,840 cases) and the new-renderer equations carried over from
+  build 2000918; no capture of build 2000922 checks any edge case (size 0,
+  crossed arms, the T flip, wide outlines, style 5). The oracle sweeps measure
+  the converter's own objective, and the ML cross-check rate is agreement with
+  the converter, not with the game. 18 exotic inputs stay short of the best
+  tuple on purpose (wide outlines where the only gain doubles the bar into the
+  black band, strokes beyond the 32 px reach cap). Overpaint seams, outlines
+  wider than 1 px, additive colour, weapon gaps and odd-width centring are
+  approximated and each export says so. A paste that omits a cvar gets the
+  pre-update game default, which for the outline means on; the table marks
+  those rows as added.
+
+## 0.12.0
 
 - Advance to `community-static-v6`: the automatic converter
   reproduces the old visible appearance in three edge cases. Crossed arms

@@ -6,16 +6,16 @@ export function paint(canvas,geometry,flags,rgba,view,other=null,outline=null,le
   const rect=canvas.getBoundingClientRect(),cssW=Math.max(200,rect.width),cssH=Math.max(100,rect.height||300);
   canvas.width=Math.round(cssW*dpr);canvas.height=Math.round(cssH*dpr);
   ctx.scale(dpr,dpr);ctx.imageSmoothingEnabled=false;
-  ctx.fillStyle=token(css,'--plate','#0c0e0d');ctx.fillRect(0,0,cssW,cssH);
+  ctx.fillStyle=token(css,'--plate','#0a0c0f');ctx.fillRect(0,0,cssW,cssH);
   const z=view.zoom,sx=z*view.stretch,ox=Math.floor(cssW/2),oy=Math.floor(cssH/2);
   if(view.grid) {
-    ctx.strokeStyle=token(css,'--plate-grid','#1b1f1c');ctx.lineWidth=.6;ctx.beginPath();
+    ctx.strokeStyle=token(css,'--plate-grid','#171b21');ctx.lineWidth=.6;ctx.beginPath();
     for(let x=ox% sx;x<cssW;x+=sx){ctx.moveTo(x,0);ctx.lineTo(x,cssH);}
     for(let y=oy%z;y<cssH;y+=z){ctx.moveTo(0,y);ctx.lineTo(cssW,y);}ctx.stroke();
   }
   const old=legacy&&outline&&!other?legacyRaster(geometry,flags,outline):null;
   const a=old?.core??raster(geometry,flags),b=other?raster(other,flags):null,half=(a.side-1)/2;
-  ctx.globalAlpha=.35;ctx.strokeStyle=token(css,'--plate-ink','#92948c');ctx.setLineDash([3,5]);ctx.beginPath();
+  ctx.globalAlpha=.35;ctx.strokeStyle=token(css,'--plate-ink','#8b94a1');ctx.setLineDash([3,5]);ctx.beginPath();
   ctx.moveTo(ox+sx/2,0);ctx.lineTo(ox+sx/2,cssH);ctx.moveTo(0,oy+z/2);ctx.lineTo(cssW,oy+z/2);ctx.stroke();ctx.setLineDash([]);ctx.globalAlpha=1;
   if(outline && !other) {
     const o=old?.outline??outlineRaster(geometry,flags,outline);

@@ -1,6 +1,6 @@
 {
   "schema": "sicc-structured-experiment-v1",
-  "targetVersion": "community-static-v6",
+  "targetVersion": "community-static-v7",
   "design": {
     "seed": 29092028,
     "developmentGroups": 320,
@@ -12337,7 +12337,7 @@
   "provenance": {
     "nativeEvidence": false,
     "speedGate": "closed-research-only",
-    "labels": "Synthetic community-static-v6 winner tuples. Partial analytic inverse constructs legal candidates.",
+    "labels": "Synthetic community-static-v7 winner tuples. Partial analytic inverse constructs legal candidates.",
     "prediction": "No solver winner, target label or pixel-overlap score enters prediction. Ranker learns candidate preference.",
     "fitting": "Ranker fits ambiguous candidates only, squared-error binary labels; each candidate receives equal weight. Cases with more alternatives receive more weight. Single-candidate cases bypass learning.",
     "selection": "Two fixed ranker capacities, validation tuple fidelity only; ties choose smaller. Refit train+validation. Residual comparator fixed at 32 depth-4 rounds, refit on identical settings. Calibration excluded from fitting.",
@@ -12346,5 +12346,5 @@
     "regimeFeatures": "2026-10-02: ranking features append the v6 regime features of lib/solver/ml-crosscheck.js and a third capacity joined the list; selection stays on validation. Test and challenge labels were already seen, so these are regression numbers. Candidates still come from lib/solver/community-axis.js, so this ranker is not solver-independent.",
     "scope": "Synthetic solver fidelity, not native rendering validation. Feature ranges do not establish distribution support."
   },
-  "fingerprintSha256": "a877f68c9b95c0f328b18e54864fa490acd3124d547cf3db93323aa69db618ad"
+  "fingerprintSha256": "47200efd63135a936c09b23e7a8da2f725e361bc1913d79f20a50b22ac444c07"
 }

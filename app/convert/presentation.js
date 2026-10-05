@@ -7,7 +7,7 @@ import { exportQuantCFG } from '../../lib/solver/export.js';
 import { rivalSummary } from '../../lib/solver/migration.js';
 import { modelName } from './view.js';
 import { drawingEdges } from '../../lib/geometry/raster.js';
-import { clearOutcomes, shownWarnings } from './outcomes.js';
+import { clearOutcomes, shownWarnings, warningItem } from './outcomes.js';
 import { exportedLook, confidenceRows, metricNode } from './evidence.js';
 /** Exported style with its current-game name, e.g. "Static Cross (style 4)". */
 export function exportedStyleName(report) {
@@ -22,8 +22,8 @@ export function clearResult(view, state = 'pending', message = 'Calculating…')
   root.setAttribute('aria-busy', String(state === 'pending'));
   get('q-status').textContent = message;
   get('q-cfg').value = '';
-  for (const id of ['q-copy', 'q-download-cfg', 'q-download-report']) get(id).disabled = true;
-  root.querySelectorAll('#q-values-table td').forEach(node => { node.textContent = '—'; });
+  for (const id of ['q-download-cfg', 'q-download-report']) get(id).disabled = true;
+  root.querySelectorAll('#q-values-table td').forEach(node => { node.textContent = '-'; });
   for (const id of ['q-confidence', 'q-target-line', 'q-warnings', 'q-derivation', 'q-model-table', 'q-trace', 'q-certify-note']) get(id).replaceChildren();
   get('q-discriminating').textContent = ''; get('q-renderer-note').textContent = ''; get('q-experiment').textContent = '';
   for (const id of ['old', 'naive', 'converted']) {
@@ -32,9 +32,9 @@ export function clearResult(view, state = 'pending', message = 'Calculating…')
     const canvas = get(`q-${id}-canvas`);
     canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
   }
-  for (const id of ['qs-length', 'qs-out-thickness', 'qs-out-gap']) get(id).textContent = '—';
+  for (const id of ['qs-length', 'qs-out-thickness', 'qs-out-gap']) get(id).textContent = '-';
   clearOutcomes(view);
-  get('qs-flags').textContent = ''; get('qs-commands').textContent = ''; get('qs-scale').textContent = '';
+  get('qs-flags').replaceChildren(); get('qs-commands').replaceChildren(); get('qs-scale').textContent = '';
   get('qs-live').textContent = '';
   get('qs-note').textContent = '';
   get('qs-status').textContent = state === 'error' ? message : '';
@@ -50,8 +50,8 @@ function renderValues(view, report) {
   for (const [key, oldKey] of [['length', 'size'], ['thickness', 'thickness'], ['gap', 'gap']]) {
     get(`q-value-${key}-legacy`).textContent = fmt(s[oldKey]);
     // Blocked: nothing is proposed, so the proposed values stay empty as in the Simple view.
-    get(`q-value-${key}-direct`).textContent = blocked ? '—' : fmt(a[key]);
-    get(`q-value-${key}-new`).textContent = blocked ? '—' : fmt(n[key]);
+    get(`q-value-${key}-direct`).textContent = blocked ? '-' : fmt(a[key]);
+    get(`q-value-${key}-new`).textContent = blocked ? '-' : fmt(n[key]);
   }
   const t = report.target;
   const edges = drawingEdges(t);
@@ -78,13 +78,16 @@ export function renderPreviews(view, r, measuredMask = null) {
 
 function previewLabels(view, r) {
   const { get } = view, s = r.settings;
-  get('q-old-values').textContent = r.targetKind === 'image-derived' ? `Measured L ${fmt(r.target.length)} · W ${fmt(r.target.width)}`
+  get('q-old-values').textContent = r.targetKind === 'image-derived' ? `Measured L ${fmt(r.target.length)}, W ${fmt(r.target.width)}`
     : `size ${fmt(s.size)} / thickness ${fmt(s.thickness)} / gap ${fmt(s.gap)}`;
   for (const [id, n] of [['naive', r.naive], ['converted', r.chosen.native]])
-    get(`q-${id}-values`).textContent = r.blockers.length ? '—' : `length ${n.length} / thickness ${n.thickness} / gap ${n.gap}`;
+    get(`q-${id}-values`).textContent = r.blockers.length ? '-' : `length ${n.length} / thickness ${n.thickness} / gap ${n.gap}`;
   get('q-old-note').textContent = r.targetKind === 'image-derived' ? 'Measured from the image; the old settings may have more than one answer.' : 'Reconstructed from the old settings.';
   get('q-naive-note').textContent = `${percent(r.naiveFit.iou)} core overlap (no shift). Copied with new integer limits.`;
-  get('q-converted-note').textContent = `${percent(r.convertedFit.iou)} core overlap (no shift) in the selected model.`;
+  // Odd widths sit half a pixel to opposite sides of the screen centre in the two games: say when that is all it is.
+  const shifted = r.shapeCheck?.status === 'shifted' ? ` Same shape ${percent(r.shapeCheck.alignedIou)} once aligned: ` +
+    'odd-width bars sit half a pixel to the other side of the screen centre.' : '';
+  get('q-converted-note').textContent = `${percent(r.convertedFit.iou)} core overlap (no shift) in the selected model.${shifted}`;
   get('q-renderer-note').textContent = `New preview: ${modelName(r.renderer)}. ` +
     'Difference colors: light = shared, amber = extra, blue = missing. Core overlap compares the coloured core only, ' +
     'without a shift; the Shape check also compares outlines and allows a 1 px shift. New outline: full = 1 px all round ' +
@@ -99,14 +102,15 @@ export function renderSimple(view, report, { status = true } = {}) {
   const exportedOutline = nativeOutlineExtent(exported.settings, exported.outlineMode);
   const blocked = Boolean(report.blockers.length);
   // Blocked: nothing is exported, so no values or flags are shown either.
-  get('qs-length').textContent = blocked ? '—' : fmt(n.length);
-  get('qs-out-thickness').textContent = blocked ? '—' : fmt(n.thickness);
-  get('qs-out-gap').textContent = blocked ? '—' : fmt(n.gap);
+  get('qs-length').textContent = blocked ? '-' : fmt(n.length);
+  get('qs-out-thickness').textContent = blocked ? '-' : fmt(n.thickness);
+  get('qs-out-gap').textContent = blocked ? '-' : fmt(n.gap);
   const flags = [s.dot ? 'center dot' : 'no center dot', exported.settings.t_style ? 'T shape' : 'cross',
     ['no outline', 'outline', 'half outline'][exported.outlineMode], exportedStyleName(report),
-    s.recoil ? 'follows recoil (not simulated)' : 'no recoil'];
-  get('qs-flags').textContent = blocked ? ''
-    : `${flags.join(' · ')} · rgba(${exported.color.rgb.join(', ')}, ${exported.color.alpha})`;
+    s.recoil ? 'follows recoil (not simulated)' : 'no recoil', `rgba(${exported.color.rgb.join(', ')}, ${exported.color.alpha})`];
+  // Chips; visually hidden separators keep the text content one line ("a · b · c") when copied.
+  get('qs-flags').replaceChildren(...(blocked ? [] : flags.flatMap((flag, index) => [
+    ...(index ? [el('span', { class: 'flag-sep', 'aria-hidden': 'true' }, ' · ')] : []), el('span', { class: 'flag' }, flag)])));
   const warningText = report.warnings.map(w => typeof w === 'string' ? w : w.text);
   const gapScale = warningText.find(w => /Gap scaling is not stated in the build 2000914/.test(w));
   get('qs-note').textContent = (gapScale ?? (report.provenance && 'Community reconstruction; not checked against game captures.'))
@@ -117,14 +121,17 @@ export function renderSimple(view, report, { status = true } = {}) {
     { grid: zoom >= 6, annotate: true, outline: legacyOutlineExtent(s), legacy: true });
   paintQuant(get('qs-new-canvas'), report.converted, exported.settings, exported.color, zoom, null,
     { grid: zoom >= 6, annotate: true, outline: exportedOutline });
-  get('qs-scale').textContent = `×${zoom} · one cell = one game pixel` + (exported.outlineMode ? ' · outline black at crosshair ' +
-    `opacity; ${exported.outlineMode === 2 ? 'half outline matches one user capture' : 'full outline unverified in game'}` : '');
+  get('qs-scale').textContent = `×${zoom}, one cell = one game pixel, ring = screen centre.` +
+    (exported.outlineMode ? ' Outline black at crosshair ' +
+    `opacity; ${exported.outlineMode === 2 ? 'half outline matches one user capture.' : 'full outline unverified in game.'}` : '');
   view.root.dataset.blocked = String(blocked);
   const lines = blocked ? [] : exportQuantCFG(report).split(';').filter(Boolean);
-  get('qs-commands').replaceChildren(...(blocked ? ['No commands until the issue is resolved in the expert lab.'] : lines.flatMap(line => {
-    const [name, ...value] = line.split(' ');
-    return [el('span', { class: 'cvar-name' }, name), ' ', el('span', { class: 'cvar-value' }, value.join(' ')), '\n'];
-  })));
+  get('qs-commands').replaceChildren(...(blocked ? [el('p', { class: 'small' }, 'No commands until the issue above is resolved.')]
+    : lines.map(line => {
+      const [name, ...value] = line.split(' ');
+      return el('div', { class: 'cmd' }, el('span', { class: 'cvar-name' }, name), ' ',
+        el('span', { class: 'cvar-value' }, value.join(' ')));
+    })));
   if (status) get('qs-status').textContent = blocked ? `${report.blockers[0]} Nothing can be exported until this is resolved.` : '';
   get('qs-copy').disabled = blocked; get('qs-download').disabled = blocked;
   const announcement = blocked ? '' : `New settings: length ${fmt(n.length)}, thickness ${fmt(n.thickness)}, gap ${fmt(n.gap)}.`;
@@ -150,16 +157,16 @@ export function renderResult(view, r, evidence = null) {
   const { get, root } = view;
   renderValues(view, r); renderSimple(view, r); renderMetrics(view, r, evidence); previewLabels(view, r); renderCertificate(view, r);
   get('q-cfg').value = r.blockers.length ? '' : exportQuantCFG(r);
-  get('q-copy').disabled = get('q-download-cfg').disabled = Boolean(r.blockers.length);
+  get('q-download-cfg').disabled = Boolean(r.blockers.length);
   get('q-download-report').disabled = false;
   get('q-status').textContent = r.blockers.length ? 'No export until the issues below are resolved.' : 'Settings ready to copy or download.';
   // The same list as the Simple view, so neither hides a warning the other shows.
   const relevant = shownWarnings(r);
   if (root.dataset.strategy === 'hedge' && r.convertedFit.iou !== 1) relevant.unshift('The automatic choice balances several models. Open the pixel measurements to see where this preview differs.');
-  get('q-warnings').replaceChildren(...[...r.blockers, ...relevant].map(w => el('p', {}, w)));
+  get('q-warnings').replaceChildren(...r.blockers.map(w => warningItem(w, 'blocked')), ...relevant.map(w => warningItem(w)));
   const e = r.experiment;
   get('q-experiment').textContent = e
-    ? `Game height ${e.currentHeight} · disagreement ${e.disagreementBits.toFixed(3)} bits\ncl_crosshair_length ${e.native.length}\ncl_crosshair_thickness ${e.native.thickness}\ncl_crosshair_gap ${e.native.gap}\ncl_crosshair_screen_height ${e.native.authoredHeight}`
+    ? `Game height ${e.currentHeight}, disagreement ${e.disagreementBits.toFixed(3)} bits\ncl_crosshair_length ${e.native.length}\ncl_crosshair_thickness ${e.native.thickness}\ncl_crosshair_gap ${e.native.gap}\ncl_crosshair_screen_height ${e.native.authoredHeight}`
     : 'Compare old and new lossless captures at the same resolution, including odd widths and fractional sizes.';
   root.dataset.busy = 'false'; root.dataset.result = 'ready'; root.setAttribute('aria-busy', 'false');
 }
@@ -168,11 +175,11 @@ export function renderDerivation(view, r) {
   const t = r.target, g = r.converted, n = r.chosen.native, ratio = scaleOf(r.renderer, r.options.currentHeight, n.authoredHeight);
   const rows = [
     ['Length', t.length, g.length, n.length], ['Thickness', t.width, g.width, n.thickness],
-    ['Near inner edge · formula', t.near, g.near, n.gap], ['Far inner edge · formula', t.far, g.far, n.gap],
+    ['Near inner edge (formula)', t.near, g.near, n.gap], ['Far inner edge (formula)', t.far, g.far, n.gap],
   ].map(([label, target, predicted, value]) => [label, fmt(target), fmt(predicted), fmt(predicted - target), fmt(value)]);
   const rivals = r.provenance ? [] : rivalSummary(r.settings, r.options, n).map(row => {
     const native = row.native ?? row;
-    return el('p', { class: 'small' }, `Rival · ${row.kind}: length ${native.length} / thickness ${native.thickness} / gap ${native.gap} · ${row.status}. Display only; it does not change the exported values.`);
+    return el('p', { class: 'small' }, `Rival ${row.kind}: length ${native.length} / thickness ${native.thickness} / gap ${native.gap}, ${row.status}. Display only; it does not change the exported values.`);
   });
   view.get('q-derivation').replaceChildren(
     el('p', { class: 'formula equation-line' }, `r = ${r.options.currentHeight} / ${r.renderer.scale === 'authored' ? n.authoredHeight : r.renderer.scale === 'reference1080' ? 1080 : 720} = ${fmt(ratio)}; Q = ${r.renderer.rounding}`),
@@ -202,13 +209,13 @@ export function renderScenarios(view, r, onSelect) {
 export function renderDiscriminating(view, set) {
   const lines = [
     `Weighted hypothesis pairs separated: ${set.weightedCovered.toFixed(4)} of ${set.weightedTotal.toFixed(4)}` +
-      (set.separatesAll ? ' — all weighted pairs.' : ` — ${set.unseparatedPairs.length} pair(s) remain.`),
+      (set.separatesAll ? '. All weighted pairs.' : `. ${set.unseparatedPairs.length} pair(s) remain.`),
   ];
   set.designs.forEach((design, index) => {
     const n = design.native;
     const groups = design.partition.map(group => group.map(i => i + 1).join(',')).join(' | ');
-    lines.push(`${index + 1}. length ${n.length} / thickness ${n.thickness} / gap ${n.gap} · authored ${n.authoredHeight} · screen ${design.currentHeight}` +
-      `\n   separates ${design.coveredPairs} new weighted pair(s) · ${design.outcomes} outcome(s), model numbers: ${groups}`);
+    lines.push(`${index + 1}. length ${n.length} / thickness ${n.thickness} / gap ${n.gap}, authored ${n.authoredHeight}, screen ${design.currentHeight}` +
+      `\n   separates ${design.coveredPairs} new weighted pair(s), ${design.outcomes} outcome(s), model numbers: ${groups}`);
   });
   if (!set.designs.length) lines.push('No candidate design separates any weighted pair: the current weights concentrate on indistinguishable models.');
   lines.push(`Scope: ${set.scope}`);

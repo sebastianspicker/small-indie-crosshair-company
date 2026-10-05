@@ -25,6 +25,12 @@ function outcomeTable(rows) {
       el('td', {}, el('span', { class: 'status-chip', 'data-status': row.status }, row.status)))))));
 }
 
+/** One warning with its first sentence as a bold lead-in; the text content stays the warning text. */
+export function warningItem(text, className = '') {
+  const split = /^(.+?[.:])(\s.*)?$/s.exec(text), lead = split && split[2] ? split[1] : null;
+  return el('li', className ? { class: className } : {}, ...(lead ? [el('strong', {}, lead), split[2]] : [text]));
+}
+
 /** Warnings listed in both the Simple and the expert view: every one but the internal notes. */
 export const shownWarnings = report => report.warnings.filter(w => !INTERNAL.has(w.code)).map(warningText);
 
@@ -33,7 +39,7 @@ export function clearOutcomes(view) {
   for (const id of Object.values(CHIP_IDS)) { const chip = view.get(id); chip.textContent = ''; chip.removeAttribute('data-confidence'); }
 }
 
-/** Fills the Simple view's "What changed" table, warnings and per-value chips, and the expert details copy. */
+/** Fills the Simple view's outcome table, warnings and per-value chips, and the expert details copy. */
 export function renderOutcomes(view, report, importNotes = []) {
   if (!report) return;
   const rows = settingOutcomes(report.settings, report, importNotes), confidence = confidenceLabel(report);
@@ -45,5 +51,5 @@ export function renderOutcomes(view, report, importNotes = []) {
   }
   const shown = shownWarnings(report);
   view.get('qs-warnings').replaceChildren(...(shown.length ? shown : ['No extra limits were found for this crosshair.'])
-    .map(text => el('li', {}, text)));
+    .map(text => warningItem(text)));
 }

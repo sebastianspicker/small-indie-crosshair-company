@@ -920,13 +920,13 @@
     "mlCrossCheck": {
       "model": "export-state-learner-v2",
       "learner": "sicc-export-emulator-v2",
-      "targetVersion": "community-static-v6",
-      "parametersHash": 3815179069,
+      "targetVersion": "community-static-v7",
+      "parametersHash": 2735049867,
       "partition": "fresh",
       "evaluated": "2026-10-02",
-      "exactRate": 0.9898792613636364,
-      "lower": 0.9856178977272728,
-      "upper": 0.9936079545454549,
+      "exactRate": 0.9937855113636364,
+      "lower": 0.9907670454545457,
+      "upper": 0.9962713068181819,
       "cases": 5632,
       "groups": 128,
       "keys": [
@@ -967,9 +967,9 @@
         "note": "Evaluated design: equal old, current and screen heights at the pixel goal, plus the listed old/current/screen-height scopes at either goal. The rate is not claimed outside it."
       },
       "edgeChallenge": {
-        "exactRate": 0.9860795454545455,
-        "lower": 0.978693181818182,
-        "upper": 0.9923295454545455,
+        "exactRate": 0.9948863636363636,
+        "lower": 0.9911931818181818,
+        "upper": 0.9977272727272728,
         "cases": 3520,
         "groups": 80
       },

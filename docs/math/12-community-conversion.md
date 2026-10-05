@@ -96,11 +96,10 @@ aligned overlap. A neighbour replaces the choice only if it scores strictly
 higher; ties keep the dimension-first result. Whenever a v6 rule or the window
 changed the export, the plain conversion is solved too and exported instead
 if its aligned overlap is strictly higher (`corrections-fallback`). Thickness stays at least 1, and length at least 1 when the choice draws
-arms. Scope: legacy inputs at the pixel goal whose old outline draws at most
-1 px on each side. A screen goal keeps the dimension-first result, because its
-fractionally scaled target is a model artefact. Wider old outlines also keep
-it, because there the window would widen the coloured bars to fill the black
-outline. The window is local: it does not change the dot, T or outline flags,
+arms. Scope: legacy inputs at the pixel goal, for every old outline width
+(ADR-0019; the score is colour-aware, so a coloured core widens only when that
+matches more old pixels). A screen goal keeps the dimension-first result, because its
+fractionally scaled target is a model artefact. The window is local: it does not change the dot, T or outline flags,
 and it is not a global optimum.
 
 ## Open calibration questions (October 2, 2026)

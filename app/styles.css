@@ -29,38 +29,40 @@
 /* ── 2. Tokens ─────────────────────────────────────────────────────────────── */
 :root {
   color-scheme: dark;
-  /* Surfaces */
-  --paper: #121413;          /* page */
-  --sheet: #181b19;          /* raised region */
-  --field: #0e100f;          /* inputs, code */
-  --ink: #e9e5da;            /* primary text */
-  --ink-2: #a9a79e;          /* secondary text, ≥ 7:1 on paper */
-  --ink-3: #6f716b;          /* ticks and non-text marks, ≥ 3:1 */
-  --rule: #2a2e2b;           /* hairlines */
-  --rule-strong: #414641;    /* table heads, title blocks */
-  --edge: #666b65;           /* control boundaries, ≥ 3:1 on paper */
-  /* Signal: annotation, focus, primary action, conditional status */
-  --signal: #e8c547;
-  --signal-ink: #e8c547;     /* signal used as text on paper */
-  --signal-wash: #2a2513;
-  --on-signal: #19160a;
-  /* Alarm: blockers only */
-  --alarm: #ff8a6a;
-  --alarm-wash: #2c1712;
-  --focus: #e8c547;
+  /* Surfaces: cool graphite */
+  --paper: #0e1013;          /* page */
+  --sheet: #15181d;          /* raised region */
+  --field: #1b1f25;          /* inputs, code */
+  --ink: #e6e9ee;            /* primary text */
+  --ink-2: #a9b1bc;          /* secondary text, 8.8:1 on paper */
+  --ink-3: #7d8793;          /* muted text and marks, 4.9:1 on sheet */
+  --rule: #262b33;           /* hairlines */
+  --rule-strong: #363c46;    /* table heads, title blocks */
+  --edge: #5c6573;           /* control boundaries */
+  /* Signal: the one accent. Annotation, focus, primary action, conditional status */
+  --signal: #f08a24;
+  --signal-ink: #f6a24a;     /* signal used as text on paper, 8:1 or more on every surface */
+  --signal-wash: #291f15;    /* 12% signal on paper */
+  --on-signal: #14110c;      /* 7.5:1 on the signal */
+  /* Alarm: blockers and dropped settings only */
+  --alarm: #ff5a5a;
+  --alarm-wash: #2b191c;     /* 12% alarm on paper */
+  --focus: #f08a24;
   --primary-bg: var(--signal);
   --primary-ink: var(--on-signal);
-  --primary-hover: #f3d566;
+  --primary-hover: #f59a3e;
+  --primary-edge: var(--signal);
   /* The specimen plate is the game screen: dark in every theme. */
-  --plate: #0c0e0d;
-  --plate-grid: #1b1f1c;
-  --plate-axis: #2f3530;
-  --plate-ink: #92948c;
-  --plate-label: #e9e5da;
-  --plate-annot: #e8c547;
-  --diff-shared: #d8d4c8;    /* "light" */
-  --diff-extra: #e8b547;     /* "amber" */
-  --diff-missing: #6fa6cf;   /* "blue" */
+  --plate: #0a0c0f;
+  --plate-light: #1a1e24;    /* sample plates whose black outline strokes would vanish on --plate */
+  --plate-grid: #171b21;
+  --plate-axis: #2a303a;
+  --plate-ink: #8b94a1;
+  --plate-label: #e6e9ee;
+  --plate-annot: #f08a24;
+  --diff-shared: #d9dde3;    /* "light" */
+  --diff-extra: #f08a24;     /* "orange" */
+  --diff-missing: #5aa9e6;   /* "blue" */
 
   /* Type */
   --font-text: 'Archivo', 'Archivo Fallback', ui-sans-serif, system-ui, sans-serif;
@@ -103,25 +105,28 @@
 @media (prefers-color-scheme: light) {
   :root {
     color-scheme: light;
-    --paper: #ece9e1;
-    --sheet: #f5f3ed;
-    --field: #fbfaf6;
-    --ink: #191b1a;
-    --ink-2: #53554e;
-    --ink-3: #85847c;
-    --rule: #d3cfc4;
-    --rule-strong: #a9a498;
-    --edge: #827d71;
-    --signal: #e8c547;
-    --signal-ink: #735300;
-    --signal-wash: #f3e7b8;
-    --on-signal: #19160a;
-    --alarm: #b3321a;
-    --alarm-wash: #f6ddd4;
-    --focus: #735300;
-    --primary-bg: #191b1a;
-    --primary-ink: #f5f3ed;
-    --primary-hover: #33362f;
+    --paper: #eef0f3;
+    --sheet: #f7f8fa;
+    --field: #ffffff;
+    --ink: #161a1f;
+    --ink-2: #4b5563;
+    --ink-3: #5f6873;
+    --rule: #d6dae0;
+    --rule-strong: #b8bec7;
+    --edge: #8a929e;
+    --signal: #f08a24;
+    /* #b35f0a reads 4.0:1 on this paper; one step darker passes 4.5:1 on paper and on the wash. */
+    --signal-ink: #975008;
+    --signal-wash: #eee4da;  /* 12% signal on paper */
+    --on-signal: #14110c;
+    --alarm: #c62828;
+    --alarm-wash: #e9d8db;   /* 12% alarm on paper */
+    /* The orange itself is 2.2:1 on light paper, too faint for a focus ring; its text shade is used. */
+    --focus: #975008;
+    --primary-bg: #f08a24;
+    --primary-ink: #14110c;
+    --primary-hover: #f59a3e;
+    --primary-edge: #b35f0a;
   }
 }
 
@@ -484,7 +489,7 @@ canvas { display: block; width: 100%; height: 300px; touch-action: manipulation;
   width: min(720px, calc(100vw - 2 * var(--s-4))); max-height: min(92vh, 900px); overflow: auto; padding: var(--s-5);
   border: 0; border-radius: var(--r-1); background: var(--sheet); color: var(--ink); box-shadow: var(--elev-dialog);
 }
-.image-dialog::backdrop { background: rgb(6 7 6 / .78); }
+.image-dialog::backdrop { background: rgb(6 8 10 / .78); }
 .image-dialog .section-heading { margin: 0 0 var(--s-3); }
 .image-dialog h2 { font-size: var(--fs-xl); }
 .image-dialog p { margin: var(--s-2) 0; font-size: var(--fs-sm); }
