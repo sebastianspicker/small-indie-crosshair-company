@@ -1,7 +1,7 @@
 {
   "schema": "sicc-edge-case-audit-v2",
   "model": "community-static-2026-10",
-  "version": "community-static-v6",
+  "version": "community-static-v7",
   "nativeEvidence": false,
   "heights": [
     768,
@@ -26,9 +26,9 @@
     },
     "synthetic": {
       "rows": 34560,
-      "exact": 7054,
-      "shifted": 7682,
-      "approximate": 18864,
+      "exact": 7142,
+      "shifted": 7723,
+      "approximate": 18735,
       "empty": 960
     }
   },
@@ -49,17 +49,45 @@
         "empty": 0
       },
       "regular-even": {
-        "rows": 298,
-        "exact": 284,
+        "rows": 282,
+        "exact": 282,
+        "shifted": 0,
+        "approximate": 0,
+        "empty": 0
+      },
+      "regular-even-seam": {
+        "rows": 14,
+        "exact": 0,
         "shifted": 0,
         "approximate": 14,
         "empty": 0
       },
+      "regular-even-thick": {
+        "rows": 2,
+        "exact": 2,
+        "shifted": 0,
+        "approximate": 0,
+        "empty": 0
+      },
       "regular-odd": {
-        "rows": 252,
+        "rows": 247,
         "exact": 0,
-        "shifted": 248,
+        "shifted": 247,
+        "approximate": 0,
+        "empty": 0
+      },
+      "regular-odd-seam": {
+        "rows": 4,
+        "exact": 0,
+        "shifted": 0,
         "approximate": 4,
+        "empty": 0
+      },
+      "regular-odd-thick": {
+        "rows": 1,
+        "exact": 0,
+        "shifted": 1,
+        "approximate": 0,
         "empty": 0
       },
       "size0-dot": {
@@ -86,73 +114,171 @@
     },
     "synthetic": {
       "crossed-at-zero": {
-        "rows": 456,
-        "exact": 52,
-        "shifted": 76,
-        "approximate": 328,
+        "rows": 336,
+        "exact": 21,
+        "shifted": 51,
+        "approximate": 264,
         "empty": 0
       },
       "crossed-at-zero-t": {
-        "rows": 456,
+        "rows": 336,
+        "exact": 0,
+        "shifted": 0,
+        "approximate": 336,
+        "empty": 0
+      },
+      "crossed-at-zero-thick": {
+        "rows": 120,
+        "exact": 31,
+        "shifted": 25,
+        "approximate": 64,
+        "empty": 0
+      },
+      "crossed-at-zero-thick-t": {
+        "rows": 120,
         "exact": 29,
         "shifted": 20,
-        "approximate": 407,
+        "approximate": 71,
         "empty": 0
       },
       "crossed-full": {
-        "rows": 1212,
-        "exact": 252,
-        "shifted": 417,
-        "approximate": 543,
+        "rows": 840,
+        "exact": 152,
+        "shifted": 348,
+        "approximate": 340,
         "empty": 0
       },
       "crossed-full-t": {
-        "rows": 1212,
+        "rows": 840,
+        "exact": 0,
+        "shifted": 0,
+        "approximate": 840,
+        "empty": 0
+      },
+      "crossed-full-thick": {
+        "rows": 372,
+        "exact": 100,
+        "shifted": 69,
+        "approximate": 203,
+        "empty": 0
+      },
+      "crossed-full-thick-t": {
+        "rows": 372,
         "exact": 0,
         "shifted": 12,
-        "approximate": 1200,
+        "approximate": 360,
         "empty": 0
       },
       "crossed-partial": {
-        "rows": 2412,
-        "exact": 210,
-        "shifted": 401,
-        "approximate": 1801,
+        "rows": 2208,
+        "exact": 184,
+        "shifted": 356,
+        "approximate": 1668,
         "empty": 0
       },
       "crossed-partial-t": {
-        "rows": 2412,
-        "exact": 129,
-        "shifted": 274,
-        "approximate": 2009,
+        "rows": 2208,
+        "exact": 119,
+        "shifted": 239,
+        "approximate": 1850,
+        "empty": 0
+      },
+      "crossed-partial-thick": {
+        "rows": 204,
+        "exact": 30,
+        "shifted": 55,
+        "approximate": 119,
+        "empty": 0
+      },
+      "crossed-partial-thick-t": {
+        "rows": 204,
+        "exact": 28,
+        "shifted": 52,
+        "approximate": 124,
         "empty": 0
       },
       "regular-even": {
-        "rows": 6528,
-        "exact": 2838,
+        "rows": 2276,
+        "exact": 1812,
         "shifted": 0,
-        "approximate": 3690,
+        "approximate": 464,
+        "empty": 0
+      },
+      "regular-even-seam": {
+        "rows": 2332,
+        "exact": 198,
+        "shifted": 0,
+        "approximate": 2134,
+        "empty": 0
+      },
+      "regular-even-thick": {
+        "rows": 1042,
+        "exact": 806,
+        "shifted": 0,
+        "approximate": 236,
+        "empty": 0
+      },
+      "regular-even-thick-seam": {
+        "rows": 878,
+        "exact": 34,
+        "shifted": 0,
+        "approximate": 844,
         "empty": 0
       },
       "regular-odd": {
-        "rows": 8352,
+        "rows": 3404,
         "exact": 0,
-        "shifted": 3764,
-        "approximate": 4588,
+        "shifted": 2684,
+        "approximate": 720,
+        "empty": 0
+      },
+      "regular-odd-seam": {
+        "rows": 2980,
+        "exact": 0,
+        "shifted": 234,
+        "approximate": 2746,
+        "empty": 0
+      },
+      "regular-odd-thick": {
+        "rows": 1070,
+        "exact": 0,
+        "shifted": 826,
+        "approximate": 244,
+        "empty": 0
+      },
+      "regular-odd-thick-seam": {
+        "rows": 898,
+        "exact": 0,
+        "shifted": 34,
+        "approximate": 864,
         "empty": 0
       },
       "size0-dot": {
-        "rows": 960,
-        "exact": 400,
-        "shifted": 560,
+        "rows": 480,
+        "exact": 200,
+        "shifted": 280,
         "approximate": 0,
         "empty": 0
       },
       "size0-dot-outline": {
-        "rows": 4800,
-        "exact": 576,
-        "shifted": 780,
-        "approximate": 3444,
+        "rows": 2400,
+        "exact": 288,
+        "shifted": 390,
+        "approximate": 1722,
+        "empty": 0
+      },
+      "size0-dot-outline-t": {
+        "rows": 2400,
+        "exact": 288,
+        "shifted": 390,
+        "approximate": 1722,
+        "empty": 0
+      },
+      "size0-dot-t": {
+        "rows": 480,
+        "exact": 200,
+        "shifted": 280,
+        "approximate": 0,
         "empty": 0
       },
       "size0-empty": {
@@ -162,11 +288,46 @@
         "approximate": 0,
         "empty": 960
       },
+      "size0-frame": {
+        "rows": 844,
+        "exact": 600,
+        "shifted": 244,
+        "approximate": 0,
+        "empty": 0
+      },
+      "size0-frame-t": {
+        "rows": 844,
+        "exact": 600,
+        "shifted": 244,
+        "approximate": 0,
+        "empty": 0
+      },
       "size0-outline-only": {
-        "rows": 4800,
-        "exact": 2568,
-        "shifted": 1378,
-        "approximate": 854,
+        "rows": 376,
+        "exact": 292,
+        "shifted": 84,
+        "approximate": 0,
+        "empty": 0
+      },
+      "size0-outline-only-t": {
+        "rows": 376,
+        "exact": 292,
+        "shifted": 84,
+        "approximate": 0,
+        "empty": 0
+      },
+      "size0-strokes-crossed": {
+        "rows": 1180,
+        "exact": 668,
+        "shifted": 512,
+        "approximate": 0,
+        "empty": 0
+      },
+      "size0-strokes-crossed-t": {
+        "rows": 1180,
+        "exact": 170,
+        "shifted": 210,
+        "approximate": 800,
         "empty": 0
       }
     }
@@ -195,6 +356,7 @@
       "crossedT": {
         "rows": 0,
         "keptT": 0,
+        "flipped": 0,
         "warned": 0
       }
     },
@@ -220,14 +382,15 @@
       "crossedT": {
         "rows": 0,
         "keptT": 0,
+        "flipped": 0,
         "warned": 0
       }
     },
     "synthetic": {
       "overpaint": {
         "rows": 11898,
-        "approximate": 11309,
-        "warned": 10654
+        "approximate": 11255,
+        "warned": 11255
       },
       "additive": {
         "rows": 34560,
@@ -242,9 +405,10 @@
         "warned": 0
       },
       "crossedT": {
-        "rows": 4080,
-        "keptT": 4080,
-        "warned": 4089
+        "rows": 9360,
+        "keptT": 6203,
+        "flipped": 3157,
+        "warned": 1302
       }
     }
   },
@@ -416,7 +580,7 @@
       "id": "pro-006",
       "player": "KSCERATO",
       "height": 2160,
-      "category": "regular-even",
+      "category": "regular-even-seam",
       "native": {
         "length": 9,
         "thickness": 4,
@@ -455,7 +619,7 @@
       "id": "pro-016",
       "player": "dumau",
       "height": 768,
-      "category": "regular-even",
+      "category": "regular-even-seam",
       "native": {
         "length": 2,
         "thickness": 2,
@@ -495,7 +659,7 @@
       "id": "pro-016",
       "player": "dumau",
       "height": 1080,
-      "category": "regular-even",
+      "category": "regular-even-seam",
       "native": {
         "length": 2,
         "thickness": 2,
@@ -534,7 +698,7 @@
       "id": "pro-016",
       "player": "dumau",
       "height": 1440,
-      "category": "regular-odd",
+      "category": "regular-odd-seam",
       "native": {
         "length": 3,
         "thickness": 3,
@@ -574,7 +738,7 @@
       "id": "pro-016",
       "player": "dumau",
       "height": 2160,
-      "category": "regular-even",
+      "category": "regular-even-seam",
       "native": {
         "length": 4,
         "thickness": 4,
@@ -781,7 +945,7 @@
       "id": "pro-055",
       "player": "magixx",
       "height": 768,
-      "category": "regular-even",
+      "category": "regular-even-seam",
       "native": {
         "length": 2,
         "thickness": 2,
@@ -821,7 +985,7 @@
       "id": "pro-055",
       "player": "magixx",
       "height": 1080,
-      "category": "regular-even",
+      "category": "regular-even-seam",
       "native": {
         "length": 2,
         "thickness": 2,
@@ -860,7 +1024,7 @@
       "id": "pro-055",
       "player": "magixx",
       "height": 1440,
-      "category": "regular-odd",
+      "category": "regular-odd-seam",
       "native": {
         "length": 3,
         "thickness": 3,
@@ -900,7 +1064,7 @@
       "id": "pro-055",
       "player": "magixx",
       "height": 2160,
-      "category": "regular-even",
+      "category": "regular-even-seam",
       "native": {
         "length": 4,
         "thickness": 4,
@@ -1061,7 +1225,7 @@
       "id": "pro-061",
       "player": "FalleN",
       "height": 2160,
-      "category": "regular-even",
+      "category": "regular-even-seam",
       "native": {
         "length": 9,
         "thickness": 4,
@@ -1100,7 +1264,7 @@
       "id": "pro-074",
       "player": "MAJ3R",
       "height": 768,
-      "category": "regular-even",
+      "category": "regular-even-seam",
       "native": {
         "length": 2,
         "thickness": 2,
@@ -1139,7 +1303,7 @@
       "id": "pro-074",
       "player": "MAJ3R",
       "height": 1080,
-      "category": "regular-even",
+      "category": "regular-even-seam",
       "native": {
         "length": 3,
         "thickness": 2,
@@ -1177,7 +1341,7 @@
       "id": "pro-074",
       "player": "MAJ3R",
       "height": 1440,
-      "category": "regular-odd",
+      "category": "regular-odd-seam",
       "native": {
         "length": 4,
         "thickness": 3,
@@ -1216,7 +1380,7 @@
       "id": "pro-074",
       "player": "MAJ3R",
       "height": 2160,
-      "category": "regular-even",
+      "category": "regular-even-seam",
       "native": {
         "length": 7,
         "thickness": 4,
@@ -1255,7 +1419,7 @@
       "id": "pro-129",
       "player": "dumau",
       "height": 768,
-      "category": "regular-even",
+      "category": "regular-even-seam",
       "native": {
         "length": 2,
         "thickness": 2,
@@ -1295,7 +1459,7 @@
       "id": "pro-129",
       "player": "dumau",
       "height": 1080,
-      "category": "regular-even",
+      "category": "regular-even-seam",
       "native": {
         "length": 2,
         "thickness": 2,
@@ -1334,7 +1498,7 @@
       "id": "pro-129",
       "player": "dumau",
       "height": 1440,
-      "category": "regular-odd",
+      "category": "regular-odd-seam",
       "native": {
         "length": 3,
         "thickness": 3,
@@ -1374,7 +1538,7 @@
       "id": "pro-129",
       "player": "dumau",
       "height": 2160,
-      "category": "regular-even",
+      "category": "regular-even-seam",
       "native": {
         "length": 4,
         "thickness": 4,
@@ -1415,7 +1579,7 @@
       "id": "synthetic",
       "player": null,
       "height": 768,
-      "category": "size0-outline-only",
+      "category": "size0-strokes-crossed-t",
       "settings": {
         "size": 0,
         "thickness": 0,
@@ -1432,8 +1596,8 @@
         "authoredHeight": 768
       },
       "status": "approximate",
-      "iou": 0.5,
-      "alignedIou": 0.5,
+      "iou": 0.75,
+      "alignedIou": 0.75,
       "overpaint": false,
       "blockers": 0,
       "additive": {
@@ -1445,13 +1609,14 @@
         "exportAlpha": 255
       },
       "weaponGap": false,
-      "exportedT": true,
+      "exportedT": false,
       "warnings": [
         "community-reconstruction",
         "shape-loss-excludes-appearance",
+        "appearance-refined",
         "visible-minimum",
+        "t-flipped-for-shape",
         "crossed-arms-folded",
-        "inverted-t-unrepresentable",
         "outline-only-as-core"
       ]
     },
@@ -1460,7 +1625,7 @@
       "id": "synthetic",
       "player": null,
       "height": 1080,
-      "category": "size0-outline-only",
+      "category": "size0-strokes-crossed-t",
       "settings": {
         "size": 0,
         "thickness": 0,
@@ -1477,8 +1642,8 @@
         "authoredHeight": 1080
       },
       "status": "approximate",
-      "iou": 0.5,
-      "alignedIou": 0.5,
+      "iou": 0.75,
+      "alignedIou": 0.75,
       "overpaint": false,
       "blockers": 0,
       "additive": {
@@ -1490,13 +1655,14 @@
         "exportAlpha": 255
       },
       "weaponGap": false,
-      "exportedT": true,
+      "exportedT": false,
       "warnings": [
         "community-reconstruction",
         "shape-loss-excludes-appearance",
+        "appearance-refined",
         "visible-minimum",
+        "t-flipped-for-shape",
         "crossed-arms-folded",
-        "inverted-t-unrepresentable",
         "outline-only-as-core"
       ]
     },
@@ -1505,7 +1671,7 @@
       "id": "synthetic",
       "player": null,
       "height": 1440,
-      "category": "size0-outline-only",
+      "category": "size0-strokes-crossed-t",
       "settings": {
         "size": 0,
         "thickness": 0,
@@ -1522,8 +1688,8 @@
         "authoredHeight": 1440
       },
       "status": "approximate",
-      "iou": 0.5,
-      "alignedIou": 0.5,
+      "iou": 0.75,
+      "alignedIou": 0.75,
       "overpaint": false,
       "blockers": 0,
       "additive": {
@@ -1535,13 +1701,14 @@
         "exportAlpha": 255
       },
       "weaponGap": false,
-      "exportedT": true,
+      "exportedT": false,
       "warnings": [
         "community-reconstruction",
         "shape-loss-excludes-appearance",
+        "appearance-refined",
         "visible-minimum",
+        "t-flipped-for-shape",
         "crossed-arms-folded",
-        "inverted-t-unrepresentable",
         "outline-only-as-core"
       ]
     },
@@ -1550,7 +1717,7 @@
       "id": "synthetic",
       "player": null,
       "height": 2160,
-      "category": "size0-outline-only",
+      "category": "size0-strokes-crossed-t",
       "settings": {
         "size": 0,
         "thickness": 0,
@@ -1567,8 +1734,8 @@
         "authoredHeight": 2160
       },
       "status": "approximate",
-      "iou": 0.5,
-      "alignedIou": 0.5,
+      "iou": 0.75,
+      "alignedIou": 0.75,
       "overpaint": false,
       "blockers": 0,
       "additive": {
@@ -1580,13 +1747,14 @@
         "exportAlpha": 255
       },
       "weaponGap": false,
-      "exportedT": true,
+      "exportedT": false,
       "warnings": [
         "community-reconstruction",
         "shape-loss-excludes-appearance",
+        "appearance-refined",
         "visible-minimum",
+        "t-flipped-for-shape",
         "crossed-arms-folded",
-        "inverted-t-unrepresentable",
         "outline-only-as-core"
       ]
     },
@@ -1595,7 +1763,7 @@
       "id": "synthetic",
       "player": null,
       "height": 768,
-      "category": "size0-outline-only",
+      "category": "size0-strokes-crossed-t",
       "settings": {
         "size": 0,
         "thickness": 0,
@@ -1612,8 +1780,8 @@
         "authoredHeight": 768
       },
       "status": "approximate",
-      "iou": 0.5,
-      "alignedIou": 0.5,
+      "iou": 0.75,
+      "alignedIou": 0.75,
       "overpaint": false,
       "blockers": 0,
       "additive": {
@@ -1625,13 +1793,14 @@
         "exportAlpha": 255
       },
       "weaponGap": false,
-      "exportedT": true,
+      "exportedT": false,
       "warnings": [
         "community-reconstruction",
         "shape-loss-excludes-appearance",
+        "appearance-refined",
         "visible-minimum",
+        "t-flipped-for-shape",
         "crossed-arms-folded",
-        "inverted-t-unrepresentable",
         "outline-only-as-core"
       ]
     },
@@ -1640,7 +1809,7 @@
       "id": "synthetic",
       "player": null,
       "height": 1080,
-      "category": "size0-outline-only",
+      "category": "size0-strokes-crossed-t",
       "settings": {
         "size": 0,
         "thickness": 0,
@@ -1657,8 +1826,8 @@
         "authoredHeight": 1080
       },
       "status": "approximate",
-      "iou": 0.5,
-      "alignedIou": 0.5,
+      "iou": 0.75,
+      "alignedIou": 0.75,
       "overpaint": false,
       "blockers": 0,
       "additive": {
@@ -1670,13 +1839,14 @@
         "exportAlpha": 255
       },
       "weaponGap": false,
-      "exportedT": true,
+      "exportedT": false,
       "warnings": [
         "community-reconstruction",
         "shape-loss-excludes-appearance",
+        "appearance-refined",
         "visible-minimum",
+        "t-flipped-for-shape",
         "crossed-arms-folded",
-        "inverted-t-unrepresentable",
         "outline-only-as-core"
       ]
     },
@@ -1685,7 +1855,7 @@
       "id": "synthetic",
       "player": null,
       "height": 1440,
-      "category": "size0-outline-only",
+      "category": "size0-strokes-crossed-t",
       "settings": {
         "size": 0,
         "thickness": 0,
@@ -1702,8 +1872,8 @@
         "authoredHeight": 1440
       },
       "status": "approximate",
-      "iou": 0.5,
-      "alignedIou": 0.5,
+      "iou": 0.75,
+      "alignedIou": 0.75,
       "overpaint": false,
       "blockers": 0,
       "additive": {
@@ -1715,13 +1885,14 @@
         "exportAlpha": 255
       },
       "weaponGap": false,
-      "exportedT": true,
+      "exportedT": false,
       "warnings": [
         "community-reconstruction",
         "shape-loss-excludes-appearance",
+        "appearance-refined",
         "visible-minimum",
+        "t-flipped-for-shape",
         "crossed-arms-folded",
-        "inverted-t-unrepresentable",
         "outline-only-as-core"
       ]
     },
@@ -1730,7 +1901,7 @@
       "id": "synthetic",
       "player": null,
       "height": 2160,
-      "category": "size0-outline-only",
+      "category": "size0-strokes-crossed-t",
       "settings": {
         "size": 0,
         "thickness": 0,
@@ -1747,8 +1918,8 @@
         "authoredHeight": 2160
       },
       "status": "approximate",
-      "iou": 0.5,
-      "alignedIou": 0.5,
+      "iou": 0.75,
+      "alignedIou": 0.75,
       "overpaint": false,
       "blockers": 0,
       "additive": {
@@ -1760,13 +1931,14 @@
         "exportAlpha": 255
       },
       "weaponGap": false,
-      "exportedT": true,
+      "exportedT": false,
       "warnings": [
         "community-reconstruction",
         "shape-loss-excludes-appearance",
+        "appearance-refined",
         "visible-minimum",
+        "t-flipped-for-shape",
         "crossed-arms-folded",
-        "inverted-t-unrepresentable",
         "outline-only-as-core"
       ]
     },
@@ -1775,7 +1947,7 @@
       "id": "synthetic",
       "player": null,
       "height": 768,
-      "category": "size0-outline-only",
+      "category": "size0-strokes-crossed-t",
       "settings": {
         "size": 0,
         "thickness": 0,
@@ -1792,8 +1964,8 @@
         "authoredHeight": 768
       },
       "status": "approximate",
-      "iou": 0.125,
-      "alignedIou": 0.5,
+      "iou": 0.16666666666666666,
+      "alignedIou": 0.75,
       "overpaint": false,
       "blockers": 0,
       "additive": {
@@ -1805,14 +1977,15 @@
         "exportAlpha": 255
       },
       "weaponGap": false,
-      "exportedT": true,
+      "exportedT": false,
       "warnings": [
         "community-reconstruction",
         "shape-loss-excludes-appearance",
         "pixel-centering-shift",
+        "appearance-refined",
         "visible-minimum",
+        "t-flipped-for-shape",
         "crossed-arms-folded",
-        "inverted-t-unrepresentable",
         "outline-only-as-core"
       ]
     },
@@ -1821,7 +1994,7 @@
       "id": "synthetic",
       "player": null,
       "height": 1080,
-      "category": "size0-outline-only",
+      "category": "size0-strokes-crossed-t",
       "settings": {
         "size": 0,
         "thickness": 0,
@@ -1838,8 +2011,8 @@
         "authoredHeight": 1080
       },
       "status": "approximate",
-      "iou": 0.125,
-      "alignedIou": 0.5,
+      "iou": 0.16666666666666666,
+      "alignedIou": 0.75,
       "overpaint": false,
       "blockers": 0,
       "additive": {
@@ -1851,14 +2024,15 @@
         "exportAlpha": 255
       },
       "weaponGap": false,
-      "exportedT": true,
+      "exportedT": false,
       "warnings": [
         "community-reconstruction",
         "shape-loss-excludes-appearance",
         "pixel-centering-shift",
+        "appearance-refined",
         "visible-minimum",
+        "t-flipped-for-shape",
         "crossed-arms-folded",
-        "inverted-t-unrepresentable",
         "outline-only-as-core"
       ]
     },
@@ -1867,7 +2041,7 @@
       "id": "synthetic",
       "player": null,
       "height": 1440,
-      "category": "size0-outline-only",
+      "category": "size0-strokes-crossed-t",
       "settings": {
         "size": 0,
         "thickness": 0,
@@ -1884,8 +2058,8 @@
         "authoredHeight": 1440
       },
       "status": "approximate",
-      "iou": 0.125,
-      "alignedIou": 0.5,
+      "iou": 0.16666666666666666,
+      "alignedIou": 0.75,
       "overpaint": false,
       "blockers": 0,
       "additive": {
@@ -1897,14 +2071,15 @@
         "exportAlpha": 255
       },
       "weaponGap": false,
-      "exportedT": true,
+      "exportedT": false,
       "warnings": [
         "community-reconstruction",
         "shape-loss-excludes-appearance",
         "pixel-centering-shift",
+        "appearance-refined",
         "visible-minimum",
+        "t-flipped-for-shape",
         "crossed-arms-folded",
-        "inverted-t-unrepresentable",
         "outline-only-as-core"
       ]
     },
@@ -1913,7 +2088,7 @@
       "id": "synthetic",
       "player": null,
       "height": 2160,
-      "category": "size0-outline-only",
+      "category": "size0-strokes-crossed-t",
       "settings": {
         "size": 0,
         "thickness": 0,
@@ -1930,8 +2105,8 @@
         "authoredHeight": 2160
       },
       "status": "approximate",
-      "iou": 0.125,
-      "alignedIou": 0.5,
+      "iou": 0.16666666666666666,
+      "alignedIou": 0.75,
       "overpaint": false,
       "blockers": 0,
       "additive": {
@@ -1943,14 +2118,15 @@
         "exportAlpha": 255
       },
       "weaponGap": false,
-      "exportedT": true,
+      "exportedT": false,
       "warnings": [
         "community-reconstruction",
         "shape-loss-excludes-appearance",
         "pixel-centering-shift",
+        "appearance-refined",
         "visible-minimum",
+        "t-flipped-for-shape",
         "crossed-arms-folded",
-        "inverted-t-unrepresentable",
         "outline-only-as-core"
       ]
     },
@@ -1959,7 +2135,7 @@
       "id": "synthetic",
       "player": null,
       "height": 768,
-      "category": "size0-outline-only",
+      "category": "size0-strokes-crossed-t",
       "settings": {
         "size": 0,
         "thickness": 0,
@@ -1976,8 +2152,8 @@
         "authoredHeight": 768
       },
       "status": "approximate",
-      "iou": 0.25,
-      "alignedIou": 0.5,
+      "iou": 0.34615384615384615,
+      "alignedIou": 0.75,
       "overpaint": false,
       "blockers": 0,
       "additive": {
@@ -1989,14 +2165,15 @@
         "exportAlpha": 255
       },
       "weaponGap": false,
-      "exportedT": true,
+      "exportedT": false,
       "warnings": [
         "community-reconstruction",
         "shape-loss-excludes-appearance",
         "pixel-centering-shift",
+        "appearance-refined",
         "visible-minimum",
+        "t-flipped-for-shape",
         "crossed-arms-folded",
-        "inverted-t-unrepresentable",
         "outline-only-as-core"
       ]
     },
@@ -2005,7 +2182,7 @@
       "id": "synthetic",
       "player": null,
       "height": 1080,
-      "category": "size0-outline-only",
+      "category": "size0-strokes-crossed-t",
       "settings": {
         "size": 0,
         "thickness": 0,
@@ -2022,8 +2199,8 @@
         "authoredHeight": 1080
       },
       "status": "approximate",
-      "iou": 0.25,
-      "alignedIou": 0.5,
+      "iou": 0.34615384615384615,
+      "alignedIou": 0.75,
       "overpaint": false,
       "blockers": 0,
       "additive": {
@@ -2035,14 +2212,15 @@
         "exportAlpha": 255
       },
       "weaponGap": false,
-      "exportedT": true,
+      "exportedT": false,
       "warnings": [
         "community-reconstruction",
         "shape-loss-excludes-appearance",
         "pixel-centering-shift",
+        "appearance-refined",
         "visible-minimum",
+        "t-flipped-for-shape",
         "crossed-arms-folded",
-        "inverted-t-unrepresentable",
         "outline-only-as-core"
       ]
     },
@@ -2051,7 +2229,7 @@
       "id": "synthetic",
       "player": null,
       "height": 1440,
-      "category": "size0-outline-only",
+      "category": "size0-strokes-crossed-t",
       "settings": {
         "size": 0,
         "thickness": 0,
@@ -2068,8 +2246,8 @@
         "authoredHeight": 1440
       },
       "status": "approximate",
-      "iou": 0.25,
-      "alignedIou": 0.5,
+      "iou": 0.34615384615384615,
+      "alignedIou": 0.75,
       "overpaint": false,
       "blockers": 0,
       "additive": {
@@ -2081,14 +2259,15 @@
         "exportAlpha": 255
       },
       "weaponGap": false,
-      "exportedT": true,
+      "exportedT": false,
       "warnings": [
         "community-reconstruction",
         "shape-loss-excludes-appearance",
         "pixel-centering-shift",
+        "appearance-refined",
         "visible-minimum",
+        "t-flipped-for-shape",
         "crossed-arms-folded",
-        "inverted-t-unrepresentable",
         "outline-only-as-core"
       ]
     },
@@ -2097,7 +2276,7 @@
       "id": "synthetic",
       "player": null,
       "height": 2160,
-      "category": "size0-outline-only",
+      "category": "size0-strokes-crossed-t",
       "settings": {
         "size": 0,
         "thickness": 0,
@@ -2114,8 +2293,8 @@
         "authoredHeight": 2160
       },
       "status": "approximate",
-      "iou": 0.25,
-      "alignedIou": 0.5,
+      "iou": 0.34615384615384615,
+      "alignedIou": 0.75,
       "overpaint": false,
       "blockers": 0,
       "additive": {
@@ -2127,14 +2306,15 @@
         "exportAlpha": 255
       },
       "weaponGap": false,
-      "exportedT": true,
+      "exportedT": false,
       "warnings": [
         "community-reconstruction",
         "shape-loss-excludes-appearance",
         "pixel-centering-shift",
+        "appearance-refined",
         "visible-minimum",
+        "t-flipped-for-shape",
         "crossed-arms-folded",
-        "inverted-t-unrepresentable",
         "outline-only-as-core"
       ]
     },
@@ -2143,7 +2323,7 @@
       "id": "synthetic",
       "player": null,
       "height": 768,
-      "category": "size0-outline-only",
+      "category": "size0-strokes-crossed-t",
       "settings": {
         "size": 0,
         "thickness": 0,
@@ -2160,8 +2340,8 @@
         "authoredHeight": 768
       },
       "status": "approximate",
-      "iou": 0.3125,
-      "alignedIou": 0.5,
+      "iou": 0.4411764705882353,
+      "alignedIou": 0.75,
       "overpaint": false,
       "blockers": 0,
       "additive": {
@@ -2173,14 +2353,15 @@
         "exportAlpha": 255
       },
       "weaponGap": false,
-      "exportedT": true,
+      "exportedT": false,
       "warnings": [
         "community-reconstruction",
         "shape-loss-excludes-appearance",
         "pixel-centering-shift",
+        "appearance-refined",
         "visible-minimum",
+        "t-flipped-for-shape",
         "crossed-arms-folded",
-        "inverted-t-unrepresentable",
         "outline-only-as-core"
       ]
     },
@@ -2189,7 +2370,7 @@
       "id": "synthetic",
       "player": null,
       "height": 1080,
-      "category": "size0-outline-only",
+      "category": "size0-strokes-crossed-t",
       "settings": {
         "size": 0,
         "thickness": 0,
@@ -2206,8 +2387,8 @@
         "authoredHeight": 1080
       },
       "status": "approximate",
-      "iou": 0.3125,
-      "alignedIou": 0.5,
+      "iou": 0.4411764705882353,
+      "alignedIou": 0.75,
       "overpaint": false,
       "blockers": 0,
       "additive": {
@@ -2219,14 +2400,15 @@
         "exportAlpha": 255
       },
       "weaponGap": false,
-      "exportedT": true,
+      "exportedT": false,
       "warnings": [
         "community-reconstruction",
         "shape-loss-excludes-appearance",
         "pixel-centering-shift",
+        "appearance-refined",
         "visible-minimum",
+        "t-flipped-for-shape",
         "crossed-arms-folded",
-        "inverted-t-unrepresentable",
         "outline-only-as-core"
       ]
     },
@@ -2235,7 +2417,7 @@
       "id": "synthetic",
       "player": null,
       "height": 1440,
-      "category": "size0-outline-only",
+      "category": "size0-strokes-crossed-t",
       "settings": {
         "size": 0,
         "thickness": 0,
@@ -2252,8 +2434,8 @@
         "authoredHeight": 1440
       },
       "status": "approximate",
-      "iou": 0.3125,
-      "alignedIou": 0.5,
+      "iou": 0.4411764705882353,
+      "alignedIou": 0.75,
       "overpaint": false,
       "blockers": 0,
       "additive": {
@@ -2265,14 +2447,15 @@
         "exportAlpha": 255
       },
       "weaponGap": false,
-      "exportedT": true,
+      "exportedT": false,
       "warnings": [
         "community-reconstruction",
         "shape-loss-excludes-appearance",
         "pixel-centering-shift",
+        "appearance-refined",
         "visible-minimum",
+        "t-flipped-for-shape",
         "crossed-arms-folded",
-        "inverted-t-unrepresentable",
         "outline-only-as-core"
       ]
     },
@@ -2281,7 +2464,7 @@
       "id": "synthetic",
       "player": null,
       "height": 2160,
-      "category": "size0-outline-only",
+      "category": "size0-strokes-crossed-t",
       "settings": {
         "size": 0,
         "thickness": 0,
@@ -2298,8 +2481,8 @@
         "authoredHeight": 2160
       },
       "status": "approximate",
-      "iou": 0.3125,
-      "alignedIou": 0.5,
+      "iou": 0.4411764705882353,
+      "alignedIou": 0.75,
       "overpaint": false,
       "blockers": 0,
       "additive": {
@@ -2311,14 +2494,15 @@
         "exportAlpha": 255
       },
       "weaponGap": false,
-      "exportedT": true,
+      "exportedT": false,
       "warnings": [
         "community-reconstruction",
         "shape-loss-excludes-appearance",
         "pixel-centering-shift",
+        "appearance-refined",
         "visible-minimum",
+        "t-flipped-for-shape",
         "crossed-arms-folded",
-        "inverted-t-unrepresentable",
         "outline-only-as-core"
       ]
     }

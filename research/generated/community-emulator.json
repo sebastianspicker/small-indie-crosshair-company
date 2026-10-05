@@ -2,7 +2,7 @@
   "schema": "sicc-community-emulator-v2",
   "version": "community-emulator-v2",
   "targetModel": "community-static-2026-09",
-  "targetVersion": "community-static-v2",
+  "targetVersion": "community-static-v7",
   "targetBuild": "2000918",
   "seed": 28092026,
   "capacityGrid": [
@@ -9162,9 +9162,9 @@
     "historicalArtifact": "research/generated/quant-emulator.json distills the previous 27-model infer target and is not comparable as a new-default score.",
     "nativeEvidence": false,
     "speedGate": "closed-not-exact-equivalent",
-    "scope": "Held-out fidelity to community-static-v2 only; no native CS2 accuracy claim.",
+    "scope": "Held-out fidelity to community-static-v7 only; no native CS2 accuracy claim.",
     "residualModel": "Boosted corrections to a rounded analytic guess from inputs, without calling the inverse solver.",
     "intervalScope": "Calibration groups never fit models. Group-max split-conformal rank is recorded, but the designed grid and shifted challenges do not establish exchangeability or native-game coverage."
   },
-  "fingerprintSha256": "f3c955818577cba8af72fd77d98a15d2457bebb219d9476f757c5027133af040"
+  "fingerprintSha256": "39600df60661ccb56a8716893662bf49ad721534446741cb50a748e842ddec77"
 }
