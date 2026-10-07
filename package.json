@@ -1,6 +1,6 @@
 {
   "name": "small-indie-crosshair-company",
-  "version": "0.13.0",
+  "version": "0.17.0",
   "private": true,
   "description": "Local CS2 crosshair converter with pixel previews and reproducible research.",
   "type": "module",
@@ -9,9 +9,35 @@
     "node": ">=22.12.0"
   },
   "scripts": {
-    "dev": "node scripts/serve.mjs",
-    "start": "node scripts/serve.mjs",
+    "audit:complexity": "node --expose-internals research/scripts/complexity.mjs",
+    "audit:research": "node research/scripts/audit.mjs",
+    "bench:emulator": "node research/scripts/benchmark-emulator.mjs",
+    "bench:quant": "node research/scripts/benchmark-quant.mjs",
+    "bench:ranker": "node research/scripts/benchmark-ranker.mjs",
     "build": "node scripts/build.mjs",
-    "preview": "node scripts/serve.mjs --dist"
+    "certify:inverse": "node research/scripts/certify-inverse.mjs",
+    "check": "node scripts/check.mjs",
+    "corpus:build": "node research/scripts/corpus.mjs",
+    "dev": "node scripts/serve.mjs",
+    "emulator:accuracy": "node research/scripts/train-accuracy-emulator.mjs",
+    "emulator:community": "node research/scripts/train-community-emulator.mjs",
+    "emulator:crosscheck": "node research/scripts/train-crosscheck-emulator.mjs",
+    "emulator:export": "node research/scripts/train-export-emulator.mjs",
+    "emulator:structured": "node research/scripts/train-structured-emulator.mjs",
+    "emulator:train": "node research/scripts/train-quant-emulator.mjs",
+    "modulator:train": "node research/scripts/train-residual-modulator.mjs",
+    "preview": "node scripts/serve.mjs --dist",
+    "research:quant": "node research/scripts/corpus.mjs && node research/scripts/converter-comparison.mjs && node research/scripts/quant-study.mjs && node research/scripts/quality-study.mjs && node research/scripts/conversion-accuracy.mjs && node research/scripts/additive-alpha.mjs && node research/scripts/edge-case-audit.mjs",
+    "research:reproduce": "python3 research/scripts/reproduce.py",
+    "start": "node scripts/serve.mjs",
+    "study:converters": "node research/scripts/converter-comparison.mjs",
+    "study:decision": "node research/scripts/decision-study.mjs",
+    "study:discriminating": "node research/scripts/discriminating-set.mjs",
+    "study:partition": "node research/scripts/model-partition.mjs",
+    "study:structural": "node research/scripts/structural-study.mjs",
+    "test": "node --test \"tests/**/*.test.mjs\"",
+    "test:browser": "python3 tests/browser/browser_smoke.py",
+    "test:quant-browser": "python3 tests/browser/quant_browser.py",
+    "verify": "npm run check && npm run research:quant && npm run emulator:community -- --check && npm run emulator:accuracy -- --check && npm run emulator:structured -- --check && npm run emulator:export -- --check && npm run emulator:crosscheck -- --check && npm test && npm run research:reproduce && npm run build"
   }
 }

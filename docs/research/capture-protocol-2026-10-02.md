@@ -42,20 +42,59 @@ the same capture, and never promote an imported record without a separate review
 
 The research harness (development tooling, not published) lists all cases with their
 console lines and predicted ASCII mask, can select one case such as `s8-hash-g3`,
-and can emit the cases as JSON.
+and can emit the cases as JSON. Its model label is read from the renderer metadata
+at runtime so it follows deliberate model version changes.
 
 The lines are typed into the console in order. For each case the harness also prints
 the mask our model predicts (`#` colour, `o` outline only, `.` empty, centre pixel
-in the middle of the 41 x 41 window). The prediction is the
-`community-static-v5` forward model (equations unchanged since v4) with the assumed outline modes (mode 1 one
+in the middle of the 41 x 41 window). The prediction is the current
+`community-static` forward model with the assumed outline modes (mode 1 one
 pixel all round, mode 2 top and left); it is a hypothesis to be tested. Negative
 gaps and styles without a model print `none`.
 
+Generate paired migration and converter cases through the actual converter/export
+boundary and a blank capture manifest:
+
+```sh
+node research/scripts/calibration-codes.mjs --manifest > /tmp/sicc-captures.json
+node research/scripts/calibration-codes.mjs --manifest --source-height 720 --current-height 1080 \
+  --authored-height 1080 > /tmp/sicc-captures-720-to-1080.json
+```
+
+Use each paired ID's `-old` or `-current` suffix with the comparer and the manifest
+as its case source, for example:
+
+```sh
+python3 research/scripts/calibration_compare.py old.png issue11-black-1-9-3-src1080-now1080-auth1080-old \
+  --cases /tmp/sicc-captures.json --centre 960,540
+```
+
+Each pair includes old source commands and exact current export commands, model
+and build identifiers, a fixed family role, the height tuple, old and current
+expected synthetic masks in comparer-compatible `cases`, and null session,
+observation, original-image hash, resolution, and attestation fields. The default
+paired mask side is 81; pass `--side` with an odd size from 9 to 513 when arms may extend
+farther. Masks that still reach the crop edge are marked clipped.
+New families cover the issue #11 black 1/9/3 redraw, negative gaps, crossed T,
+outline overpaint, odd/even widths, and zero-length bars with dot off/on. Related
+heights stay in one family partition. The manifest is a checklist template: fill
+capture metadata only after recording the real session, game build, resolution,
+SHA-256, and unedited-image attestation. Comparer output never becomes a reviewed
+measurement automatically.
+
+Height flags accept source, current, and authored heights independently (240 to
+16384 inclusive); source/current default to 1080; authored defaults to current height. Use `--source-height` for old screenshot
+resolution, `--current-height` for new game resolution, and `--authored-height`
+for the height encoded in the exported cvar.
+
 Comparing a capture (for example a screenshot against case `s1-t2-g4` with the
-centre pixel at 960,540) is done by a second research script. It crops 41 x 41 around the centre pixel, thresholds against the background (median
-of the window border), and reports agreement and IoU with the prediction at zero
-offset and at the best offset within +-4 px. A best offset other than (0,0) is a
-finding in its own right (the old-client reporter case shows a +3 px x offset). It
+centre pixel at 960,540) is done by a second research script. It crops 41 x 41
+around the centre pixel, thresholds against the background (median of the window
+border), and reports raw zero-offset and aligned best-offset overlap separately,
+along with the PNG SHA-256. It rejects crops outside the image and flags empty or
+boundary-clipped masks. Inspect those flags before interpreting a score. A best
+offset other than (0,0) is a finding in its own right (the old-client reporter
+case shows a +3 px x offset). It
 reads only geometry; read alpha from the printed mean luma of outline and core
 pixels. Use `--threshold` when the background is textured.
 
@@ -144,3 +183,18 @@ the repository only through the measurement import (`native-user`, build 2000922
 and stay user-attested until reviewed. Old-client observations cannot enter that
 import; they are stored as documented, unregistered files next to
 `research/measurements/index.json`.
+
+For paired sessions, record old and current build IDs separately and use separate
+calibration and holdout capture sessions. The paired default mask is 81 pixels
+wide; original protocol cases retain 41. Enlarge it with `--side` whenever a
+prediction is flagged clipped. An empty or clipped comparison is diagnostic,
+not a successful native-validation result.
+
+Fill each `old`/`current` record's `resolution` as `{"width": 1920, "height": 1080}`
+and `originalImageSha256` with the unedited PNG's hash. The comparer rejects
+filled metadata that disagrees with that image, refuses provenance filled at
+pair level (only the per-side fields are verified), and includes the prediction model,
+target build, capture build, session, role and family in its result. Empty or clipped
+observations have `validComparison: false` and null primary overlap scores; their
+offset scores remain diagnostics. Every result has `nativeValidated: false` until
+the separate evidence review, regardless of agreement or attestation.

@@ -1,0 +1,27 @@
+/* Screenshot (#screenshot): built from the Convert page's classes in convert.css. Only what that page has no counterpart for. */
+
+/* The drop zone: the paste box's field, for a file. */
+.qs-controls .drop-zone {
+  display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-2) var(--s-3); min-height: 88px; margin: 0; padding: 8px 12px;
+  background: var(--field); border: var(--hair-edge); border-radius: var(--r-1); color: var(--ink); cursor: pointer;
+  font: 400 var(--fs-sm)/1.6 var(--font-mono); font-stretch: var(--mono-stretch); transition: border-color var(--dur-1) var(--ease);
+}
+.drop-zone:hover { border-color: var(--ink-2); }
+.drop-zone[data-over=true], .drop-zone:focus-within { border-color: var(--focus); }
+.drop-zone input[type=file] { width: auto; max-width: 100%; min-height: 0; padding: 0; border: 0; background: transparent; }
+.qs-screenshot > .small { margin-top: var(--s-1); }
+#screenshot[data-state=error] #ss-status { padding: var(--s-2) var(--s-3); border-left: 2px solid var(--alarm); background: var(--alarm-wash); }
+
+/* The measured crop: a click picks the crosshair colour. */
+#ss-crop-canvas { cursor: crosshair; }
+#ss-old-settings { margin: 0; max-height: 260px; overflow: auto; font-size: var(--fs-xs); }
+
+/* Confidence: the three checks and the rule. */
+#ss-level-text { margin: 0 0 var(--s-2); color: var(--ink); }
+.check-list { display: grid; gap: var(--s-2); margin: 0 0 var(--s-4); }
+.check-list dt { font-weight: 600; }
+.check-list dd { margin-top: 2px; font-size: var(--fs-sm); line-height: 1.45; color: var(--ink-2); }
+.rule-table { margin: var(--s-2) 0 var(--s-3); }
+.rule-table th, .rule-table td { position: static; padding: 4px var(--s-3) 4px 0; border-bottom: var(--hair); vertical-align: top; }
+.rule-table th { width: 6em; color: var(--ink); font: 600 var(--fs-sm)/1.5 var(--font-text); text-transform: none; letter-spacing: 0; }
+.rule-table td { font: 400 var(--fs-sm)/1.5 var(--font-text); }

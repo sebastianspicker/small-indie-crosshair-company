@@ -1,7 +1,9 @@
 # Small Indie Crosshair Company
 
 Convert old CS2 crosshair settings, compare pixel previews, and export proposed
-settings. The app runs in your browser without an account or backend.
+settings. The app runs in your browser without an account or backend. A separate
+Screenshot page converts a screenshot of the old game, with confidence checks and a
+link to cross-check the answer in the converter.
 
 [Try the live demo](https://sebastianspicker.github.io/small-indie-crosshair-company/) ·
 [Run locally](#run-locally) · [Screenshot tour](#screenshot-tour) ·
@@ -11,7 +13,7 @@ settings. The app runs in your browser without an account or backend.
 > the new renderers are hypotheses. No original old/new game capture pairs are
 > included. A perfect preview match does not establish an in-game match.
 
-Default model **`community-static-v6`** · inspected build **2000922** ·
+Default model **`community-static-v11`** · inspected build **2000922** ·
 [build update, October 1](docs/research/build-2000922-update-2026-10-01.md) ·
 [learner findings, October 2](docs/research/learners-2026-10-02.md) ·
 [conversion audit, September 29](docs/research/converter-audit-2026-09-29.md).
@@ -19,8 +21,8 @@ The forward equations are an unverified carry-over from v3 across Valve's render
 v5 only ranks equally accurate choices with the odd-width centring shift removed.
 v6 redraws old shapes the new game cannot draw literally (crossed arms, outline-only `#`, size-0 dot) and
 drops zero-length bars, from two user captures of the current game and the community converter.
-The September 23 corpus, historical `quant-static-v6` family and manual
-`conditional-static-v4` lab remain separate comparisons.
+The September 23 corpus, historical `quant-static-v6` family and the library-only
+`conditional-static-v4` manual model remain separate comparisons.
 
 ## Run locally
 
@@ -33,12 +35,12 @@ npm run dev
 Open **http://127.0.0.1:4173**. Use a web server rather than opening `index.html`
 as a file: the app loads modules, local data, and a worker.
 
-The app opens in the **Simple** view: paste on the left, the answer on the right.
+The app opens on the converter: paste on the left, the answer on the right.
 It shows the old and new crosshair on dimensioned pixel plates, the three new
-values, and the console lines to paste or type. Select **Advanced** in the
-masthead to open the **Expert** lab with six renderer choices, derivations,
-search trace, evidence and measurements. Mode is held only in the page, not
-saved to your device. The interface follows your system's light or dark theme.
+values, and the console lines to paste or type. The **Advanced** accordion
+below the converter holds the matching options, six renderer choices,
+derivations, search trace and evidence; every option there applies to the
+answer above. Nothing is saved to your device. The interface follows your system's light or dark theme.
 
 1. Paste a legacy v1 share code or old `cl_crosshair...` settings. You can also
    enter values, choose a published preset, or measure an original PNG.
@@ -68,14 +70,13 @@ Copy/Download and the checked build (2000922, convar dump 2026-10-01) sit with i
 
 These are screenshots of the local app with bundled settings and synthetic
 previews. They are not captures from CS2. The converter screenshot shows the
-default **Simple** view; the masthead **Advanced** button expands it into the
-Expert lab.
+converter with the **Advanced** accordion closed.
 
 ### 1. Convert and compare
 
 Paste a code or edit the old values. The reading panel draws the old and new
 crosshair at the same magnification, with their arm length and thickness
-dimensioned in game pixels. The Expert lab adds the copied-values preview and the
+dimensioned in game pixels. The Advanced accordion adds the copied-values preview and the
 pixel differences that show where a proposed conversion misses the target.
 
 ![Converter with the old values on the left and the new settings, dimensioned pixel plates and console lines on the right](docs/screenshots/converter.png)
@@ -188,7 +189,7 @@ For changes and review guidance, see [CONTRIBUTING](CONTRIBUTING.md) and the
 
 | Directory | Contents |
 | --- | --- |
-| `lib/` | Pure domain: `settings/`, `geometry/`, `image/`, the automatic `solver/`, the `manual/` lab |
+| `lib/` | Pure domain: `settings/`, `geometry/`, `image/`, the automatic `solver/`, the library-only `manual/` model (no app page) |
 | `app/` | Browser runtime: router, one folder per route, the worker boundary |
 | `data/` | The bundled JSON the app loads (presets, corpus, study summary) |
 | `docs/` | Math, sources, engineering notes, and screenshot tour |

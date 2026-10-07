@@ -1,140 +1,218 @@
-# 13 — What decides the export: math, rules and ML
+# What decides the export: appearance rules, the T flag and export groups
 
-**Short answer.** No machine-learned model decides any exported value. Every
-number in the exported console line comes from closed-form arithmetic, an exact
-finite search and deterministic rules. Learned and
-fitted models play three other roles:
+::: summary
+Some old crosshairs drew shapes the current game cannot draw from the same
+settings: arms that crossed through the centre, a `#` made only of outline, a
+dot made by size 0, or a T whose stem pointed up. For each of these the converter
+uses a fixed rule that draws the same pixels another way, and it tells you when
+it cannot. An old T stays a T by default; you can let the converter choose a
+full cross where that looks closer, or force either shape. Every exported line
+group that your old settings did not set can be left out, so the game keeps your
+current value.
+:::
 
-- **A per-input check.** The export-state learner v2 predicts the whole export for the input on screen and the converter reports whether it agrees. It never replaces or adjusts the export. It shares the rendering models and the refinement rule with the converter, so agreement is partly by construction.
-- **Research evidence.** Emulators measured whether the solver can be learned and how stable it is, and their errors pointed at regimes worth a look, such as cross-height ties.
-- **A rejected fit.** A least-squares alpha for `cl_crosshairusealpha 0` was computed and rejected because it depends on the error measure; the export uses 255 by user decision.
+::: key
+Over the published corpus at 768, 1080, 1440 and 2160, the shape check reports
+{{fig:generated.edge-case-audit.summary.corpus.exact|int}} exact,
+{{fig:generated.edge-case-audit.summary.corpus.shifted|int}} shifted,
+{{fig:generated.edge-case-audit.summary.corpus.approximate|int}} approximate and
+{{fig:generated.edge-case-audit.summary.corpus.empty|int}} empty of
+{{fig:generated.edge-case-audit.summary.corpus.rows|int}} rows
+({{fig:generated.edge-case-audit.version|version}} edge-case audit).
+:::
 
-Model: `community-static-v7` (model id `community-static-2026-10`, build
-2000922, release 0.13.0). Every learned score in this chapter is agreement with
-our own converter on inputs we designed, labelled by our own solver. The
-repository holds no native capture of build 2000922 that could score any of it
-against the game.
+::: technical
+## Question
 
-## 1. The pipeline, step by step
+Which rules, beyond the inverse of
+[Community static conversion](12-community-conversion.md), decide an exported
+value, and which components only report on it? "Decides" means the component
+can change an exported number or line.
 
-The automatic converter turns old settings into a new console line in seven
-steps. Steps 1 to 6 decide the export; step 7 only reports on it.
+## Model
 
-1. **Old settings to old pixels** (closed form, `communityLegacy` in `lib/geometry/community.js`). Binary32 arithmetic with ties to even reconstructs the old bar length, width and near edge at the old height (source ledger S01). The old outline extent comes from `legacyOutlineExtent` (capped at 3 px) and the old elements are painted in the old draw order: each outline, then its fill.
-2. **v6 appearance rules** (deterministic, `lib/geometry/edge-cases.js`, `lib/solver/community-edge.js`). Crossed arms are folded into the same pixels with a non-negative gap; an outline-only size 0 becomes a black core; a size-0 dot becomes short arms inside the dot square; zero-length bars draw nothing in the new game. The expert switch "Automatic appearance corrections" off skips the fold, the outline-only and dot-only rules and step 5.
-3. **Dimension-first inverse** (closed form plus an exact finite search, `lib/solver/community-axis.js`, `lib/solver/community-search.js`). Length and thickness are fitted first, then the centre radius (the new gap). At equal heights it reduces to the formulas below; otherwise monotone per-axis binary searches find every minimum-error value ([chapter 12](12-community-conversion.md)).
-4. **Tie-break** (rule, `lib/solver/alignment.js`). When at most eight shapes are equally accurate, the one with the best overlap after a whole-shape shift of at most 1 px wins, then plain overlap, then a fixed canonical order. Ties only occur at cross heights.
-5. **Appearance refinement window** (bounded exact search, `lib/solver/community-refine.js`). Only at the pixel goal, only when the old outline draws at most 1 px a side, and only when the shape check of the step-4 choice is not already exact, shifted or empty. Every tuple within 3 drawn pixels of length, 3 of thickness and 4 of the gap edge (at equal heights: ±3, ±3, ±4 native steps) is scored; a neighbour wins only by a strictly higher aligned colour overlap. If a v6 rule or the window changed the export, the plain conversion replaces it when its aligned overlap is strictly higher (`corrections-fallback`).
-6. **Export line** (rules, `nativeCommands` in `lib/settings/native.js`, `exportQuantCFG` in `lib/solver/export.js`). Cvars, not share codes; the outline alpha is the old crosshair opacity; `cl_crosshairusealpha 0` exports fill alpha 255 and outline alpha 200; `report.exportOverrides` carries the black colour of an outline-only core. One comment-free line joined by `;`.
-7. **Checks after the export.** The shape check (`shapeCheck`, closed form, `lib/geometry/appearance.js`) compares the old core and outline with the new ones by colour and reports exact, shifted, approximate or empty. The ML cross-check compares the learner's prediction with the export. Neither changes the export.
+### Appearance rules {#appearance-rules}
 
-The closed-form core of steps 1 and 3 at equal heights, before native limits:
+The rules apply to the old reconstruction only; measured targets and images
+stay literal (ADR-0014, `lib/geometry/edge-cases.js`, `lib/solver/community-edge.js`).
+They act on the target before the inverse; under the screen goal they act on
+the whole current pixels the scaled old shape covers (`snapToCells`).
 
-```text
-s = f32(oldHeight / 480)
-L = roundEven(f32(s * f32(size)))
-W = max(1, roundEven(f32(s * f32(thickness))))
-d = trunc(f32(f32(gap) + 4))
+**Crossed arms.** An old arm starts at its near edge, so $a<0$ puts both arms
+of an axis past the centre (issue #15). `foldCrossedArms` distinguishes:
 
-length    = clamp(L, 0, 255)
-thickness = clamp(W, 1, 32)
-gap       = clamp(d + ceil(W / 2), 0, 128)
-```
+- *full*, $a+L\le0$ and $b+L\le0$: each arm lies entirely on the opposite side.
+  The same pixels are a cross with $L^{*}=L$, near edge $-(b+L)$ and far edge
+  $-a-L$, both non-negative.
+- *partial*: the two arms of an axis overlap into one solid bar over
+  $[x_0,x_1)=[\min(-a-L,b),\max(-a,b+L))$, exported at gap 0; an odd span moves
+  by one pixel as for odd widths.
+- *none*: no crossing, or a union that arms cannot express.
 
-At other heights a native value v draws `max(1, round(v * r))` pixels for
-`r = currentHeight / authoredHeight` (zero stays zero), and the search inverts
-that rule axis by axis.
+The export warns `crossed-arms-folded`. Without the rule, `community-static-v5`
+clamped the gap to 0 and drew a solid plus (`negative-gap-static-unverified`).
 
-## 2. The parts that decide the export
+**Outline only.** Size 0 with an outline and no dot drew only the outlines of
+zero-length bars. `outlineAsCore` redraws those strokes as a black core: length
+$o_{\mathrm{lo}}+o_{\mathrm{hi}}$, width $W+o_{\mathrm{lo}}+o_{\mathrm{hi}}$,
+near edge $a-o_{\mathrm{hi}}$, far edge $b-o_{\mathrm{lo}}$, axis start
+$t-o_{\mathrm{lo}}$, with `cl_crosshair_drawoutline 0` and colour 0 0 0 at the
+old opacity (`outline-only-as-core`). The black colour and opacity groups are
+then required.
 
-None of these is learned. "Decides" means the component can change an exported
-value.
+**Dot only.** Size 0 with a dot drew the $W\times W$ square. `dotAsArms` adds arms
+at gap 0 of length $\lceil W/2\rceil$ whose union with the dot is exactly that
+square, with the dot on (`dot-only-as-arms`). With an outline, the old
+zero-length bars also drew strokes around the gap; the window draws part of them
+with the outline of short arms, and `zero-length-outline-dropped` names the rest
+when the result stays approximate.
 
-| Component | Kind | Input → output | Decides? | Basis | Why it is in the path |
-| --- | --- | --- | --- | --- | --- |
-| Legacy arithmetic (`communityLegacy`) | Closed form | old size, thickness, gap, height → old length, width, near edge | Yes | Source-derived (ledger S01); binary32 cases pinned by regression tests | The same old arithmetic as JDD310 and crosshairrestore. Exports agree with both on 909 of 945 corpus rows; the 36 others (for example pro-006 and pro-034 with crossed arms, Jame's size-0 dot) differ by the v6 rules (`crossTool` in `research/generated/converter-comparison.json`) |
-| v6 appearance rules | Rule | old shape → drawable target, export overrides | Yes | Issue #11 captures and a user statement; issue #15 | The old game drew shapes (crossed arms, outline-only `#`, size-0 dot) that no literal new tuple draws |
-| Old draw order, usealpha, outline cap, weapon gap | Rule | old settings → old appearance, export alphas | Yes | Leaked old renderer (S14 to S18), capture C | Old previews and the shape check must show what the old game drew |
-| Dimension-first inverse | Closed form and exact search | target pixels → length, thickness, gap | Yes | Declared reconstruction | Keeps bar dimensions before the centre radius and discloses the 1 px odd-width shift instead of widening bars |
-| Tie-break | Rule | up to 8 tied tuples → one | Yes, cross heights only | Tie audit and learner disagreement audit (finding F1) | 74 of 1,755 corpus rows changed (48 records), all at cross heights; no equal-height export changed |
-| Refinement window | Bounded exact search | chosen tuple and shape check → a neighbour or the same tuple | Yes, in scope only | Independent geometry audit of 118,552 cases | 3,211 audit exports changed, all better on the audit's measure, none worse; in the corpus only Jame (pro-049) changed |
-| Shape check | Closed-form comparison | old and new pixels → exact, shifted, approximate or empty | No: it is the window's score and a displayed status | Declared models | Corpus at 768/1080/1440/2160: 274 exact, 249 shifted, 28 approximate, 1 empty of 552 rows (`research/generated/edge-case-audit.json`) |
+**Zero length.** The current game is modelled as drawing nothing for a
+zero-length bar, outline included (see
+[Pixels, outlines and draw order](04-rendering.md)). The converter therefore
+never exports length 0 once the old shape drew arms or a dot.
 
-## 3. Learned and fitted components
+**Corrections switch.** The expert switch "Automatic appearance corrections"
+(`options.corrections`, default on) skips the fold, the black core, the dot
+arms and the appearance window; the export is the plain conversion and warns
+`corrections-off`. The old draw order and the zero-length model are models, not
+corrections, and stay.
 
-All labels below are synthetic: designed inputs, labelled by our own solver
-(`infer()` or `solveCommunity`). Corpus rows are published player settings
-labelled the same way, not captures. Brackets are group-resampling stability
-intervals, not confidence about the game. Split names:
+**Styles and weapon gap.** Old styles 2 and 3 drew the style-4 gap at rest and
+export Static Cross with `style-dynamic-at-rest`; style 5 uses its own gap
+([Legacy geometry](01-legacy-geometry.md)); styles 0 and 1 drew a different
+reticle and are refused. A weapon-dependent gap converts with the non-weapon
+goal 4 and warns `weapon-gap-dropped`.
 
-- **fresh**: inputs drawn and hashed before the first fit and scored only after training;
-- **edge challenge**: a fresh set restricted to edge regimes (crossed arms, size 0, zero length, weapon gap);
-- **regression (already seen)**: splits whose labels earlier work had already looked at; they show nothing new, only that a rerun did not break.
+### T shapes and the exported T flag {#t-shapes}
 
-| Component | Kind | Input → output | Decides? | Labels | Key held-out numbers | Outcome and why |
-| --- | --- | --- | --- | --- | --- | --- |
-| Export-state learner v2 (per-input ML cross-check) | Learned: boosted-tree ranker (64 rounds, depth 5) over its own at most 8 candidates, plus four heads (12 rounds, depth 2) | settings and scope → whole export (length, thickness, gap, outline mode and alpha, colour, fill alpha, T) | No: check only | `infer()` v7 on 640 synthetic development groups | Fresh 99.38% [99.08–99.63] (5,632 rows, 128 groups); edge challenge 99.49% [99.12–99.77] (3,520 rows, 80 groups); rule baseline 65.94% and 50.91%. Regression: export-state learner v1 test 3,784 rows 99.68%, challenge 1,920 rows 98.23%, corpus 945 rows 100%, corpus cross-height 810 rows 99.51%, presets 56 rows 100% | Shipped as a second opinion. Never calls the solver, but re-derives its regime transforms and the appearance window, so agreement is partly by construction |
-| Export-state learner v1 | Learned: ranker (48 rounds, depth 4) on the solver's candidates, appearance head (24 rounds, depth 3) | settings and scope → length, thickness, gap, outline mode, outline alpha | No: research only | `infer()` v7, 400 synthetic groups | Regression: test 76.69% [71.25–81.87] (3,784 rows), challenge 71.51% (1,920), corpus 99.26%, corpus cross-height 85.56% | Showed that trees cannot learn the exact 0 and 1 outline thresholds, so `outlineMode` stays closed form. Its candidates come from the code under check, and 3004 training labels of the window and the plain-conversion fallback fall outside them (`labelMisses`). It dropped on v7 because its fixed candidate set (at most 8 solver candidates) cannot reach the exports that the v7 shape-derived window (ADR-0019) now chooses, which also raised its training-label misses to 3,004 |
-| Structured ranker | Learned ranker over at most 8 legal candidates | settings and scope → length, thickness, gap | No: research only | `solveCommunity` v7, 320 + 80 synthetic groups | Regression: test 98.17% [97.33–98.92] (2,400 rows, 60 groups); interior 90.08%, exterior 94.22% (1,280 rows each). On the v2 fresh set: 77.04% | Was the single global "ML cross-check" number before the per-input cross-check. Not usable as a per-input check: its candidates come from `lib/solver/community-axis.js`, the code it would check |
-| Accuracy emulator (residual, quantized, regime and scale-free regime variants) | Learned: boosted corrections to a rounded analytic guess | settings and scope → length, thickness, gap | No: research only | `solveCommunity` v7, 320 + 80 synthetic groups | Regression, test (2,360 rows, 59 groups): residual 93.94%, quantized 96.27%, regime 97.75% [96.69–98.73], scale-free regime 97.50%. Interior: 65.00%, 78.91%, 77.58%, 80.70%. Exterior: 53.91%, 76.80%, 71.88%, 74.30%. Fresh (v2 set): regime 70.05%, quantized 57.23% | Measures how learnable the solver is from input features alone. The regime variant overfits the training heights; its scale-free revision (2026-10-03, chosen on validation) narrows but does not close the gap on the shifted challenges. No variant is close enough to stand in for the solver |
-| Community emulator v2 (frozen) | Learned residual | settings → tuple of the old `community-static-v2` (build 2000918) | No: historical | `solveCommunity` v2, 100 groups | Test 93.90% [91.07–96.43] (672 rows, 21 groups) against analytic 80.21%; challenge 72.66% against analytic 80.12% (1,152 rows, 96 groups) | Worse than the analytic guess under a shift; kept byte-identical as history |
-| Quant emulator v1, learned shortlist, sensitivity classifier ([chapter 10](10-learned-emulator.md)) | Learned (boosted trees) | settings → tuple of the historical 27-model solver | No: historical research | `infer()` of the historical solver, 607 settings | Exact tuple 35.68% against naive 3.57% (1,009 rows); shortlist of 32 contains the solver tuple in 84.8% and loses on 13 of 125; classifier 0.736 against a 0.704 majority baseline | Speed gate closed: a fast path that is wrong on most tuples cannot replace the exact solver |
-| Residual modulator | Would be learned (±2 px correction) | solver tuple → bounded correction | No: closed | Native capture pairs only, never solver labels | 0 reviewed native pairs (needs at least 40); weights null (`research/generated/quant-modulator.json`) | Returns a zero delta until reviewed captures exist |
-| Model partition | Analytic sampling tool, not learned | 27 historical models → behaviour groups | No: research only | None | 27 of 27 models behave differently on 34,560 sampled tuples (`research/generated/model-partition.json`) | Shows the historical hypotheses cannot be merged; says nothing about which one the game uses |
-| Least-squares usealpha alpha | Fitted: closed-form least squares | old additive colour → normal-blend alpha | No: rejected | Declared blend models over 256 neutral grey backgrounds, not a capture | Default green: RGB error 133, luminance error 232; red: 133 and 4; 45 of 216 grid colours get 0 (`research/generated/additive-alpha.json`) | The answer depends on the error measure and makes dark colours invisible. 255 by user decision (2026-10-03), as the additive fill never dimmed the background and all five other converters export 255 |
+The leaked old renderer has no `cl_crosshair_t`. The converter assumes an old T
+omitted the code's top bar, so its single vertical stem is the bottom bar
+$[b,b+L)$ next to the horizontal band $[t,t+W)$. The stem reached past the band
+by (`tStem`)
 
-Learner numbers are from `research/generated/crosscheck-emulator.json`,
-`export-emulator.json`, `structured-emulator.json`, `accuracy-emulator.json`,
-`community-emulator.json`, `quant-emulator.json` and `ranker-benchmark.json`;
-the shipped rate is also in `data/quant-summary.json` (`evidence.mlCrossCheck`).
-`accuracy-emulator.json` is a research artifact that is not published because of
-its size; its headline numbers are quoted here and in the learner note.
-The [learner note](../research/learners-2026-10-02.md) has the full designs and
-earlier values.
+$$
+e_{\uparrow}=\max(0,\,t-b)=\max(0,\,-W-d),\qquad
+e_{\downarrow}=\max\bigl(0,\,b+L-(t+W)\bigr)=\max(0,\,d+L),
+$$
 
-## 4. Where an ML finding changed code, and where it did not
+which agrees with the drawn cells on 60,912 cases (styles 4 and 5, heights 720
+to 1440, ADR-0020). `tShape` sorts every old T into seven families:
 
-- **Cross-height ties → tie-break.** The export learner's disagreement audit flagged ties where the learner's choice matched the old shape better once the odd-width shift was removed. A research tie audit found the same cluster (468 of 2,108 tied synthetic cases, 74 of 222 tied corpus rows). The fix is a rule, not a model.
-- **Outline thresholds → stays closed form.** Export v1 failed exactly at outline widths just above 0 and just below 1 (all 384 challenge rows with an outline error in its first evaluation, on v4 labels), because a tree threshold falls between training values. `outlineMode` stayed analytic ([learner note, section 3](../research/learners-2026-10-02.md#3-metrics-before-and-after)).
-- **Regime diagnosis → regime features in the learners.** Scoring the v6 learners by regime showed the size-0 dot as the largest block of errors (36% of the accuracy emulator's test errors) and the outline-only `#` as invisible to the v1 appearance head. This changed the learners (regime features in `lib/solver/ml-crosscheck.js` and the v2 learner), not the solver: the size-0 dot rule already existed.
-- **Window labels outside the candidates → the cross-check re-derives the window.** After the appearance window and its amendment some labels lie outside a ranker's candidate set (3,004 `labelMisses` in export v1 after v7). The v2 learner therefore applies its own copy of the window after its pick and trains on "the window of this candidate is the label" (0 misses). This is the main reason its agreement is partly by construction.
-- **Not from ML.** The v6 appearance rules came from issues #11 and #15 and their captures; the refinement window came from an independent brute-force geometry audit; the old draw order, the outline cap and the weapon gap came from the converter survey and the leaked old renderer.
+| Family | Condition | Old look | Planned flag (`auto`) | Flippable |
+|---|---|---|---|---|
+| `upright` | $L>0$, $e_{\uparrow}=0$, $e_{\downarrow}>0$ | a T | T | no |
+| `stem-hidden` | $L>0$, $e_{\uparrow}=e_{\downarrow}=0$ | stem inside the bar, no T visible | T | yes |
+| `straddle` | $e_{\uparrow}>0$, $e_{\downarrow}>0$, $e_{\uparrow}\ne e_{\downarrow}$ | stem through the bar | T | yes |
+| `straddle-symmetric` | $e_{\uparrow}=e_{\downarrow}>0$ | a full cross | cross | yes |
+| `inverted` | $e_{\uparrow}>0$, $e_{\downarrow}=0$ | an upside-down T | cross | yes |
+| `strokes` | $L=0$ with an outline, dot or not | outline strokes, the top one dropped | T | yes |
+| `no-effect` | $L=0$ without an outline | T changes no pixel | T | no |
 
-## 5. Worked examples at 1080
+For `strokes` the stem is computed on the outline-as-core strokes, and the
+family is *crossed* when those strokes cross the centre. An upright T is upright
+whether or not its arms crossed: the issue input size 2, thickness 0.5, gap −5,
+outline 1 at 1080 ($d=-1$, $W=1$) is upright.
 
-Each example uses old style 4, white at opacity 230, outline off, recoil off,
-1080 → 1080 at the pixel goal, unless stated. The numbers come from running
-`infer()`, `exportQuantCFG()` and `crossCheck()` on the current tree.
+The option `tShape` (`tShapeChoice` in `lib/settings/native.js`, recorded in
+`report.options.tShape`) decides what is exported:
 
-| Example | Old pixels | Rules and steps that acted | Export (length / thickness / gap and extras) | Shape check | ML cross-check |
-| --- | --- | --- | --- | --- | --- |
-| Issue #15: size 2, thickness 1, gap -11.5, dot | length 4, width 2, near edge -6 (arms cross the centre) | Fold (crossed full); inverse with one candidate; window not needed | 4 / 2 / 2, dot 1 | Exact (IoU 1) | Agrees (4/2/2) |
-| Issue #15 as pasted: only size, gap and dot (game defaults fill the rest) | length 4, width 1, near edge -7 | Defaults note; weapon gap dropped; style 2 read at rest; fold | 4 / 1 / 3, dot 1, outline 1 at 200, green 0 255 0 at 200, recoil 1 | Shifted (aligned IoU 1, raw 0.185: the 1 px odd-width shift) | Agrees (4/1/3) |
-| Issue #11: size 0, thickness 3.4, gap -5, outline 0.01 | length 0, width 8, near edge 3; only the outline strokes showed | Outline-only as core; inverse | 1 / 9 / 3, drawoutline 0, colour 0 0 0 at 230 | Exact | Agrees (1/9/3, black, drawoutline 0) |
-| Size-0 dot: size 0, thickness 1, gap 0, dot | length 0, width 2 (only the dot showed) | Dot as arms (length ceil(W/2) = 1, gap 0) | 1 / 2 / 0, dot 1 | Exact | Agrees (1/2/0) |
-| Inverted T: size 2, thickness 1, gap -20, T | length 4, width 2, near edge -15; the single vertical arm crossed above the centre | Fold; T kept (user decision); window ran and found nothing strictly better | 4 / 2 / 11, T 1, warning `inverted-t-unrepresentable` | Approximate (aligned IoU 0.5) | Agrees (4/2/11, T 1) |
-| Refinement (appearance-window case D1): size 1, thickness 2, gap -4, dot, outline 1 | length 2, width 4, near edge 2 | Inverse gives 2/4/2 (aligned IoU 0.81); window moves to a neighbour | 1 / 4 / 3, dot 1, outline 1 at 230 | Exact | Agrees (1/4/3) |
+- `keep` (default, ADR-0025): the old flag. The search and the window use it
+  and try no other flag. A kept inverted T draws its stem below the bar, the
+  closest T the current game can draw.
+- `auto` (ADR-0020): the planned flag above. `inverted` and `straddle-symmetric`
+  export a cross, whose top arm reproduces the old stem; flippable families also
+  let the window try the other flag, which must win strictly.
+- `on`, `off`: the forced flag on the corrected and the plain path.
 
-What the examples show:
+Warnings: `inverted-t-unrepresentable` when T is exported, the family is
+flippable and not `stem-hidden` (for `strokes`, only if crossed), and the shape
+check is approximate; `t-flipped-for-shape` when `auto` exports a cross for an
+old T; `t-user-choice` when `on` or `off` exports a flag other than the old one.
+The report carries `edgeCase.tShape` and, whenever the exported flag differs
+from the old one, `exportOverrides.t_style`.
 
-- **Issue #15.** With the corrections switch off the same input exports 4/2/0, the v5 behaviour: a solid plus, shape check approximate at IoU 0.45, warning `negative-gap-static-unverified`, and the ML row reads "Not checked: corrections off". The fold is what keeps the one-pixel hole on each side of the dot.
-- **Issue #15 as pasted.** The paste sets only three cvars, so the old game's defaults (thickness 0.6, style 2, outline 1 at width 1, green 0/255/0 at alpha 200, recoil 1, weapon gap 1) fill the rest with a visible `defaults-filled` warning. Thickness 0.6 draws 1 px, so the export is 4/1/3 and the cross sits 1 px off (shifted).
-- **Issue #11.** The black colour and drawoutline 0 come from `report.exportOverrides`, a rule. The learner's heads predict them independently, and here they match.
-- **Size-0 dot.** With corrections off the export is 0/2/5 with the dot on. That relies on the new game drawing a dot at length 0, which no capture shows; the corrected 1/2/0 draws the same pixels whether or not it does.
-- **Inverted T.** A T whose stem crossed the centre cannot be drawn in the new game. The export keeps T because the user chose T; the new arm points down instead of up, and the warning says so.
-- **Refinement.** The dot outline overpainted the short old arms. The window finds 1/4/3, which draws the old pixels exactly. The learner predicts 1/4/3 too, but it applies the same window rule, so this agreement is by construction rather than independent confirmation.
+On the synthetic grid of the edge-case audit
+({{fig:generated.edge-case-audit.version|version}}, default options):
 
-## 6. What we don't know (needs captures)
+| Family | Rows | Exported T | Exported cross |
+|---|---|---|---|
+| `upright` | {{fig:generated.edge-case-audit.rules.synthetic.tShapes.upright.rows|int}} | {{fig:generated.edge-case-audit.rules.synthetic.tShapes.upright.keptT|int}} | {{fig:generated.edge-case-audit.rules.synthetic.tShapes.upright.flipped|int}} |
+| `stem-hidden` | {{fig:generated.edge-case-audit.rules.synthetic.tShapes.stem-hidden.rows|int}} | {{fig:generated.edge-case-audit.rules.synthetic.tShapes.stem-hidden.keptT|int}} | {{fig:generated.edge-case-audit.rules.synthetic.tShapes.stem-hidden.flipped|int}} |
+| `straddle` | {{fig:generated.edge-case-audit.rules.synthetic.tShapes.straddle.rows|int}} | {{fig:generated.edge-case-audit.rules.synthetic.tShapes.straddle.keptT|int}} | {{fig:generated.edge-case-audit.rules.synthetic.tShapes.straddle.flipped|int}} |
+| `straddle-symmetric` | {{fig:generated.edge-case-audit.rules.synthetic.tShapes.straddle-symmetric.rows|int}} | {{fig:generated.edge-case-audit.rules.synthetic.tShapes.straddle-symmetric.keptT|int}} | {{fig:generated.edge-case-audit.rules.synthetic.tShapes.straddle-symmetric.flipped|int}} |
+| `inverted` | {{fig:generated.edge-case-audit.rules.synthetic.tShapes.inverted.rows|int}} | {{fig:generated.edge-case-audit.rules.synthetic.tShapes.inverted.keptT|int}} | {{fig:generated.edge-case-audit.rules.synthetic.tShapes.inverted.flipped|int}} |
+| `strokes` | {{fig:generated.edge-case-audit.rules.synthetic.tShapes.strokes.rows|int}} | {{fig:generated.edge-case-audit.rules.synthetic.tShapes.strokes.keptT|int}} | {{fig:generated.edge-case-audit.rules.synthetic.tShapes.strokes.flipped|int}} |
+| `no-effect` | {{fig:generated.edge-case-audit.rules.synthetic.tShapes.no-effect.rows|int}} | {{fig:generated.edge-case-audit.rules.synthetic.tShapes.no-effect.keptT|int}} | {{fig:generated.edge-case-audit.rules.synthetic.tShapes.no-effect.flipped|int}} |
 
-The export is a deterministic answer under declared models. These model
-assumptions have no capture of build 2000922 yet:
+### The export line {#export-line}
 
-- **Dot at length 0.** The zero-length rule rests on one user statement; a decompile note says the dot draws regardless. The dot-only export avoids depending on it.
-- **Odd-width gap origin.** ceil(W/2) (ours, JDD310) against floor(W/2) (cursed): it changes 382 of 945 corpus rows and 46 of 135 published crosshairs at 1080 ([learner note, section 6](../research/learners-2026-10-02.md#6-gap-origin-sensitivity)).
-- **Gap scaling and rounding at other heights.** The `max(1, round(v * r))` rule and the centre-radius gap are a carry-over from build 2000918, unverified on 2000922 away from 1080.
-- **Negative static gap.** What the new static style draws for a console-only negative gap (capture case `s1-t2-gm2`).
-- **Full outline width.** Mode 1 is assumed to draw 1 px all round; no capture shows it, and old outlines wider than 1 px cannot be reproduced.
-- **Thickness 0.** The new `cl_crosshair_thickness 0` is predicted to hide the bars; the converter never exports it, and no capture confirms it.
+The export is console commands only, never a share code (ADR-0003), joined by
+`;` with the authored height last (`nativeCommands` in `lib/settings/native.js`,
+`exportQuantCFG` in `lib/solver/export.js`). The style is Static Cross 4 unless
+the experimental family option keeps old styles 2, 3 and 5. The outline alpha is
+the old crosshair opacity. With `cl_crosshairusealpha 0` the fill exports alpha
+255 and the outline 200 (`additive-blend-approximated`, ADR-0015): the additive
+old fill never dimmed the background, a fitted alpha depends on the error
+measure ([Pixels, outlines and draw order](04-rendering.md)), and the other five
+converters surveyed export 255.
 
-The [capture protocol](../research/capture-protocol-2026-10-02.md) lists the
-console lines and predicted masks for these cases.
+Six optional line groups (ADR-0022) are RGB, fill opacity, outline mode, outline
+RGBA, follow recoil and authored height. A group is ticked by default only when
+the old input assigned its values; the authored height is always ticked,
+because the exported sizes are scaled for it. A redraw that needs black opaque
+bars or an outline override makes those groups required. An omitted line keeps
+the player's current game value, which the converter does not know; previews
+and the shape check assume the displayed values. `report.exportedOverrides`
+together with `nativeCommands` reproduces the export.
+
+### Components and whether they decide
+
+| Component | Kind | Decides | Basis |
+|---|---|---|---|
+| Old arithmetic (`communityLegacy`) | closed form | yes | leaked old renderer, source ledger S01 |
+| Appearance rules | rule | yes | issues #11 and #15, their captures |
+| Old draw order, `usealpha 0`, outline cap, weapon gap | rule | yes | leaked old renderer (S14 to S18), capture C |
+| T plan and `tShape` option | rule | yes | ADR-0020, ADR-0025 |
+| Dimension-first inverse | closed form and exact search | yes | declared reconstruction |
+| Tie-break | rule | yes, at cross heights | tie audit (ADR-0013) |
+| Appearance window and plain fallback | bounded exact search | yes, in scope | geometry audit (ADR-0017, ADR-0019, ADR-0024) |
+| Export groups | rule | which lines appear | ADR-0022 |
+| Shape check | closed-form comparison | no: it scores the window and reports a status | declared models |
+| ML cross-check | learned | no: a second opinion | [Learned emulators](10-learned-emulator.md) |
+
+## Result
+
+Worked examples at 1080, pixel goal, old style 4, white at opacity 230, outline
+off unless stated; computed with `infer()` and `exportQuantCFG()` on
+`{{fig:model.version|version}}`. Exports are length / thickness / gap.
+
+| Old settings | Old pixels $L, W, a$ | What acted | Export | Shape check |
+|---|---|---|---|---|
+| Issue #15: size 2, thickness 1, gap −11.5, dot | 4, 2, −6 | fold (full) | 4 / 2 / 2, dot | exact |
+| The same, corrections off | 4, 2, −6 | plain conversion | 4 / 2 / 0, dot | approximate, 0.455 |
+| Issue #11: size 0, thickness 3.4, gap −5, outline 0.01 | 0, 8, 3 | outline as core | 1 / 9 / 3, outline 0, colour 0 0 0 at 230 | exact |
+| Size 0, thickness 1, gap 0, dot | 0, 2, 5 | dot as arms | 1 / 2 / 0, dot | exact |
+| The same, corrections off | 0, 2, 5 | plain conversion | 0 / 2 / 5, dot | exact if the dot draws at length 0 |
+| Inverted T: size 2, thickness 1, gap −20, T ($e_{\uparrow}=14$) | 4, 2, −15 | fold; `keep` | 4 / 2 / 11, T 1, `inverted-t-unrepresentable` | approximate, 0.5 |
+| The same, `tShape` auto | 4, 2, −15 | fold; planned cross | 4 / 2 / 11, T 0, `t-flipped-for-shape` | approximate, 0.75 |
+| Upright T: size 2, thickness 1, gap −3, T ($e_{\downarrow}=5$) | 4, 2, 2 | none | 4 / 2 / 2, T 1 | exact |
+| The same, `tShape` off | 4, 2, 2 | forced flag | 4 / 2 / 2, T 0, `t-user-choice` | approximate, 0.75 |
+| Size 1, thickness 2, gap −4, dot, outline 1 | 2, 4, 2 | window: 2 / 4 / 2 at 0.81 → neighbour | 1 / 4 / 3, dot, outline 1 at 230 | exact |
+
+Scores are $\operatorname{IoU}_{\pm1}$. In the last row the old dot outline
+painted over the short arms; 1 / 4 / 3 draws those pixels exactly after 304
+evaluated tuples. In the dot-only row the corrected export draws the same pixels
+whether or not the current game draws a dot at length 0; the plain export
+depends on it.
+
+## Limits
+
+The zero-length rule rests on one user statement and conflicts with a
+decompile note about the dot; the dot-only export is chosen so that both
+readings draw the same pixels. How an old T drew is an assumption, since the
+leaked renderer has none. The window is bounded: size-0 dots with an outline
+whose strokes lie more than 32 px out stay approximate. A kept inverted T and an
+old 2 or 3 px outline cannot be drawn by the current game, and the warnings say
+so per input.
+:::

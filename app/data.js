@@ -22,6 +22,13 @@ export function loadQuantCorpus() {
   return Promise.all([load('corpus.json'), load('corpus-meta.json'), load('quant-summary.json').catch(() => null)]);
 }
 
+let summaryPromise;
+/** The quant study summary (its `learners` feed the research page), or null when it cannot load. */
+export function loadQuantSummary() {
+  if (!summaryPromise) summaryPromise = fetchJSON('quant-summary.json', 'Research summary could not load.').catch(() => null);
+  return summaryPromise;
+}
+
 let crossCheckPromise;
 /** Parameters of the per-input ML cross-check, or null when they cannot load: the converter works without them. */
 export function loadCrossCheck() {

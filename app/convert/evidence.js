@@ -3,14 +3,16 @@ import { rgba, effectiveOutlineMode, exportFillAlpha } from '../../lib/settings/
 import { shapeCheck } from '../../lib/solver/community-edge.js';
 import { COMMUNITY_MODEL } from '../../lib/geometry/community.js';
 import { crossCheck } from '../../lib/solver/ml-crosscheck.js';
+import { mergedExportOverrides } from '../../lib/solver/export.js';
 
 const pct = (value, digits = 1) => `${(100 * value).toFixed(digits)}%`;
 
 /** What the export draws: the report's colour, outline mode and T flag overrides, else the old settings with the
  * exported fill opacity (usealpha 0 exports the closest normal blend). */
 export function exportedLook(r) {
-  const o = r.exportOverrides ?? {};
-  return { settings: o.t_style === undefined ? r.settings : { ...r.settings, t_style: o.t_style },
+  // Merged: a T flag forced by the T option (ADR-0025) reaches historical reports through the scope, not `exportOverrides`.
+  const o = r.exportOverrides ?? {}, t = mergedExportOverrides(r).t_style;
+  return { settings: t === undefined ? r.settings : { ...r.settings, t_style: t },
     color: o.color ?? { ...rgba(r.settings), alpha: exportFillAlpha(r.settings) },
     outlineMode: effectiveOutlineMode(r.settings, o.outlineMode ?? r.options.outlineMode) };
 }
@@ -65,11 +67,12 @@ function communityRows(r, evidence) {
   if (!evidence) return [];
   const { captures: c, crossTool: x, mlCrossCheck: m, mlParams } = evidence;
   const mlCurrent = m?.targetVersion === COMMUNITY_MODEL.version, gaps = mlScopeGaps(r.options, m?.scope);
+  const heldOut = m?.evaluationKind === 'reused-holdout-regression' ? 'reused held-out' : 'held-out';
   // The stated rate holds for the evaluated design only; the per-input agreement still shows outside it.
   const rate = !mlCurrent ? '' : gaps.length
     ? `; this input is outside the evaluated scope (${gaps.join(', ')}), so the rate measured there ` +
-      `(${pct(m.exactRate)} of fresh held-out synthetic cases) does not apply`
-    : `; it agrees on ${pct(m.exactRate)} (${pct(m.lower)}–${pct(m.upper)}) of fresh held-out synthetic cases`;
+      `(${pct(m.exactRate)} of ${heldOut} synthetic cases) does not apply`
+    : `; it agrees on ${pct(m.exactRate)} (${pct(m.lower)}–${pct(m.upper)}) of ${heldOut} synthetic cases`;
   return [
     ...(c ? [['Game captures', `${c.reproduced} / ${c.total} reproduced`,
       `User captures of the current game (${c.resolution.height}p, ${c.date}); not independent holdouts`]] : []),
@@ -81,7 +84,7 @@ function communityRows(r, evidence) {
       'A separately implemented model, trained to imitate the converter, predicts the whole export without running it; ' +
       'it shares the converter\'s rendering models and refinement rule, so agreement is partly by construction' +
       rate +
-      '. Agreement with our own method, not game accuracy']] : []),
+      '. Agreement with the converter\'s own method, not game accuracy']] : []),
   ];
 }
 

@@ -1,19 +1,13 @@
 import { el, fmt, table } from '../ui/dom.js';
 import { paintQuant, fitZoom } from './preview.js';
-import { rgba, legacyOutlineExtent, nativeOutlineExtent, styleTarget } from '../../lib/settings/native.js';
-import { STYLE_ON_BUILD_2000922 } from '../../lib/settings/cvars.js';
+import { rgba, legacyOutlineExtent, nativeOutlineExtent } from '../../lib/settings/native.js';
 import { scaleOf, EXPERT_MODELS } from '../../lib/solver/renderer.js';
 import { exportQuantCFG } from '../../lib/solver/export.js';
 import { rivalSummary } from '../../lib/solver/migration.js';
-import { modelName } from './view.js';
+import { modelName, GROUP_CHECKS } from './view.js';
 import { drawingEdges } from '../../lib/geometry/raster.js';
 import { clearOutcomes, shownWarnings, warningItem } from './outcomes.js';
 import { exportedLook, confidenceRows, metricNode } from './evidence.js';
-/** Exported style with its current-game name, e.g. "Static Cross (style 4)". */
-export function exportedStyleName(report) {
-  const style = styleTarget(report.settings, report.options?.styleTarget ?? 'static');
-  return `${STYLE_ON_BUILD_2000922.find(entry => entry.id === style)?.uiLabel ?? 'Style'} (style ${style})`;
-}
 export const percent = value => value == null ? 'Undefined' : `${(100 * value).toFixed(1)}%`;
 
 export function clearResult(view, state = 'pending', message = 'Calculating…') {
@@ -36,9 +30,9 @@ export function clearResult(view, state = 'pending', message = 'Calculating…')
   clearOutcomes(view);
   get('qs-flags').replaceChildren(); get('qs-commands').replaceChildren(); get('qs-scale').textContent = '';
   get('qs-live').textContent = '';
-  get('qs-note').textContent = '';
   get('qs-status').textContent = state === 'error' ? message : '';
   get('qs-copy').disabled = get('qs-download').disabled = true;
+  for (const [id] of Object.values(GROUP_CHECKS)) get(id).disabled = true;
   for (const id of ['qs-old-canvas', 'qs-new-canvas']) {
     const canvas = get(id);
     canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
@@ -89,14 +83,19 @@ function previewLabels(view, r) {
     'odd-width bars sit half a pixel to the other side of the screen centre.' : '';
   get('q-converted-note').textContent = `${percent(r.convertedFit.iou)} core overlap (no shift) in the selected model.${shifted}`;
   get('q-renderer-note').textContent = `New preview: ${modelName(r.renderer)}. ` +
-    'Difference colors: light = shared, amber = extra, blue = missing. Core overlap compares the coloured core only, ' +
-    'without a shift; the Shape check also compares outlines and allows a 1 px shift. New outline: full = 1 px all round ' +
-    '(unverified in game), half = top and left (matches one user capture, issue #11). ' +
-    (r.provenance ? r.provenance.scope : 'Gap scaling remains a hypothesis in the historical build 2000914 study.');
+    'Difference: white (dark on Light) = shared, amber = extra, blue = missing. Core overlap compares the coloured core ' +
+    'without a shift; the shape check also compares outlines and allows a 1 px shift.';
 }
 
-/** `status: false` (a resize or font refresh) leaves the status line alone, e.g. "Copied to clipboard.". */
-export function renderSimple(view, report, { status = true } = {}) {
+/** The T chip: the exported shape, and when the best-match option drew a cross for an old T, that it flipped it. */
+export function tShapeFlag(old, exported, options) {
+  if (exported.t_style) return 'T';
+  return old.t_style && options?.tShape === 'auto' ? 'cross (old T)' : 'cross';
+}
+
+/** `status: false` (a resize or font refresh) leaves the status line alone, e.g. "Copied to clipboard.".
+ * `include` is the export-group selection (`nativeCommands`); null exports every group. */
+export function renderSimple(view, report, { status = true, include = null } = {}) {
   if (!report) return;
   const { get } = view, s = report.settings, n = report.chosen.native, c = rgba(s), exported = exportedLook(report);
   const exportedOutline = nativeOutlineExtent(exported.settings, exported.outlineMode);
@@ -105,34 +104,27 @@ export function renderSimple(view, report, { status = true } = {}) {
   get('qs-length').textContent = blocked ? '-' : fmt(n.length);
   get('qs-out-thickness').textContent = blocked ? '-' : fmt(n.thickness);
   get('qs-out-gap').textContent = blocked ? '-' : fmt(n.gap);
-  const flags = [s.dot ? 'center dot' : 'no center dot', exported.settings.t_style ? 'T shape' : 'cross',
-    ['no outline', 'outline', 'half outline'][exported.outlineMode], exportedStyleName(report),
-    s.recoil ? 'follows recoil (not simulated)' : 'no recoil', `rgba(${exported.color.rgb.join(', ')}, ${exported.color.alpha})`];
-  // Chips; visually hidden separators keep the text content one line ("a · b · c") when copied.
+  // Only what the commands do not show plainly: the exported T (and a flip) and the outline mode, also when its line is left out.
+  const flags = [tShapeFlag(s, exported.settings, report.options), ['no outline', 'full outline', 'half outline'][exported.outlineMode]];
+  // Chips; visually hidden separators keep the text content one line ("a · b") when copied.
   get('qs-flags').replaceChildren(...(blocked ? [] : flags.flatMap((flag, index) => [
     ...(index ? [el('span', { class: 'flag-sep', 'aria-hidden': 'true' }, ' · ')] : []), el('span', { class: 'flag' }, flag)])));
-  const warningText = report.warnings.map(w => typeof w === 'string' ? w : w.text);
-  const gapScale = warningText.find(w => /Gap scaling is not stated in the build 2000914/.test(w));
-  get('qs-note').textContent = (gapScale ?? (report.provenance && 'Community reconstruction; not checked against game captures.'))
-    || 'Conditional preview under the selected model.';
   const oldCanvas = get('qs-old-canvas'), zoom = fitZoom(oldCanvas, [report.target, report.converted], [s, exported.settings],
     [legacyOutlineExtent(s), exportedOutline]);
   paintQuant(oldCanvas, report.target, s, c, zoom, null,
     { grid: zoom >= 6, annotate: true, outline: legacyOutlineExtent(s), legacy: true });
   paintQuant(get('qs-new-canvas'), report.converted, exported.settings, exported.color, zoom, null,
     { grid: zoom >= 6, annotate: true, outline: exportedOutline });
-  get('qs-scale').textContent = `×${zoom}, one cell = one game pixel, ring = screen centre.` +
-    (exported.outlineMode ? ' Outline black at crosshair ' +
-    `opacity; ${exported.outlineMode === 2 ? 'half outline matches one user capture.' : 'full outline unverified in game.'}` : '');
+  get('qs-scale').textContent = `×${zoom}, 1 cell = 1 game pixel, ring = screen centre.`;
   view.root.dataset.blocked = String(blocked);
-  const lines = blocked ? [] : exportQuantCFG(report).split(';').filter(Boolean);
+  const lines = blocked ? [] : exportQuantCFG(report, include).split(';').filter(Boolean);
   get('qs-commands').replaceChildren(...(blocked ? [el('p', { class: 'small' }, 'No commands until the issue above is resolved.')]
     : lines.map(line => {
       const [name, ...value] = line.split(' ');
       return el('div', { class: 'cmd' }, el('span', { class: 'cvar-name' }, name), ' ',
         el('span', { class: 'cvar-value' }, value.join(' ')));
     })));
-  if (status) get('qs-status').textContent = blocked ? `${report.blockers[0]} Nothing can be exported until this is resolved.` : '';
+  if (status) get('qs-status').textContent = blocked ? report.blockers[0] : '';
   get('qs-copy').disabled = blocked; get('qs-download').disabled = blocked;
   const announcement = blocked ? '' : `New settings: length ${fmt(n.length)}, thickness ${fmt(n.thickness)}, gap ${fmt(n.gap)}.`;
   if (get('qs-live').textContent !== announcement) get('qs-live').textContent = announcement;
@@ -153,16 +145,18 @@ function renderCertificate(view, r) {
     `Certificate for the declared loss: method ${c.method}; global ${c.global ? 'yes' : 'no'}; improved on the bounded best ${c.improved ? 'yes' : 'no'}. ${method}. Scope: ${c.scope}`;
 }
 
-export function renderResult(view, r, evidence = null) {
+export function renderResult(view, r, evidence = null, include = null) {
   const { get, root } = view;
-  renderValues(view, r); renderSimple(view, r); renderMetrics(view, r, evidence); previewLabels(view, r); renderCertificate(view, r);
-  get('q-cfg').value = r.blockers.length ? '' : exportQuantCFG(r);
+  renderValues(view, r); renderSimple(view, r, { include }); renderMetrics(view, r, evidence);
+  previewLabels(view, r); renderCertificate(view, r);
+  get('q-cfg').value = r.blockers.length ? '' : exportQuantCFG(r, include);
   get('q-download-cfg').disabled = Boolean(r.blockers.length);
   get('q-download-report').disabled = false;
   get('q-status').textContent = r.blockers.length ? 'No export until the issues below are resolved.' : 'Settings ready to copy or download.';
   // The same list as the Simple view, so neither hides a warning the other shows.
   const relevant = shownWarnings(r);
-  if (root.dataset.strategy === 'hedge' && r.convertedFit.iou !== 1) relevant.unshift('The automatic choice balances several models. Open the pixel measurements to see where this preview differs.');
+  if (root.dataset.strategy === 'hedge' && r.convertedFit.iou !== 1)
+    relevant.unshift('The weighted hedge balances several models; Pixel measurements shows where this preview differs.');
   get('q-warnings').replaceChildren(...r.blockers.map(w => warningItem(w, 'blocked')), ...relevant.map(w => warningItem(w)));
   const e = r.experiment;
   get('q-experiment').textContent = e

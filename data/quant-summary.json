@@ -920,13 +920,14 @@
     "mlCrossCheck": {
       "model": "export-state-learner-v2",
       "learner": "sicc-export-emulator-v2",
-      "targetVersion": "community-static-v7",
-      "parametersHash": 2735049867,
+      "targetVersion": "community-static-v11",
+      "parametersHash": 3446794792,
       "partition": "fresh",
-      "evaluated": "2026-10-02",
-      "exactRate": 0.9937855113636364,
-      "lower": 0.9907670454545457,
-      "upper": 0.9962713068181819,
+      "evaluated": "2026-10-07",
+      "evaluationKind": "reused-holdout-regression",
+      "exactRate": 0.9992897727272727,
+      "lower": 0.998224431818182,
+      "upper": 1,
       "cases": 5632,
       "groups": 128,
       "keys": [
@@ -967,13 +968,90 @@
         "note": "Evaluated design: equal old, current and screen heights at the pixel goal, plus the listed old/current/screen-height scopes at either goal. The rate is not claimed outside it."
       },
       "edgeChallenge": {
-        "exactRate": 0.9948863636363636,
-        "lower": 0.9911931818181818,
-        "upper": 0.9977272727272728,
+        "exactRate": 0.9977272727272727,
+        "lower": 0.9954545454545455,
+        "upper": 0.9994318181818181,
         "cases": 3520,
         "groups": 80
       },
-      "note": "Whole-export agreement (length, thickness, gap, outline mode and alpha, colour, fill alpha, T) of the export-state learner v2 with the converter on a fresh reserved synthetic set, scored after training; relabelled and rescored after the 0.12.0 solver changes; interval is a group-resampling stability interval. Its inference never runs the solver. Agreement with our own method, not game accuracy."
+      "note": "Whole-export agreement (length, thickness, gap, outline mode and alpha, colour, fill alpha, T) of the export-state learner v2 with the converter on a reserved synthetic set, scored after training. The partition named fresh was evaluated in earlier releases and is reused regression evidence for community-static-v11, not fresh independent validation. Interval is a group-resampling stability interval. Its inference never runs the solver. Agreement with our own method, not game accuracy."
+    }
+  },
+  "learners": {
+    "accuracy": {
+      "targetVersion": "community-static-v11",
+      "exactTuple": {
+        "test": {
+          "residual": 0.9394067796610169,
+          "quantized": 0.9627118644067797,
+          "regime": 0.9775423728813559,
+          "regimeAxis": 0.975
+        },
+        "interior": {
+          "residual": 0.65,
+          "quantized": 0.7890625,
+          "regime": 0.77578125,
+          "regimeAxis": 0.80703125
+        },
+        "exterior": {
+          "residual": 0.5390625,
+          "quantized": 0.76796875,
+          "regime": 0.71875,
+          "regimeAxis": 0.74296875
+        }
+      },
+      "renderedExact": {
+        "test": {
+          "residual": 0.9461864406779661,
+          "quantized": 0.964406779661017,
+          "regime": 0.9775423728813559,
+          "regimeAxis": 0.975
+        }
+      }
+    },
+    "structured": {
+      "targetVersion": "community-static-v11",
+      "exactTuple": {
+        "test": 0.9816666666666667,
+        "interior": 0.90078125,
+        "exterior": 0.9421875
+      }
+    },
+    "exportState": {
+      "targetVersion": "community-static-v11",
+      "exportExact": {
+        "test": 0.6511627906976745,
+        "challenge": 0.5125,
+        "corpusCrossHeight": 0.6259259259259259
+      }
+    },
+    "crosscheck": {
+      "targetVersion": "community-static-v11",
+      "evaluated": "2026-10-07",
+      "reusedHoldout": {
+        "rows": 5632,
+        "groups": 128,
+        "ruleBaseline": 0.6036931818181818,
+        "learner": {
+          "exactRate": 0.9992897727272727,
+          "lower": 0.998224431818182,
+          "upper": 1
+        }
+      },
+      "edgeChallenge": {
+        "rows": 3520,
+        "groups": 80,
+        "ruleBaseline": 0.4661931818181818,
+        "learner": {
+          "exactRate": 0.9977272727272727,
+          "lower": 0.9954545454545455,
+          "upper": 0.9994318181818181
+        }
+      },
+      "corpusCrossHeight": {
+        "rows": 810,
+        "exactRate": 0.9703703703703703
+      }
     }
   },
   "interpretation": "Every target in this corpus study is a source-derived legacy prediction. Cross-validation and bootstrap describe that benchmark, not undisclosed new-client rendering."

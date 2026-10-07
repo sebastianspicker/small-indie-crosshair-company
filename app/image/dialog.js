@@ -1,3 +1,5 @@
+import { sourceBoundaryClipped } from '../../lib/image/screenshot.js';
+
 const SIDE = 129;
 export class ImageDialog {
   constructor(view, bitmap, worker, context) {
@@ -34,10 +36,14 @@ export class ImageDialog {
     try {
       const selection = this.selection(); this.draw(selection);
       const operation = this.context.kind === 'new' ? 'native-screenshot' : 'screenshot';
-      const result = await this.worker.call(operation, { data: this.rgba, side: SIDE,
+      let result = await this.worker.call(operation, { data: this.rgba, side: SIDE,
         seed: selection.seed, tolerance: selection.tolerance, height: this.context.options?.oldHeight ?? 1080,
         expectedFlags: this.context.expectedFlags ?? null });
       if (this.closed || ticket !== this.token) return;
+      if (sourceBoundaryClipped(result.mask, this.context.dimensions, selection.center))
+        result = { ...result, mask: { ...result.mask, cropped: true },
+          quality: { ...result.quality, acceptable: false, cropped: true }, warnings: [...result.warnings,
+            'Foreground reaches the original image boundary. Use a complete uncropped source image before accepting.'] };
       this.fit = result; this.measuredSelection = selection;
       const g = result.geometry;
       const quality = result.quality, stability = (quality.stability.minimumIou * 100).toFixed(1);

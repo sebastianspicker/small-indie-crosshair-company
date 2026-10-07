@@ -1,7 +1,7 @@
 {
   "schema": "sicc-edge-case-audit-v2",
   "model": "community-static-2026-10",
-  "version": "community-static-v7",
+  "version": "community-static-v11",
   "nativeEvidence": false,
   "heights": [
     768,
@@ -26,9 +26,9 @@
     },
     "synthetic": {
       "rows": 34560,
-      "exact": 7142,
-      "shifted": 7723,
-      "approximate": 18735,
+      "exact": 7072,
+      "shifted": 7715,
+      "approximate": 18813,
       "empty": 960
     }
   },
@@ -120,7 +120,7 @@
         "approximate": 264,
         "empty": 0
       },
-      "crossed-at-zero-t": {
+      "crossed-at-zero-t-inverted": {
         "rows": 336,
         "exact": 0,
         "shifted": 0,
@@ -134,7 +134,7 @@
         "approximate": 64,
         "empty": 0
       },
-      "crossed-at-zero-thick-t": {
+      "crossed-at-zero-thick-t-stem-hidden": {
         "rows": 120,
         "exact": 29,
         "shifted": 20,
@@ -148,7 +148,7 @@
         "approximate": 340,
         "empty": 0
       },
-      "crossed-full-t": {
+      "crossed-full-t-inverted": {
         "rows": 840,
         "exact": 0,
         "shifted": 0,
@@ -162,11 +162,18 @@
         "approximate": 203,
         "empty": 0
       },
-      "crossed-full-thick-t": {
-        "rows": 372,
+      "crossed-full-thick-t-inverted": {
+        "rows": 336,
+        "exact": 0,
+        "shifted": 0,
+        "approximate": 336,
+        "empty": 0
+      },
+      "crossed-full-thick-t-stem-hidden": {
+        "rows": 36,
         "exact": 0,
         "shifted": 12,
-        "approximate": 360,
+        "approximate": 24,
         "empty": 0
       },
       "crossed-partial": {
@@ -176,11 +183,39 @@
         "approximate": 1668,
         "empty": 0
       },
-      "crossed-partial-t": {
-        "rows": 2208,
-        "exact": 119,
-        "shifted": 239,
-        "approximate": 1850,
+      "crossed-partial-t-inverted": {
+        "rows": 276,
+        "exact": 0,
+        "shifted": 0,
+        "approximate": 276,
+        "empty": 0
+      },
+      "crossed-partial-t-stem-hidden": {
+        "rows": 276,
+        "exact": 45,
+        "shifted": 108,
+        "approximate": 123,
+        "empty": 0
+      },
+      "crossed-partial-t-straddle": {
+        "rows": 732,
+        "exact": 0,
+        "shifted": 0,
+        "approximate": 732,
+        "empty": 0
+      },
+      "crossed-partial-t-straddle-symmetric": {
+        "rows": 120,
+        "exact": 0,
+        "shifted": 3,
+        "approximate": 117,
+        "empty": 0
+      },
+      "crossed-partial-t-upright": {
+        "rows": 804,
+        "exact": 62,
+        "shifted": 120,
+        "approximate": 622,
         "empty": 0
       },
       "crossed-partial-thick": {
@@ -190,67 +225,151 @@
         "approximate": 119,
         "empty": 0
       },
-      "crossed-partial-thick-t": {
+      "crossed-partial-thick-t-stem-hidden": {
         "rows": 204,
-        "exact": 28,
+        "exact": 24,
         "shifted": 52,
-        "approximate": 124,
+        "approximate": 128,
         "empty": 0
       },
       "regular-even": {
-        "rows": 2276,
-        "exact": 1812,
+        "rows": 1138,
+        "exact": 906,
         "shifted": 0,
-        "approximate": 464,
+        "approximate": 232,
         "empty": 0
       },
       "regular-even-seam": {
-        "rows": 2332,
-        "exact": 198,
+        "rows": 1166,
+        "exact": 99,
         "shifted": 0,
-        "approximate": 2134,
+        "approximate": 1067,
+        "empty": 0
+      },
+      "regular-even-seam-t-upright": {
+        "rows": 1166,
+        "exact": 99,
+        "shifted": 0,
+        "approximate": 1067,
+        "empty": 0
+      },
+      "regular-even-t-upright": {
+        "rows": 1138,
+        "exact": 906,
+        "shifted": 0,
+        "approximate": 232,
         "empty": 0
       },
       "regular-even-thick": {
-        "rows": 1042,
-        "exact": 806,
+        "rows": 521,
+        "exact": 403,
         "shifted": 0,
-        "approximate": 236,
+        "approximate": 118,
         "empty": 0
       },
       "regular-even-thick-seam": {
-        "rows": 878,
-        "exact": 34,
+        "rows": 439,
+        "exact": 17,
         "shifted": 0,
-        "approximate": 844,
+        "approximate": 422,
+        "empty": 0
+      },
+      "regular-even-thick-seam-t-stem-hidden": {
+        "rows": 75,
+        "exact": 0,
+        "shifted": 0,
+        "approximate": 75,
+        "empty": 0
+      },
+      "regular-even-thick-seam-t-upright": {
+        "rows": 364,
+        "exact": 17,
+        "shifted": 0,
+        "approximate": 347,
+        "empty": 0
+      },
+      "regular-even-thick-t-stem-hidden": {
+        "rows": 105,
+        "exact": 75,
+        "shifted": 0,
+        "approximate": 30,
+        "empty": 0
+      },
+      "regular-even-thick-t-upright": {
+        "rows": 416,
+        "exact": 328,
+        "shifted": 0,
+        "approximate": 88,
         "empty": 0
       },
       "regular-odd": {
-        "rows": 3404,
+        "rows": 1702,
         "exact": 0,
-        "shifted": 2684,
-        "approximate": 720,
+        "shifted": 1342,
+        "approximate": 360,
         "empty": 0
       },
       "regular-odd-seam": {
-        "rows": 2980,
+        "rows": 1490,
         "exact": 0,
-        "shifted": 234,
-        "approximate": 2746,
+        "shifted": 117,
+        "approximate": 1373,
+        "empty": 0
+      },
+      "regular-odd-seam-t-upright": {
+        "rows": 1490,
+        "exact": 0,
+        "shifted": 117,
+        "approximate": 1373,
+        "empty": 0
+      },
+      "regular-odd-t-upright": {
+        "rows": 1702,
+        "exact": 0,
+        "shifted": 1342,
+        "approximate": 360,
         "empty": 0
       },
       "regular-odd-thick": {
-        "rows": 1070,
+        "rows": 535,
         "exact": 0,
-        "shifted": 826,
-        "approximate": 244,
+        "shifted": 413,
+        "approximate": 122,
         "empty": 0
       },
       "regular-odd-thick-seam": {
-        "rows": 898,
+        "rows": 449,
         "exact": 0,
-        "shifted": 34,
-        "approximate": 864,
+        "shifted": 17,
+        "approximate": 432,
+        "empty": 0
+      },
+      "regular-odd-thick-seam-t-stem-hidden": {
+        "rows": 85,
+        "exact": 0,
+        "shifted": 0,
+        "approximate": 85,
+        "empty": 0
+      },
+      "regular-odd-thick-seam-t-upright": {
+        "rows": 364,
+        "exact": 0,
+        "shifted": 17,
+        "approximate": 347,
+        "empty": 0
+      },
+      "regular-odd-thick-t-stem-hidden": {
+        "rows": 119,
+        "exact": 0,
+        "shifted": 85,
+        "approximate": 34,
+        "empty": 0
+      },
+      "regular-odd-thick-t-upright": {
+        "rows": 416,
+        "exact": 0,
+        "shifted": 328,
+        "approximate": 88,
         "empty": 0
       },
       "size0-dot": {
@@ -267,14 +386,14 @@
         "approximate": 1722,
         "empty": 0
       },
-      "size0-dot-outline-t": {
+      "size0-dot-outline-t-strokes": {
         "rows": 2400,
         "exact": 288,
         "shifted": 390,
         "approximate": 1722,
         "empty": 0
       },
-      "size0-dot-t": {
+      "size0-dot-t-no-effect": {
         "rows": 480,
         "exact": 200,
         "shifted": 280,
@@ -295,7 +414,7 @@
         "approximate": 0,
         "empty": 0
       },
-      "size0-frame-t": {
+      "size0-frame-t-strokes": {
         "rows": 844,
         "exact": 600,
         "shifted": 244,
@@ -309,7 +428,7 @@
         "approximate": 0,
         "empty": 0
       },
-      "size0-outline-only-t": {
+      "size0-outline-only-t-strokes": {
         "rows": 376,
         "exact": 292,
         "shifted": 84,
@@ -323,11 +442,11 @@
         "approximate": 0,
         "empty": 0
       },
-      "size0-strokes-crossed-t": {
+      "size0-strokes-crossed-t-strokes": {
         "rows": 1180,
-        "exact": 170,
+        "exact": 116,
         "shifted": 210,
-        "approximate": 800,
+        "approximate": 854,
         "empty": 0
       }
     }
@@ -353,12 +472,7 @@
         "blocked": 0,
         "warned": 8
       },
-      "crossedT": {
-        "rows": 0,
-        "keptT": 0,
-        "flipped": 0,
-        "warned": 0
-      }
+      "tShapes": {}
     },
     "presets": {
       "overpaint": {
@@ -379,18 +493,13 @@
         "blocked": 0,
         "warned": 0
       },
-      "crossedT": {
-        "rows": 0,
-        "keptT": 0,
-        "flipped": 0,
-        "warned": 0
-      }
+      "tShapes": {}
     },
     "synthetic": {
       "overpaint": {
         "rows": 11898,
-        "approximate": 11255,
-        "warned": 11255
+        "approximate": 11258,
+        "warned": 11258
       },
       "additive": {
         "rows": 34560,
@@ -404,11 +513,49 @@
         "blocked": 0,
         "warned": 0
       },
-      "crossedT": {
-        "rows": 9360,
-        "keptT": 6203,
-        "flipped": 3157,
-        "warned": 1302
+      "tShapes": {
+        "inverted": {
+          "rows": 1788,
+          "keptT": 1788,
+          "flipped": 0,
+          "warned": 1788
+        },
+        "no-effect": {
+          "rows": 960,
+          "keptT": 960,
+          "flipped": 0,
+          "warned": 0
+        },
+        "stem-hidden": {
+          "rows": 1020,
+          "keptT": 1020,
+          "flipped": 0,
+          "warned": 0
+        },
+        "straddle": {
+          "rows": 732,
+          "keptT": 732,
+          "flipped": 0,
+          "warned": 732
+        },
+        "straddle-symmetric": {
+          "rows": 120,
+          "keptT": 120,
+          "flipped": 0,
+          "warned": 117
+        },
+        "strokes": {
+          "rows": 4800,
+          "keptT": 4800,
+          "flipped": 0,
+          "warned": 1800
+        },
+        "upright": {
+          "rows": 7860,
+          "keptT": 7860,
+          "flipped": 0,
+          "warned": 0
+        }
       }
     }
   },
@@ -459,6 +606,7 @@
       "player": "KSCERATO",
       "height": 768,
       "category": "crossed-partial",
+      "tShape": null,
       "native": {
         "length": 2,
         "thickness": 2,
@@ -500,6 +648,7 @@
       "player": "KSCERATO",
       "height": 1080,
       "category": "crossed-partial",
+      "tShape": null,
       "native": {
         "length": 3,
         "thickness": 2,
@@ -540,6 +689,7 @@
       "player": "KSCERATO",
       "height": 1440,
       "category": "crossed-partial",
+      "tShape": null,
       "native": {
         "length": 6,
         "thickness": 3,
@@ -581,6 +731,7 @@
       "player": "KSCERATO",
       "height": 2160,
       "category": "regular-even-seam",
+      "tShape": null,
       "native": {
         "length": 9,
         "thickness": 4,
@@ -620,6 +771,7 @@
       "player": "dumau",
       "height": 768,
       "category": "regular-even-seam",
+      "tShape": null,
       "native": {
         "length": 2,
         "thickness": 2,
@@ -660,6 +812,7 @@
       "player": "dumau",
       "height": 1080,
       "category": "regular-even-seam",
+      "tShape": null,
       "native": {
         "length": 2,
         "thickness": 2,
@@ -699,6 +852,7 @@
       "player": "dumau",
       "height": 1440,
       "category": "regular-odd-seam",
+      "tShape": null,
       "native": {
         "length": 3,
         "thickness": 3,
@@ -739,6 +893,7 @@
       "player": "dumau",
       "height": 2160,
       "category": "regular-even-seam",
+      "tShape": null,
       "native": {
         "length": 4,
         "thickness": 4,
@@ -778,6 +933,7 @@
       "player": "Jame",
       "height": 768,
       "category": "size0-dot-outline",
+      "tShape": null,
       "native": {
         "length": 1,
         "thickness": 1,
@@ -820,6 +976,7 @@
       "player": "Jame",
       "height": 1080,
       "category": "size0-dot-outline",
+      "tShape": null,
       "native": {
         "length": 1,
         "thickness": 1,
@@ -862,6 +1019,7 @@
       "player": "Jame",
       "height": 1440,
       "category": "size0-dot-outline",
+      "tShape": null,
       "native": {
         "length": 1,
         "thickness": 1,
@@ -904,6 +1062,7 @@
       "player": "Jame",
       "height": 2160,
       "category": "size0-dot-outline",
+      "tShape": null,
       "native": {
         "length": 1,
         "thickness": 1,
@@ -946,6 +1105,7 @@
       "player": "magixx",
       "height": 768,
       "category": "regular-even-seam",
+      "tShape": null,
       "native": {
         "length": 2,
         "thickness": 2,
@@ -986,6 +1146,7 @@
       "player": "magixx",
       "height": 1080,
       "category": "regular-even-seam",
+      "tShape": null,
       "native": {
         "length": 2,
         "thickness": 2,
@@ -1025,6 +1186,7 @@
       "player": "magixx",
       "height": 1440,
       "category": "regular-odd-seam",
+      "tShape": null,
       "native": {
         "length": 3,
         "thickness": 3,
@@ -1065,6 +1227,7 @@
       "player": "magixx",
       "height": 2160,
       "category": "regular-even-seam",
+      "tShape": null,
       "native": {
         "length": 4,
         "thickness": 4,
@@ -1104,6 +1267,7 @@
       "player": "FalleN",
       "height": 768,
       "category": "crossed-partial",
+      "tShape": null,
       "native": {
         "length": 2,
         "thickness": 2,
@@ -1145,6 +1309,7 @@
       "player": "FalleN",
       "height": 1080,
       "category": "crossed-partial",
+      "tShape": null,
       "native": {
         "length": 3,
         "thickness": 2,
@@ -1185,6 +1350,7 @@
       "player": "FalleN",
       "height": 1440,
       "category": "crossed-partial",
+      "tShape": null,
       "native": {
         "length": 6,
         "thickness": 3,
@@ -1226,6 +1392,7 @@
       "player": "FalleN",
       "height": 2160,
       "category": "regular-even-seam",
+      "tShape": null,
       "native": {
         "length": 9,
         "thickness": 4,
@@ -1265,6 +1432,7 @@
       "player": "MAJ3R",
       "height": 768,
       "category": "regular-even-seam",
+      "tShape": null,
       "native": {
         "length": 2,
         "thickness": 2,
@@ -1304,6 +1472,7 @@
       "player": "MAJ3R",
       "height": 1080,
       "category": "regular-even-seam",
+      "tShape": null,
       "native": {
         "length": 3,
         "thickness": 2,
@@ -1342,6 +1511,7 @@
       "player": "MAJ3R",
       "height": 1440,
       "category": "regular-odd-seam",
+      "tShape": null,
       "native": {
         "length": 4,
         "thickness": 3,
@@ -1381,6 +1551,7 @@
       "player": "MAJ3R",
       "height": 2160,
       "category": "regular-even-seam",
+      "tShape": null,
       "native": {
         "length": 7,
         "thickness": 4,
@@ -1420,6 +1591,7 @@
       "player": "dumau",
       "height": 768,
       "category": "regular-even-seam",
+      "tShape": null,
       "native": {
         "length": 2,
         "thickness": 2,
@@ -1460,6 +1632,7 @@
       "player": "dumau",
       "height": 1080,
       "category": "regular-even-seam",
+      "tShape": null,
       "native": {
         "length": 2,
         "thickness": 2,
@@ -1499,6 +1672,7 @@
       "player": "dumau",
       "height": 1440,
       "category": "regular-odd-seam",
+      "tShape": null,
       "native": {
         "length": 3,
         "thickness": 3,
@@ -1539,6 +1713,7 @@
       "player": "dumau",
       "height": 2160,
       "category": "regular-even-seam",
+      "tShape": null,
       "native": {
         "length": 4,
         "thickness": 4,
@@ -1579,7 +1754,12 @@
       "id": "synthetic",
       "player": null,
       "height": 768,
-      "category": "size0-strokes-crossed-t",
+      "category": "size0-strokes-crossed-t-strokes",
+      "tShape": {
+        "family": "strokes",
+        "flippable": true,
+        "exportT": true
+      },
       "settings": {
         "size": 0,
         "thickness": 0,
@@ -1596,8 +1776,8 @@
         "authoredHeight": 768
       },
       "status": "approximate",
-      "iou": 0.75,
-      "alignedIou": 0.75,
+      "iou": 0.5,
+      "alignedIou": 0.5,
       "overpaint": false,
       "blockers": 0,
       "additive": {
@@ -1609,14 +1789,13 @@
         "exportAlpha": 255
       },
       "weaponGap": false,
-      "exportedT": false,
+      "exportedT": true,
       "warnings": [
         "community-reconstruction",
         "shape-loss-excludes-appearance",
-        "appearance-refined",
         "visible-minimum",
-        "t-flipped-for-shape",
         "crossed-arms-folded",
+        "inverted-t-unrepresentable",
         "outline-only-as-core"
       ]
     },
@@ -1625,7 +1804,12 @@
       "id": "synthetic",
       "player": null,
       "height": 1080,
-      "category": "size0-strokes-crossed-t",
+      "category": "size0-strokes-crossed-t-strokes",
+      "tShape": {
+        "family": "strokes",
+        "flippable": true,
+        "exportT": true
+      },
       "settings": {
         "size": 0,
         "thickness": 0,
@@ -1642,8 +1826,8 @@
         "authoredHeight": 1080
       },
       "status": "approximate",
-      "iou": 0.75,
-      "alignedIou": 0.75,
+      "iou": 0.5,
+      "alignedIou": 0.5,
       "overpaint": false,
       "blockers": 0,
       "additive": {
@@ -1655,14 +1839,13 @@
         "exportAlpha": 255
       },
       "weaponGap": false,
-      "exportedT": false,
+      "exportedT": true,
       "warnings": [
         "community-reconstruction",
         "shape-loss-excludes-appearance",
-        "appearance-refined",
         "visible-minimum",
-        "t-flipped-for-shape",
         "crossed-arms-folded",
+        "inverted-t-unrepresentable",
         "outline-only-as-core"
       ]
     },
@@ -1671,7 +1854,12 @@
       "id": "synthetic",
       "player": null,
       "height": 1440,
-      "category": "size0-strokes-crossed-t",
+      "category": "size0-strokes-crossed-t-strokes",
+      "tShape": {
+        "family": "strokes",
+        "flippable": true,
+        "exportT": true
+      },
       "settings": {
         "size": 0,
         "thickness": 0,
@@ -1688,8 +1876,8 @@
         "authoredHeight": 1440
       },
       "status": "approximate",
-      "iou": 0.75,
-      "alignedIou": 0.75,
+      "iou": 0.5,
+      "alignedIou": 0.5,
       "overpaint": false,
       "blockers": 0,
       "additive": {
@@ -1701,14 +1889,13 @@
         "exportAlpha": 255
       },
       "weaponGap": false,
-      "exportedT": false,
+      "exportedT": true,
       "warnings": [
         "community-reconstruction",
         "shape-loss-excludes-appearance",
-        "appearance-refined",
         "visible-minimum",
-        "t-flipped-for-shape",
         "crossed-arms-folded",
+        "inverted-t-unrepresentable",
         "outline-only-as-core"
       ]
     },
@@ -1717,7 +1904,12 @@
       "id": "synthetic",
       "player": null,
       "height": 2160,
-      "category": "size0-strokes-crossed-t",
+      "category": "size0-strokes-crossed-t-strokes",
+      "tShape": {
+        "family": "strokes",
+        "flippable": true,
+        "exportT": true
+      },
       "settings": {
         "size": 0,
         "thickness": 0,
@@ -1734,8 +1926,8 @@
         "authoredHeight": 2160
       },
       "status": "approximate",
-      "iou": 0.75,
-      "alignedIou": 0.75,
+      "iou": 0.5,
+      "alignedIou": 0.5,
       "overpaint": false,
       "blockers": 0,
       "additive": {
@@ -1747,14 +1939,13 @@
         "exportAlpha": 255
       },
       "weaponGap": false,
-      "exportedT": false,
+      "exportedT": true,
       "warnings": [
         "community-reconstruction",
         "shape-loss-excludes-appearance",
-        "appearance-refined",
         "visible-minimum",
-        "t-flipped-for-shape",
         "crossed-arms-folded",
+        "inverted-t-unrepresentable",
         "outline-only-as-core"
       ]
     },
@@ -1763,7 +1954,12 @@
       "id": "synthetic",
       "player": null,
       "height": 768,
-      "category": "size0-strokes-crossed-t",
+      "category": "size0-strokes-crossed-t-strokes",
+      "tShape": {
+        "family": "strokes",
+        "flippable": true,
+        "exportT": true
+      },
       "settings": {
         "size": 0,
         "thickness": 0,
@@ -1780,8 +1976,8 @@
         "authoredHeight": 768
       },
       "status": "approximate",
-      "iou": 0.75,
-      "alignedIou": 0.75,
+      "iou": 0.5,
+      "alignedIou": 0.5,
       "overpaint": false,
       "blockers": 0,
       "additive": {
@@ -1793,14 +1989,13 @@
         "exportAlpha": 255
       },
       "weaponGap": false,
-      "exportedT": false,
+      "exportedT": true,
       "warnings": [
         "community-reconstruction",
         "shape-loss-excludes-appearance",
-        "appearance-refined",
         "visible-minimum",
-        "t-flipped-for-shape",
         "crossed-arms-folded",
+        "inverted-t-unrepresentable",
         "outline-only-as-core"
       ]
     },
@@ -1809,7 +2004,12 @@
       "id": "synthetic",
       "player": null,
       "height": 1080,
-      "category": "size0-strokes-crossed-t",
+      "category": "size0-strokes-crossed-t-strokes",
+      "tShape": {
+        "family": "strokes",
+        "flippable": true,
+        "exportT": true
+      },
       "settings": {
         "size": 0,
         "thickness": 0,
@@ -1826,8 +2026,8 @@
         "authoredHeight": 1080
       },
       "status": "approximate",
-      "iou": 0.75,
-      "alignedIou": 0.75,
+      "iou": 0.5,
+      "alignedIou": 0.5,
       "overpaint": false,
       "blockers": 0,
       "additive": {
@@ -1839,14 +2039,13 @@
         "exportAlpha": 255
       },
       "weaponGap": false,
-      "exportedT": false,
+      "exportedT": true,
       "warnings": [
         "community-reconstruction",
         "shape-loss-excludes-appearance",
-        "appearance-refined",
         "visible-minimum",
-        "t-flipped-for-shape",
         "crossed-arms-folded",
+        "inverted-t-unrepresentable",
         "outline-only-as-core"
       ]
     },
@@ -1855,7 +2054,12 @@
       "id": "synthetic",
       "player": null,
       "height": 1440,
-      "category": "size0-strokes-crossed-t",
+      "category": "size0-strokes-crossed-t-strokes",
+      "tShape": {
+        "family": "strokes",
+        "flippable": true,
+        "exportT": true
+      },
       "settings": {
         "size": 0,
         "thickness": 0,
@@ -1872,8 +2076,8 @@
         "authoredHeight": 1440
       },
       "status": "approximate",
-      "iou": 0.75,
-      "alignedIou": 0.75,
+      "iou": 0.5,
+      "alignedIou": 0.5,
       "overpaint": false,
       "blockers": 0,
       "additive": {
@@ -1885,14 +2089,13 @@
         "exportAlpha": 255
       },
       "weaponGap": false,
-      "exportedT": false,
+      "exportedT": true,
       "warnings": [
         "community-reconstruction",
         "shape-loss-excludes-appearance",
-        "appearance-refined",
         "visible-minimum",
-        "t-flipped-for-shape",
         "crossed-arms-folded",
+        "inverted-t-unrepresentable",
         "outline-only-as-core"
       ]
     },
@@ -1901,7 +2104,12 @@
       "id": "synthetic",
       "player": null,
       "height": 2160,
-      "category": "size0-strokes-crossed-t",
+      "category": "size0-strokes-crossed-t-strokes",
+      "tShape": {
+        "family": "strokes",
+        "flippable": true,
+        "exportT": true
+      },
       "settings": {
         "size": 0,
         "thickness": 0,
@@ -1918,8 +2126,8 @@
         "authoredHeight": 2160
       },
       "status": "approximate",
-      "iou": 0.75,
-      "alignedIou": 0.75,
+      "iou": 0.5,
+      "alignedIou": 0.5,
       "overpaint": false,
       "blockers": 0,
       "additive": {
@@ -1931,14 +2139,13 @@
         "exportAlpha": 255
       },
       "weaponGap": false,
-      "exportedT": false,
+      "exportedT": true,
       "warnings": [
         "community-reconstruction",
         "shape-loss-excludes-appearance",
-        "appearance-refined",
         "visible-minimum",
-        "t-flipped-for-shape",
         "crossed-arms-folded",
+        "inverted-t-unrepresentable",
         "outline-only-as-core"
       ]
     },
@@ -1947,7 +2154,12 @@
       "id": "synthetic",
       "player": null,
       "height": 768,
-      "category": "size0-strokes-crossed-t",
+      "category": "size0-strokes-crossed-t-strokes",
+      "tShape": {
+        "family": "strokes",
+        "flippable": true,
+        "exportT": true
+      },
       "settings": {
         "size": 0,
         "thickness": 0,
@@ -1964,8 +2176,8 @@
         "authoredHeight": 768
       },
       "status": "approximate",
-      "iou": 0.16666666666666666,
-      "alignedIou": 0.75,
+      "iou": 0.125,
+      "alignedIou": 0.5,
       "overpaint": false,
       "blockers": 0,
       "additive": {
@@ -1977,15 +2189,14 @@
         "exportAlpha": 255
       },
       "weaponGap": false,
-      "exportedT": false,
+      "exportedT": true,
       "warnings": [
         "community-reconstruction",
         "shape-loss-excludes-appearance",
         "pixel-centering-shift",
-        "appearance-refined",
         "visible-minimum",
-        "t-flipped-for-shape",
         "crossed-arms-folded",
+        "inverted-t-unrepresentable",
         "outline-only-as-core"
       ]
     },
@@ -1994,7 +2205,12 @@
       "id": "synthetic",
       "player": null,
       "height": 1080,
-      "category": "size0-strokes-crossed-t",
+      "category": "size0-strokes-crossed-t-strokes",
+      "tShape": {
+        "family": "strokes",
+        "flippable": true,
+        "exportT": true
+      },
       "settings": {
         "size": 0,
         "thickness": 0,
@@ -2011,8 +2227,8 @@
         "authoredHeight": 1080
       },
       "status": "approximate",
-      "iou": 0.16666666666666666,
-      "alignedIou": 0.75,
+      "iou": 0.125,
+      "alignedIou": 0.5,
       "overpaint": false,
       "blockers": 0,
       "additive": {
@@ -2024,15 +2240,14 @@
         "exportAlpha": 255
       },
       "weaponGap": false,
-      "exportedT": false,
+      "exportedT": true,
       "warnings": [
         "community-reconstruction",
         "shape-loss-excludes-appearance",
         "pixel-centering-shift",
-        "appearance-refined",
         "visible-minimum",
-        "t-flipped-for-shape",
         "crossed-arms-folded",
+        "inverted-t-unrepresentable",
         "outline-only-as-core"
       ]
     },
@@ -2041,7 +2256,12 @@
       "id": "synthetic",
       "player": null,
       "height": 1440,
-      "category": "size0-strokes-crossed-t",
+      "category": "size0-strokes-crossed-t-strokes",
+      "tShape": {
+        "family": "strokes",
+        "flippable": true,
+        "exportT": true
+      },
       "settings": {
         "size": 0,
         "thickness": 0,
@@ -2058,8 +2278,8 @@
         "authoredHeight": 1440
       },
       "status": "approximate",
-      "iou": 0.16666666666666666,
-      "alignedIou": 0.75,
+      "iou": 0.125,
+      "alignedIou": 0.5,
       "overpaint": false,
       "blockers": 0,
       "additive": {
@@ -2071,15 +2291,14 @@
         "exportAlpha": 255
       },
       "weaponGap": false,
-      "exportedT": false,
+      "exportedT": true,
       "warnings": [
         "community-reconstruction",
         "shape-loss-excludes-appearance",
         "pixel-centering-shift",
-        "appearance-refined",
         "visible-minimum",
-        "t-flipped-for-shape",
         "crossed-arms-folded",
+        "inverted-t-unrepresentable",
         "outline-only-as-core"
       ]
     },
@@ -2088,7 +2307,12 @@
       "id": "synthetic",
       "player": null,
       "height": 2160,
-      "category": "size0-strokes-crossed-t",
+      "category": "size0-strokes-crossed-t-strokes",
+      "tShape": {
+        "family": "strokes",
+        "flippable": true,
+        "exportT": true
+      },
       "settings": {
         "size": 0,
         "thickness": 0,
@@ -2105,8 +2329,8 @@
         "authoredHeight": 2160
       },
       "status": "approximate",
-      "iou": 0.16666666666666666,
-      "alignedIou": 0.75,
+      "iou": 0.125,
+      "alignedIou": 0.5,
       "overpaint": false,
       "blockers": 0,
       "additive": {
@@ -2118,15 +2342,14 @@
         "exportAlpha": 255
       },
       "weaponGap": false,
-      "exportedT": false,
+      "exportedT": true,
       "warnings": [
         "community-reconstruction",
         "shape-loss-excludes-appearance",
         "pixel-centering-shift",
-        "appearance-refined",
         "visible-minimum",
-        "t-flipped-for-shape",
         "crossed-arms-folded",
+        "inverted-t-unrepresentable",
         "outline-only-as-core"
       ]
     },
@@ -2135,7 +2358,12 @@
       "id": "synthetic",
       "player": null,
       "height": 768,
-      "category": "size0-strokes-crossed-t",
+      "category": "size0-strokes-crossed-t-strokes",
+      "tShape": {
+        "family": "strokes",
+        "flippable": true,
+        "exportT": true
+      },
       "settings": {
         "size": 0,
         "thickness": 0,
@@ -2152,8 +2380,8 @@
         "authoredHeight": 768
       },
       "status": "approximate",
-      "iou": 0.34615384615384615,
-      "alignedIou": 0.75,
+      "iou": 0.25,
+      "alignedIou": 0.5,
       "overpaint": false,
       "blockers": 0,
       "additive": {
@@ -2165,15 +2393,14 @@
         "exportAlpha": 255
       },
       "weaponGap": false,
-      "exportedT": false,
+      "exportedT": true,
       "warnings": [
         "community-reconstruction",
         "shape-loss-excludes-appearance",
         "pixel-centering-shift",
-        "appearance-refined",
         "visible-minimum",
-        "t-flipped-for-shape",
         "crossed-arms-folded",
+        "inverted-t-unrepresentable",
         "outline-only-as-core"
       ]
     },
@@ -2182,7 +2409,12 @@
       "id": "synthetic",
       "player": null,
       "height": 1080,
-      "category": "size0-strokes-crossed-t",
+      "category": "size0-strokes-crossed-t-strokes",
+      "tShape": {
+        "family": "strokes",
+        "flippable": true,
+        "exportT": true
+      },
       "settings": {
         "size": 0,
         "thickness": 0,
@@ -2199,8 +2431,8 @@
         "authoredHeight": 1080
       },
       "status": "approximate",
-      "iou": 0.34615384615384615,
-      "alignedIou": 0.75,
+      "iou": 0.25,
+      "alignedIou": 0.5,
       "overpaint": false,
       "blockers": 0,
       "additive": {
@@ -2212,15 +2444,14 @@
         "exportAlpha": 255
       },
       "weaponGap": false,
-      "exportedT": false,
+      "exportedT": true,
       "warnings": [
         "community-reconstruction",
         "shape-loss-excludes-appearance",
         "pixel-centering-shift",
-        "appearance-refined",
         "visible-minimum",
-        "t-flipped-for-shape",
         "crossed-arms-folded",
+        "inverted-t-unrepresentable",
         "outline-only-as-core"
       ]
     },
@@ -2229,7 +2460,12 @@
       "id": "synthetic",
       "player": null,
       "height": 1440,
-      "category": "size0-strokes-crossed-t",
+      "category": "size0-strokes-crossed-t-strokes",
+      "tShape": {
+        "family": "strokes",
+        "flippable": true,
+        "exportT": true
+      },
       "settings": {
         "size": 0,
         "thickness": 0,
@@ -2246,8 +2482,8 @@
         "authoredHeight": 1440
       },
       "status": "approximate",
-      "iou": 0.34615384615384615,
-      "alignedIou": 0.75,
+      "iou": 0.25,
+      "alignedIou": 0.5,
       "overpaint": false,
       "blockers": 0,
       "additive": {
@@ -2259,15 +2495,14 @@
         "exportAlpha": 255
       },
       "weaponGap": false,
-      "exportedT": false,
+      "exportedT": true,
       "warnings": [
         "community-reconstruction",
         "shape-loss-excludes-appearance",
         "pixel-centering-shift",
-        "appearance-refined",
         "visible-minimum",
-        "t-flipped-for-shape",
         "crossed-arms-folded",
+        "inverted-t-unrepresentable",
         "outline-only-as-core"
       ]
     },
@@ -2276,7 +2511,12 @@
       "id": "synthetic",
       "player": null,
       "height": 2160,
-      "category": "size0-strokes-crossed-t",
+      "category": "size0-strokes-crossed-t-strokes",
+      "tShape": {
+        "family": "strokes",
+        "flippable": true,
+        "exportT": true
+      },
       "settings": {
         "size": 0,
         "thickness": 0,
@@ -2293,8 +2533,8 @@
         "authoredHeight": 2160
       },
       "status": "approximate",
-      "iou": 0.34615384615384615,
-      "alignedIou": 0.75,
+      "iou": 0.25,
+      "alignedIou": 0.5,
       "overpaint": false,
       "blockers": 0,
       "additive": {
@@ -2306,15 +2546,14 @@
         "exportAlpha": 255
       },
       "weaponGap": false,
-      "exportedT": false,
+      "exportedT": true,
       "warnings": [
         "community-reconstruction",
         "shape-loss-excludes-appearance",
         "pixel-centering-shift",
-        "appearance-refined",
         "visible-minimum",
-        "t-flipped-for-shape",
         "crossed-arms-folded",
+        "inverted-t-unrepresentable",
         "outline-only-as-core"
       ]
     },
@@ -2323,7 +2562,12 @@
       "id": "synthetic",
       "player": null,
       "height": 768,
-      "category": "size0-strokes-crossed-t",
+      "category": "size0-strokes-crossed-t-strokes",
+      "tShape": {
+        "family": "strokes",
+        "flippable": true,
+        "exportT": true
+      },
       "settings": {
         "size": 0,
         "thickness": 0,
@@ -2340,8 +2584,8 @@
         "authoredHeight": 768
       },
       "status": "approximate",
-      "iou": 0.4411764705882353,
-      "alignedIou": 0.75,
+      "iou": 0.3125,
+      "alignedIou": 0.5,
       "overpaint": false,
       "blockers": 0,
       "additive": {
@@ -2353,15 +2597,14 @@
         "exportAlpha": 255
       },
       "weaponGap": false,
-      "exportedT": false,
+      "exportedT": true,
       "warnings": [
         "community-reconstruction",
         "shape-loss-excludes-appearance",
         "pixel-centering-shift",
-        "appearance-refined",
         "visible-minimum",
-        "t-flipped-for-shape",
         "crossed-arms-folded",
+        "inverted-t-unrepresentable",
         "outline-only-as-core"
       ]
     },
@@ -2370,7 +2613,12 @@
       "id": "synthetic",
       "player": null,
       "height": 1080,
-      "category": "size0-strokes-crossed-t",
+      "category": "size0-strokes-crossed-t-strokes",
+      "tShape": {
+        "family": "strokes",
+        "flippable": true,
+        "exportT": true
+      },
       "settings": {
         "size": 0,
         "thickness": 0,
@@ -2387,8 +2635,8 @@
         "authoredHeight": 1080
       },
       "status": "approximate",
-      "iou": 0.4411764705882353,
-      "alignedIou": 0.75,
+      "iou": 0.3125,
+      "alignedIou": 0.5,
       "overpaint": false,
       "blockers": 0,
       "additive": {
@@ -2400,15 +2648,14 @@
         "exportAlpha": 255
       },
       "weaponGap": false,
-      "exportedT": false,
+      "exportedT": true,
       "warnings": [
         "community-reconstruction",
         "shape-loss-excludes-appearance",
         "pixel-centering-shift",
-        "appearance-refined",
         "visible-minimum",
-        "t-flipped-for-shape",
         "crossed-arms-folded",
+        "inverted-t-unrepresentable",
         "outline-only-as-core"
       ]
     },
@@ -2417,7 +2664,12 @@
       "id": "synthetic",
       "player": null,
       "height": 1440,
-      "category": "size0-strokes-crossed-t",
+      "category": "size0-strokes-crossed-t-strokes",
+      "tShape": {
+        "family": "strokes",
+        "flippable": true,
+        "exportT": true
+      },
       "settings": {
         "size": 0,
         "thickness": 0,
@@ -2434,8 +2686,8 @@
         "authoredHeight": 1440
       },
       "status": "approximate",
-      "iou": 0.4411764705882353,
-      "alignedIou": 0.75,
+      "iou": 0.3125,
+      "alignedIou": 0.5,
       "overpaint": false,
       "blockers": 0,
       "additive": {
@@ -2447,15 +2699,14 @@
         "exportAlpha": 255
       },
       "weaponGap": false,
-      "exportedT": false,
+      "exportedT": true,
       "warnings": [
         "community-reconstruction",
         "shape-loss-excludes-appearance",
         "pixel-centering-shift",
-        "appearance-refined",
         "visible-minimum",
-        "t-flipped-for-shape",
         "crossed-arms-folded",
+        "inverted-t-unrepresentable",
         "outline-only-as-core"
       ]
     },
@@ -2464,7 +2715,12 @@
       "id": "synthetic",
       "player": null,
       "height": 2160,
-      "category": "size0-strokes-crossed-t",
+      "category": "size0-strokes-crossed-t-strokes",
+      "tShape": {
+        "family": "strokes",
+        "flippable": true,
+        "exportT": true
+      },
       "settings": {
         "size": 0,
         "thickness": 0,
@@ -2481,8 +2737,8 @@
         "authoredHeight": 2160
       },
       "status": "approximate",
-      "iou": 0.4411764705882353,
-      "alignedIou": 0.75,
+      "iou": 0.3125,
+      "alignedIou": 0.5,
       "overpaint": false,
       "blockers": 0,
       "additive": {
@@ -2494,15 +2750,14 @@
         "exportAlpha": 255
       },
       "weaponGap": false,
-      "exportedT": false,
+      "exportedT": true,
       "warnings": [
         "community-reconstruction",
         "shape-loss-excludes-appearance",
         "pixel-centering-shift",
-        "appearance-refined",
         "visible-minimum",
-        "t-flipped-for-shape",
         "crossed-arms-folded",
+        "inverted-t-unrepresentable",
         "outline-only-as-core"
       ]
     }

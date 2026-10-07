@@ -1,278 +1,147 @@
-# 08 — The expanded pro-crosshair corpus and quantitative study
+# The pro-crosshair corpus and the historical benchmark
 
-Snapshot: **2026-09-23**. This is a documented observational input corpus
-and a deterministic historical-model benchmark. It is not a native new
-renderer accuracy study. The complete records, source URLs and generated
-rows ship with the repository.
+::: summary
+The project collected published crosshair codes of professional players to
+test conversions on settings people actually use. These are real old inputs, but
+none comes with a screenshot of the new game, so they show how well a shortcut
+reproduces the old drawing, not how well a conversion works in the new game.
+Testing every record at seven resolutions shows that popular shortcuts such as
+"multiply by two" fail far more often than the original few examples suggested.
+:::
 
-## 8.1 What was collected
+::: key
+A fixed factor 2 reproduces the old drawing in
+{{fig:summary.ablations.name=fixed_2x.allExact|int}} of
+{{fig:summary.eligibleRows|int}} record-height cases
+({{fig:summary.ablations.name=fixed_2x.microExact|pct}}); rounding instead of
+truncating reproduces {{fig:summary.ablations.name=round_scaled.allExact|int}}.
+Both are measured against the historical old model, not the new game.
+:::
 
-Three cohorts are retained without claiming they are independent:
+::: technical
+## Question
+
+How often do simple old-to-pixel shortcuts reproduce the historical old
+reconstruction on realistic inputs, and how much do the corpus records support a
+given input? Snapshot {{fig:summary.dataset.snapshot|date}};
+`research/generated/quant-study.json`, `data/quant-summary.json`.
+
+## Model
+
+### The corpus
 
 | Cohort | Records | Nature |
 |---|---:|---|
-| Pinned ProCrosshairs-derived GitHub archive | 100 | Published named-player/code/HLTV-ID facts, with no individual observation dates or resolutions |
-| ProCrosshairs published index retrieved on the snapshot date | 30 | Published name/code associations; shares the archive's upstream |
-| Original dated xhair.pro fixtures | 8 | Frozen historical research records, not newly reparsed demos |
-| **Total** | **138** | **106 distinct normalized player names** |
+| Pinned ProCrosshairs-derived GitHub archive | 100 | published player, code and HLTV id; no dates or resolutions |
+| ProCrosshairs index on the snapshot date | 30 | shares the archive's upstream |
+| Original dated xhair.pro fixtures | 8 | frozen research records |
 
-All codes decode as legacy version 1 and pass their checksum. There are
-**119 distinct codes** and **50 complete old static-geometry signatures**.
-Only **8 records have recorded observation dates**. The other 130 are
-published legacy-format snapshots, not claims that a particular player
-used that setting on September 23 or in a particular match.
+In total {{fig:summary.dataset.records|int}} records from
+{{fig:summary.dataset.players|int}} players,
+{{fig:summary.dataset.uniqueCodes|int}} distinct codes,
+{{fig:summary.dataset.uniqueGeometrySignatures|int}} geometry signatures and
+{{fig:summary.dataset.datedRecords|int}} dated records, from
+{{fig:summary.dataset.sourceProviders|int}} source families (the archive and the
+index are not independent). Every code decodes as legacy version 1 with a valid
+checksum. The archive transcription reproduces Git blob
+`{{fig:summary.dataset.sourceArchiveGitBlob|version}}`; that proves the
+transcription, not player usage or game pixels. Player names are fixture
+labels.
 
-There are two source-provider families, not three: the archive and current
-ProCrosshairs index share an origin. They must not be counted as independent
-corroborations. The data preserve different historical codes for the same
-player instead of silently calling them simultaneously current settings.
-Pro-player names are fixture identifiers, not endorsements or rankings.
+### Cases
 
-The archive TSV was transcribed from the pinned raw source. The build
-reconstructs its original JSON object ordering and verifies the Git blob
-SHA-1 against `210e17ca65ca68bd906774f4b332fe40f8487cef`. This proves the
-transcription matches that archived file. It does not independently verify
-pro-player usage, the file collector's extraction process, or native game
-pixels. Data provenance must not be inflated into renderer ground truth.
+The historical study keeps static style 4 without weapon gap:
+{{fig:summary.dataset.staticSupported|int}} records (excluded: one style-5
+preset and two weapon-gap records, which the current converter does convert).
+Each is evaluated at $\mathcal H=\{720,768,960,1024,1080,1440,2160\}$, giving
+{{fig:summary.eligibleRows|int}} record-height cases over
+{{fig:summary.eligibleGeometrySignatures|int}} signatures. These heights are
+controlled inputs, not the players' resolutions. A signature (size, thickness,
+gap, dot, T, style, weapon gap) ignores colour and outline; different signatures
+can still draw the same pixels at one height.
 
-## 8.2 Inclusion, exclusions, and controlled resolutions
+### Target and methods
 
-The automatic study includes only stationary `style=4` records with
-`weapon_gap=false`. This leaves **135 eligible records**. Three records
-are excluded: the archived flameZ style-5 preset and two Twistzz records
-with weapon-dependent gap. They remain visible in the corpus with their
-original flags, but cannot be exported as certified static conversions.
+The target is $y_{ih}=(L,W,a)$ from the historical truncation model with binary32
+intermediates. Methods: `source_f32` (the target's own equations, 100% by
+construction), `round_scaled` (round instead of truncate), `fixed_2x` (scale 2 at
+every height), `historical_preview` (the audited length and thickness rule of an
+old browser preview, with the near edge derived from it, not that generator's
+full gap logic) and `ridge_group_cv` (a learned surrogate, below).
 
-Every eligible record is evaluated at heights
+### Scores
 
-\[
-\mathcal H=\{720,768,960,1024,1080,1440,2160\}.
-\]
+With $e_{ihm}=1$ when all three components agree,
 
-Thus the micro dataset has
+$$
+\hat A_{\mathrm{micro},m}=\frac1N\sum_{i,h}e_{ihm},\qquad
+\bar e_{gm}=\frac{1}{\lvert g\rvert}\sum_{(i,h)\in g}e_{ihm},\qquad
+\hat A_{\mathrm{macro},m}=\frac1K\sum_g\bar e_{gm},
+$$
 
-\[
-135\times7=945
-\]
+over $K$ geometry groups, and
 
-record-height cases. These heights are experimental inputs. They are not
-invented reports of the players' actual resolutions. The eligible records
-contain **48 distinct geometry signatures**, yielding **336 distinct
-geometry-height cells** for the model self-consistency experiment.
+$$
+\operatorname{RMSE}_m=\sqrt{\frac{1}{3N}\sum_{i,h}\lVert\hat y_{ihm}-y_{ih}\rVert_2^2}.
+$$
 
-A geometry signature includes old size, thickness, gap, dot, T shape,
-style and weapon-gap flag. It excludes RGB, alpha, outline width and player
-name because the benchmark target concerns only core static geometry.
-This is deliberately a parameter-signature grouping. Different signatures
-can still rasterize to identical pixels at a particular resolution; 48 is
-not necessarily 48 independent rendered shapes at each height.
+Micro weighs popular presets more; macro weighs every geometry equally. The
+interval resamples the $K$ group means 2,000 times (seed 23092026) and reports
+the 2.5th and 97.5th percentiles:
 
-## 8.3 What target is being predicted
-
-For record \(i\) and controlled height \(h\), the target is
-
-\[
-y_{ih}=(L_o,W_o,a_o)
-\]
-
-computed from the documented old reconstruction, including binary32
-intermediates. This target is generated from source-derived equations,
-not measured from 945 native screenshots. Dot and T flags are carried in
-the geometry signature; the numerical shortcut benchmark compares the
-three displayed dimensions, not a full RGB rendered image.
-
-Five methods are compared:
-
-| Method | Definition | Role |
-|---|---|---|
-| `source_f32` | Same source-derived old equations as the target | Baseline identity; 100% is tautological |
-| `round_scaled` | Round scaled size/thickness instead of truncate | Quantizer ablation |
-| `fixed_2x` | Use a resolution-independent ×2 scale | Scale ablation |
-| `historical_preview` | Audited old browser preview's length/thickness rule | Historical dimension shortcut |
-| `ridge_group_cv` | Weighted ridge fit evaluated on held-out geometry groups | Learned old-target surrogate |
-
-For `historical_preview`, only the audited length/thickness behavior is
-reproduced. Near position is derived using that predicted width and the
-legacy adjusted gap; it is **not the historical generator's full gap
-implementation**, which read another cvar. This distinction prevents a
-misleading claim of browser-renderer replication. Quantizer/scale ablation
-near terms use truncation of `G+4` after their chosen width estimate.
-
-## 8.4 Micro and geometry-macro summaries
-
-Let \(e_{ihm}=1\) when all three predicted target components agree exactly,
-zero otherwise. Micro agreement is
-
-\[
-\widehat A_{micro,m}=\frac{1}{N}\sum_{i,h}e_{ihm}.
-\]
-
-This describes record-weighted performance: frequently reused crosshair
-geometries receive more influence. It is useful for understanding this
-corpus's composition, but can make a method look better simply because a
-popular preset is copied by many players.
-
-Let \(g\) index the \(K=48\) eligible geometry signatures. First calculate
-within-group agreement, then average groups equally:
-
-\[
-\bar e_{gm}=\frac{1}{|g|}\sum_{(i,h)\in g}e_{ihm},\qquad
-\widehat A_{macro,m}=\frac1K\sum_g\bar e_{gm}.
-\]
-
-Every group contains the seven controlled heights for each matching
-record, so duplicate records within one signature do not change its macro
-contribution. Macro and micro answer different descriptive questions; the
-application reports both rather than substituting whichever is larger.
-
-The coordinate RMSE is
-
-\[
-\operatorname{RMSE}_m=
-\sqrt{\frac{1}{3N}\sum_{i,h}\|\widehat y_{ihm}-y_{ih}\|_2^2}.
-\]
-
-Per-dimension exact counts and per-height counts are also retained in JSON,
-so a combined score cannot hide whether a problem is primarily length,
-width, or near-edge placement.
-
-## 8.5 Actual computed results
-
-The committed generated report gives:
-
-| Method | All-three exact / 945 | Micro agreement | Geometry-macro agreement | 95% bootstrap stability interval |
-|---|---:|---:|---:|---:|
-| Source baseline | 945 | 100.00% | 100.00% | 100.00–100.00% |
-| Round scaled | 539 | 57.04% | 52.38% | 46.43–58.04% |
-| Fixed ×2 | 411 | 43.49% | 44.64% | 41.96–48.21% |
-| Historical length/thickness preview | 257 | 27.20% | 13.10% | 8.04–18.75% |
-| Grouped ridge surrogate | 755 | 79.89% | 71.73% | 63.99–79.17% |
-
-These are **historical surrogate agreement rates**. None is a measured
-success rate for a conversion formula in updated CS2. The strong learned
-surrogate result merely shows that a compact smooth model can approximate
-much of a piecewise-quantized old function on these inputs. It does not
-replace the known reconstruction, and does not identify an unobserved new
-forward function.
-
-The original eight-preset experiment remains unchanged in the archive.
-It found that a ×2 shortcut could appear correct for every selected preset
-at 960p and 1080p while failing across the wider height grid. The larger
-corpus reinforces the value of resolution and parameter diversity; it
-does not retrospectively turn either experiment into native validation.
-
-## 8.6 Grouped cross-validation for the learned surrogate
-
-The ridge feature vector is
-
-\[
-\phi(x,h)=
-[1,Sh/480,Th/480,G,\mathbf1\{T=0\},h/1080].
-\]
-
-Three independent response regressions predict length, width, and near
-position. The design has six features and a fixed penalty \(\lambda=0.01\).
-The recorded study uses weighted normal equations and pivoted elimination
-with numerical failure checks and a fixed intercept-penalty convention.
-Results and coefficients for every fold are committed, not merely a final
-fitted model.
-
-Geometry signatures are deterministically assigned to one of five folds
-by a seeded stable hash. Every duplicate code/player/color variant and all
-seven heights of one signature remain in the same fold. This blocks the
-obvious leakage in a random row split, where a near-identical code at the
-same or adjacent resolution appears in training and testing.
-
-For each training fold, rows of one geometry receive total weight one:
-
-\[
-w_{ih}=1/n_g.
-\]
-
-The weighted objective is
-
-\[
-\widehat\beta=\arg\min_\beta
-\sum_{i,h\in train}w_{ih}(y_{ih}-\phi_{ih}^{T}\beta)^2
-+\lambda\sum_{j=1}^{5}\beta_j^2,
-\]
-
-with an unpenalized intercept (index 0). Test predictions
-are rounded to nearest integer, and nonnegative length/minimum width
-constraints are applied. No hyperparameter search uses the held-out folds.
-There is no separate external test provider or future-build test set.
-Grouped cross-validation mitigates one leakage route; it does not remove
-source selection bias, deterministic-target circularity, or all similarity
-between distinct old signatures.
-
-## 8.7 Cluster-bootstrap intervals
-
-The reported intervals resample the 48 group-level agreement means with
-replacement. Each of 2,000 draws samples 48 group indices and averages
-their scores. A deterministic PRNG seed `23092026` is retained. The 2.5th
-and 97.5th percentiles give the displayed stability interval.
-
-\[
+$$
 A_m^{*(b)}=\frac1K\sum_{j=1}^{K}\bar e_{G_j^{*(b)},m}.
-\]
+$$
 
-This is a descriptive resampling stability interval for this corpus under
-a geometry-cluster sampling model. The source population is not a random
-sample of all CS players. Duplicated upstream sources, code preferences,
-unobserved match dates and non-random pro selection limit generalization.
-Calling this a calibrated “95% probability the formula works in CS2” would
-be mathematically incorrect.
+### Grouped ridge surrogate
 
-For the ridge method, these intervals resample fixed out-of-fold errors;
-they do not refit the complete cross-validation procedure within every
-bootstrap draw. They therefore do not include all model-training
-variability. That limitation is stated rather than hidden behind the
-numerical precision of the percentiles.
+$$
+\phi(x,h)=\bigl[1,\ Sh/480,\ Th/480,\ G,\ \mathbf 1\{T=0\},\ h/1080\bigr],\qquad
+\hat\beta=\operatorname*{arg\,min}_\beta\sum_{(i,h)\in\text{train}}w_{ih}\bigl(y_{ih}-\phi_{ih}^{\mathsf T}\beta\bigr)^2+\lambda\sum_{j=1}^{5}\beta_j^2,
+$$
 
-## 8.8 Input-dependent coverage, not invented accuracy
+with $\lambda=0.01$, an unpenalized intercept and $w_{ih}=1/n_g$ so each geometry
+weighs one. Signatures go to five folds by a seeded hash, so all copies and all
+heights of a geometry stay on one side. Predictions are rounded and clamped to
+non-negative length and minimum width; no hyperparameter search uses the test
+folds.
 
-For a new user input, the app calculates distance to distinct old geometry
-groups. The present metric is
+### Coverage of a new input
 
-\[
-d_g^2=((S-S_g)/2)^2+(T-T_g)^2+((G-G_g)/3)^2
-+2\mathbf1\{d\ne d_g\}+2\mathbf1\{t\ne t_g\}.
-\]
+For input settings the app measures distance to each corpus geometry $g$,
 
-Kernel weights are \(k_g=\exp(-d_g^2/2)\). The report includes exact
-signature matches, nearby groups, nearest groups, and Kish effective
-support size
+$$
+d_g^2=\Bigl(\frac{S-S_g}{2}\Bigr)^2+(T-T_g)^2+\Bigl(\frac{G-G_g}{3}\Bigr)^2+2\cdot\mathbf 1\{\text{dot}\ne\text{dot}_g\}+2\cdot\mathbf 1\{\tau\ne\tau_g\},
+$$
 
-\[
-n_{eff}=\frac{(\sum_gk_g)^2}{\sum_gk_g^2}.
-\]
+kernel weights $k_g=e^{-d_g^2/2}$ and the Kish effective support
+$n_{\mathrm{eff}}=(\sum_g k_g)^2/\sum_g k_g^2$. The constants are heuristic; the
+figure describes support in the corpus and never updates model weights.
 
-This describes how close the input is to corpus examples under a chosen
-metric. Its scale constants are heuristic, documented choices. It is not
-a learned probability of native conversion correctness, and never updates
-the new renderer posterior. An out-of-domain input is flagged rather than
-assigned confident results because some distant famous player has a code.
+## Result
 
-## 8.9 Synthetic inversion study
+| Method | All three exact | Micro | Macro | Macro stability interval | RMSE |
+|---|---:|---:|---:|---:|---:|
+| `source_f32` | {{fig:summary.ablations.name=source_f32.allExact|int}} | {{fig:summary.ablations.name=source_f32.microExact|pct}} | {{fig:summary.ablations.name=source_f32.clusterStability.mean|pct}} | {{fig:summary.ablations.name=source_f32.clusterStability.lower|pct}}–{{fig:summary.ablations.name=source_f32.clusterStability.upper|pct}} | {{fig:summary.ablations.name=source_f32.rmse|d3}} |
+| `round_scaled` | {{fig:summary.ablations.name=round_scaled.allExact|int}} | {{fig:summary.ablations.name=round_scaled.microExact|pct}} | {{fig:summary.ablations.name=round_scaled.clusterStability.mean|pct}} | {{fig:summary.ablations.name=round_scaled.clusterStability.lower|pct}}–{{fig:summary.ablations.name=round_scaled.clusterStability.upper|pct}} | {{fig:summary.ablations.name=round_scaled.rmse|d3}} |
+| `fixed_2x` | {{fig:summary.ablations.name=fixed_2x.allExact|int}} | {{fig:summary.ablations.name=fixed_2x.microExact|pct}} | {{fig:summary.ablations.name=fixed_2x.clusterStability.mean|pct}} | {{fig:summary.ablations.name=fixed_2x.clusterStability.lower|pct}}–{{fig:summary.ablations.name=fixed_2x.clusterStability.upper|pct}} | {{fig:summary.ablations.name=fixed_2x.rmse|d3}} |
+| `historical_preview` | {{fig:summary.ablations.name=historical_preview.allExact|int}} | {{fig:summary.ablations.name=historical_preview.microExact|pct}} | {{fig:summary.ablations.name=historical_preview.clusterStability.mean|pct}} | {{fig:summary.ablations.name=historical_preview.clusterStability.lower|pct}}–{{fig:summary.ablations.name=historical_preview.clusterStability.upper|pct}} | {{fig:summary.ablations.name=historical_preview.rmse|d3}} |
+| `ridge_group_cv` | {{fig:summary.ablations.name=ridge_group_cv.allExact|int}} | {{fig:summary.ablations.name=ridge_group_cv.microExact|pct}} | {{fig:summary.ablations.name=ridge_group_cv.clusterStability.mean|pct}} | {{fig:summary.ablations.name=ridge_group_cv.clusterStability.lower|pct}}–{{fig:summary.ablations.name=ridge_group_cv.clusterStability.upper|pct}} | {{fig:summary.ablations.name=ridge_group_cv.rmse|d3}} |
 
-Separately, the 27 forward hypotheses are inverted across 336 eligible
-unique geometry-height cells. The study reports own-model exact geometry
-matches and ideal values outside legal ranges. This is an engineering
-representability test: can a given hypothetical new coordinate system
-express the legacy target? It is not evidence that the model represents
-Valve's code. A model with more convenient coordinates can have excellent
-self-consistency and still be entirely wrong in the game.
+The ridge surrogate shows that a smooth model approximates much of a
+piecewise-quantized function on these inputs; it does not replace the known
+equations. The original eight-preset experiment, where factor 2 looked right at
+960 and 1080, stays unchanged in the archive. Separately, every one of the 27
+historical hypotheses was inverted over the corpus geometry-height cells to test
+representability ([Model families](05-model-families.md)).
 
-## 8.10 Retained results and future study design
+## Limits
 
-The retained generated corpus records transcription identity, fold
-assignments, coefficients, per-case rows and model representability results.
-The immutable original archive includes its own hash manifest and Python
-reference results.
-
-A future native study should register capture settings before measurement,
-span quantization transitions and authored/current-height ratios, hold out
-entire geometry/session groups, document scaling and capture processes,
-and retain original PNG hashes. Collecting another hundred copied small
-crosshairs at one resolution is less informative about the renderer than
-several carefully chosen settings on which the competing families disagree.
+The source population is published pro settings, not a random sample of
+players; duplicated upstreams, unobserved match dates and selection limit any
+generalization, and the interval is a descriptive resampling interval, not a
+probability that a formula works in CS2. For the ridge method it resamples fixed
+out-of-fold errors and omits refitting variability. A useful native study would
+register settings before capture, span quantization boundaries and ratios, hold
+out whole geometry and session groups, and keep the original PNG hashes.
+:::

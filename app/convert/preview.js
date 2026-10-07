@@ -1,12 +1,16 @@
 import { raster, rectangles, outlineRaster, legacyRaster } from '../../lib/geometry/raster.js';
+import { SCENE_IDS, sceneImage } from './scenes.js';
 
 /** Plate colours come from the CSS tokens so the canvas and the page stay one system. */
-function palette() {
-  const css = getComputedStyle(document.documentElement), read = (name, fallback) => css.getPropertyValue(name).trim() || fallback;
+function palette(canvas) {
+  // Read from the canvas: the background choice overrides the plate tokens on #quant, below the document element.
+  const css = getComputedStyle(canvas), read = (name, fallback) => css.getPropertyValue(name).trim() || fallback;
   return { plate: read('--plate', '#0a0c0f'), plateLight: read('--plate-light', '#1a1e24'), grid: read('--plate-grid', '#171b21'),
     axis: read('--plate-axis', '#2a303a'), ink: read('--plate-ink', '#8b94a1'), annot: read('--plate-annot', '#f08a24'),
     shared: read('--diff-shared', '#d9dde3'), extra: read('--diff-extra', '#f08a24'), missing: read('--diff-missing', '#5aa9e6'),
-    mono: read('--font-mono', 'monospace') };
+    mono: read('--font-mono', 'monospace'), halo: read('--plate-halo', ''),
+    // A generated scene background, named by the token on #quant; anything unknown paints the flat plate.
+    scene: SCENE_IDS.includes(read('--plate-scene', '')) ? read('--plate-scene', '') : '' };
 }
 
 function grid(context, width, height, ox, oy, zoom, colors) {
@@ -21,16 +25,18 @@ function grid(context, width, height, ox, oy, zoom, colors) {
  * it, so the old and new games each draw it half a pixel off, the old one right/down, the new one left/up. */
 function registration(context, width, height, ox, oy, colors) {
   const cx = Math.round(ox) + .5, cy = Math.round(oy) + .5, tick = 7;
-  context.strokeStyle = colors.axis; context.lineWidth = 1; context.beginPath();
+  context.beginPath();
   context.moveTo(cx, 0); context.lineTo(cx, tick); context.moveTo(cx, height - tick); context.lineTo(cx, height);
   context.moveTo(0, cy); context.lineTo(tick, cy); context.moveTo(width - tick, cy); context.lineTo(width, cy);
-  context.stroke();
+  // On a scene the ticks carry a halo so they read on any part of the picture.
+  if (colors.scene) { context.strokeStyle = colors.halo; context.lineWidth = 3; context.stroke(); }
+  context.strokeStyle = colors.axis; context.lineWidth = 1; context.stroke();
 }
 
 /** Small ring on the screen centre. Painted beneath the crosshair layers: at low zoom it passes through the four
  * centre pixels, and the preview must never change a game pixel. */
 function centreMark(context, ox, oy, colors) {
-  for (const [style, lineWidth] of [[colors.plate, 3], [colors.annot, 1.5]]) {
+  for (const [style, lineWidth] of [[colors.scene ? colors.halo : colors.plate, 3], [colors.annot, 1.5]]) {
     context.strokeStyle = style; context.lineWidth = lineWidth;
     context.beginPath(); context.arc(ox, oy, 3, 0, 2 * Math.PI); context.stroke();
   }
@@ -74,6 +80,13 @@ function dimensions(context, geometry, settings, width, height, zoom, colors, ou
   context.strokeStyle = context.fillStyle = colors.annot; context.lineWidth = 1;
   context.font = `500 11px ${colors.mono}`; context.textBaseline = 'middle';
   const gap = Math.max(10, Math.round(zoom * .9)), tick = 4;
+  const text = (label, tx, ty) => {
+    if (colors.scene) {
+      context.save(); context.strokeStyle = colors.halo; context.lineWidth = 3; context.lineJoin = 'round';
+      context.strokeText(label, tx, ty); context.restore();
+    }
+    context.fillText(label, tx, ty);
+  };
   const line = (ax, ay, bx, by) => {
     context.moveTo(Math.round(ax) + .5, Math.round(ay) + .5); context.lineTo(Math.round(bx) + .5, Math.round(by) + .5);
   };
@@ -81,12 +94,16 @@ function dimensions(context, geometry, settings, width, height, zoom, colors, ou
   if (x1 - x0 >= 14 && bottom + gap + 18 < height) {
     const y = bottom + gap;
     line(x0, y, x1, y); line(x0, y - tick, x0, y + tick); line(x1 - 1, y - tick, x1 - 1, y + tick);
-    context.textAlign = 'left'; context.fillText(crossed ? `${length} px across` : `${length} px`, x0, y + 12);
+    context.textAlign = 'left'; text(crossed ? `${length} px across` : `${length} px`, x0, y + 12);
   }
   if (x1 + gap + 44 < width) {
     const x = x1 + gap;
     line(x, y0, x, y1 - 1); line(x - tick, y0, x + tick, y0); line(x - tick, y1 - 1, x + tick, y1 - 1);
-    context.textAlign = 'left'; context.fillText(`${thickness} px`, x + 7, (y0 + y1) / 2);
+    context.textAlign = 'left'; text(`${thickness} px`, x + 7, (y0 + y1) / 2);
+  }
+  if (colors.scene) {
+    context.strokeStyle = colors.halo; context.lineWidth = 3; context.stroke();
+    context.strokeStyle = colors.annot; context.lineWidth = 1;
   }
   context.stroke();
 }
@@ -111,14 +128,22 @@ export function fitZoom(canvas, geometries, settings, outlines = []) {
 }
 
 export function paintQuant(canvas, geometry, settings, color, zoom = 6, difference = null, options = {}) {
-  const rect = canvas.getBoundingClientRect(), dpr = Math.min(2, window.devicePixelRatio || 1), base = palette();
-  // `lightPlate`: a lighter screen so black outline strokes stay visible (the sample plates only).
+  const rect = canvas.getBoundingClientRect(), dpr = Math.min(2, window.devicePixelRatio || 1), base = palette(canvas);
+  // `lightPlate`: a lighter screen so black outline strokes stay visible (the sample plates; the token equals the plate
+  // on the Grey and Light backgrounds).
   const colors = options.lightPlate ? { ...base, plate: base.plateLight } : base;
   const width = Math.max(80, rect.width), height = Math.max(100, rect.height || 150);
   canvas.width = Math.round(width * dpr); canvas.height = Math.round(height * dpr);
   const context = canvas.getContext('2d');
   context.scale(dpr, dpr); context.imageSmoothingEnabled = false;
   context.fillStyle = colors.plate; context.fillRect(0, 0, width, height);
+  // A scene is a 32×18 composition scaled to the whole plate with smoothing on: the upscale is the blur (no ctx.filter,
+  // which Safari lacks). It is identical on every plate; smoothing goes off again before any crosshair cell is drawn.
+  if (colors.scene) {
+    context.imageSmoothingEnabled = true; context.imageSmoothingQuality = 'high';
+    context.drawImage(sceneImage(colors.scene), 0, 0, width, height);
+    context.imageSmoothingEnabled = false;
+  }
   const reference = difference?.data ? difference : difference ? raster(difference, settings) : null;
   // Old plates paint element by element, outline then fill, so a later outline covers earlier fills.
   const legacy = options.legacy && options.outline && !reference && !options.mask

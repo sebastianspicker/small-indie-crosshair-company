@@ -1,233 +1,163 @@
-# 09 — Joint inversion, exact shape loss, and evidence integrity
-
-**Implementation:** `quant-static-v5`, release 0.3.0. **Native renderer evidence shipped:** zero capture pairs. This chapter updates the algorithmic details in chapters 05–07 without replacing their original derivations or promoting a hypothetical renderer into an observed game implementation. The corpus, historical binary32 arithmetic, 27-model family and target build remain unchanged.
-
-Version 5 jointly searches thickness and gap, then refines the preview separately.
-It scores the full visible shape, counts each capture once, and limits the effect of
-outlier measurements. These changes do not add native game captures.
-
-## 1. Separate the objects being estimated
-
-An old configuration and its game height define an old-geometry reconstruction. A segmented original image instead supplies a measured binary target and an uncertain geometric summary. A renderer hypothesis maps a legal new tuple to a predicted geometry. A decision rule then selects a tuple using losses under those hypotheses. These are distinct operations.
-
-Let the target be:
-
-\[
-y=(L_o,W_o,a_o,b_o).
-\]
-
-The entries are arm length, thickness, near inner edge and far inner edge in the declared comparison coordinates. Under the reconstructed old static painter, `b_o = a_o + 1` at the original height. A screen-relative target can multiply both edges by a non-unit scale. Independent native component measurements can also have another edge separation. The solver must not overwrite either case with its preferred centering convention.
-
-For a new tuple, the declared legal integer domain is:
-
-\[
-\mathcal D=\{0,\ldots,255\}\times\{0,\ldots,31\}\times\{0,\ldots,128\}.
-\]
-
-These coordinates are new length, thickness and gap. The authored height is fixed during each solve. Literal old thickness zero restricts the thickness coordinate to zero for non-image inputs, preserving that semantic branch even when the requested screen-relative target conflicts with it. An inferred one-pixel image thickness is not evidence of a literal old zero, so image targets do not impose that restriction. When a positive old thickness is matched only by the stored zero at a large scale, the automatic report discloses the zero-thickness branch instead of exporting it silently (see the [formula history](../research/formula-evolution.md)).
-
-The historical renderer is still a source-based reconstruction; the 27 new renderers remain competing assumptions. Optimization answers what a declared model would require, not which model Valve uses.
-
-## 2. Why thickness and gap must be solved jointly
-
-The previous geometry initialization chose the nearest thickness, then solved a gap for that thickness. For a thickness-relative gap, changing the integer width changes the baseline. A locally nearest width can therefore make the overall geometry unnecessarily poor, especially when a negative old overlap cannot be represented by a nonnegative new gap.
-
-The revised geometry objective is:
-
-\[
-J(L,T,G)=(\widehat L-L_o)^2+(\widehat W-W_o)^2+
-\mathbf{1}_{L_o>0}\left[(\widehat a-a_o)^2+(\widehat b-b_o)^2\right].
-\]
-
-This objective uses squared pixel residuals with unit coefficients. Those coefficients are a design choice, not learned human-perception weights. The geometry inverse is an initialization for the later binary-shape objective; it is not a substitute for that objective.
-
-Length is separable in the current model family. For a fixed renderer and authored/current height, evaluate all 256 legal length values and retain the one minimizing its squared length residual. Thickness is not separable from a thickness-relative gap. For each of the 32 legal thickness values, calculate the rendered width, then evaluate all 129 gap values against both edges. Select the width/gap branch with the smallest combined residual.
-
-This is at most:
-
-\[
-256+32\cdot129=4384
-\]
-
-small scalar evaluations per renderer before reuse. Width values that quantize to the same rendered width share their gap search. The literal-zero branch needs only one thickness branch. There are no dense images or game executions in this enumeration.
-
-The finite enumeration proves a **global minimum of the declared geometry objective on the declared integer domain**: every possible width/gap branch was evaluated, and length was minimized independently. The implementation compares computed losses strictly before using the ideal-value preference for exact ties; a small real loss difference must not be rounded into a tie. It does not prove global binary-mask optimality. In the report, `inverseCertificate.stage` is `initial-geometry-inverse`; the certificate contains the initialization tuple, prediction, objective minimum and branch counts. Subsequent visual refinement can change the tuple, so the certificate is never silently reattached to that final tuple as though it certified the new objective.
-
-### Complete integer preimages
-
-The geometry inverse is many-to-one: several legal integer tuples can forward-render exactly the same `{length, width, near, far}` geometry. `solveInverse` returns one minimum per hypothesis; the runtime also exposes `exactPreimage`, which returns the **whole finite equivalence class** for one hypothesis as a union of integer boxes (`lengths` and `gaps` run-length intervals per reachable thickness). The exported report carries a `preimage` block: the hypothesis id, completeness, the exact count, whether near/far were constrained, a bounded deterministic sample of at most 64 tuples, and its scope.
-
-Two honest readings follow. First, an empty preimage is possible even for a target that looks reachable: quantised scaling can skip a rendered dimension, so a target reachable under one hypothesis can have no exact integer preimage under another. Second, a pure-dot target has zero length, which leaves the near/far edges unconstrained, so every legal gap is an exact match rather than a single value. The preimage is exact on the declared integer domain under one hypothesis; it is not native validation. See [chapter 11](11-certified-inverse-and-capture-plan.md) for worked cases.
-
-### Counterexample that motivated the joint solve
-
-At height 2160, old size 2, thickness 0.5 and gap −7 reconstruct to length 9, width 2, near edge −2 and far edge −1. Under the authored-height/truncation/thickness-relative hypothesis at the same height, the old width-first initialization uses new width 2 and gap 0. Its predicted edges are 1 and 2. The edge contribution is 18.
-
-The joint solve can use a one-pixel width and gap 0. The predicted edges become 0 and 1. The combined width/edge contribution is 9: one unit of squared width error plus two squared edge errors of four each. Several native thickness values can represent the one-pixel minimum; the deterministic tie-break selects the legal value nearest the continuous ideal. This is an improvement under the stated geometry objective, not an exact reconstruction of the overlap.
-
-The case is a permanent regression test. Other seeded cases compare the inverse certificate to a separate exhaustive width/gap oracle. Passing those checks validates the solver against its equations, not the renderer against CS2.
-
-## 3. Both inner edges determine the gap target
-
-Every renderer currently considered by the automatic lab predicts a one-pixel far/near displacement. Given a predicted near edge `a`, its two-edge least-squares contribution can be rearranged:
-
-\[
-(a-a_o)^2+(a+1-b_o)^2
-=2(a-\bar a)^2+\frac{(a_o+1-b_o)^2}{2},
-\qquad \bar a=\frac{a_o+b_o-1}{2}.
-\]
-
-The second term does not depend on the chosen gap. The ideal near edge is therefore the midpoint `bar a`, not simply the observed near edge. When the target itself has unit displacement the two are equal; otherwise solving only the near side biases the result and leaves avoidable error on the far side.
-
-For a fixed width branch, write the renderer as:
-
-\[
-\widehat a=B(W)+c\,Q(rG),
-\qquad G^*=\frac{\bar a-B(W)}{cr}.
-\]
-
-For the thickness-relative family, the baseline is half the integer width rounded down and `c=1`. For the center-relative family, the baseline is zero and `c=1`. For the full-opening family, the baseline is −0.5 and `c=0.5`. The ideal real-valued gap is only a tie-break/reference value. All legal integers are compared using the actual quantized forward function.
-
-A measured near/far pair `(1,6)` illustrates the distinction. For the center-relative model at unit scale, the ideal predicted near edge is 3 and the predicted far edge is 4. Matching near edge 1 exactly would unnecessarily increase total two-edge squared error. No gap can fix the target's five-pixel displacement while the model insists on one pixel; the residual must remain visible.
-
-The retained manual lab now uses the analogous midpoint with its editable `farDelta`. Its measured affine calibration is valid only at its declared effective width and heights. The manual path remains width-first to preserve that calibration scope; only the automatic v5 path carries the joint finite-domain certificate.
-
-## 4. Score full shapes, not a cropped display
-
-The earlier visual score allocated a dense binary mask per prediction on a fixed preview-sized grid. This made cost depend on the preview area and made very large synthetic targets unscorable when the preview cropped them. A preview is a display choice, not part of the definition of the target.
-
-The new implementation compiles the union of colored rectangles into disjoint vertical bands. Within each band, occupied vertical intervals are merged. Overlapping arms or a center dot contribute occupied cells only once. No summation of rectangle areas is substituted for the area of their union.
-
-A half-open horizontal interval accepts integer pixel centers according to:
-
-\[
-x\leq i+\tfrac12<x+w
-\quad\Longleftrightarrow\quad
-\left\lceil x-\tfrac12\right\rceil\leq i<
-\left\lceil x+w-\tfrac12\right\rceil.
-\]
-
-This is exactly the illustrative dense raster's pixel-center convention. Fractional edges and negative offsets therefore preserve their previous binary-cell meaning. The method is not subpixel anti-aliasing and is not an extracted game shader.
-
-After decomposing both shapes into nonoverlapping bands, a two-pointer sweep computes their intersection. The scalar metric is:
-
-\[
-\operatorname{IoU}(A,B)=
-\frac{|A\cap B|}{|A|+|B|-|A\cap B|}.
-\]
-
-At most five rectangles describe the ordinary static crosshair. Cost depends on their edges and interval intersections, not their distances from the origin or the canvas dimensions. The engine caches results by rendered geometry rather than by model ID: different scenarios that predict identical shapes share the expensive work.
-
-The old and new methods are compared on 1,000 seeded pairs, including fractional widths/edges, overlapping bars, optional center dots and T shapes. Uncropped dense metrics and analytical metrics must agree exactly for cell counts and IoU. Arbitrary binary image masks are compiled column-by-column rather than forced through the rectangle generator; their occupied pixels are preserved losslessly.
-
-### Empty and cropped targets
-
-Two empty shapes have zero decision mismatch but undefined IoU. The interface says “Undefined,” and no exact-match probability mass is created from the absence of visible geometry.
-
-A large synthetic shape can now have a complete analytical score while its preview is visibly cropped. The report discloses that display limitation. This is different from an original image crop that has already discarded source pixels. For a cropped measured target, or a candidate extending beyond its observed image frame, an exact whole-image match is disabled. The engine cannot recover missing evidence by increasing its own synthetic canvas.
-
-## 5. Visual refinement and cross-scenario decisions
-
-Each scenario starts from its certified geometry inverse. A maximum of two neighborhood passes examines legal tuples within one integer step of the current tuple. The target never changes. Each accepted step reduces binary mismatch or, at equal mismatch, reduces the geometry residual. This is a bounded local visual search, not a proof of the global visual optimum over all 1,056,768 tuples.
-
-Initial proposals are deduplicated by native tuple only for evaluation cost. Their original model associations, initialization certificates and paths remain separate. Selecting a particular renderer retrieves that renderer's own proposal and trace; it must not retrieve the trace of another renderer that happened to propose identical numbers.
-
-Automatic selection scores each tuple under all 27 scenarios. It offers three declared policies:
-
-\[
-R_{\pi}(v)=\sum_m\pi_m\ell_m(v),
-\qquad R_{\max}(v)=\max_m\ell_m(v).
-\]
-
-The first minimizes expected mismatch under the explicit prior or conditional weights. The second minimizes the worst mismatch across the enumerated scenarios. A third rule, `cvar`, minimizes a prior-free weighted conditional value-at-risk at level `alpha = 0.5`: the declared scenario losses are sorted from worst to best, the worst half of the declared weight is taken, and those losses are averaged by their mass. It is a risk-averse declared rule over the same 27 scores, not a fitted risk model and not a confidence level. None is equivalent to maximizing one selected preview's overlap. A sensible ensemble compromise may therefore retain a visible residual under the selected display hypothesis.
-
-The best initial proposal receives up to two additional neighborhood passes against the aggregate decision objective. Each pass checks the 26 adjacent tuples. When that local search would stop, the solver also checks two length values at a distance of two. The extra length values can cross a one-cell quantization plateau: an adjacent length can score worse even when the next one scores better. The probe occurs once, after the ordinary local path has been evaluated. There are at most 27 initial tuples plus 26 checks in each pass plus two length probes, or 81 evaluated tuples before duplicate elimination. Both decision traces are monotone under their own objective. The report names this search policy and calls the result the best evaluated candidate, never a global visual optimum.
-
-### Certified global expansion (opt-in)
-
-That bounded search is not guaranteed to be the declared optimum. `infer({ certify: true })` runs an opt-in certified expansion over the ranking pool (`certifiedExpansion` in `lib/solver/certify.js`). It sweeps Chebyshev shells around the current best: a strictly better cell moves the best and restarts, and a full shell that is strictly worse certifies `shell-monotone` under a documented monotonicity assumption; a degenerate domain is enumerated instead (`domain-exhaustive`); the zero floor is reported as `loss-zero`; and any budget or radius exhaustion is reported as `unproven`, which by construction makes no global claim. When a global claim is made, it is a claim about the *declared* loss on the declared integer domain under the enumerated 27 hypotheses, never about the renderer.
-
-The assumption behind `shell-monotone` — that the declared loss cannot decrease once every rendered geometric distance strictly grows from the best cell — is **documented and spot-checked, not proved**. It is checked offline against exhaustive enumeration on a bounded sub-domain probe; the corpus study found no assumption failures on its six probes, but that is not a proof over the full domain. The exported report carries the outcome as `decision.certificate` (method, global flag, best tuple and loss, evaluated-cell count, shell margin, and a scope string). The default path is unchanged: without `certify: true`, `decision.certificate.method` is `not-evaluated` (or `loss-zero` when the chosen tuple already attains the zero floor) and the search policy remains `bounded-neighborhood-plus-length-two-v1`. The opt-in path sets the policy to `bounded-neighborhood-plus-certified-expansion-v2`. Chapter 11 records the measured consequence: the shipped bounded search missed the certified optimum in 114 of 1064 corpus cases, concentrated under the worst-case rule.
-
-The exported research report schema is now `sicc-quant-report-v4`; it carries `decision.certificate`, the `decision.rule` (now including `cvar`), and the `preimage` block, while the default automatic model remains `quant-static-v5`.
-
-For example, the old settings `size=3`, literal-zero thickness and `gap=-1` at height 720 produce a best initial automatic tuple with length 4 under the equal prior. Its expected shape loss is about 0.40171. The two-cell length proposal 6 reduces that declared loss to about 0.39658 while preserving thickness zero. This is a synthetic historical-target comparison, not a native accuracy measurement. The case is a regression test; the wider search cannot increase the chosen decision loss because it retains the previous candidate as an option.
-
-The display renderer is the explicitly selected model, or a maximum-weight model. Prior ties choose the documented authored/truncation/thickness-relative reference instead of cherry-picking whichever renderer makes the chosen tuple look best. This prevents optimistic preview selection from concealing scenario disagreement.
-
-## 6. Robust likelihood is a sensitivity model, not calibration by assertion
-
-A mislabeled capture, an incorrect authored height or an outline mistaken for a colored arm can produce a very large residual. A pure Gaussian likelihood can then give one point overwhelming relative influence. V5 uses a fixed contamination mixture with a narrow Gaussian component and a wider multivariate Student component.
-
-Let the standardized residual vector have dimension `d`, and let its squared norm be:
-
-\[
-z_j=\frac{\widehat y_j-y_j}{\sigma},
-\qquad q=\sum_{j=1}^{d}z_j^2.
-\]
-
-Dimensions are four for separated arms and two for a pure dot, whose unidentifiable gap must not provide evidence. Common observation-specific normalization factors cancel when comparing models for the same observation.
-
-The relative density is:
-
-\[
-p(z\mid m)=0.95\,\phi_d(z)+0.05\,t_{4,d}(z;8).
-\]
-
-Here the Student component has four degrees of freedom and isotropic scale eight in standardized coordinates. Its density is:
-
-\[
-t_{\nu,d}(z;s)=
-\frac{\Gamma((\nu+d)/2)}{\Gamma(\nu/2)(\nu\pi)^{d/2}s^d}
-\left(1+\frac{q}{\nu s^2}\right)^{-(\nu+d)/2}.
-\]
-
-Mixture evaluation and posterior normalization use log-sum-exp. In the tail, the negative log density grows logarithmically in squared residual rather than linearly. This bounds the influence of increasing a gross residual relative to the Gaussian-only rule. It does not make fraudulent or systematically biased observations safe.
-
-**The 5% contamination proportion, degrees of freedom, scale and diagonal feature-noise model are declared assumptions. They were not fitted to the old pro corpus.** Near and far measurements may have correlated errors; screenshot segmentation may be systematically biased. A reviewed native dataset would be needed to choose or calibrate a more realistic covariance/noise model. All-model conflict remains flagged even when normalized weights sum to one and necessarily have a largest member.
-
-Within each connected capture/session group, log likelihoods are averaged before updating weights. Across groups, these pseudo-likelihood contributions are added. Holdout groups are excluded from updating; synthetic records and old configurations never update native weights. Native correctness probability remains null.
-
-## 7. Canonical evidence and incompatible duplicate readings
-
-SHA-256 strings are case-normalized before identity comparisons. Capture and session identifiers occupy different namespaces, so a session name cannot accidentally collide with a raw hash key. Only validated fields enter likelihoods and exports; unused nested metadata is discarded.
-
-Grouping uses the transitive closure of “same capture hash” or “same session group” before duplicate removal. Renaming a duplicate capture cannot split connected evidence into artificial independent observations. The same capture/session cannot enter both calibration and holdout.
-
-If one hash is submitted with conflicting native settings, measurement scope, active observed geometry or noise, the import is rejected. Averaging contradictory readings under one supposedly fixed observation would conceal the problem; counting them twice would inflate evidence. Resolve the actual measurement or its metadata first. A shared image hash still does not prove authenticity, and different hashes can arise from the same scene, so session grouping and provenance review remain essential.
-
-The screenshot dialog captures center, seed and tolerance together with the completed analysis. Editing any crop/color/tolerance control invalidates the old fit immediately and disables acceptance. Acceptance cannot combine an old mask with new control metadata. Closing the dialog invalidates pending results and releases decoded image resources.
-
-## 8. Operational boundaries preserve mathematical meaning
-
-The worker runs at most one task at a time. At most one inference request waits behind active work: newer input replaces an older queued conversion. Image operations have a bounded queue. Request deadlines terminate the worker and reject pending tasks rather than merely losing track of a still-running calculation. Generation IDs separately prevent stale UI results from being applied.
-
-This is not background research after a user closes the app. The worker is a local computation boundary. It receives parsed data, never user-written scripts. Both export paths share one allowlisted formatter and validate native numbers again; line breaks in comments cannot become executable console commands. No solver-generated confidence label bypasses unsupported-style or invalid-input export blocks.
-
-## 9. What changed, and what did not
-
-The numerical inverse is more rigorous on its declared domain. Shape scoring is exact for the documented binary-cell model and independent of synthetic preview cropping. The statistical update is more resistant to outliers and duplicate/provenance mistakes. The UI makes raw settings, direct assignment, proposed values, modeled residuals and uncertainty easier to inspect.
-
-What did not change is the evidentiary boundary. Software tests establish implementation agreement with these definitions. Benchmarks measure this implementation on a particular machine. Neither is a CS2 capture. More precise mathematics can make uncertainty clearer; it cannot replace the missing native observations.
-
-The exact finite-domain inverse remains the runtime path. A dependency-free
-learned distillation of that inverse was trained, measured and rejected as a
-substitute: an earlier revision reproduced the exact solver's tuple only about
-11.6% of the time, and a capacity revision raised that to about 35.7%, still far
-from interchangeable, so the artifact records a closed speed gate and is not
-wired into the app. A learned shortlist with exact verification was also measured
-and rejected as a drop-in (it lost to the solver on 13 of 125 samples), and a
-learned fragility classifier was weak (0.736 accuracy against a 0.704 majority
-baseline). All of it distills the declared solver rather than observing the game,
-so none of it adds native evidence. A separate opt-in layer certifies the chosen
-tuple against the *declared* decision loss without changing the default path. The
-experiments and their numbers are documented in
-[chapter 10](10-learned-emulator.md) and
-[chapter 11](11-certified-inverse-and-capture-plan.md).
-
-Relevant implementation modules are `lib/solver/inverse.js`, `certify.js`,
-`selection.js`, `experiments.js`, `visual.js`, `evidence.js`,
-`observations.js`, `lib/geometry/pixel-shape.js` and the screenshot component
-extractor. The fixed source/data provenance remains in the
-[source ledger](../research/quant-sources.md) and
-[formula history](../research/formula-evolution.md).
+# Historical joint solver and evidence integrity
+
+::: summary
+Version 5 of the historical study fitted thickness and gap together instead of
+one after the other, scored whole shapes exactly instead of on a cropped
+preview, and made the statistics robust against a single bad screenshot or a
+duplicated one. These changes make the 27-guess study correct on its own terms.
+They add no screenshot of the new game, so they cannot say which guess is right.
+:::
+
+::: key
+Over {{fig:generated.inverse-comparison.cases|int}} corpus cases
+({{fig:generated.inverse-comparison.uniqueGeometryGroups|int}} geometries, seven
+heights, {{fig:generated.inverse-comparison.models|int}} hypotheses) the joint inverse lowers the geometry loss in
+{{fig:generated.inverse-comparison.strictlyLowerGeometryLoss|int}} cases and
+raises it in {{fig:generated.inverse-comparison.higherGeometryLoss|int}}.
+:::
+
+::: technical
+## Question
+
+Within the 27-hypothesis study of [Model families](05-model-families.md), how
+are the inverse, the shape score and the evidence update made exact on their
+declared domains? Implementation `quant-static-v5` (release 0.3.0), today
+`quant-static-v6`: `lib/solver/inverse.js`, `certify.js`, `selection.js`,
+`visual.js`, `evidence.js`, `observations.js`, `lib/geometry/pixel-shape.js`.
+
+## Model
+
+### Joint thickness and gap
+
+The target is $y=(L,W,a,b_{\mathrm f})$ and the domain
+$\mathcal D=\{0..255\}\times\{0..31\}\times\{0..128\}$ at fixed $H_{\mathrm{auth}}$.
+For a thickness-relative gap, changing the width changes the gap baseline, so a
+nearest width can force a poor gap. The v5 objective is
+
+$$
+J(\ell,\theta,g)=(L'-L)^2+(W'-W)^2+\mathbf 1_{L>0}\bigl[(a'-a)^2+(b'_{\mathrm f}-b_{\mathrm f})^2\bigr],
+$$
+
+with unit weights chosen by design, not fitted to perception. Length is
+separable and searched over 256 values; for each of the 32 thicknesses all 129
+gaps are scored against both edges, at most $256+32\cdot129=4384$ scalar
+evaluations per hypothesis. The enumeration proves the minimum of $J$ on
+$\mathcal D$ under one hypothesis; the report records it as
+`inverseCertificate.stage = initial-geometry-inverse` and never attaches it to
+the later, visually refined tuple. Literal old $T=0$ fixes $\theta=0$ for
+cvar inputs; image inputs are not restricted.
+
+At 2160, size 2, thickness 0.5, gap −7 reconstruct to $(9,2,-2,-1)$. Width
+first chooses width 2, gap 0, edges 1 and 2, edge loss 18. The joint solve
+chooses width 1, gap 0, edges 0 and 1, total width and edge loss
+$1+4+4=9$. This case is a permanent regression test.
+
+### Both edges
+
+For hypotheses with $b'_{\mathrm f}=a'+1$,
+
+$$
+(a'-a)^2+(a'+1-b_{\mathrm f})^2=2(a'-\bar a)^2+\frac{(a+1-b_{\mathrm f})^2}{2},\qquad \bar a=\frac{a+b_{\mathrm f}-1}{2},
+$$
+
+so the ideal near edge is the midpoint $\bar a$, and with $a'=B(W')+c\,Q(rg)$
+
+$$
+g^{*}=\frac{\bar a-B(W')}{c\,r},
+$$
+
+where $(B,c)$ is $(\lfloor W'/2\rfloor,1)$, $(0,1)$ or $(-\tfrac12,\tfrac12)$
+for the thickness-relative, centre-relative and full-opening families. $g^{*}$
+is only a tie reference; every legal integer is scored with the quantized
+forward function. A measured pair $(1,6)$ under the centre-relative model at
+unit scale has $\bar a=3$: no gap fixes a five-pixel separation while the model
+insists on one, and the residual stays visible.
+
+### Complete preimages
+
+`exactPreimage` returns every legal tuple that draws the target exactly under
+one hypothesis, as integer boxes: per reachable thickness, run-length intervals
+of lengths and gaps, a count and a deterministic sample of at most 64 tuples
+(`report.preimage`). Worked cases are in
+[Certified inverse and capture plan](11-certified-inverse-and-capture-plan.md).
+
+### Exact shape score
+
+Shapes are unions of at most five rectangles. `pixel-shape.js` compiles a union
+into disjoint vertical bands with merged intervals, so overlaps count once, and
+a two-pointer sweep gives
+
+$$
+\operatorname{IoU}(A,B)=\frac{\lvert A\cap B\rvert}{\lvert A\rvert+\lvert B\rvert-\lvert A\cap B\rvert}
+$$
+
+under the pixel-centre rule of [Pixels, outlines and draw order](04-rendering.md).
+Cost depends on edges, not on canvas size; on 1,000 seeded pairs the dense and
+analytical scores agree exactly. Two empty shapes have no IoU. A cropped image
+target, or a candidate leaving the observed frame, cannot claim a whole-image
+match.
+
+### Decision rules
+
+Each scenario starts from its certified geometry inverse and runs at most two
+passes over the 26 neighbours. Distinct tuples are then scored under all 27
+scenarios with losses $\ell_m(v)$, and one of three declared rules picks:
+
+$$
+R_{\pi}(v)=\sum_m\pi_m\ell_m(v),\qquad R_{\max}(v)=\max_m\ell_m(v),
+$$
+
+and `cvar`, the mass-weighted mean of the worst half of the declared weight
+($\alpha=0.5$). The best proposal gets two more passes against the decision
+loss, plus one probe of the lengths two steps away to cross a quantization
+plateau: at most $27+2\cdot26+2=81$ tuples
+(`bounded-neighborhood-plus-length-two-v1`). Old settings size 3, thickness 0,
+gap −1 at 720 move from length 4 (expected loss 0.40171) to length 6 (0.39658).
+`infer({ certify: true })` adds the certified expansion of
+[Certified inverse and capture plan](11-certified-inverse-and-capture-plan.md).
+The preview draws the selected or highest-weight hypothesis, with prior ties
+going to authored/truncation/thickness-relative.
+
+### Robust likelihood
+
+For a measurement with standardized residuals $z_j=(\hat y_j-y_j)/\sigma$ over
+$d$ features ($d=4$ for bars, 2 for a pure dot) and $q_z=\sum_j z_j^2$:
+
+$$
+p(z\mid m)=0.95\,\phi_d(z)+0.05\,t_{4,d}(z;8),\qquad
+t_{\nu,d}(z;s)=\frac{\Gamma\bigl(\tfrac{\nu+d}{2}\bigr)}{\Gamma\bigl(\tfrac{\nu}{2}\bigr)(\nu\pi)^{d/2}s^{d}}
+\Bigl(1+\frac{q_z}{\nu s^{2}}\Bigr)^{-(\nu+d)/2}.
+$$
+
+In the tail the negative log density grows with $\log q_z$ instead of $q_z$,
+which bounds the influence of one gross error. The 5% contamination, 4 degrees
+of freedom, scale 8 and diagonal noise are declared, not fitted. Log likelihoods
+are averaged within a capture group and summed across groups; holdouts,
+synthetic records and old configurations never update weights.
+
+### Evidence integrity
+
+Hashes are case-normalized; capture and session ids live in separate
+namespaces. Groups are the transitive closure of shared hash or session, formed
+before duplicates are removed, so renaming a copy cannot split a group, and a
+group cannot be both calibration and holdout. One hash with conflicting
+settings, scope, geometry or noise is rejected. The screenshot dialog
+invalidates a fit when crop, colour or tolerance changes. The worker runs one
+task at a time with one queued inference, enforces deadlines by terminating, and
+both export paths share one allowlisted command formatter.
+
+## Result
+
+The joint inverse never raises the initialization loss and lowers it in the
+cases counted above (`research/generated/inverse-comparison.json`). Seeded cases
+match a separate exhaustive width-and-gap oracle. A learned distillation of this
+solver and a learned shortlist were measured and rejected
+([Learned emulators](10-learned-emulator.md)).
+
+## Limits
+
+These are guarantees about declared objectives on declared domains. The
+bounded decision search is not the declared optimum in every case (measured in
+[Certified inverse and capture plan](11-certified-inverse-and-capture-plan.md)),
+and the likelihood constants would need reviewed captures to be calibrated.
+:::

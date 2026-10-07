@@ -15,8 +15,8 @@ app/        browser runtime            DOM, canvases, routing, worker transport
   └─ imports ─▶ lib/
 lib/        pure domain                no DOM, no worker globals, no network
   settings ◀─ geometry ◀─┬─ image
-                         ├─ solver     (community-static-v6; historical quant-static-v6)
-                         └─ manual     (manual lab, conditional-static-v4)
+                         ├─ solver     (community-static-v11; historical quant-static-v6)
+                         └─ manual     (library only, conditional-static-v4)
 data/       runtime data               the four JSON files the app fetches
 research/   evidence, never runtime    generated/, corpus/, comparisons/,
                                         measurements/, archive/ (frozen)
@@ -38,7 +38,7 @@ browser, in the worker and in Node. Five layers, each with one job:
 | `lib/settings/` | What a setting *is*. Input validation primitives (`validation.js`), native cvar ranges, colour resolution and CFG command formatting (`native.js`), the frozen build-2000914 cvar inventory (`cvars.js`; the community model's native ranges and CFG export follow build 2000922), the legacy v1 share-code codec (`sharecode.js`, MIT-attributed), a read-only decoder for current `CS…` share codes (`sharecode-cs.js`), the per-setting outcome and confidence labels behind the "What changed" table (`outcomes.js`), the allowlisted legacy CFG parser (`cfg.js`, which also clamps outline thickness to the old maximum 3; `legacyOutlineExtent` applies the same bound for direct callers), and the single legacy-text import dispatch (`import.js`). The usealpha-0 fill exports alpha 255, the outline 200. `outcomes.js` also builds the `defaults-filled` warning for partial pastes. | `settings` |
 | `lib/geometry/` | What a crosshair *looks like*. Binary32 legacy geometry (`legacy.js`), the one integer quantizer (`quantize.js`), illustrative rasterization (`raster.js`, including the old per-element draw order `legacyElements` / `legacyRaster`), colour-labelled appearance for the shape check (`appearance.js`: new composite and old draw order), the edge-case targets (`edge-cases.js`), lossless shape and mask compilation (`pixel-shape.js`), and the 56-case legacy audit shared by the #evidence page and the archive reproduction (`audit.js`). | `geometry`, `settings` |
 | `lib/image/` | Reading pixels. Bounded PNG screenshot segmentation and native component measurement (`screenshot.js`, `components.js`). | `image`, `geometry`, `settings` |
-| `lib/solver/` | The default direct converter (`community.js`, `community-static-v6`) and historical 27-model study (`quant-static-v6`). Forward renderers (`renderer.js`), integer inverse (`inverse.js`), visual refinement (`visual.js`) and shift-aligned tie overlap (`alignment.js`), the appearance window after the dimension-first search (`community-refine.js`), decision rules (`selection.js`), opt-in certificates (`certify.js`), the solver-independent per-input ML cross-check evaluator (`ml-crosscheck.js`), measurement evidence (`observations.js`, `evidence.js`, `community-evidence.js`), experiment design (`experiments.js`), corpus coverage (`corpus.js`, `statistics.js`), structural rivals (`structural.js`, `migration.js`), report/CFG export (`report.js`, `export.js`), and entry point `infer()` (`inference.js`). | `solver`, `geometry`, `settings` |
+| `lib/solver/` | The default direct converter (`community.js`, `community-static-v11`) and historical 27-model study (`quant-static-v6`). Forward renderers (`renderer.js`), integer inverse (`inverse.js`), visual refinement (`visual.js`) and shift-aligned tie overlap (`alignment.js`), the appearance window after the dimension-first search (`community-refine.js`), decision rules (`selection.js`), opt-in certificates (`certify.js`), the solver-independent per-input ML cross-check evaluator (`ml-crosscheck.js`), measurement evidence (`observations.js`, `evidence.js`, `community-evidence.js`), experiment design (`experiments.js`), corpus coverage (`corpus.js`, `statistics.js`), structural rivals (`structural.js`, `migration.js`), report/CFG export (`report.js`, `export.js`), and entry point `infer()` (`inference.js`). | `solver`, `geometry`, `settings` |
 | `lib/manual/` | The manual lab (`conditional-static-v4`): the `convert()`/`exportCFG()` model with its `measured` gap branch (`conversion.js`) and the affine calibration fit plus `sicc-measurement-v1` schema (`calibration.js`). | `manual`, `geometry`, `settings` |
 
 `solver` and `manual` are deliberately separate conversion models, not two
@@ -58,23 +58,27 @@ full outline and the style family are unverified in game): `options.outlineMode`
 `scope()` in `lib/solver/renderer.js`, defaulting to `'auto'` and `'static'`. They reach the
 cvar text only through `nativeCommands(settings, native, { outlineMode, style, color, t_style })` in
 `lib/settings/native.js` (helpers `styleTarget`, `effectiveOutlineMode`, `optionWarnings`);
-the manual lab accepts the outline option only. They never change geometry, the solver
-objective or model ids. Reports record them in `options` and add the warnings
+the manual lab accepts the outline option only. Model ids stay unchanged. The
+automatic refinement window uses the Auto outline; its subsequent fallback checks
+the chosen outline and can select the plain geometry or T flag when it scores better.
+Reports record options and add the warnings
 `outline-user-override` and `style-family-experimental`; outcome rows use the status
 `user-choice`. The `color` override is not a user option: the community solver sets it in
 `report.exportOverrides` and the converter previews draw what the export draws.
-`t_style` stays accepted, but the solver no longer sets it: a crossed T keeps T.
+`t_style` is set when the exported T flag differs from the old one (ADR-0020: an upside-down or symmetric old T
+exports a full cross; the window may flip other shapes whose stem left the bar), but only with the T option
+`auto`: the default `keep` exports the old flag (ADR-0025), `on` and `off` force it, and the historical models honour
+the forced flag through the same override.
 
 `options.corrections` (default `true`, also normalized by `scope()`) is the expert switch
 "Automatic appearance corrections". Off, the community solver skips the
 crossed-arm fold, the outline-only and dot-only redraws and the appearance window
 and warns `corrections-off`; the shape check still compares the old and new
-pixels. Historical models ignore it, the expert UI disables it for them, and the Simple view
-always sends `true`. The ML cross-check row reads "Not checked: corrections off".
+pixels. Historical models ignore it, the advanced options disable it for them and send `true`. The ML cross-check row reads "Not checked: corrections off".
 
 A pasted CFG block that leaves cvars unset takes the pre-update game defaults. The
 converter adds the `defaults-filled` warning (`defaultsWarning` in
-`lib/settings/outcomes.js`) to the report's warnings, so it shows in the Simple and expert
+`lib/settings/outcomes.js`) to the report's warnings, so it shows in both
 warning lists and the downloaded report, and the "What changed" rows of those cvars say
 "added (game default)". Share codes and complete pastes get neither.
 
@@ -120,20 +124,26 @@ Structured learning remains offline. Public generated artifacts record candidate
 ranking and constrained residual experiments; no learned model is loaded by the
 converter. See the [study](../research/structured-learning-2026-09-29.md).
 
-`community-refine.js` (v6) runs after the dimension-first search for legacy inputs at the pixel goal whose old outline
-draws at most 1 px on each side (screen goals and wider outlines keep the
-dimension-first result). When the shape check is neither
-exact nor shifted, it scores native tuples that draw within ±3 px of bar
-length, ±3 px of bar width and ±4 px of the gap edge of the choice, in current
-pixels (or as many native steps where that reaches further; `pixelWindow` in
-`lib/geometry/community.js`), by the shape check's colour-aware aligned overlap
+`community-refine.js` runs after the dimension-first search for legacy inputs
+at either goal, for every old outline width. When the shape check is neither
+exact nor shifted, it scores a bounded window by colour-aware aligned overlap
 and switches only on a strict gain (`decision.refinement`, warning
-`appearance-refined`). Scoring uses the automatic outline mode, so export
-options never change the numbers. When an edge-case redraw or the window
-applied, `solveCommunity` also solves the plain path (corrections off) and
-exports it only if its aligned shape check is strictly higher
+`appearance-refined`). Length reach is 3; gap reach follows the old edges from
+4 up to 32; thickness reach grows from 3 up to 8. These are current pixels or
+native steps, whichever reaches further (`pixelWindow`). A second length
+window preserves the outer edge, and flippable T families try the other flag.
+The window scores the actual exported outline mode, including hand choices. When an edge-case redraw, T change
+or the window applied, `solveCommunity` also solves the plain path (corrections
+off) and exports it only if its aligned shape check is strictly higher under
+the actual exported outline. A hand-selected outline can therefore change the
+final tuple or T flag
 (`decision.correctionsFallback`, warning `corrections-fallback`). A screen goal
-applies the edge-case rules in whole current pixels (`snapToCells`). `appearance.js` compares appearances on
+applies the edge-case rules in whole current pixels (`snapToCells`). Since v9,
+`scaleScreenGeometry` retains fractional dimensions but carries integer source
+endpoints; `geometryCellEdges` samples them by exact rational ceiling for all
+rendering and snapping consumers. Changed geometry discards that provenance.
+The independent ML mirror rederives the rule (ADR-0023).
+`appearance.js` compares appearances on
 coordinate-compressed grids painted once per shape (`appearanceScorer`).
 
 `inference.js` and `report.js` read `performance.now()` to record solve
@@ -142,44 +152,67 @@ timings in the report. That is the only non-deterministic input in `lib/`.
 ## `app/`: the browser runtime
 
 `app/main.js` is the hash router. It lazily imports one route module on first
-visit, toggles Simple/Expert mode (`ui/mode.js`,
-`<html data-mode="simple|expert">`), and shows a boot error for a failed
-route without breaking the others. Routes are part of the public URL surface:
+visit and shows a boot error for a failed route without breaking the
+others; every page is always linked from the masthead. Routes are part of the public URL surface:
 
 | Route | Nav label | Code |
 |---|---|---|
 | `#quant` (default) | Convert | `app/convert/` |
+| `#screenshot` | Screenshot | `app/pages/screenshot.js` (hash parsing in `app/ui/route.js`) |
 | `#corpus` | Settings data | `app/pages/corpus.js` |
 | `#research` | Mathematics | `app/pages/research.js` |
-| `#workbench` | Manual tool | `app/manual/editor.js`, `app/manual/preview.js` (static markup in `index.html`) |
-| `#calibration` | Measurements | `app/manual/calibration.js` (feeds the workbench editor) |
 | `#evidence` | Original 56-case archive (footer) | `app/pages/evidence.js` |
 
 Supporting directories:
 
 - `app/ui/` holds shared DOM helpers. `dom.js` provides safe text-first
-  element construction, doc links and explicit downloads; `mode.js` handles
-  Simple/Expert mode.
+  element construction, doc links and explicit downloads.
 - `app/data.js` is the only module that fetches bundled `data/*.json`.
-  Presets are memoized, so the workbench, calibration and evidence routes
-  share one fetch, and #evidence no longer builds the workbench editor.
+  Presets are memoized, so every route that uses them issues one fetch.
 - `app/convert/` is the automatic converter UI. `converter.js` boots the
   route. `outcomes.js` renders the "What changed" table, confidence chips,
   warnings and limits line from the report. `controller.js` owns the state (settings, result, measurements,
   target override and mask, source), request generations and the 90 ms
   analysis debounce; text import has its own 250 ms debounce in `sources.js`.
-  `view.js` builds one page: inputs (one paste box and one set of `qs-`
-  value fields), the old/new plate with readouts and commands, and what
-  happened to each setting (`.quant-simple`); Expert mode reveals the lab
-  below it in place (`.quant-layout`, `q-` ids for expert-only controls).
-  Simple mode exports the automatic model with auto outline, Static Cross,
-  the pixel goal and the corrections; Expert mode applies the chosen
-  options. `samples.js` paints the empty-state "What this handles" plates.
+  `view.js` builds one page (`.quant-simple`): in the controls column the
+  paste box (Input), the heights, Conversion (goal, outline, T in export,
+  style), the colour and the direct values; in the results column Preview
+  (the old and new plates), New settings (readouts, commands) and What happened.
+  There is no separate Advanced block. Each of those five sections has a small
+  Expert switch in its header (`q-expert-<key>`, `aria-controls` its
+  `q-expert-<key>-panel`, `hidden` until flipped; `EXPERT_SECTIONS`) that
+  reveals that section's expert content in place: other input sources
+  (published settings, a link to the Screenshot page), the rendering model, decision rule and
+  corrections, the difference view, the value table, confidence, exported line
+  and research report, and the four deep-dive rows (pixel measurements, compare
+  models, search details, game screenshot), which stay closed and render
+  lazily. Panels are per section, off by default and not remembered
+  (ADR-0004). There is no mode switch: every option always applies, hidden or
+  not, and the defaults (automatic model, auto outline, Static Cross, the pixel
+  goal, corrections on) are what the page exports until one is changed; a
+  hidden Conversion option off its default puts a dot on that section's switch.
+  `samples.js` paints the empty-state "What this handles" plates.
   `presentation.js` renders values, canvases,
   scenario tables and rival rows, `preview.js` paints canvases, and
-  `feedback.js` handles screenshot and native-evidence input. The controller
+  `feedback.js` handles native-evidence input. The controller
   resolves the model choice on the main thread and asks the worker to solve.
-- `app/image/` is image intake. `input.js` enforces a 16 MB file cap and
+- `app/pages/screenshot.js` is the Screenshot page (`#screenshot`): an old-game
+  PNG in, new settings out, nothing else. It crops 129 px around the image
+  centre, calls the worker `screenshot` operation, then `infer` with the inferred
+  old settings, the measured mask as the target and the converter's defaults. It
+  has its own worker, created with the first image. It shows the measured crop
+  next to the new plate, the readouts, commands, the inferred old settings and a
+  confidence block: image measurement, identifiability and the conversion shape
+  check, summarised as High, Medium or Low by a stated rule (High: image checks
+  pass and the shape check is exact or exact after a 1 px shift; Medium: shape
+  check approximate at 80% or more; Low: an image check fails or the shape check
+  is below 80%, empty or missing). It is a reading of those checks, not a
+  probability. The cross-check link `#quant?paste=<old settings>&oh=&nh=` is
+  parsed by `app/ui/route.js` (text only, at most 4 KiB, heights 240 to 16384)
+  and imported by `QuantController.applyRoute`; `main.js` then strips the query
+  with `history.replaceState`, so nothing is stored. The old `#workbench` and
+  `#calibration` links redirect to `#screenshot`.
+- `app/image/` is image intake for native-capture evidence. `input.js` enforces a 16 MB file cap and
   hashes the file, `dialog.js` crops, and `view.js` displays. The
   20-million-pixel / 8192-side decode limit is enforced in
   `lib/image/screenshot.js`.
@@ -208,7 +241,7 @@ in the DOM, and state lives in one tab; anything durable is an explicit
 download. Invalid or empty input disables export. A legacy import replaces
 source state only after parsing and validation succeed; a rejected crosshair
 leaves the previous valid one in place. A pasted CFG block is complete on its
-own: in the automatic converter, the workbench and the library default
+own: in the automatic converter and the library default
 (`parseLegacyText(text, base = GAME_DEFAULTS_2000908)`), every cvar the paste
 does not set takes the documented pre-update game default (build 2000908,
 SteamDatabase GameTracking-CS2 `d8e2c7a`, source ledger S13), never the
@@ -238,7 +271,7 @@ them is a product change and needs a CHANGELOG entry.
 - **Downloads.**
   - Automatic converter: `small-indie-crosshair.cfg`, plus
     `crosshair-quant-report.json` (schema `sicc-quant-report-v6`, model
-    `version` `community-static-v6` or `quant-static-v6`, `targetBuild`).
+    `version` `community-static-v11` or `quant-static-v6`, `targetBuild`).
     The app's download adds `exportedCommands`, the exact one-line export
     (null while blocked). Every report (community and historical) carries
     `exportedOverrides`, the full override set the export passes to
@@ -250,13 +283,13 @@ them is a product change and needs a CHANGELOG entry.
     for the historical models, whose reports also carry `shapeCheck` and an
     empty `exportOverrides`; their numbers are unchanged.
     Schema v6 added `clamped[] {field, wanted, exported, reason}`,
-    `options {outlineMode, styleTarget, corrections}` and, in `settings`,
+    `options {outlineMode, styleTarget, corrections}` (0.17.0 adds `tShape`) and, in `settings`,
     `outline_width_rounded`, plus the warning codes `style-dynamic-at-rest`,
     `style-family-experimental`, `outline-user-override`,
     `outline-width-reduced`, `outline-asymmetric-approx` and, for the
     historical models, `outline-only-legacy`. The community model (v6) adds
-    `exportOverrides` (colour, outline mode; a T flag is accepted but no
-    longer set), `shapeCheck` and
+    `exportOverrides` (colour, outline mode, and the T flag when it
+    differs from the old one, ADR-0020), `shapeCheck` and
     `edgeCase`, and the warnings `crossed-arms-folded`,
     `inverted-t-unrepresentable`, `outline-only-as-core`, `dot-only-as-arms`
     and `zero-length-outline-dropped`, then `outline-overpaint-lost`,
@@ -269,10 +302,8 @@ them is a product change and needs a CHANGELOG entry.
     by default; old styles 0 and 1 are blockers, and a weapon gap no longer is.
     Every CFG export (automatic and manual) also emits
     `cl_crosshairoutline_r 0`, `_g 0`, `_b 0` and `_a 255`.
-  - Workbench: `small-indie-candidate.cfg` and `small-indie-math-report.json`
-    (`sicc-report-v1`).
-  - Other routes: `crosshair-audit.json`, `small-indie-measurements.json`
-    (`sicc-measurement-v1`) and `native-measurements.json`.
+  - Screenshot page: `small-indie-crosshair.cfg`.
+  - Other routes: `crosshair-audit.json` and `native-measurements.json`.
   - Reports carry model ids and schema ids. The `package.json` version
     appears only in `build-manifest.json`.
 - **Imports.** Legacy v1 share codes (a pasted current `CS…` code is read and
@@ -310,8 +341,9 @@ helpers in `lib/solver/structural.js` and `lib/solver/migration.js`.
 | `literal-zero-conflict` | H | Old thickness 0 and target width not 1 | The zero minimum conflicts with a screen-relative thickness. |
 | `zero-thickness-branch` | H, structural | Positive old thickness exports thickness 0 | How the current game draws thickness 0 is unverified; the historical model previews 1 px, the community renderer and `raster.js` draw nothing for width 0. |
 | `crossed-arms-folded` | C | A negative gap made the old arms cross the centre | The export draws the same pixels with a non-negative gap |
-| `inverted-t-unrepresentable` | C | Crossed arms with T style and the shape check approximate | The old single vertical arm was above the centre; the export keeps T, so it is drawn below. |
-| `t-flipped-for-shape` | C | Crossed arms with T style, and a full cross draws the old pixels strictly better than any T (ADR-0019) | The export turns T off (`cl_crosshair_t 0`): its top arm reproduces the old arm above the centre; the extra bottom arm is the difference. |
+| `inverted-t-unrepresentable` | C | T exported (the default `keep` exports every old T), the old stem stuck out above the bar or the outline strokes crossed (`edgeCase.tShape.flippable`, not `stem-hidden`), shape check approximate (ADR-0020) | Says where the old stem ran; the export keeps T, so only the part below the bar (or the arm below the centre) is drawn. |
+| `t-flipped-for-shape` | C | T option `auto` and an old T exported as a full cross: planned for an upside-down T or a symmetric straddle, or a cross draws the old pixels strictly better (ADR-0020) | The export turns T off (`cl_crosshair_t 0`); the text follows the T-shape family (the cross's top arm reproduces an old arm above the bar). |
+| `t-user-choice` | both | T option `on` or `off` exports another T flag than the old one (ADR-0025) | The export draws what was chosen; the text names the old shape. |
 | `outline-only-as-core` | C | Size 0 drew only outline strokes | The strokes export as black bars, outline off unless chosen by hand. |
 | `outline-only-legacy` | H | Size 0 drew only outline strokes | The historical export keeps length 0, which draws nothing now. |
 | `dot-only-as-arms` | C | Size 0 with a dot | Arms inside the dot square are added; length 0 may draw nothing. |
@@ -339,7 +371,7 @@ helpers in `lib/solver/structural.js` and `lib/solver/migration.js`.
 | `no-native-calibration` | H | No native calibration groups | Weights stay prior-only. |
 | `native-capture-outside-model` | C | Supplied captures use a gap outside 0–128 | They are listed but not evaluated. |
 | `native-holdout-conflict` | C | A supplied native holdout group does not match | The reconstruction conflicts with a capture. |
-| `target-cropped` | C, H | The measured target is cropped | No exact image-match claim. |
+| `target-cropped` | C, H | The measured target or proposed image comparison is cropped | No exact image-match claim. |
 | `preview-cropped` | H | The preview crops a large shape | The loss still uses the whole shape. |
 | `image-mask-noisy` | H | Image-derived target | The mask does not identify the old cvars uniquely. |
 - **Published files.** Everything under the published roots (below),

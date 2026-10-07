@@ -1,54 +1,31 @@
 import { $, el } from './ui/dom.js';
-import { setMode, initMode } from './ui/mode.js';
 import { loadPresets } from './data.js';
+import { parseRoute, ROUTES } from './ui/route.js';
 
-const routes = ['quant', 'corpus', 'research', 'workbench', 'calibration', 'evidence'];
-const expertRoutes = routes.filter(id => id !== 'quant');
 const pending = new Map();
-let editor, quant, active = 'quant', sequence = 0;
-
-async function editorReady() {
-  if (!pending.has('editor')) {
-    pending.set('editor', (async () => {
-      const presets = await loadPresets();
-      const { initEditor } = await import('./manual/editor.js');
-      editor = initEditor(presets);
-      return { editor, presets };
-    })());
-  }
-  return pending.get('editor');
-}
+let quant, active = 'quant', sequence = 0;
 
 async function initialize(name) {
   if (pending.has(name)) return pending.get(name);
   const task = (async () => {
     if (name === 'quant') quant = await (await import('./convert/converter.js')).initQuant();
+    if (name === 'screenshot') await (await import('./pages/screenshot.js')).initScreenshot();
     if (name === 'corpus') await (await import('./pages/corpus.js')).initCorpus();
-    if (name === 'research') (await import('./pages/research.js')).initResearch();
-    if (name === 'workbench') await editorReady();
-    if (name === 'calibration') (await import('./manual/calibration.js')).initCalibration((await editorReady()).editor);
     if (name === 'evidence') (await import('./pages/evidence.js')).initEvidence(await loadPresets());
   })();
   pending.set(name, task);
   return task;
 }
 
-function onModeChange(mode) {
-  if (mode === 'simple' && expertRoutes.includes(active)) {
-    location.hash = '#quant';
-    return;
-  }
-  if (active === 'quant') quant?.refresh();
-}
-
-initMode(onModeChange);
-
 async function route() {
   const ticket = ++sequence;
-  const requested = location.hash.slice(1);
-  active = routes.includes(requested) ? requested : 'quant';
-  if (expertRoutes.includes(active)) setMode('expert');
-  for (const id of routes) $(id).hidden = id !== active;
+  const target = parseRoute(location.hash);
+  // The old Mathematics page is the static notebook now; replace, so Back does not return to the dead hash.
+  if (target.external) { location.replace(target.external); return; }
+  active = target.name;
+  // A removed page's link, or a hand-off query, is shown once and then dropped from the address (nothing is stored).
+  if (target.redirected || location.hash.includes('?')) history.replaceState(null, '', `#${active}`);
+  for (const id of ROUTES) $(id).hidden = id !== active;
   document.querySelectorAll('[data-route]').forEach(a => {
     if (a.dataset.route === active) a.setAttribute('aria-current', 'page');
     else a.removeAttribute('aria-current');
@@ -56,10 +33,10 @@ async function route() {
   try {
     await initialize(active);
     if (ticket !== sequence) return;
+    if (active === 'quant' && (target.paste !== null || target.error)) quant.applyRoute(target);
     $('boot-error').hidden = true;
     document.documentElement.dataset.ready = 'true';
     requestAnimationFrame(() => {
-      if (active === 'workbench') editor?.refresh();
       if (active === 'quant') quant?.refresh();
     });
   } catch (error) {

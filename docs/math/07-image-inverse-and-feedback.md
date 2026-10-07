@@ -1,260 +1,132 @@
-# 07 — Screenshot inversion and non-circular visual feedback
+# Screenshot inversion and measurement of the new game
 
-**Version note:** the v4 derivation below is preserved. [Chapter 09](09-solver-and-integrity.md) specifies the implemented v5 joint inverse, full-domain shape metric, robust likelihood and evidence-integrity changes.
+::: summary
+A screenshot shows pixels, not settings: many old settings draw the same picture,
+and a screenshot cannot reveal your colour preset, alpha or resolution. From an
+old screenshot the converter finds the crosshair shape that explains the coloured
+pixels best and converts that shape directly. A screenshot of the new game is
+measured by a different, simpler method that assumes nothing about how the new
+game draws, so that it can later test the converter's models instead of
+repeating them.
+:::
 
-**September 29 update:** the current implementation supersedes the historical
-shortlist method below with exhaustive exact rectangle-union scoring, near edges
-from -16 to 24, half-even representative settings and white auto-color candidates.
-Image acceptance also checks crop boundaries and nearby color thresholds; native
-captures check declared dot/T/bar presence. See the
-[current audit](../research/converter-audit-2026-09-29.md) and
-[chapter 12](12-community-conversion.md). The equations below document the prior
-image inference assumptions, not the current acceptance policy.
+::: key
+The old-image fit scores every template exactly, 16 widths × 49 lengths × 41
+near edges with dot and T variants, and accepts a fit only when it explains at
+least 90% of the segmented pixels and the segmentation is stable under nearby
+colour thresholds.
+:::
 
-A crosshair screenshot is an observation of pixels, not a unique encoding
-of old cvars. This chapter describes both image paths: estimating a target
-from an old capture, and measuring a native new capture that can challenge
-our forward hypotheses. They intentionally use different procedures.
+::: technical
+## Question
 
-## 7.1 What a screenshot does and does not contain
+What target can an old screenshot supply, and how can a screenshot of the new
+game be measured without assuming the renderer it is meant to test? Code:
+`lib/image/screenshot.js`, `fit.js`, `components.js`, `app/image/input.js`.
 
-An original screenshot can constrain colored arm length, width, location,
-dot presence, and T shape. It generally cannot identify the original
-floating-point cvars, color preset, alpha setting, actual rendering
-resolution after an external resize, movement state, or weapon-dependent
-gap rule. A crop's dimensions are not the game resolution. A 129-pixel crop
-of a 1440p game remains a 1440p observation.
+## Model
 
-The user supplies the old game height, uploads a PNG, and may adjust the
-center and select a line's color. A full image defaults its center to the
-integer half-width/half-height. That is an initial coordinate choice, not
-a guarantee of the correct game center. Crosshairs cropped asymmetrically,
-centered between pixels, or transformed by capture software need review.
+### Input and limits
 
-The application rejects non-PNG headers, zero dimensions, sides exceeding
-8192, more than 20 million pixels, or files exceeding 16 MB before browser
-image decoding. These are resource limits, not malware certification.
-No OCR is used. All bytes remain in the user's tab; exports contain
-geometry, declared provenance and hashes, not the original image.
+The user gives the old game height and a PNG, and may move the centre and pick
+a colour. A crop's size is not the game resolution: a 129 px crop of a 1440p
+game is a 1440p observation. PNG headers are checked before decoding; sides
+above 8192, more than 20 million pixels or files above 16 MB are refused. These
+are resource limits, not a malware check. Bytes stay in the tab; reports carry
+geometry, provenance and hashes, not the image.
 
-## 7.2 Color segmentation
+### Segmentation
 
-Analysis uses a 129×129 center crop by default. Supported algorithmic
-crop sizes are odd values from 49 through 161. Display enlargement uses
-nearest-neighbor interpolation, while analysis retains the original crop
-pixels. A clicked color provides a seed \(c\). The binary foreground mask is
+Analysis uses an odd centre crop of 49 to 161 px (129 by default). With a
+colour seed $c$ and tolerance $\tau_c\in[1,120]$ in RGB distance,
 
-\[
-B(x,y)=\mathbf1\{\|I_{RGB}(x,y)-c\|_2\le\tau\}
-\mathbf1\{I_\alpha(x,y)>32\}.
-\]
+$$
+B(x,y)=\mathbf 1\bigl\{\lVert I_{\mathrm{RGB}}(x,y)-c\rVert_2\le\tau_c\bigr\}\ \mathbf 1\{I_\alpha(x,y)>32\}.
+$$
 
-The tolerance \(\tau\) is a user-adjustable RGB-space distance between
-1 and 120, not a perceptually uniform color difference. Automatic color
-selection proposes up to five frequent saturated colors from a central
-37×37 area. RGB values are binned for frequency counting, but each candidate
-retains a sampled color. White, black, low-alpha or heavily antialiased
-crosshairs may require a click because the saturated-color heuristic is
-not appropriate for them.
+Without a click, `automaticColor` proposes up to five colours from the strips
+within 8 px of the two centre axes: bright or saturated pixels (white included),
+binned in steps of 8 and ranked by how many lie on the axes, so off-axis scene
+patches cannot take the slots. An empty mask, or one covering more than 35% of
+the crop, is refused. A fit is *stable* when the masks at $\tau_c\pm8$ keep an
+IoU of at least 0.98 with the chosen one. Foreground touching the crop edge, or
+the original image edge under transparent padding (`sourceBoundaryClipped`), is
+refused as cut off.
 
-A mask with no foreground or with more than 35% of the crop marked is
-rejected as empty or likely background. This heuristic can reject a valid
-very large crosshair; refusal is preferable to presenting a broad wall
-color as a high-confidence aim marker. Background objects of the same
-color remain a possible segmentation contaminant. The user sees the crop
-and the measured fit so that contamination can be challenged.
+### Old-image template fit
 
-Color distance and segmentation quality are nuisance parameters. They
-must not be tuned on holdout captures to maximize a desired model's score.
-Such tuning would leak the test data into the measurement procedure.
+`fitMask` scores every template with $W\in1..16$, $L\in0..48$,
+$a\in-16..24$, $b_{\mathrm f}=a+1$ and dot and T flags (pure dots without
+redundant variants). With the integral image
 
-## 7.3 Old-image template search
+$$
+\Sigma\bigl([x_0,x_1)\times[y_0,y_1)\bigr)=S(x_1,y_1)-S(x_0,y_1)-S(x_1,y_0)+S(x_0,y_0),\qquad S(x,y)=\sum_{u<x}\sum_{v<y}B(u,v),
+$$
 
-For old-target estimation, the implementation searches a bounded static
-colored-core template family:
+the overlap with the union of at most five rectangles is computed exactly by
+inclusion and exclusion over their at most 31 non-empty intersections, so
+overlapping and crossed arms count once. The score is the exact IoU; ties
+prefer a non-negative near edge, then shorter, thinner and closer templates, and
+the five best are reported with the number of tied templates. A fit is
+acceptable only if it is uncropped, stable and has IoU at least 0.9; that gate
+is an operational threshold, not a probability.
 
-\[
-L\in\{0,\ldots,48\},\quad W\in\{1,\ldots,16\},\quad
- a\in\{0,\ldots,24\},\quad b=a+1,
-\]
+### Buckets, not recovered settings
 
-with dot and T flags. Pure-dot redundant gap/T combinations are removed.
-Overlapping old arms and many unusual crosshairs are intentionally outside
-this automatic template family. The manual old-cvar interface remains
-available for them. The existence of a plausible template does not prove
-that the image came from the corresponding build or cvars.
+Under the converter's old arithmetic a drawn length $L$ comes from sizes in
+$[(L-\tfrac12)/s,(L+\tfrac12)/s]$ with the half-even end rule, and $W=1$ from every
+thickness below $1.5/s$. With $p=a-\lfloor W/2\rfloor$ the gap bucket, under
+truncation toward zero, is
 
-An integral image of the segmented mask accelerates rectangle intersection
-estimates. For mask \(B\), define
+$$
+p>0:\ G\in[p-4,\,p-3),\qquad p=0:\ G\in(-5,\,-3),\qquad p<0:\ G\in(p-5,\,p-4].
+$$
 
-\[
-S(x,y)=\sum_{u<x}\sum_{v<y}B(u,v).
-\]
+The interface shows representative values $L/s$, $W/s$ and $p-4$ labelled as
+non-unique; binary32 moves the bucket ends slightly. When the image target is
+kept, the conversion uses its geometry and mask directly, and editing an old
+shape field clears it.
 
-Then an axis-aligned rectangle's foreground sum is obtained from four
-lookups:
+### Measuring the new game
 
-\[
-\Sigma([x_0,x_1)\times[y_0,y_1))=
-S(x_1,y_1)-S(x_0,y_1)-S(x_1,y_0)+S(x_0,y_0).
-\]
+Fitting new captures with the old template would impose $b'=a'+1$, the
+hypothesis under test. `measureNativeMask` instead labels 4-connected
+components, keeps fully filled axis-aligned components that do not touch the
+crop edge, and assigns left, right, bottom, optional top bars and a centred dot
+from their bounds, trying both centre conventions (pixel 0 and the boundary at
+−0.5). Edges are measured independently:
 
-Approximate template scores shortlist 48 candidates, after which exact
-union-mask IoU is computed. The approximate stage can double-count
-intersection where rectangles overlap; the exact stage removes that
-artifact among shortlisted candidates. Consequently this is a bounded
-shortlist method, **not a proof of a global mask optimum over arbitrary
-crosshairs**. Its bounds, shortlist size and number of evaluated templates
-are recorded. Returning the top alternatives exposes non-uniqueness.
+$$
+a'=-(x_{\max,\mathrm{left}}+1),\qquad b'=x_{\min,\mathrm{right}},
+$$
 
-The old image can be accepted only with mask/template agreement at least
-0.75. That is an operational quality gate, not a calibrated 75% probability.
-The extracted geometry and the original segmented mask both become a
-frozen target for conversion. Candidate simulations compare against that
-mask, not against a moving or progressively cleaned target secretly chosen
-to favor the current candidate.
+with vertical bars required to agree with horizontal ones, a common transverse
+start, and the dot width equal to the bar width. Merged bars, inconsistent
+dimensions, an unexplained centre component, declared dot, T or bar flags that
+the image contradicts, or a reconstruction explaining less than 90% of the mask
+are refused. A lone centred square is a pure dot whose gap is unidentified and
+excluded from the likelihood.
 
-## 7.4 Recovering intervals, not invented exact cvars
+### The feedback loop
 
-Under ideal real arithmetic, \(s=H_o/480\). An observed arm length \(L\)
-implies
+For an old target: freeze it, generate legal proposals under every declared
+model, render and compare, refine in a bounded neighbourhood, and stop on exact
+agreement, stagnation or budget. None of this changes model weights. For a new
+capture with declared settings: measure it as above, validate build, size,
+settings, hash, role and group, file it as calibration or holdout (never both),
+recompute weights from calibration groups only, and rerun the inversion against
+the same old target. The target is never adjusted toward a model.
 
-\[
-S\in[L/s,(L+1)/s).
-\]
+## Result
 
-For width \(W>1\),
+The fit search is exhaustive inside its template family, and its ties are
+reported instead of resolved silently. Synthetic fixtures test both extractors;
+they are not added to the native evidence.
 
-\[
-T\in[W/s,(W+1)/s).
-\]
+## Limits
 
-For the one-pixel minimum,
-
-\[
-W=1\implies T\in[0,2/s)
-\]
-
-within the supported nonnegative old-thickness domain. Literal zero is
-only one member of that interval. A screenshot cannot justify recovering
-`T=0` rather than, for example, `T=0.5` at 1080p when both give one pixel.
-
-Let \(p=a-\lfloor W/2\rfloor\). The gap buckets depend on truncation toward
-zero:
-
-\[
-p>0:\;G\in[p-4,p-3),
-\]
-\[
-p=0:\;G\in(-5,-3),
-\]
-\[
-p<0:\;G\in(p-5,p-4].
-\]
-
-For \(p=0\), both `-4` and `-4.5` belong to the bucket. Replacing truncation
-with floor would produce the wrong inverse interval. The actual baseline
-uses binary32 intermediate rounding, so these ideal intervals need
-endpoint analysis before asserting an exact boundary. The existing
-chapter 01 explains that distinction. The UI supplies midpoint
-representatives for convenient old-value editing and explicitly labels
-them **non-unique representative values**, not recovered original cvars.
-
-If the measured target is retained, the conversion uses its geometry and
-mask directly; midpoint arithmetic is not allowed to overwrite the image
-observation. Editing old shape fields intentionally clears the image target
-and returns to cvar-driven reconstruction. The report records which target
-kind was used.
-
-## 7.5 Native-image measurement must not assume the answer
-
-Using the old template fitter to generate new-native calibration labels
-would introduce a circular bias: its `b=a+1` rule would already enforce a
-hypothesis being tested. Therefore the native-image path instead uses
-four-neighbor connected-component labeling of the segmented foreground.
-
-Each component yields an axis-aligned bounding rectangle, area and fill
-ratio. Candidate bar components must be at least 95% filled and must not
-touch the crop edge. The extractor identifies separated left, right,
-bottom, and optional top bars by their positions relative to the selected
-center. A separate square component crossing the center is a possible dot.
-Multiple competing components along an axis are refused.
-
-The left inner edge is measured from its exclusive endpoint:
-
-\[
-a=-(x_{\max,left}+1),\quad b=x_{\min,right}.
-\]
-
-These are measured **independently**. Top/bottom measurements must agree
-with their horizontal counterparts, and colored dimensions must agree
-across the bars. No `b=a+1` correction is imposed. A model-violating
-near/far pair remains model-violating evidence.
-
-Merged bars, inconsistent lengths/widths, anisotropic stretching, ambiguous
-backgrounds, insufficient components, and a reconstructed component mask
-with less than 90% overlap are refused. A centered square-only component
-is accepted as a pure dot, for which gap coordinates are explicitly
-unidentified and excluded from the likelihood. The 90% acceptance threshold
-is a measurement gate, not native-match confidence.
-
-The extractor covers a limited axis-aligned static core. It does not
-provide a general semantic screenshot-understanding system. The manual
-measurement JSON route can represent additional inspected cases, but still
-requires declared scope and native attestation. Unrepresentable center
-conventions or unknown rendering transforms need explicit model expansion,
-not silent repair of measured coordinates.
-
-## 7.6 The visual refinement loop
-
-For an imported code, entered cvars, or an accepted old image:
-
-1. Freeze the target and record its origin.
-2. Generate legal inverse proposals under every declared forward scenario.
-3. Render the candidate colored-core masks and compare to the target.
-4. Refine within a bounded local neighborhood when visual error remains.
-5. Stop on exact simulated agreement, stagnation or budget exhaustion.
-6. Rank distinct tuples across all scenarios and expose residuals.
-
-Those steps occur in a browser module worker. They do **not** produce
-independent new-renderer evidence, so posterior weights remain unchanged.
-A result of `exact-under-selected-simulation` is intentionally different
-from `native-validated`—the latter is not emitted by this release.
-
-When a user uploads a real new-client result with declared cvars:
-
-1. Measure foreground components independently of the renderer hypotheses.
-2. Validate build, dimensions, native cvars, hash, role and group.
-3. Add it to calibration or reserve it as a holdout, never both.
-4. Recompute posterior weights only from native calibration groups.
-5. Run the candidate inversion/refinement again against the **same old
-   target**, preserving a trace of the conditional result.
-
-This satisfies the request to restart analysis after a visual mismatch
-without an infinite “try until success” loop. It also avoids a more subtle
-failure: continually modifying the old target until it agrees with the
-selected new model. When all models fit native data poorly, the report
-asks for measurement inspection or family revision rather than hiding the
-residual behind a normalized winning score.
-
-## 7.7 Scope, provenance, and reproducibility
-
-The report includes capture SHA-256, image dimensions, crop center,
-selected color, tolerance, template/component agreement, extraction
-method, cvars, declared game height, matching goal, model version and
-native measurement groups. Image bytes are not bundled in reports by
-default. A reviewer who needs pixel-level replication must receive the
-original image separately and verify its hash.
-
-Hash equality detects the same file, not equivalent re-encoded images.
-Session grouping is therefore also required. Two screenshots with altered
-metadata can have different hashes while being nearly identical; their
-independence is a research-design responsibility. Likewise, one PNG can
-be correctly hashed yet be a browser-generated preview falsely attested
-as native. The system labels evidence user-attested and never claims
-forensic authenticity.
-
-Executable implementations: `lib/image/screenshot.js`,
-`app/image/input.js`, `lib/solver/inference.js` and
-`lib/solver/evidence.js`. Synthetic fixtures test extraction mechanics;
-they are not added to the native evidence set.
+The template family excludes outlines, dynamics and shapes outside its ranges;
+the manual old-settings form covers those. A hash proves file identity, not that
+the image is native or unedited; session groups and provenance review carry the
+independence argument, and every image record is user-attested.
+:::

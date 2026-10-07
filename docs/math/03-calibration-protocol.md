@@ -1,257 +1,169 @@
-# 03 — Calibration, residuals and experimental design
+# Calibration and capture protocol
 
-**Purpose:** acquire the independent observations missing from the current conversion.
-**Implemented tools:** affine fit, discrete inverse suggestions, scoped observation
-JSON and a local PNG inspector. **Measurements shipped:** none.
+::: summary
+The missing evidence is screenshots of the new game taken under controlled
+conditions. This chapter says which screenshots are worth taking, how to measure
+them without fooling ourselves, and how a measured line is fitted and turned
+back into settings. A few well-chosen screenshots at the boundaries where the
+models disagree tell more than a hundred screenshots of the same small
+crosshair.
+:::
 
-## 1. What counts as a useful measurement
+::: key
+{{fig:summary.evidence.captures.reproduced|int}} of
+{{fig:summary.evidence.captures.total|int}} user captures of the current game
+(issue #11, {{fig:summary.evidence.captures.date|date}}) are reproduced by the
+model up to a whole-shape translation; they were used to build it and are not
+independent holdouts.
+:::
 
-A number such as “gap 2 looks right” does not identify a rendering rule. A useful record
-specifies the game build, style, native parameter vector, current resolution, authored
-height, effective bar thickness and the exact pixel quantity measured. It should also
-retain the original capture and enough context to reproduce the state.
+::: technical
+## Question
 
-Use an actual game image at its original dimensions. Do not count pixels in a browser
-thumbnail, a scaled Discord image, a cropped image whose scale is unknown, or a compressed
-stream frame and label the result native. Pixel rounding, antialiasing and scaling can
-each change edges by the one pixel we are trying to explain.
+Which observations would identify the parts of the new renderer that the
+converter assumes, and how are they turned into a scoped, auditable fit? Tools:
+the affine fit and PNG inspector of the manual lab (`lib/manual/calibration.js`),
+the scoped measurement JSON (`sicc-measurement-v1`), and the paired capture
+tooling of 0.16.0 (development only, not published).
 
-Record at least the weapon, stationary/moving/firing state, crouch state, recoil setting,
-outline state, center dot, display mode and relevant render-scaling settings. The static
-protocol fixes style 4, disables recoil and outline, and initially removes the center
-dot so inner arm boundaries are unobstructed. These are experiment controls, not gameplay
-recommendations.
+## Model
 
-A hash establishes file identity, not truth. A PNG with a SHA-256 digest can still be a
-synthetic image or a mislabeled screenshot. The project distinguishes user-supplied
-provenance from independently reviewed native evidence.
+### What counts as a measurement
 
-## 2. Do the smallest discriminating experiment first
+A record names the build, style, native settings, current and authored
+heights, effective bar width and the exact pixel quantity measured, and keeps
+the original capture at its native size. Thumbnails, chat images, video frames
+or crops of unknown scale are not native measurements: scaling and compression
+move edges by the one pixel being explained. The static protocol fixes style 4,
+recoil off and outline off, and first removes the dot so the inner edges are
+visible. A hash proves file identity, not truth; user-entered data is labelled
+`user-entered`, synthetic examples `synthetic-example`, and nothing carries an
+invented `verified` flag.
 
-Start with the actual resolution you want to restore, and set the authored height to
-that same value after the geometry settings. Read the values back. The inventory says
-size edits can update the authored reference, so never assume a prior value persisted.
+### The smallest discriminating experiments
 
-Use an easily measurable arm length such as ten units and a positive thickness outside
-the minimum clamp. Count the colored core, without the outline. Determine whether ten
-new length units actually give ten game pixels at that authored/current height. This
-simple observation tests the new-unit assumption before fitting a complex formula.
+Set the resolution, set the authored height to it after the geometry, and read
+every value back. Then vary one setting at a time:
 
-Then separate length, width and gap experiments. Vary one parameter at a time. Do not
-change thickness while fitting a gap baseline unless you are explicitly estimating the
-width-dependent baseline function. A mixture of measurements from different effective
-widths can give an apparently plausible but physically meaningless slope.
+- new gap 0 at widths 1, 2, 3 and 4 (gap origin and parity);
+- gaps 0, 2, 4 and held-out values (slope and quantization);
+- several dimensions at ratios $r\ne1$ (truncation against rounding, where
+  scaling happens);
+- new thickness 0 before and after a height change (the minimum branch).
 
-The initial high-value tests are:
+Repeated captures of one bucket detect nondeterminism and capture errors; they
+do not identify the rule.
 
-- New gap zero at widths one, two, three and four. This distinguishes origin hypotheses
-  and tests parity dependence.
-- New gap values 0, 2 and 4, with additional intermediate and held-out settings. This
-  measures slope and exposes possible quantization.
-- Several positive dimensions at non-unit $H_n/A$ ratios. This distinguishes truncation
-  from nearest rounding and identifies where scaling occurs.
-- Literal new thickness zero before and after a height change. This tests the minimum
-  branch separately from a positive one-pixel setting.
+### Measure edges
 
-A hundred images of the same quantization bucket may carry less identifying information
-than four carefully chosen boundary cases. Repetition is still useful for detecting
-nondeterminism, capture errors and changing game state; it serves a different purpose.
-
-## 3. Measure edges, not an ambiguous “gap”
-
-Use the coordinate convention recorded in the experiment. Measure the near arm's inner
-edge relative to the reference center, then independently measure the far arm's inner
-edge. Keep the signs or positive offset convention explicit. The old reconstruction
-uses $a_o$ and $b_o=a_o+1$; the new renderer may use something different.
-
-If you instead measure the full interval between opposing colored arms, call that
-quantity $D$, not the gap setting. For a hypothetical symmetric near/far displacement,
+Measure the near inner edge and the far inner edge separately from the centre.
+The full opening between opposing arms is
 
 $$
-D(g)=2a(g)+\delta.
+D(g)=2a'(g)+\delta ,
 $$
 
-Its slope with respect to $g$ is twice the slope of the near edge when $\delta$ is
-constant. Confusing the two produces a factor-of-two error in the inverse formula.
+whose slope is twice the near-edge slope; confusing the two halves or doubles
+the inverse. Cell indices are not lengths: cells 10 to 13 are four cells, and an
+arm on them spans boundaries 10 to 14.
 
-A dot or outline makes the visible clear region smaller than the colored-arm interval.
-That is why those elements are removed in the initial geometry experiment. Restore and
-test them later as separate rendering properties.
+### Fitting a line
 
-The PNG inspector reports a selected source *cell* and its reference offset. The
-difference between two selected coordinates is a boundary distance. It is not an
-inclusive pixel count: cells numbered 10 through 13 are four cells, but the difference
-13−10 is three. For a half-open arm occupying cells 10, 11, 12 and 13, measure boundary
-14 minus boundary 10 to obtain length four. The user must identify the actual boundaries;
-the application does not infer them from colors automatically.
-
-## 4. Two-point algebra and why the UI asks for three distinct settings
-
-For the ideal affine relationship
+Two settings always determine a line, $K=(y_2-y_1)/(x_2-x_1)$ and $B=y_1-Kx_1$,
+and so test nothing; the tool needs three distinct settings. For
+$(x_i,y_i)$, with $x$ the setting and $y$ the measured pixel quantity,
 
 $$
-y=B+Kx,
+\bar x=\frac1n\sum_i x_i,\quad \bar y=\frac1n\sum_i y_i,\qquad
+\hat K=\frac{\sum_i(x_i-\bar x)(y_i-\bar y)}{\sum_i(x_i-\bar x)^2},\qquad \hat B=\bar y-\hat K\bar x,
 $$
 
-two distinct settings determine a line:
+with residuals $e_i=y_i-\hat B-\hat Kx_i$,
 
 $$
-K=\frac{y_2-y_1}{x_2-x_1},\qquad B=y_1-Kx_1.
+\operatorname{RMSE}=\sqrt{\frac1n\sum_i e_i^2},\qquad e_{\max}=\max_i\lvert e_i\rvert,
 $$
 
-Any two points admit such a line. That does not test linearity. The implemented fit
-requires at least three distinct settings so there is at least some possibility of
-observing inconsistency. Three points still do not prove the renderer is affine. Use
-additional settings and hold out independent cases instead of repeatedly fitting and
-evaluating on the same samples.
+and $R^2$ when the outcome varies. Degenerate, decreasing or non-finite fits are
+refused. The 0.5 px residual warning is a diagnostic threshold. The synthetic
+example $(0,1),(2,3),(4,5)$ gives $B=1$, $K=1$.
 
-For a gap fit, $x$ is the native gap parameter and $y$ is a specified inner-edge offset
-in current-resolution pixels. For a length fit, $y$ is the colored arm length. For a
-width fit, avoid the saturation regime where minimum width dominates the relationship.
-Mixed measurement kinds are not interchangeable even if their numeric columns look alike.
+A renderer may follow $y=B+Q(Kx)$ or $y=Q(B+Kx)$, which differ, or switch with
+width parity or a minimum. Residuals by setting show it: a sawtooth suggests a
+quantizer, a kink near the minimum saturation, a jump at a width change a
+thickness-relative origin. The tool fits only the affine model and uses it
+without a second quantizer.
 
-## 5. Centered least squares
-
-For observations $(x_i,y_i)$, define means
+### Inverting the fit
 
 $$
-\bar x=\frac1n\sum_i x_i,\qquad\bar y=\frac1n\sum_i y_i.
+x_{\mathrm{ideal}}=\frac{y^{*}-\hat B}{\hat K},
 $$
 
-The implemented ordinary least-squares fit is
+and the panel lists nearby legal integers with their predicted residuals. A
+negative ideal gap is a representability limit, not a value to round to 0. With
+$x^{*}=(a^{*}-B)/K$, the first-order sensitivities are
 
 $$
-\hat K=\frac{\sum_i(x_i-\bar x)(y_i-\bar y)}{\sum_i(x_i-\bar x)^2},
-\qquad\hat B=\bar y-\hat K\bar x.
+\frac{\partial x^{*}}{\partial a^{*}}=\frac1K,\qquad
+\frac{\partial x^{*}}{\partial B}=-\frac1K,\qquad
+\frac{\partial x^{*}}{\partial K}=-\frac{a^{*}-B}{K^2},
 $$
 
-Centering avoids some unnecessary cancellation compared with an uncentered normal-equation
-formula. The denominator must be positive; at least three distinct settings are required.
-The fitted slope must be finite and positive for the supported inverse use. The tool
-rejects degenerate, decreasing or nonfinite datasets rather than producing an arbitrary
-usable-looking number.
+and under independent errors
+$\sigma_x^2\approx(\sigma_a^2+\sigma_B^2)/K^2+(a^{*}-B)^2\sigma_K^2/K^4$. Intercept
+and slope are correlated in practice, so a formal estimate needs
+$\nabla f^{\mathsf T}\Sigma\nabla f$; quantization makes the local
+approximation fragile at thresholds. The app shows no interval from three hand-entered
+points.
 
-For each observation, store
+### Scope
 
-$$
-\hat y_i=\hat B+\hat Kx_i,\qquad e_i=y_i-\hat y_i.
-$$
+A fit applies to the workbench only for a near-gap measurement with matching
+build, heights and effective width; a later mismatch blocks it, another
+hypothesis detaches it, and hand-typed $B$ or $K$ become an unscoped hypothesis.
 
-Report
+### Paired captures
 
-$$
-\operatorname{RMSE}=\sqrt{\frac1n\sum_i e_i^2},\qquad
- e_{\max}=\max_i|e_i|.
-$$
+The paired workflow prints the console lines and the predicted mask for each
+case, keeps shape families in separate roles, records exact exports, the
+SHA-256 of the unedited images, and build and session per side, and compares
+PNGs by raw and aligned overlap with quality flags. Provenance filled at pair
+level instead of per side is refused (`PAIR_LEVEL_BLANKS`). A predicted mask
+can never be promoted to evidence.
 
-The code also reports $R^2$ when total outcome variation is nonzero. None of these is a
-native-validation probability. The 0.5-pixel residual warning in the UI is a diagnostic
-threshold, not a statistically calibrated confidence level or automatic pass criterion.
-A systematic half-pixel centering error may matter even when aggregate fit statistics
-look excellent.
+## Result
 
-## 6. Quantization can invalidate an affine explanation
+Open questions the next captures should answer, in the order the
+[capture protocol](../research/capture-protocol-2026-10-02.md) lists cases for:
 
-A genuine renderer can behave like
+- **Odd-width gap origin**: $\lceil W/2\rceil$ (the converter, JDD310) against
+  $\lfloor W/2\rfloor$ (cursed). It changes
+  {{fig:generated.converter-comparison.gapOriginSensitivity.corpus.changedRows|int}}
+  of {{fig:generated.converter-comparison.gapOriginSensitivity.corpus.rows|int}}
+  corpus rows and
+  {{fig:generated.converter-comparison.gapOriginSensitivity.corpus.at1080.changed|int}}
+  of {{fig:generated.converter-comparison.gapOriginSensitivity.corpus.at1080.rows|int}}
+  published crosshairs at 1080 (cases `s9-*`).
+- **Scaling away from 1080**: $P_r$ and the centre-radius gap are carried over
+  from build 2000918.
+- **Negative static gap**: what Static Cross draws for a console-only negative
+  gap (`s1-t2-gm2`).
+- **Zero length and the dot**: whether a zero-length bar or a dot at length 0
+  draws (`s8-*`).
+- **Full outline width**: mode 1 is assumed to draw 1 px all round.
+- **Thickness 0**: modelled as hiding the bars; never exported.
+- **The +3 px column offset** of the old issue #11 screenshot.
 
-$$
-y=B+Q(Kx)
-$$
+Settled by captures: the outline alpha equals the old crosshair opacity
+(`s10-*`, capture C).
 
-or like
+## Limits
 
-$$
-y=Q(B+Kx),
-$$
-
-which are not generally equal. It can also impose a minimum or switch behavior with
-width parity. A straight line can approximate these functions over a small interval
-without describing their exact thresholds.
-
-Inspect residuals by setting, not only as a single RMSE. Alternating or sawtooth patterns
-can indicate a quantizer. A slope change near the minimum can indicate saturation.
-A jump when effective width changes by one can indicate a thickness-relative origin.
-Do not remove “outliers” merely because they contradict the desired universal formula.
-
-The current calibration tool fits an affine model and reports its limits. It does not
-automatically select a quantized nonlinear model or estimate hidden shader parameters.
-A future identified staircase model must receive its own version and fixtures. In the
-current measured-gap branch the fitted intercept and slope are used directly—no silent
-second quantization or resolution multiplier is added.
-
-## 7. Invert the fit and examine discrete candidates
-
-For target pixel quantity $y_*$, the ideal inverse is
-
-$$
-x_{\mathrm{ideal}}=\frac{y_*-\hat B}{\hat K}.
-$$
-
-The calibration panel reports nearby legal integers and their predicted residuals. It
-reports when the ideal is outside the applicable range instead of inventing a valid
-exact solution. The workbench's bounded solver performs exhaustive legal integer
-search under its selected model.
-
-If the result is negative for new gap, there may be a representability limitation. Do
-not round it to zero and then discard the error. If the near edge matches but the far
-edge cannot, a scalar gap parameter is not sufficient to reproduce the old placement.
-If width differs, reconsider the width fit before interpreting a new gap intercept.
-
-## 8. Uncertainty and correlated errors
-
-Suppose $x_*=(a_*-B)/K$. A first-order sensitivity calculation gives
-
-$$
-\frac{\partial x_*}{\partial a_*}=\frac1K,\qquad
-\frac{\partial x_*}{\partial B}=-\frac1K,\qquad
-\frac{\partial x_*}{\partial K}=-\frac{a_*-B}{K^2}.
-$$
-
-With small independent uncertainties, an approximate variance would be
-
-$$
-\sigma_x^2\approx\frac{\sigma_a^2+\sigma_B^2}{K^2}
-+\frac{(a_*-B)^2}{K^4}\sigma_K^2.
-$$
-
-But fit intercept and slope are usually correlated; measurements can also share a
-center-origin error. The independence simplification can be misleading. If estimating
-formal uncertainty, use the full covariance form $\nabla f^T\Sigma\nabla f$ and explain
-the measurement-error assumptions. Quantization, saturation and discrete candidate
-selection make this local differential approximation especially fragile at thresholds.
-
-The app deliberately does **not** display invented confidence intervals from three
-manually entered points. The derivation is included to show which quantities matter,
-not to imply that their uncertainties have already been measured.
-
-## 9. Scope and provenance are part of the result
-
-A measurement JSON contains the schema version, quantity, provenance, game build,
-current/authored heights, effective thickness, static-style flags, observation pairs,
-notes and optional screenshot name/dimensions/hash. It does not contain the image bytes
-or an invented `verified` flag. Imports explicitly reject unknown schema fields and
-unsupported provenance values.
-
-The synthetic example $(0,1),(2,3),(4,5)$ demonstrates $B=1$, $K=1$. It remains marked
-`synthetic-example` when exported. User-entered data is labeled `user-entered`, not
-“measured by this tool” or “Valve verified.” The math report retains the applied fit's
-provenance, points and scope so a later reader knows where its parameters came from.
-
-Applying a fit to the workbench requires a near-gap measurement with matching build,
-heights and effective width. A later mismatch of height or effective width blocks that
-scoped use. Selecting another hypothesis detaches it; manually typing B/K creates an
-unscoped hypothesis rather than inheriting credibility from the old fit.
-
-## 10. Native validation acceptance criteria
-
-Before promoting a future formula to a stronger evidence label, retain original old/new
-captures and exact settings; identify the tested build and resolution pair; verify
-read-back values after application; measure both longitudinal edges and transverse
-placement; test zero and positive widths, odd/even parity, negative legacy fractions,
-larger discriminating arms and at least two non-unit scaling ratios; evaluate held-out
-cases; and document every mismatch and out-of-scope behavior.
-
-Repeat the experiment after a relevant update. Prefer a scoped claim such as “matched
-these static, outline-free captures on this build and height” over “works for every
-crosshair.” The project is designed to accumulate evidence and refine the model, not
-to permanently preserve the first conjecture because it produced a pleasant preview.
+Promoting a formula needs original old and new captures with exact settings,
+read-back values, both longitudinal edges and the transverse placement, zero and
+positive widths, odd and even parity, negative fractional old gaps, large arms,
+at least two ratios $r\ne1$, held-out groups and a record of every mismatch.
+Claims stay scoped to the build, heights and shapes captured, and a game update
+needs new captures.
+:::

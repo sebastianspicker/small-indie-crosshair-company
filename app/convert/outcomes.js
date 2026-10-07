@@ -35,21 +35,20 @@ export function warningItem(text, className = '') {
 export const shownWarnings = report => report.warnings.filter(w => !INTERNAL.has(w.code)).map(warningText);
 
 export function clearOutcomes(view) {
-  for (const id of ['qs-outcomes', 'q-outcomes', 'qs-warnings']) view.get(id).replaceChildren();
+  for (const id of ['qs-outcomes', 'qs-warnings']) view.get(id).replaceChildren();
   for (const id of Object.values(CHIP_IDS)) { const chip = view.get(id); chip.textContent = ''; chip.removeAttribute('data-confidence'); }
 }
 
-/** Fills the Simple view's outcome table, warnings and per-value chips, and the expert details copy. */
-export function renderOutcomes(view, report, importNotes = []) {
+/** Fills the Simple view's outcome table, warnings and per-value chips. */
+export function renderOutcomes(view, report, importNotes = [], include = null) {
   if (!report) return;
-  const rows = settingOutcomes(report.settings, report, importNotes), confidence = confidenceLabel(report);
+  const rows = settingOutcomes(report.settings, report, importNotes, include), confidence = confidenceLabel(report);
   view.get('qs-outcomes').replaceChildren(outcomeTable(rows));
-  view.get('q-outcomes').replaceChildren(outcomeTable(rows));
   for (const [key, id] of Object.entries(CHIP_IDS)) {
     const chip = view.get(id);
     chip.textContent = CONFIDENCE_LABELS[confidence[key]]; chip.dataset.confidence = confidence[key];
   }
   const shown = shownWarnings(report);
-  view.get('qs-warnings').replaceChildren(...(shown.length ? shown : ['No extra limits were found for this crosshair.'])
+  view.get('qs-warnings').replaceChildren(...(shown.length ? shown : ['No other limits for this crosshair.'])
     .map(text => warningItem(text)));
 }

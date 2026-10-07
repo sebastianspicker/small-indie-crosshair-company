@@ -154,3 +154,102 @@ The v7 figures are pinned to the artifact by
 - The ML cross-check agrees with the converter partly by construction (it
   shares the rendering models and the window rule); its rate is not game
   accuracy.
+
+## 2026-10-06: v8 (T-shape taxonomy) and other heights
+
+`community-static-v8` (ADR-0020) re-run with the same seeds. The sweep now also records, for T inputs, the best tuple
+with the opposite T flag (`otherT`) and counts per T family where it beats the export (`tFamilies`). `--height` runs a
+sweep at another equal old/new height.
+
+| Height | Plain: shortfalls / exact or shifted / mean | Exotic: shortfalls / exact or shifted / mean | Other T flag better |
+|---|---|---|---|
+| 1080 (n 5,000 / 2,000) | 0 / 3,637 / 0.939 | 18 / 1,049 / 0.858 | upright 5, strokes 1 |
+| 900 (n 2,000 / 1,000) | 0 / 1,475 / 0.939 | 10 / 530 / 0.854 | upright 4 |
+| 960 (n 2,000 / 1,000) | 0 / 1,472 / 0.939 | 10 / 528 / 0.854 | upright 4 |
+| 1440 (n 2,000 / 1,000) | 0 / 1,449 / 0.944 | 6 / 524 / 0.865 | upright 4 |
+
+The 1080 headline numbers equal v7. Every exotic shortfall and every upright row where the other flag wins has a 2 or
+3 px old outline, which the 1 px new outline cannot draw. A first v8 draft filed size 0 with a dot and an outline as
+`no-effect`; the opposite-flag check found the other flag better in 9 plain and 11 exotic such rows (they draw outline
+strokes, and T drops the top one), so they are `strokes` now. Declared-model pixels only; not native evidence.
+
+## 2026-10-06: v10 screen refinement
+
+The oracle accepts `--old-height`, `--current-height`, `--authored-height` and
+`--goal pixels|screen`. `--height` still sets equal source/current heights,
+with authored height defaulting to current. Each result records the actual
+heights, finite native bounds, refinement evaluations and inference timings.
+The native box is scaled from drawn-pixel bounds and capped at 60 length/gap
+steps and 32 thickness steps; it is not a global certificate.
+
+Two diagnostic screen runs, 12 settings each, found no bounded shortfalls:
+plain seed 301 at 1080→900 authored 1080, and exotic seed 302 at 720→1440
+authored 960. They are small synthetic checks, not population accuracy rates.
+The 400-case frozen v9 comparison and independent dense-grid tests provide
+broader regression coverage (see ADR-0024); native capture validation remains
+pending. Screen refinement uses more candidate evaluations than v9's skipped
+window and can be slower for exotic shapes, while retaining the same caps.
+On 50 frozen screen cases, a local run measured median 15.7 ms, p95 119.1 ms
+and maximum 216.0 ms, with 55,213 refinement evaluations in total. Concurrent
+artifact checks were running; these timings are diagnostic rather than a
+performance guarantee.
+
+## 2026-10-07: cross-resolution sweeps of v10
+
+Nine bounded sweeps at unequal heights, run by hand with the extended oracle
+(`research/scripts/oracle-sweep.mjs`; outputs kept outside the repository in
+`_notes/sicc-v10-sweeps-2026-10-07/`). Screen goals set the authored height to
+the current height unless stated; the two pixel-goal runs change only the
+authored height, so the native ratio is 1.5 and 0.75. Same grids and bounds as
+above. Declared-model pixels only; not native evidence.
+
+| Run | Grid, n, seed | Old → current, authored, goal | Shortfalls | Exact or shifted | Mean aligned IoU | Inference ms mean / max |
+|---|---|---|---|---|---|---|
+| A | plain, 800, 401 | 1080 → 1440, 1440, screen | 1 | 344 | 0.910 | 25.7 / 323 |
+| B | plain, 800, 402 | 1440 → 1080, 1080, screen | 0 | 291 | 0.882 | 13.0 / 187 |
+| C | plain, 800, 403 | 720 → 1080, 1080, screen | 0 | 442 | 0.907 | 15.8 / 253 |
+| D | plain, 800, 404 | 1080 → 720, 720, screen | 0 | 320 | 0.869 | 9.5 / 83 |
+| E | exotic, 400, 405 | 1080 → 1440, 1080, screen | 3 | 74 | 0.802 | 61.8 / 706 |
+| F | exotic, 400, 406 | 1440 → 1080, 1440, screen | 1 | 110 | 0.837 | 41.2 / 420 |
+| G | plain, 800, 407 | 1080 → 1080, 720, pixels | 1 (+5 policy) | 159 | 0.684 | 16.0 / 130 |
+| H | plain, 800, 408 | 900 → 1200, 1200, screen | 0 | 381 | 0.902 | 26.4 / 272 |
+| I | plain, 800, 409 | 1080 → 1080, 1440, pixels | 0 | 616 | 0.943 | 4.1 / 79 |
+
+Timings were taken with three sweeps running at once and are diagnostics.
+
+### Findings
+
+- **Search completeness holds across heights.** The eleven shortfalls in
+  7,200 inputs are all in the classes accepted at 1080 (section 2.2): one
+  size-0 dot at gap −40 whose strokes lie beyond the 32 px reach cap (E), five
+  wide-outline or thick-short rows where the only better tuple widens the bars
+  into the black band or changes the character of the crosshair (A, E ×2, F,
+  gains 0.03 to 0.06), and one role swap at ratio 1.5 (G: size 2.5, thickness
+  2, gap −5.5, outline 1; the export 3/3/1 scores 0.607, while 1/9/0 draws the
+  old 4 px bars with the 3 px hole filled at 0.897, because no native
+  thickness draws 4 px at that ratio). The role swap is outside the ±8
+  thickness reach and is not pursued: the tuple is a different crosshair in
+  native terms, and the case needs an authored height below the screen.
+- **Policy-excluded tuples are counted apart.** At ratio 1.5 five rows (all
+  crossed-partial size-1 shapes with a dot) would score higher with length 0,
+  which draws only the dot under the model. The converter never exports
+  length 0 once the old shape drew arms or a dot, because the current game
+  may draw nothing for it (issue #11, `dot-only-as-arms`). The oracle now
+  applies the same rule (`policy`, `policyExcluded` in its output), so these
+  rows are not shortfalls of the search.
+- **T shapes.** With the other T flag tried on every T row (1,069 rows across
+  the nine runs, all seven families), the opposite flag beats the export only
+  in the policy rows above and one upright T at ratio 1.5 by 0.0005.
+- **Lower means at unequal heights are representability, not search.**
+  Downscaling (B, D) and ratio 1.5 (G) round old edges apart; at ratio 1.5 the
+  drawn sizes 1, 4 and 7 are unreachable. The bounded oracle finds no better
+  tuple for those rows, so the loss is in what the new renderer can draw at
+  that height, under the declared models.
+
+### Limits
+
+- The boxes stay finite (60/32/60 native steps) and the grids are random
+  samples; a tuple outside the box is not seen.
+- Everything is measured by the converter's own objective. Whether the scaled
+  old appearance is what the game shows at the new height rests on captures
+  the measurement registry does not yet hold.

@@ -22,7 +22,8 @@ this document quotes it and must not become a second copy.
 | T shape | `cl_crosshair_t` | Retain boolean |
 | Outline enabled | `cl_crosshair_drawoutline` | Mode 0/1/2 from toggle and old width; not native-validated |
 | Outline width | `cl_crosshair_outlinethickness` | No standalone equivalent; width below 1 → half outline (2), 1 or more → full (1); a CFG width of exactly 0 → off, but a share-code 0 (0.5-step rounding, any width below 0.5) → half (2) |
-| Outline mode (opt-in override) | `cl_crosshair_drawoutline` | Export option Outline: Auto (default, mapping above), None (0), Full (1) or Half (2). Unverified in game; reports record `options.outlineMode`, add warning `outline-user-override` and mark the "What changed" rows `user-choice`. Geometry numbers do not change |
+| T shape (option, ADR-0025) | `cl_crosshair_t` | Keep (default, the old flag), Auto (the planned flip of ADR-0020), On or Off. Reports record `options.tShape`; On or Off that differs from the old flag adds warning `t-user-choice` and marks the row `user-choice` |
+| Outline mode (opt-in override) | `cl_crosshair_drawoutline` | Export option Outline: Auto (default, mapping above), None (0), Full (1) or Half (2). Unverified in game; reports record `options.outlineMode`, add warning `outline-user-override` and mark the "What changed" rows `user-choice`. The appearance window uses Auto, but the fallback may change the final geometry or T flag when plain conversion matches the chosen outline better |
 | Style target (opt-in) | `cl_crosshairstyle` | Default: old 2, 3 and 5 export Static Cross (4) with warning `style-dynamic-at-rest` (the "What changed" row is `approximated`); old 0 and 1 stay blocked. Export option "Keep the old style family (experimental)": old 2 and 3 → 2, old 5 → 5, others → 4. Old styles 2/3/5 drew exactly like style 4 at rest (leaked old source), so the at-rest numbers stay the same, but the new styles 2 and 5 are dynamic (they move with inaccuracy and shots) and their at-rest pixels are unverified. Warning `style-family-experimental`; reports record `options.styleTarget`; without the option old styles other than 4 stay blocked |
 | Outline opacity | none (old outline used the crosshair alpha) | `cl_crosshairoutline_a` is set to the old crosshair opacity (255 with the outline off); verified in the old source and a user screenshot, but whether 2000922 also multiplies by `cl_crosshaircolor_a` is unverified |
 | Follow recoil | `cl_crosshair_recoil` | Retain preference, motion not modeled |
@@ -105,6 +106,19 @@ one line of commands separated by `;` with no comments, so it pastes straight in
 console (limit 510 characters per line); model version, build, heights, hypotheses and
 conversion warnings stay in the UI and the JSON report. It sets authored height last because the inventory
 says geometry edits can update that reference. Read the values back after applying.
+
+Six groups of lines are optional, because the old input may never have chosen them
+(ADR-0021, issue #11): crosshair RGB (`cl_crosshaircolor_r/g/b`), fill opacity
+(`cl_crosshaircolor_a`), outline mode (`cl_crosshair_drawoutline`), outline colour
+(`cl_crosshairoutline_r/g/b/a`, the old outline being always black at the crosshair
+opacity), follow recoil (`cl_crosshair_recoil`) and authored height
+(`cl_crosshair_screen_height`). The page ticks a group by default only when the old
+input set it, or an outline mode is chosen by hand (the height always, since the sizes
+scale with it); an unticked group's lines are left out so the game keeps its current
+value. An alpha-only paste therefore does not set RGB, and omitted outline settings
+do not set the outline mode. The colour, opacity and outline override are required
+when an outline-only shape is redrawn as black bars. The converter cannot know
+omitted current-game values; previews and shape checks assume the displayed settings.
 
 No config changes your game resolution, runs `exec`, changes key binds, connects to a
 server, or accesses a game process. Unsupported dynamic inputs are not silently forced

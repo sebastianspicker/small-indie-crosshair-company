@@ -3351,15 +3351,15 @@
           "coreDifferent": 6792,
           "outlineDifferent": 5153,
           "combinedDifferent": 5433,
-          "meanOutlineIou": 0.6924710511941459
+          "meanOutlineIou": 0.6923727904342921
         },
         "aligned": {
           "coreDifferent": 4734,
           "outlineDifferent": 3382,
           "combinedDifferent": 3382,
           "outlineOnlyDifferent": 62,
-          "meanOutlineIou": 0.8341406228958592,
-          "meanCombinedIou": 0.8442364110674144
+          "meanOutlineIou": 0.8340423621360055,
+          "meanCombinedIou": 0.8441441313972908
         }
       },
       "byClass": {
@@ -3392,15 +3392,15 @@
             "coreDifferent": 675,
             "outlineDifferent": 556,
             "combinedDifferent": 556,
-            "meanOutlineIou": 0.7147646391932608
+            "meanOutlineIou": 0.7143413587699804
           },
           "aligned": {
             "coreDifferent": 675,
             "outlineDifferent": 564,
             "combinedDifferent": 564,
             "outlineOnlyDifferent": 0,
-            "meanOutlineIou": 0.727035295157431,
-            "meanCombinedIou": 0.727035295157431
+            "meanOutlineIou": 0.7266120147341507,
+            "meanCombinedIou": 0.7266120147341507
           }
         },
         "3": {
@@ -3412,15 +3412,15 @@
             "coreDifferent": 675,
             "outlineDifferent": 591,
             "combinedDifferent": 591,
-            "meanOutlineIou": 0.749330525681759
+            "meanOutlineIou": 0.748935463953364
           },
           "aligned": {
             "coreDifferent": 675,
             "outlineDifferent": 575,
             "combinedDifferent": 575,
             "outlineOnlyDifferent": 0,
-            "meanOutlineIou": 0.7481624198752101,
-            "meanCombinedIou": 0.7481624198752101
+            "meanOutlineIou": 0.7477673581468153,
+            "meanCombinedIou": 0.7477673581468153
           }
         },
         "sharecode-rounded-0": {
@@ -3612,15 +3612,15 @@
             "coreDifferent": 675,
             "outlineDifferent": 436,
             "combinedDifferent": 436,
-            "meanOutlineIou": 0.859091672904485
+            "meanOutlineIou": 0.8587308859379141
           },
           "aligned": {
             "coreDifferent": 675,
             "outlineDifferent": 459,
             "combinedDifferent": 459,
             "outlineOnlyDifferent": 0,
-            "meanOutlineIou": 0.8234051279402107,
-            "meanCombinedIou": 0.8234051279402107
+            "meanOutlineIou": 0.8230443409736401,
+            "meanCombinedIou": 0.8230443409736401
           }
         }
       },

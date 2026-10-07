@@ -1,8 +1,135 @@
 # Changelog
 
-## Unreleased
+## 0.17.0 (unreleased)
 
-## 0.13.0 (unreleased)
+- Remove the Manual tool (`#workbench`) and the Measurements page
+  (`#calibration`): the converter's options and model cover them. Their old links
+  open the new Screenshot page. `lib/manual/` stays for its tests.
+- New Screenshot page (`#screenshot`, nav "Screenshot" after Convert): an
+  old-game PNG in, new settings out, and nothing else. It measures the crosshair
+  around the image centre (the old height starts as the image height), converts
+  it with the converter's defaults and shows the measured crop next to the new
+  plate, the new length, thickness and gap, the commands (Copy, Download .cfg)
+  and the old settings inferred from the pixels. A confidence block gives
+  the image checks (mask agreement, colour-threshold stability, cropping),
+  identifiability (several old settings can draw the same pixels) and the
+  conversion shape check, then High, Medium or Low by a rule shown on the page;
+  it is not a probability. "Cross-check in the converter" opens `#quant` with
+  the inferred old settings and both heights filled in (`#quant?paste=…`, text
+  only, at most 4 KiB, removed from the address at once, nothing stored). An
+  Expert switch exposes the centre offset, RGB tolerance, colour pick and
+  re-analyse. The converter's Input Expert panel now links to this page instead
+  of reading old screenshots itself; native-capture comparison stays under What
+  happened.
+- The #research page renders its learner figures and version words from a new `learners` section of
+  `data/quant-summary.json` (read from the emulator artifacts) and flags learners not retrained for the shipped version.
+- Advance the automatic converter to `community-static-v11`. An old T now
+  exports T by default (ADR-0025); a new option `tShape` chooses Keep (default),
+  Auto (the previous ADR-0020 flip to a full cross), On or Off. The default
+  draws the stem below the bar where the game cannot draw it above, and
+  `inverted-t-unrepresentable` says so; forcing a flag adds `t-user-choice`.
+  The ML cross-check mirror and the oracle sweep follow the option; artifacts
+  regenerate with the retrain chain.
+- The legacy paste parser accepts raw `find crosshair` console output: the
+  flag and description columns after the value (`client archive per_user ...`)
+  are dropped, flag-only and `- description` lines are skipped, and the CS:GO
+  `"name" = "value" ( def. "x" )` form is covered by a test.
+- Converter UI: a two-column workbench on wide screens (controls left, plates
+  and commands right) with tighter spacing; height presets for common
+  resolutions plus Custom; sliders for size, thickness, gap and opacity; a
+  visible colour block with a colour wheel, R/G/B fields and sliders, the five
+  old preset colours and a line saying where the colour came from; a "T in
+  export" choice; and a preview background choice (Dark, Grey by default,
+  Light) so black outlines stay visible, plus six generated blurred scenes
+  (desert, stone, terracotta, industrial, jungle, dark interior) drawn from
+  colour palettes only, no game images, with the crosshair unblurred on top.
+  The Expert toggle and the separate "Advanced" disclosure are gone: every
+  option applies, and each section keeps its expert content next to what it
+  affects behind a small per-section Expert switch in its header (off by
+  default, not remembered). A new Conversion section sits right after the paste
+  box and heights with the goal, outline, T in export and style visible; its
+  Expert switch reveals the rendering model, decision rule (greyed with a
+  reason while the automatic model is selected) and corrections, and shows a
+  dot when one is off its default. Input reveals the published player settings
+  and the old screenshot; Preview the three difference plates; New settings the
+  value table, confidence, exported line and research report; What happened
+  four one-line deep-dive rows (pixel measurements, compare models, search
+  details, compare with a game screenshot) that render when opened. The
+  duplicate "what happened to each old setting" table is gone. Nothing is
+  stored between visits.
+- The `find` column stripping refuses a tail that holds a quote or another
+  `cl_` name, so a second assignment cannot ride along silently.
+
+## 0.16.0 (unreleased)
+
+- Advance the automatic converter to `community-static-v10`. Bounded appearance
+  refinement now covers screen-relative goals using exact sampled endpoints;
+  equal-height goals agree. Hand-selected outline modes are scored as exported,
+  preventing an Auto-mode search from choosing a worse visible shape.
+- Preserve automatic pixel-goal exports, corrections-off and measured inputs.
+  Independent resolution regressions compare against frozen v9 outputs and
+  exact endpoint arithmetic; these are synthetic checks, not game validation.
+- Extend the bounded oracle to independent source/current/authored heights and
+  both goals, with explicit search bounds, timing and candidate counts. Nine
+  cross-resolution sweeps (7,200 inputs: 720 to 1440 screen goals, authored
+  heights 720 to 1440) find no search shortfall outside the classes accepted
+  since v7; tuples the converter never exports (length 0 once the old shape
+  drew) are counted apart from shortfalls.
+- Prepare paired native-capture commands and manifests, family-isolated roles,
+  and PNG comparison with hashes, raw/aligned overlap and quality flags.
+  Native accuracy still awaits real, independently reviewed captures.
+
+## 0.15.0 (unreleased)
+
+- Advance the automatic converter to `community-static-v9`, keeping its model
+  id, build and report schema. Screen-relative targets sample original integer
+  endpoints with exact rational arithmetic; a rounded half-pixel endpoint can
+  no longer add or delete a target column and falsely claim a perfect match.
+  Fractional inverse dimensions and default pixel-goal behavior stay unchanged.
+  The independent cross-check and active research cell features use the same
+  endpoint rule. Reused evaluation sets are regression evidence, not fresh
+  independent validation or native-game accuracy.
+
+- Keep RGB, fill opacity and outline mode independent in optional exports.
+  Alpha-only pastes no longer set a default RGB, and omitted outline settings
+  no longer force an outline. Required shape redraws retain their necessary
+  colour, opacity and outline commands.
+- Ignore commands inside quoted bind/alias bodies when importing settings,
+  including semicolons, escaped quotes and comment markers.
+- Improve automatic screenshot colour selection for distant and thin bars
+  among off-axis scene colours. Reject foreground cut off by the original
+  image boundary even when crop padding hides that edge; small complete
+  images remain usable. Native capture checks use the exported T flag.
+- Preserve shared-capture/session dependence before excluding unsupported
+  measurements from confidence calculations. Cropped image comparisons no
+  longer report a complete shape match.
+- Clarify that a hand-selected outline can trigger the appearance fallback
+  and change the exported tuple or T flag. The guarantee remains that
+  corrections do not score worse than plain conversion for that outline.
+
+## 0.14.0 (unreleased)
+
+- Advance the automatic converter to `community-static-v8`; model id, build and
+  report schema are unchanged.
+- An old T is classified by where its single vertical arm reached past the
+  horizontal bar (ADR-0020, `tShape` in `lib/geometry/edge-cases.js`): an old T
+  drew a T exactly when `trunc(4 + gap) >= -width` and the arm reached below the
+  bar, and such a T always exports `cl_crosshair_t 1`. Upside-down Ts and
+  symmetric ones export a full cross; arms through the bar, arms hidden inside it
+  and crossed outline strokes let the appearance window try the other flag.
+  Reports carry `edgeCase.tShape`. The old renderer source has no T, so the
+  T rule itself is an assumption (said in ADR-0020).
+- `inverted-t-unrepresentable` no longer fires for Ts whose arm sat below the
+  bar, and both T warnings and the outcome row describe the old arm per family.
+- Export only what was set (ADR-0021, issue #11): crosshair colour, outline
+  colour, follow recoil and authored height are optional line groups with
+  checkboxes, ticked by default only when the old input set them (height
+  always; the colour is required when outline strokes are redrawn as black
+  bars). Unticked lines are left out, so the game keeps the current value.
+- The "T shape with crossed arms" example is replaced by an upside-down T that
+  sets its outline explicitly.
+
+## 0.13.0
 
 - Advance the automatic converter to `community-static-v7`
   (`lib/solver/community.js`); model id, build and report schema are unchanged.

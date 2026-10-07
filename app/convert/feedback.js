@@ -2,17 +2,13 @@ import { imageInput } from '../image/input.js';
 import { download } from '../ui/dom.js';
 import { validateMeasurements } from '../../lib/solver/observations.js';
 import { BUILD } from '../../lib/solver/renderer.js';
+import { mergedExportOverrides } from '../../lib/solver/export.js';
 
-function acceptOld(c, { fit, meta }) {
-  if (!fit.quality?.acceptable) throw new Error('Image quality checks must pass before accepting the measured target.');
-  c.setSettings({ ...c.state.settings, ...fit.representative, dot: fit.flags.dot, t_style: fit.flags.t_style,
-    style: 4, weapon_gap: false, outline: false, color: 5, rgb: fit.color, alpha: 255, alpha_enabled: true });
-  Object.assign(c.state, { targetOverride: fit.geometry, targetMask: fit.mask,
-    screenshotMeta: { ...meta, buckets: fit.buckets, templateIou: fit.templateIou, quality: fit.quality,
-      measurementMethod: fit.measurementMethod, declaredOldHeight: c.options().oldHeight }, source: { type: 'image' } });
-  c.get('qs-import').value = '';
-  c.setInputStatus('Image measured. Several old settings may produce the same pixels.');
-  c.schedule();
+/** Capture the proposed flags from this report, including T flips applied to reproduce crossed old shapes. */
+export function nativeCaptureFlags(report) {
+  const overrides = mergedExportOverrides(report);
+  return { dot: report.settings.dot, t_style: overrides.t_style ?? report.settings.t_style,
+    bars: report.converted.length > 0 && report.converted.width > 0 };
 }
 
 function acceptNative(c, n, o, { fit, meta, role, attested, captureGroup }) {
@@ -25,21 +21,18 @@ function acceptNative(c, n, o, { fit, meta, role, attested, captureGroup }) {
   c.schedule();
 }
 
-async function openImage(c, kind) {
-  const id = kind === 'old' ? 'q-old-image' : 'q-new-image', status = c.get(kind === 'old' ? 'q-input-status' : 'q-evidence-status');
+async function openImage(c) {
+  const status = c.get('q-evidence-status');
   if (c.imageOpen) { status.textContent = 'Finish the open image dialog first.'; return; }
   c.imageOpen = true;
   try {
     const r = c.state.result;
-    if (kind === 'new' && !r) throw new Error('Wait for a valid current candidate before recording native evidence.');
-    const options = kind === 'old' ? c.options() : { ...r.options, targetBuild: r.targetBuild };
-    const native = r ? { ...r.chosen.native } : null;
-    await imageInput(c.get(id).files[0], c.worker, { kind, options, native, signal: c.listeners.signal,
-      expectedFlags: kind === 'new' ? { dot: c.state.settings.dot, t_style: c.state.settings.t_style,
-        bars: r.converted.length > 0 && r.converted.width > 0 } : null,
-      onAccept: kind === 'old' ? data => acceptOld(c, data) : data => acceptNative(c, native, options, data) });
+    if (!r) throw new Error('Wait for a valid current candidate before recording native evidence.');
+    const options = { ...r.options, targetBuild: r.targetBuild }, native = { ...r.chosen.native };
+    await imageInput(c.get('q-new-image').files[0], c.worker, { kind: 'new', options, native, signal: c.listeners.signal,
+      expectedFlags: nativeCaptureFlags(r), onAccept: data => acceptNative(c, native, options, data) });
   } catch (error) { status.textContent = error.message; }
-  finally { c.get(id).value = ''; c.imageOpen = false; }
+  finally { c.get('q-new-image').value = ''; c.imageOpen = false; }
 }
 
 async function loadEvidence(c) {
@@ -56,7 +49,7 @@ async function loadEvidence(c) {
 }
 
 export function bindFeedback(c) {
-  c.on('q-old-image', 'change', () => openImage(c, 'old')); c.on('q-new-image', 'change', () => openImage(c, 'new'));
+  c.on('q-new-image', 'change', () => openImage(c));
   c.on('q-measurements', 'change', () => loadEvidence(c));
   c.on('q-export-measurements', 'click', () => download('native-measurements.json', JSON.stringify(c.state.measurements, null, 2)));
   c.on('q-clear-measurements', 'click', () => { c.state.measurements = []; c.get('q-evidence-status').textContent = 'Session measurements cleared. Original model weights restored.'; c.schedule(); });

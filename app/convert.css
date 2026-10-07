@@ -1,38 +1,83 @@
-/* Convert (#quant): one page. Row 1 inputs, row 2 the plate, row 3 what happened; Expert mode reveals the lab below.
-   Built only from the tokens in styles.css. */
+/* Convert (#quant): one page. A workbench: controls on the left (from 1100px), the preview, the new settings and what
+   happened on the right. Each section keeps its expert content behind a small Expert switch in its header.
+   The Screenshot page (#screenshot) is built from the same classes. Built only from the tokens in styles.css. */
 
-/* Mode: Simple is the default; Expert reveals the lab in place and the other pages in the nav. */
-html[data-mode="simple"] .masthead nav a[data-route]:not([data-route="quant"]) { display: none; }
-html[data-mode="simple"] #quant .quant-layout { display: none; }
-@media (max-width: 1100px) { html[data-mode="simple"] .masthead nav { display: none; } }
-
-#quant .sheet-head { padding-top: var(--s-5); }
-#quant h2 {
+#quant .sheet-head, #screenshot .sheet-head { padding: var(--s-5) 0 var(--s-3); }
+#quant .sheet-head h1, #screenshot .sheet-head h1 { font-size: clamp(var(--fs-xl), 3vw, var(--fs-3xl)); }
+#quant .lede, #screenshot .lede { margin-top: var(--s-2); }
+#quant h2, #screenshot h2 {
   font-size: var(--fs-md); font-weight: 600; font-stretch: var(--title-stretch); text-transform: uppercase; letter-spacing: .02em;
 }
-#quant h3 { font-size: var(--fs-sm); font-weight: 600; font-stretch: var(--title-stretch); text-transform: uppercase; letter-spacing: .02em; }
+#quant h3, #screenshot h3 { font-size: var(--fs-sm); font-weight: 600; font-stretch: var(--title-stretch); text-transform: uppercase; letter-spacing: .02em; }
 .section-head {
   display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: var(--s-1) var(--s-4);
   margin-bottom: var(--s-3);
 }
 .section-head .small { margin: 0; }
 
-.quant-simple { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-6); margin-top: var(--s-5); }
+.quant-simple { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-4); margin-top: var(--s-4); }
 
-/* ── Row 1: inputs ─────────────────────────────────────────────────────────── */
-.qs-inputs { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0 var(--s-6); align-items: start; }
-@media (min-width: 900px) { .qs-inputs { grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); } }
-.qs-paste > label:first-child, .qs-side .input-grid label { margin-top: 0; }
-#qs-import { min-height: 104px; font-size: var(--fs-sm); line-height: 1.6; }
-.qs-load-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-2) var(--s-4); margin-top: var(--s-3); }
-.qs-load-row .small { margin: 0; flex: 1 1 20ch; }
-#qs-input-status { margin-top: var(--s-2); color: var(--ink); }
-.qs-side > .small { margin-top: var(--s-1); }
-.qs-side details { margin-top: var(--s-3); }
-.qs-side details .input-grid label { margin-top: var(--s-2); }
+/* ── Controls (left column): paste, heights, conversion, colour, values ──────────────── */
+/* Below 700px one column; 700 to 1099px two columns (paste | heights, colour | values); from 1100px a workbench. */
+.qs-workbench { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-4); align-items: start; }
+.qs-controls { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-3) var(--s-5); align-items: start; min-width: 0; }
+@media (min-width: 700px) { .qs-controls { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1100px) {
+  .qs-workbench { grid-template-columns: minmax(340px, 380px) minmax(0, 1fr); gap: var(--s-5); }
+  /* The controls scroll with the page: no inner scroll area, which hid that more controls follow. */
+  .qs-controls { grid-template-columns: minmax(0, 1fr); }
+}
+.qs-results { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-4); min-width: 0; }
+.qs-paste > label:first-child { margin-top: 0; }
+#qs-import { min-height: 88px; font-size: var(--fs-sm); line-height: 1.6; }
+.qs-load-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-2) var(--s-3); margin-top: var(--s-2); }
+.qs-load-row .small { margin: 0; flex: 1 1 14ch; }
+#qs-input-status, #ss-status { margin-top: var(--s-2); color: var(--ink); }
+.qs-heights > .small { margin-top: var(--s-1); }
+.qs-controls details { margin: 0; }
+.qs-controls details > summary { padding-block: var(--s-2); }
+.qs-controls details > :not(summary) { margin-bottom: var(--s-2); }
+.qs-controls label { margin-top: var(--s-2); }
+.qs-controls .qs-paste > label:first-child, .qs-controls .height-field label, .qs-controls .pair label, .qs-controls .channel label,
+.qs-controls .check { margin-top: 0; }
 .simple-checks { display: flex; flex-wrap: wrap; gap: 0 var(--s-5); }
-#qs-input-status:empty, #qs-status:empty, #q-input-status:empty, #q-status:empty { display: none; }
-@media (max-width: 899px) { .qs-side { margin-top: var(--s-4); } }
+/* Heights: a preset list, with the number input shown for Custom… only. */
+.heights { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-2); }
+.height-field label { margin-top: 0; }
+.height-field input[type=number] { margin-top: var(--s-2); }
+/* Colour: the wheel with its hex readout beside the R, G and B rows, the five old presets, a status line and opacity. */
+.qs-colour { padding-top: var(--s-2); border-top: var(--hair); }
+.qs-colour h3 { margin: 0 0 var(--s-2); }
+.colour-row { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: var(--s-3); }
+.wheel { display: grid; justify-items: center; gap: var(--s-1); }
+.colour-row input[type=color] { width: 72px; height: 56px; padding: 4px; }
+.hex { font: 400 var(--fs-xs)/1.3 var(--font-mono); font-stretch: var(--mono-stretch); color: var(--ink-2); text-transform: uppercase; }
+.channels { display: grid; gap: var(--s-1); min-width: 0; }
+.channel { display: grid; grid-template-columns: 1.2em minmax(0, 4.5em) minmax(0, 1fr); align-items: center; gap: var(--s-2); }
+.channel label { margin: 0; font-weight: 600; }
+#quant .channel input[type=number] { min-height: 32px; padding-block: 2px; }
+#quant .channel input[type=range] { min-height: 24px; padding: 0; border: 0; background: transparent; accent-color: var(--focus); cursor: pointer; }
+.swatches { display: flex; flex-wrap: wrap; gap: var(--s-2); margin-top: var(--s-2); }
+.swatch {
+  width: 36px; height: 36px; padding: 0; border: var(--hair-edge); border-radius: var(--r-1); background: var(--swatch);
+  box-shadow: inset 0 0 0 2px var(--paper); forced-color-adjust: none;
+}
+.swatch:hover { border-color: var(--ink); }
+.swatch[aria-pressed=true] { border: 2px solid var(--ink); }
+.colour-source { margin: var(--s-1) 0 0; font-size: var(--fs-xs); }
+/* A number with its slider: label and number on one row, the slider under both. */
+.pairs { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-2); }
+.pair { display: grid; grid-template-columns: minmax(0, 1fr) minmax(5em, 40%); gap: var(--s-1) var(--s-3); align-items: center; }
+.pair label { margin: 0; }
+#quant .pair input[type=number] { min-height: 36px; padding-block: 4px; }
+#quant .pair input[type=range] {
+  grid-column: 1 / -1; min-height: 24px; padding: 0; border: 0; background: transparent; accent-color: var(--focus); cursor: pointer;
+}
+.qs-colour .pair { margin-top: var(--s-2); }
+/* The preview background control sits in the plate heading row. */
+.plate-choice { margin-left: auto; }
+.plate-choice select { min-width: 7em; }
+#qs-input-status:empty, #qs-status:empty, #ss-status:empty, #ss-copy-status:empty, #q-input-status:empty, #q-status:empty { display: none; }
 
 /* Examples: real previews of the shapes the converter redraws. Open in the empty state, collapsed under a result. */
 .qs-samples { border-top: var(--hair); border-bottom: var(--hair); }
@@ -46,7 +91,6 @@ html[data-mode="simple"] #quant .quant-layout { display: none; }
 @media (min-width: 1100px) { .sample-grid { grid-template-columns: repeat(6, minmax(0, 1fr)); } }
 .sample { display: flex; flex-direction: column; min-width: 0; background: var(--paper); }
 .sample canvas { height: 116px; background: var(--plate); }
-.sample canvas[data-plate=light] { background: var(--plate-light); }
 .sample p { flex: 1; margin: 0; padding: var(--s-2) var(--s-3) 0; font-size: var(--fs-xs); line-height: 1.4; color: var(--ink-2); }
 .sample .button { align-self: flex-start; min-height: 30px; margin: var(--s-2) var(--s-3) var(--s-3); padding: 0 var(--s-3); font-size: var(--fs-xs); }
 
@@ -63,17 +107,20 @@ html[data-mode="simple"] #quant .quant-layout { display: none; }
   font: 600 var(--fs-xs)/1.3 var(--font-text); font-stretch: var(--title-stretch); text-transform: uppercase;
   letter-spacing: .02em; color: var(--plate-label);
 }
-.plate canvas { height: clamp(240px, 24vw, 320px); }
+.plate canvas { height: clamp(220px, 22vw, 300px); }
 .plate-scale {
   grid-column: 1 / -1; margin: 0; padding: 6px var(--s-3); background: var(--plate);
   font: 400 var(--fs-2xs)/1.4 var(--font-mono); font-stretch: var(--mono-stretch); color: var(--plate-ink);
 }
 .plate-scale:empty::before { content: '.'; visibility: hidden; }
+.plate-note { padding-top: 0; }
+/* Generated scenes: a halo behind the text laid over the picture; the halo colour is a per-scene token. */
+:is(#quant, #screenshot)[data-plate-kind=scene] .plate figcaption { text-shadow: 0 0 3px var(--plate-halo), 0 0 6px var(--plate-halo); }
 
 /* HUD strip: readouts on the left, the two actions on the right. */
 .hud {
   display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-3) var(--s-5); align-items: center;
-  padding: var(--s-3) 0; border-bottom: var(--hair);
+  padding: var(--s-2) 0; border-bottom: var(--hair);
 }
 @media (min-width: 900px) { .hud { grid-template-columns: minmax(0, 1fr) auto; } }
 .readout { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin: 0; }
@@ -86,12 +133,12 @@ html[data-mode="simple"] #quant .quant-layout { display: none; }
   font-variant-numeric: tabular-nums slashed-zero; transition: opacity var(--dur-1) var(--ease);
 }
 .readout-cvar { font: 400 var(--fs-2xs)/1.3 var(--font-mono); font-stretch: var(--mono-stretch); color: var(--ink-2); overflow-wrap: anywhere; }
-#quant[data-busy=true] .simple-value { opacity: .3; }
+#quant[data-busy=true] .simple-value, #screenshot[data-state=measuring] .simple-value { opacity: .3; }
 .hud-actions { display: flex; flex-wrap: wrap; gap: var(--s-2); }
 .hud-actions .button { min-height: 44px; padding-inline: var(--s-5); font-size: var(--fs-base); }
 
 /* Flags as chips. The separators stay in the text content and leave the layout. */
-.flag-chips { display: flex; flex-wrap: wrap; gap: 6px; margin: var(--s-3) 0 0; }
+.flag-chips { display: flex; flex-wrap: wrap; gap: 6px; margin: var(--s-2) 0 0; }
 .flag-chips:empty { display: none; }
 .flag {
   padding: 2px 8px; border: var(--hair-strong); border-radius: var(--r-1); color: var(--ink);
@@ -99,9 +146,12 @@ html[data-mode="simple"] #quant .quant-layout { display: none; }
 }
 .flag-sep { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 
-.console-block { margin-top: var(--s-4); }
+.console-block { margin-top: var(--s-3); }
 .console-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0 var(--s-3); margin-bottom: var(--s-2); }
-.console-head .small { margin: 0; }
+.export-groups { display: flex; flex-wrap: wrap; align-items: center; gap: 0 var(--s-4); margin: 0 0 var(--s-2); padding: 0; border: 0; }
+.export-groups legend { padding: 0; font-weight: 600; }
+.export-groups .check { margin: var(--s-1) 0; }
+.export-groups .small { flex-basis: 100%; margin: 0; }
 .command-list {
   display: grid; grid-template-columns: minmax(0, 1fr); column-gap: var(--s-6); margin: 0; padding: var(--s-2) var(--s-3);
   background: var(--field); border: var(--hair);
@@ -112,7 +162,7 @@ html[data-mode="simple"] #quant .quant-layout { display: none; }
 .command-list .cvar-name { display: inline-block; min-width: min(31ch, 70%); color: var(--ink-2); }
 .command-list .cvar-value { color: var(--ink); font-weight: 600; }
 .command-list > .small { grid-column: 1 / -1; margin: var(--s-1) 0; }
-#qs-status { margin: 0 0 var(--s-3); padding: var(--s-2) var(--s-3); border-left: 2px solid var(--ink-3); color: var(--ink); font-size: var(--fs-sm); }
+#qs-status, #ss-copy-status { margin: 0 0 var(--s-3); padding: var(--s-2) var(--s-3); border-left: 2px solid var(--ink-3); color: var(--ink); font-size: var(--fs-sm); }
 
 /* Status chips: converted (ink), approximated (amber), assumed (amber outline), dropped (alarm), ignored (muted). */
 .status-chip, .confidence-chip {
@@ -132,11 +182,12 @@ html[data-mode="simple"] #quant .quant-layout { display: none; }
 /* ── Row 3: what happened ──────────────────────────────────────────────────── */
 .qs-report { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-5) var(--s-6); align-items: start; }
 @media (min-width: 900px) { .qs-report { grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); } }
-.qs-report h2 { margin-bottom: var(--s-3); }
-.qs-note, .qs-limits { margin: var(--s-4) 0 0; font-size: var(--fs-sm); line-height: 1.45; color: var(--ink); }
-.qs-note:empty { display: none; }
-.qs-build { margin: var(--s-2) 0 0; }
-.qs-backup { margin: var(--s-2) 0 0; font-size: var(--fs-sm); color: var(--ink-2); }
+.qs-report h2 { margin-bottom: var(--s-2); }
+/* In the workbench the results column is narrower: the report, the readouts and the commands stay single-column until 1280px. */
+@media (min-width: 1100px) and (max-width: 1279px) {
+  .qs-results .qs-report, .qs-results .hud, .qs-results .command-list { grid-template-columns: minmax(0, 1fr); }
+}
+.qs-limits { margin: var(--s-3) 0 0; font-size: var(--fs-sm); line-height: 1.45; color: var(--ink); }
 
 .outcome-scroll { max-height: none; }
 .outcome-scroll .outcome-table { table-layout: fixed; width: 100%; min-width: 0; font-size: var(--fs-sm); }
@@ -163,20 +214,54 @@ html[data-mode="simple"] #quant .quant-layout { display: none; }
   .outcome-table td:nth-of-type(3) { grid-column: 4; justify-self: end; }
 }
 
-/* ── Expert layer ──────────────────────────────────────────────────────────── */
-.quant-layout { margin-top: var(--s-6); padding-top: var(--s-4); border-top: var(--hair-strong); }
-.expert-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-6); align-items: start; }
-@media (min-width: 1100px) { .expert-grid { grid-template-columns: minmax(0, 2fr) minmax(280px, 1fr); } }
-.quant-input { min-width: 0; border-bottom: var(--hair); }
-.quant-input > details input[type=search], .quant-input > details select { margin-top: var(--s-2); }
-.quant-input .source-footnote { margin: 0; padding: var(--s-3) 0; border-top: var(--hair); font-size: var(--fs-sm); }
-#q-feedback h3 { margin-top: var(--s-4); }
+/* ── Expert: each section has a small switch in its header; its panel holds that section's expert content ──────────── */
+.expert-switch {
+  display: inline-flex; align-items: center; gap: var(--s-2); min-height: 28px; padding: 0 var(--s-3);
+  border: var(--hair-edge); border-radius: var(--r-1); background: transparent; color: var(--ink-2);
+  font: 500 var(--fs-2xs)/1 var(--font-mono); font-stretch: var(--mono-stretch); text-transform: uppercase; letter-spacing: var(--track-caps);
+  transition: background-color var(--dur-1) var(--ease), border-color var(--dur-1) var(--ease), color var(--dur-1) var(--ease);
+}
+.expert-switch::before {
+  content: ''; width: 18px; height: 10px; border: 1px solid currentColor; border-radius: 5px;
+  background: radial-gradient(circle at 3px 50%, currentColor 2.5px, transparent 3px);
+}
+.expert-switch:hover { border-color: var(--ink-2); color: var(--ink); }
+.expert-switch[aria-expanded=true] { border-color: var(--signal-ink); background: var(--signal-wash); color: var(--signal-ink); }
+.expert-switch[aria-expanded=true]::before { background: radial-gradient(circle at 13px 50%, currentColor 2.5px, transparent 3px); }
+/* A hidden expert option is off its default: a dot on the switch, so the change is never invisible. */
+.expert-switch[data-modified=true]::after { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--signal-ink); }
+.section-head .expert-switch { margin-left: auto; align-self: center; }
+.plate-choice + .expert-switch { margin-left: 0; }
+.expert-panel { min-width: 0; margin-top: var(--s-3); padding-top: var(--s-3); border-top: var(--hair); }
+.expert-panel > * + * { margin-top: var(--s-3); }
+.expert-panel h4 {
+  margin: 0 0 var(--s-2); font-size: var(--fs-xs); font-weight: 600; font-stretch: var(--title-stretch); text-transform: uppercase;
+  letter-spacing: .02em; color: var(--ink-2);
+}
+.qs-conversion { padding-top: var(--s-2); border-top: var(--hair); }
+.qs-conversion > .small { margin: var(--s-2) 0 0; }
+.opt-fields { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-3); align-items: start; }
+@media (min-width: 560px) and (max-width: 1099px) { .opt-fields { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.opt-field { min-width: 0; }
+.opt-field > label:not(.check), .expert-cell > label { display: block; margin: 0 0 var(--s-1); }
+.opt-field .check { margin: 0; }
+.opt-field > .small { display: block; margin-top: var(--s-1); }
+.opt-field > .small:empty { display: none; }
+.expert-cell { min-width: 0; }
+.expert-cell > .small { margin: 0 0 var(--s-2); }
+.expert-cell > .small:empty { display: none; }
+.expert-cell input[type=search], .expert-cell select { margin-bottom: var(--s-2); }
+.expert-cell .export-actions { display: flex; flex-wrap: wrap; gap: var(--s-2); margin-top: var(--s-2); }
+.expert-dive { border-bottom: var(--hair); }
+.expert-dive > details > summary { padding-block: var(--s-2); }
+.expert-dive > details > :not(summary) { margin-bottom: var(--s-2); }
+.qs-what > .expert-panel .source-footnote { margin: 0; padding: var(--s-3) 0 0; border-top: var(--hair); font-size: var(--fs-sm); }
+.qs-controls .section-head { margin-bottom: var(--s-2); }
+.qs-answer { min-width: 0; }
+.qs-answer > .qs-settings { margin-top: var(--s-4); }
+#q-feedback h4 { margin-top: var(--s-4); }
 
-.quant-output { min-width: 0; }
-.quant-model-select { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: var(--s-3); }
-.quant-model-select label { margin: 0; }
-.quant-model-select + .small { margin-bottom: var(--s-3); max-width: var(--measure); }
-#q-status { margin: 0 0 var(--s-2); font: 400 var(--fs-xs)/1.5 var(--font-mono); font-stretch: var(--mono-stretch); color: var(--ink-2); }
+#q-status { margin: 0 0 var(--s-3); font: 400 var(--fs-xs)/1.5 var(--font-mono); font-stretch: var(--mono-stretch); color: var(--ink-2); }
 #quant[data-result=error] #q-status { color: var(--alarm); }
 
 .value-table-wrap { overflow-x: auto; }
@@ -189,13 +274,13 @@ html[data-mode="simple"] #quant .quant-layout { display: none; }
 .value-table td { font: 400 var(--fs-lg)/1.2 var(--font-mono); font-stretch: 100%; font-variant-numeric: tabular-nums; color: var(--ink-2); vertical-align: middle; }
 .value-table .converted-value { color: var(--ink); border-left: 2px solid var(--signal-ink); }
 .target-line { margin-top: var(--s-2); font: 400 var(--fs-xs)/1.6 var(--font-mono); font-stretch: var(--mono-stretch); color: var(--ink-2); }
-.quant-output > .warn-list { margin-top: var(--s-3); }
-.quant-input > details:first-child { border-top: var(--hair-strong); }
+#q-warnings { margin-top: var(--s-3); }
+.value-table-wrap { max-width: 100%; }
 #q-derivation .equation-line { margin: var(--s-2) 0; }
-.quant-layout .formula { max-height: 380px; overflow: auto; font-size: var(--fs-xs); }
-.quant-layout .table-scroll { max-height: 420px; }
+.expert-panel .formula { max-height: 380px; overflow: auto; font-size: var(--fs-xs); }
+.expert-panel .table-scroll { max-height: 420px; }
 
-.preview-panel { margin: var(--s-5) 0 var(--s-3); }
+.preview-panel { margin: 0; }
 .quant-toolbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--s-2) var(--s-4); margin-bottom: var(--s-2); }
 .quant-toolbar select { width: auto; min-height: 32px; padding-block: 2px; }
 .quant-previews { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-2); }
@@ -210,16 +295,13 @@ html[data-mode="simple"] #quant .quant-layout { display: none; }
 #q-renderer-note { max-width: var(--measure); }
 #quant[data-busy=true] .preview-panel canvas { opacity: .5; }
 
-.confidence-title { margin-top: var(--s-4); }
 .quant-metrics { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: var(--s-2); border-top: var(--hair); }
 .quant-metrics > div { display: flex; flex-direction: column; gap: 2px; padding: var(--s-2) var(--s-3); border-left: var(--hair); border-bottom: var(--hair); min-width: 0; }
 .quant-metrics > div:nth-child(3n+1) { padding-left: 0; border-left: 0; }
 .quant-metrics span { color: var(--ink-2); font: 600 var(--fs-sm)/1.3 var(--font-text); font-stretch: var(--title-stretch); }
 .quant-metrics strong { font: 400 var(--fs-base)/1.35 var(--font-mono); font-stretch: var(--mono-stretch); color: var(--ink); }
 .quant-metrics small { color: var(--ink-2); font-size: var(--fs-xs); line-height: 1.4; }
-.expert-export { margin-top: var(--s-4); }
-.expert-export textarea { min-height: 112px; font-size: var(--fs-xs); }
-.expert-export .export-actions { margin-top: var(--s-2); }
+.expert-panel #q-cfg { min-height: 88px; font-size: var(--fs-xs); }
 
 /* ── Responsive ────────────────────────────────────────────────────────────── */
 @media (max-width: 820px) {
@@ -241,8 +323,7 @@ html[data-mode="simple"] #quant .quant-layout { display: none; }
   /* Label, value, note stacked: long values ("Agrees on this input (3/1/3)") would squeeze a side-by-side label. */
   .quant-metrics > div { padding-left: 0; border-left: 0; }
   #q-feedback .input-grid { grid-template-columns: minmax(0, 1fr); }
-  .quant-layout .table-scroll table { min-width: 520px; }
-  .quant-layout .outcome-scroll .outcome-table { min-width: 0; }
+  .expert-panel .table-scroll table { min-width: 520px; }
   #q-derivation .table-scroll table { min-width: 400px; }
 }
 
