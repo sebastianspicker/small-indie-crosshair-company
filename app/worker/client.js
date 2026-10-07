@@ -1,3 +1,5 @@
+import { coverageRecords } from './corpus.js';
+
 /** Bounded serial transport. Only the newest queued conversion is worth computing. */
 export class ResearchWorker {
   constructor(records, { factory = () => new Worker(new URL('./worker.js', import.meta.url), { type: 'module' }), deadline = 30000 } = {}) {
@@ -6,7 +8,8 @@ export class ResearchWorker {
     this.worker.onmessage = event => this.receive(event.data);
     this.worker.onerror = () => this.abort('Research worker failed. Reload to restart.');
     this.worker.onmessageerror = () => this.abort('Worker response could not be decoded. Reload to restart.');
-    this.ready = this.call('init', records);
+    // Both Convert and Screenshot need geometry coverage, never source metadata in the worker.
+    this.ready = this.call('init', coverageRecords(records));
   }
 
   call(type, payload, transfer = []) {

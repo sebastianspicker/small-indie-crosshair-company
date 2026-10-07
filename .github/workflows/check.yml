@@ -26,5 +26,5 @@ jobs:
           node-version: ${{ matrix.node }}
       - name: Build without npm installation
         run: npm run build
-      - name: Generated notebook must stay current
-        run: git diff --exit-code -- docs/notebook.html
+      - name: Generated documentation must stay current
+        run: git diff --exit-code -- docs/notebook.html docs/read.html

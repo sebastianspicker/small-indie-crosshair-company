@@ -5,14 +5,19 @@ Old crosshair settings, however many, describe the old game. They contain no
 observation of the new one, so they cannot make any guess about the new game
 more or less likely. The project therefore never shows a "probability that the
 conversion is right". It shows how well a candidate fits each declared model,
-and it has the machinery to learn from real screenshots of the new game once
-they exist, counting repeated screenshots of one session only once.
+and it has the machinery to learn from registered screenshots of the new game,
+counting repeated screenshots of one session only once. The interface's
+"Checked in game: Partial" refers to
+{{fig:summary.evidence.captures.total|int}} user-supplied current-game captures
+used as development checks. They are not independent holdouts or paired
+old/new conversion tests, and do not establish end-to-end conversion accuracy.
 :::
 
 ::: key
-The repository holds {{fig:summary.nativeEvidence.calibrationCaptures|int}}
+The inference registry holds {{fig:summary.nativeEvidence.calibrationCaptures|int}}
 calibration and {{fig:summary.nativeEvidence.holdoutCaptures|int}} holdout
-captures of the new game, so every model weight equals its prior and the
+captures of the new game. The development checks above are outside this
+registry, so every model weight equals its prior and the
 held-out agreement interval is undefined.
 :::
 

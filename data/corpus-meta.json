@@ -1,14 +1,14 @@
 {
   "schema": "sicc-corpus-v2",
-  "snapshot": "2026-09-23",
+  "snapshot": "2026-10-07",
   "sourceArchiveGitBlob": "210e17ca65ca68bd906774f4b332fe40f8487cef",
   "archiveTranscriptionVerified": true,
-  "records": 138,
-  "players": 106,
-  "uniqueCodes": 119,
-  "uniqueGeometrySignatures": 50,
-  "datedRecords": 8,
-  "staticSupported": 135,
+  "records": 1102,
+  "players": 998,
+  "uniqueCodes": 938,
+  "uniqueGeometrySignatures": 334,
+  "datedRecords": 972,
+  "staticSupported": 1061,
   "heights": [
     720,
     768,
@@ -18,8 +18,261 @@
     1440,
     2160
   ],
-  "sha256": "aa8d47b28454af6169a49d1e191cfdd66bb77f8fcbe8ede7d96349f9558b7362",
+  "sha256": "883c139a31fe079909b2b25f584c031273dc576cfabc05a737947dcb6e7161af",
   "nativeCapturePairs": 0,
   "sourceProviders": 2,
-  "independenceWarning": "The archive and live index share an upstream. A code is not an independent renderer observation. Controlled heights are NOT reported pro-player resolutions."
+  "independenceWarning": "Archive and live index share ProCrosshairs; original dated fixtures and the new directory share xhair.pro. Codes are published inputs, not independent renderer observations. Test heights are not player resolutions.",
+  "providerFamilies": {
+    "ProCrosshairs": [
+      "archive-100",
+      "published-30"
+    ],
+    "xhair.pro": [
+      "dated-original-8",
+      "xhair-2026-10-07"
+    ]
+  },
+  "expansion": {
+    "cohort": "xhair-2026-10-07",
+    "snapshot": "research/corpus/xhair-2026-10-07.json",
+    "source": "https://www.xhair.pro/en/players",
+    "factsSha256": "93a6413facab1f44f485255b804adc421972c01568d6b462c2dfb6287d26c873",
+    "retrievedAt": "2026-10-07T09:50:34.150Z",
+    "previousRecords": 138,
+    "addedRecords": 964,
+    "newCodes": 819,
+    "newGeometrySignatures": 284,
+    "fetchedRecords": 1002,
+    "excluded": [
+      {
+        "player": "arT",
+        "source": "https://www.xhair.pro/en/players/art",
+        "code": "CSGO-u2H9q-R3KDb-ijHuY-Bfizr-J9T8N",
+        "reason": "Existing player/code association"
+      },
+      {
+        "player": "broky",
+        "source": "https://www.xhair.pro/en/players/broky",
+        "code": "CSGO-vBPqC-DXDO5-LxjkU-WBSvZ-9mUCP",
+        "reason": "Existing player/code association"
+      },
+      {
+        "player": "dem0n",
+        "source": "https://www.xhair.pro/en/players/dem0n",
+        "code": "CSGO-kcrYs-2FkMx-6Y9Ks-xuCFZ-o2OtQ",
+        "reason": "Existing player/code association"
+      },
+      {
+        "player": "donk",
+        "source": "https://www.xhair.pro/en/players/donk",
+        "code": "CSGO-VeUo2-qw76k-xJeKX-izb9a-GVOAK",
+        "reason": "Existing player/code association"
+      },
+      {
+        "player": "FalleN",
+        "source": "https://www.xhair.pro/en/players/fallen",
+        "code": "CSaGZfHaBrr5bU6mQbnXniJFEmwP6KF9yUfeiOwFiBThYD",
+        "reason": "Expected CSGO- followed by five groups of five characters."
+      },
+      {
+        "player": "FL1T",
+        "source": "https://www.xhair.pro/en/players/fl1t",
+        "code": "CSVwm4hdM42kKnG3aayZtP2pKzFLaemHSvc2tHpxVNsaiA",
+        "reason": "Expected CSGO- followed by five groups of five characters."
+      },
+      {
+        "player": "frozen",
+        "source": "https://www.xhair.pro/en/players/frozen",
+        "code": "CSGO-fhT35-p4je7-fDqhM-U4xpR-TDhnL",
+        "reason": "Existing player/code association"
+      },
+      {
+        "player": "HObbit",
+        "source": "https://www.xhair.pro/en/players/hobbit",
+        "code": "CSzyB88dDJSOhdHz2VchQU6rWOHqONGV7S3jWGvCB6zeGG",
+        "reason": "Expected CSGO- followed by five groups of five characters."
+      },
+      {
+        "player": "HUASOPEEK",
+        "source": "https://www.xhair.pro/en/players/huasopeek",
+        "code": "CSGO-yHtOW-SswFo-Ypfyr-2pswm-zL3ED",
+        "reason": "Existing player/code association"
+      },
+      {
+        "player": "hypex",
+        "source": "https://www.xhair.pro/en/players/hypex",
+        "code": "CSGO-oKnfU-NwNQ2-FbHVL-xNXzW-vMxoO",
+        "reason": "Existing player/code association"
+      },
+      {
+        "player": "insani",
+        "source": "https://www.xhair.pro/en/players/insani",
+        "code": "CSGO-arDUf-paxPi-thzUz-49sWo-JkA6Q",
+        "reason": "Existing player/code association"
+      },
+      {
+        "player": "Jame",
+        "source": "https://www.xhair.pro/en/players/jame",
+        "code": "CShRKw4iuRavYQumGNHdDN7dsnFhRoENMYG6L4bkXrwZCW",
+        "reason": "Expected CSGO- followed by five groups of five characters."
+      },
+      {
+        "player": "KSCERATO",
+        "source": "https://www.xhair.pro/en/players/kscerato",
+        "code": "CSvfsMCShd5uL4nTGYcUtuSqy4PJRHmCU6UoT9q5FK6DHE",
+        "reason": "Expected CSGO- followed by five groups of five characters."
+      },
+      {
+        "player": "kyousuke",
+        "source": "https://www.xhair.pro/en/players/kyousuke",
+        "code": "CSGO-9CEST-bFVeu-VmuZ8-4Jait-UxQRO",
+        "reason": "Existing player/code association"
+      },
+      {
+        "player": "lauNX",
+        "source": "https://www.xhair.pro/en/players/launx",
+        "code": "CSGO-GqUXa-vquFz-UuNrh-H99aj-QtdqA",
+        "reason": "Existing player/code association"
+      },
+      {
+        "player": "m0NESY",
+        "source": "https://www.xhair.pro/en/players/m0nesy",
+        "code": "CSGO-rhGN2-7Zucb-LSBc6-ksfxq-4n5VH",
+        "reason": "Existing player/code association"
+      },
+      {
+        "player": "Magnojez",
+        "source": "https://www.xhair.pro/en/players/magnojez",
+        "code": "CSGO-VcLCF-iKDSt-56GKR-7Vpe2-VtjjD",
+        "reason": "Existing player/code association"
+      },
+      {
+        "player": "MAJ3R",
+        "source": "https://www.xhair.pro/en/players/maj3r",
+        "code": "CSGO-9GHnw-YowYh-w9LO6-kX9it-bJzMM",
+        "reason": "Existing player/code association"
+      },
+      {
+        "player": "misutaaa",
+        "source": "https://www.xhair.pro/en/players/misutaaa",
+        "code": "CSGO-9Xqnn-EfrJy-eq2pc-M8Yxa-zqLDR",
+        "reason": "Existing player/code association"
+      },
+      {
+        "player": "molodoy",
+        "source": "https://www.xhair.pro/en/players/molodoy",
+        "code": "CSikVAyUW5jWMvoSsVELW4Ca5mhz2G4WBYPAv75NDjhRfJ",
+        "reason": "Expected CSGO- followed by five groups of five characters."
+      },
+      {
+        "player": "NiKo",
+        "source": "https://www.xhair.pro/en/players/niko",
+        "code": "CSGO-vhjbH-yLYcD-bvXQo-aswEA-8P6ZJ",
+        "reason": "Existing player/code association"
+      },
+      {
+        "player": "npl",
+        "source": "https://www.xhair.pro/en/players/npl",
+        "code": "CSGO-awEFo-2uc6A-R8GBh-nQJGZ-4fWjM",
+        "reason": "Existing player/code association"
+      },
+      {
+        "player": "ropz",
+        "source": "https://www.xhair.pro/en/players/ropz",
+        "code": "CSGO-nCfX7-54ue9-aC5eV-6Womf-Q6izO",
+        "reason": "Existing player/code association"
+      },
+      {
+        "player": "s1mple",
+        "source": "https://www.xhair.pro/en/players/s1mple",
+        "code": "CSGO-UseJt-3oTvn-47wPX-hEyER-WZfiK",
+        "reason": "Existing player/code association"
+      },
+      {
+        "player": "sFade8",
+        "source": "https://www.xhair.pro/en/players/sfade8",
+        "code": "CSGO-PXGLy-zn3hS-SbLyx-hOUJZ-X3nQD",
+        "reason": "Existing player/code association"
+      },
+      {
+        "player": "sh1ro",
+        "source": "https://www.xhair.pro/en/players/sh1ro",
+        "code": "CSGO-9Xqnn-EfrJy-eq2pc-M8Yxa-zqLDR",
+        "reason": "Existing player/code association"
+      },
+      {
+        "player": "Tauson",
+        "source": "https://www.xhair.pro/en/players/tauson",
+        "code": "CSGO-dAzXB-6WqN2-6qDjS-rBLqw-hVJGG",
+        "reason": "Existing player/code association"
+      },
+      {
+        "player": "tomaszin",
+        "source": "https://www.xhair.pro/en/players/tomaszin",
+        "code": "CSGO-rGAqF-Kb2Dp-c6eMA-2TTKJ-motiB",
+        "reason": "Existing player/code association"
+      },
+      {
+        "player": "Twistzz",
+        "source": "https://www.xhair.pro/en/players/twistzz",
+        "code": "CSGO-Q3Syz-WOaGL-9WTqW-9N3iJ-e64RG",
+        "reason": "Existing player/code association"
+      },
+      {
+        "player": "woxic",
+        "source": "https://www.xhair.pro/en/players/woxic",
+        "code": "CSGO-hVyt6-6w7hL-hQyc6-xReeD-3sNkO",
+        "reason": "Existing player/code association"
+      },
+      {
+        "player": "XANTARES",
+        "source": "https://www.xhair.pro/en/players/xantares",
+        "code": "CSGO-xbpe2-E24RJ-YXNuO-pQvt8-ppNAK",
+        "reason": "Existing player/code association"
+      },
+      {
+        "player": "xiELO",
+        "source": "https://www.xhair.pro/en/players/xielo",
+        "code": "CSvfsMCShd5uL4nTGYcUtuSqy4PJRHmCU6UoT9q5FK6DHE",
+        "reason": "Expected CSGO- followed by five groups of five characters."
+      },
+      {
+        "player": "YEKINDAR",
+        "source": "https://www.xhair.pro/en/players/yekindar",
+        "code": "CSY7QnQ7Mr6c34PAtkS2RDkZMFmon6EycDpQFMVBaSnGtZ",
+        "reason": "Expected CSGO- followed by five groups of five characters."
+      },
+      {
+        "player": "yuurih",
+        "source": "https://www.xhair.pro/en/players/yuurih",
+        "code": "CSRnXMDxjVPr78TqYCvDEOLa2LEPynmcvwpGK5sMcwOAYF",
+        "reason": "Expected CSGO- followed by five groups of five characters."
+      },
+      {
+        "player": "zont1x",
+        "source": "https://www.xhair.pro/en/players/zont1x",
+        "code": "CSGO-iFmqr-NWMkU-Q38iA-iC6Ru-RPNMB",
+        "reason": "Existing player/code association"
+      },
+      {
+        "player": "zorte",
+        "source": "https://www.xhair.pro/en/players/zorte",
+        "code": "CSGO-wAD3c-ykt5L-zvZ98-vBisR-6sWPA",
+        "reason": "Existing player/code association"
+      },
+      {
+        "player": "zweih",
+        "source": "https://www.xhair.pro/en/players/zweih",
+        "code": "CSWAPOhFFyCwrRTTArGnvpKDVsnhMWCXcP6XWsktnRhjyE",
+        "reason": "Expected CSGO- followed by five groups of five characters."
+      },
+      {
+        "player": "ZywOo",
+        "source": "https://www.xhair.pro/en/players/zywoo",
+        "code": "CSGO-nCfX7-54ue9-aC5eV-6Womf-Q6izO",
+        "reason": "Existing player/code association"
+      }
+    ],
+    "role": "New evaluation inputs; not used to refit the frozen v11 learners. Geometry may overlap earlier inputs."
+  }
 }

@@ -17,7 +17,7 @@ lib/        pure domain                no DOM, no worker globals, no network
   settings ◀─ geometry ◀─┬─ image
                          ├─ solver     (community-static-v11; historical quant-static-v6)
                          └─ manual     (library only, conditional-static-v4)
-data/       runtime data               the four JSON files the app fetches
+data/       runtime data               bundled JSON files the app fetches
 research/   evidence, never runtime    generated/, corpus/, comparisons/,
                                         measurements/, archive/ (frozen)
 scripts/    repository tooling         build, serve, notebook
@@ -153,22 +153,29 @@ timings in the report. That is the only non-deterministic input in `lib/`.
 
 `app/main.js` is the hash router. It lazily imports one route module on first
 visit and shows a boot error for a failed route without breaking the
-others; every page is always linked from the masthead. Routes are part of the public URL surface:
+others. Primary pages are linked from the masthead; the historical archive is in the footer.
+Routes are part of the public URL surface:
 
 | Route | Nav label | Code |
 |---|---|---|
 | `#quant` (default) | Convert | `app/convert/` |
 | `#screenshot` | Screenshot | `app/pages/screenshot.js` (hash parsing in `app/ui/route.js`) |
 | `#corpus` | Settings data | `app/pages/corpus.js` |
-| `#research` | Mathematics | `app/pages/research.js` |
-| `#evidence` | Original 56-case archive (footer) | `app/pages/evidence.js` |
+| `docs/notebook.html` | Mathematics | `scripts/notebook.mjs`; `#research` redirects here |
+| `docs/read.html?doc=…` | Linked documentation | `app/pages/document.js` |
+| `#evidence` | Historical archive · 56 cases (footer) | `app/pages/evidence.js` |
 
 Supporting directories:
 
 - `app/ui/` holds shared DOM helpers. `dom.js` provides safe text-first
   element construction, doc links and explicit downloads.
-- `app/data.js` is the only module that fetches bundled `data/*.json`.
+- `app/data.js` is the only module that fetches bundled `data/*.json` and public Markdown.
   Presets are memoized, so every route that uses them issues one fetch.
+- `app/ui/document-links.js` resolves public document paths and redirects math
+  chapters to notebook anchors. Other Markdown opens in `docs/read.html`, whose
+  text-first reader uses DOM construction, not source HTML execution. It renders
+  headings, lists, tables, code, links and local images; non-notebook display
+  equations retain their TeX notation. External images are not fetched.
 - `app/convert/` is the automatic converter UI. `converter.js` boots the
   route. `outcomes.js` renders the "What changed" table, confidence chips,
   warnings and limits line from the report. `controller.js` owns the state (settings, result, measurements,
@@ -233,6 +240,10 @@ rejects non-object messages and unknown operations. It caps the corpus at
 10000 records and every payload at 1 MiB, calling `limits.js`'s
 `assertPayloadSize(estimatePayloadBytes(data))` before any decoding.
 `limits.js` is pure transport policy, which keeps it testable in Node.
+The shared worker client projects corpus rows through `app/worker/corpus.js` before init:
+only the seven fields used by geometry coverage cross the worker boundary.
+Player/source metadata remains on the main thread; expanding provenance does
+not raise the 1 MiB payload limit or change coverage weights.
 
 ## State and failure behavior
 
@@ -309,8 +320,8 @@ them is a product change and needs a CHANGELOG entry.
 - **Imports.** Legacy v1 share codes (a pasted current `CS…` code is read and
   explained, not converted), the allowlisted legacy CFG subset
   (at most 32 KiB), measurement JSON, and PNG screenshots.
-- **Routes.** The six hash routes above, plus the notebook's
-  `#chapter-N` anchors.
+- **Routes.** Four active hash routes, legacy redirects, the notebook's
+  `#chapter-N` anchors and the reader's validated `doc` parameter.
 
 ### Warning codes
 
@@ -380,7 +391,10 @@ helpers in `lib/solver/structural.js` and `lib/solver/migration.js`.
 ## Data, research and generated artifacts
 
 - `data/` holds only what the app fetches: `presets.json`, `corpus.json`,
-  `corpus-meta.json`, `quant-summary.json` and `ml-crosscheck.json`.
+  `corpus-meta.json`, `quant-summary.json`, `ml-crosscheck.json` and `pro-conversions.json`.
+  The last is a generated comparison of v11 defaults and corrections off on
+  published inputs at controlled heights. It carries the corpus fingerprint,
+  exact/shifted/approximate outcomes and exclusions, never native accuracy.
   `corpus.json`, `corpus-meta.json` and `quant-summary.json` are retained
   outputs derived from the published corpus and model study;
   `ml-crosscheck.json` holds the cross-check parameters written by the
@@ -395,9 +409,12 @@ helpers in `lib/solver/structural.js` and `lib/solver/migration.js`.
   via `.gitattributes`. Never edit it.
 - `docs/notebook.html` is generated from `docs/math/*.md` by
   `scripts/notebook.mjs` (run by `npm run build`).
+- `index.html` owns the shared header/footer. `scripts/site-chrome.mjs`
+  adjusts their relative URLs for the notebook and document reader; the build
+  stamps `docs/read.html` through `scripts/document-reader.mjs`.
 
-CI runs `npm run build` on the supported Node versions and fails if notebook
-generation changes `docs/notebook.html`.
+CI runs `npm run build` on the supported Node versions and fails if generation
+changes `docs/notebook.html` or the reader's shared chrome.
 
 ## Build and deployment
 
@@ -409,9 +426,9 @@ and secret files. Both
 `scripts/build.mjs` (which copies into `dist/`) and `scripts/http-policy.mjs`
 (the dev/preview server allowlist) use it.
 
-The build regenerates the notebook, copies the published files, and writes
+The build regenerates the notebook and reader chrome, copies the published files, and writes
 `.nojekyll` and `build-manifest.json` (package version, research snapshot
-date, per-file SHA-256). It uses no minifier, network access or installed
+date from `data/corpus-meta.json`, per-file SHA-256). It uses no minifier, network access or installed
 packages. Changing the automatic model or its default needs at least a minor
 version bump. See [deployment](deployment.md) and
 [GitHub Pages](github-pages.md) for hosting and headers.

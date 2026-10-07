@@ -16,12 +16,14 @@ kind it is.
   rounding, gap origin, outline and treatment of zero-length bars) is a model
   carried over from build 2000918, a shader dump and a few user screenshots. It
   is not derived from the game's code.
-- **Never checked.** The repository holds
+- **Partial game checks.** The forward model has been checked against
+  {{fig:summary.evidence.captures.total|int}} user-supplied current-game captures,
+  reused during development, not independent holdouts. The repository holds
   {{fig:summary.dataset.nativeCapturePairs|int}} native capture pairs: no
   screenshot pair of the old and the current game with the same settings.
-  Every agreement figure in this notebook compares our own implementations with
-  each other, with other converters or with our own models. None measures
-  accuracy in the game.
+  The corpus and learner agreement figures compare our own implementations with
+  each other, with other converters or with our own models. They do not measure
+  end-to-end conversion accuracy in the game.
 
 No learned model decides an exported value. Every exported number comes from
 closed-form arithmetic, an exact bounded search and fixed rules. A separately

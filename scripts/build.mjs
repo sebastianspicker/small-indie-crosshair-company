@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url';
 import { createHash } from 'node:crypto';
 import { isSiteFile, PUBLISHED_DOCUMENTS, PUBLISHED_DIRECTORIES } from './site-files.mjs';
 await import('./notebook.mjs');
+await import('./document-reader.mjs');
 const root=fileURLToPath(new URL('..',import.meta.url)),dist=resolve(root,'dist');
 await rm(dist,{recursive:true,force:true});await mkdir(dist);
 for(const path of [...PUBLISHED_DIRECTORIES,...PUBLISHED_DOCUMENTS])
@@ -12,5 +13,6 @@ for(const path of [...PUBLISHED_DIRECTORIES,...PUBLISHED_DOCUMENTS])
 await writeFile(join(dist,'.nojekyll'),'');
 const entries=[];
 async function walk(path){for(const f of (await readdir(path)).sort()){const full=join(path,f),s=await stat(full);if(s.isDirectory())await walk(full);else entries.push({path:full.slice(dist.length+1),bytes:s.size,sha256:createHash('sha256').update(await readFile(full)).digest('hex')});}}
-await walk(dist);await writeFile(join(dist,'build-manifest.json'),JSON.stringify({version:JSON.parse(await readFile(join(root,'package.json'),'utf8')).version,researchSnapshot:'2026-09-23',files:entries},null,2)+'\n');
+const corpusMeta = JSON.parse(await readFile(join(root, 'data/corpus-meta.json'), 'utf8'));
+await walk(dist);await writeFile(join(dist,'build-manifest.json'),JSON.stringify({version:JSON.parse(await readFile(join(root,'package.json'),'utf8')).version,researchSnapshot:corpusMeta.snapshot,files:entries},null,2)+'\n');
 console.log(`Built ${entries.length} static files (${entries.reduce((n,f)=>n+f.bytes,0)} bytes) into dist/. No network or package installation required.`);

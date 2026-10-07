@@ -1,4 +1,4 @@
-import { el, docLink, sheetHead, SNAPSHOT } from '../ui/dom.js';
+import { el, docLink, sheetHead } from '../ui/dom.js';
 import { EXPERT_MODELS } from '../../lib/solver/renderer.js';
 import { HEDGE_MODEL } from '../../lib/solver/selection.js';
 import { COMMUNITY_MODEL } from '../../lib/geometry/community.js';
@@ -6,8 +6,9 @@ import { samplesStrip } from './samples.js';
 import { HEIGHT_PRESETS, PAIRS, COLOUR_PAIRS, OLD_COLOURS, FLAT_PLATES, SCENE_PLATES, DEFAULT_PLATE, toHex } from './inputs.js';
 
 /** The one statement of what the result rests on, in the report column; the sheet head carries the same as data. */
-const LIMITS_LINE = 'Modelled from the old renderer and community measurements; not yet checked against the current game ' +
-  `(build ${COMMUNITY_MODEL.build}). Save your current crosshair's share code in game before you paste the commands.`;
+const LIMITS_LINE = 'Modelled from the old renderer and community measurements; partially checked against current-game captures ' +
+  `(build ${COMMUNITY_MODEL.build}). End-to-end conversion accuracy remains unmeasured. ` +
+  "Save your current crosshair's share code in game before you paste the commands.";
 const PASTE_HINT = 'Share code, console lines, cs2_user_convars.vcfg or "find crosshair" output.\n' +
   'e.g. CSGO-XXXXX-XXXXX-XXXXX-XXXXX-XXXXX or cl_crosshairsize 2; cl_crosshairgap -3';
 
@@ -273,9 +274,9 @@ function simpleLayer(meta) {
 export function createView(root, meta) {
   root.replaceChildren(
     sheetHead({ title: 'Crosshair conversion',
-      lede: 'Old crosshair settings in; new length, thickness and gap out, both drawn pixel for pixel.',
-      fields: [['Model', COMMUNITY_MODEL.version], ['Build', COMMUNITY_MODEL.build], ['Corpus', SNAPSHOT.date],
-        ['Checked in game', ['Not yet', docLink('math/06-statistical-inference.md', 'Why')], 'tb-flag']] }),
+      lede: 'Old crosshair settings in; new length, thickness and gap out. Compare the old and proposed crosshair in pixel previews.',
+      fields: [['Model', COMMUNITY_MODEL.version], ['Build', COMMUNITY_MODEL.build], ['Corpus', meta.snapshot ?? 'Unknown'],
+        ['Checked in game', ['Partial', docLink('math/06-statistical-inference.md', 'Why')], 'tb-flag']] }),
     simpleLayer(meta));
   root.dataset.plate = DEFAULT_PLATE;
   const refs = Object.fromEntries([...root.querySelectorAll('[id]')].map(node => [node.id, node]));

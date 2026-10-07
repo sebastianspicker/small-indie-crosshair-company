@@ -88,8 +88,8 @@ export const inferredSettings = fit => parseLegacyText(oldSettingsText(fit));
 
 // ── The view: the converter's builders and classes (app/convert/view.js, app/convert.css) ─────────────────────────────
 /** The one statement of what the result rests on, as on the Convert page. */
-const LIMITS_LINE = 'Measured from the image and modelled from the old renderer; not yet checked against the current game ' +
-  `(build ${COMMUNITY_MODEL.build}).`;
+const LIMITS_LINE = 'Measured from the image; the converter model is partially checked against current-game captures ' +
+  `(build ${COMMUNITY_MODEL.build}). End-to-end screenshot conversion accuracy remains unmeasured.`;
 const { sectionHead, expertPanel } = expertParts('ss');
 /** The sections with an Expert switch: centre, tolerance and colour under Screenshot; the inferred old settings under New settings. */
 export const EXPERT_SECTIONS = Object.freeze(['input', 'settings']);
@@ -173,7 +173,7 @@ export function createScreenshotView(root) {
     sheetHead({ title: 'Screenshot conversion',
       lede: 'Convert an old-game screenshot into new crosshair settings. The image stays in this tab.',
       fields: [['Model', COMMUNITY_MODEL.version], ['Build', COMMUNITY_MODEL.build],
-        ['Checked in game', ['Not yet', docLink('math/06-statistical-inference.md', 'Why')], 'tb-flag']] }),
+        ['Checked in game', ['Partial', docLink('math/06-statistical-inference.md', 'Why')], 'tb-flag']] }),
     el('div', { class: 'quant-simple' },
       el('div', { class: 'qs-workbench' }, controls(),
         el('div', { id: 'ss-results', class: 'qs-results', hidden: true },

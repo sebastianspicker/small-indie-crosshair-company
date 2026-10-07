@@ -1,7 +1,9 @@
 # Measurement policy
 
-**Native measurements included in this release: zero.** The examples used in the
-calibration UI and retained studies are synthetic and must remain labeled synthetic.
+**Registered native calibration and holdout measurements: zero.** Two user-supplied
+current-game captures are retained as development checks, outside that registry.
+They support the app's "Partial" status, not independent end-to-end validation.
+Synthetic examples in the retained studies must remain labeled synthetic.
 
 Evidence is classified as a pinned-source statement, source-derived model,
 reproduced archival calculation, synthetic test, user-entered observation, or

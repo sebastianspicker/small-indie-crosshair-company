@@ -5,6 +5,8 @@
  * SICC_NOTEBOOK_ALLOW_PENDING=1, which marks them "[figure pending retrain]" and lists them. */
 import { readFile, writeFile } from 'node:fs/promises';
 import { NOTEBOOK, chapters, figure, figureData, FIGURE_PATTERN, key, mathTokens, root } from './notebook-source.mjs';
+import { documentLink } from '../app/ui/document-links.js';
+import { siteChrome } from './site-chrome.mjs';
 const allowPending = process.env.SICC_NOTEBOOK_ALLOW_PENDING === '1';
 const files = await chapters(), data = await figureData();
 const cache = JSON.parse(await readFile(new URL('docs/math/mathml-cache.json', root), 'utf8')).equations;
@@ -50,9 +52,7 @@ function href(url, from) {
             throw new Error(`Link to unknown anchor ${url} in docs/math/${from}.`);
         return '#' + (fragment ?? anchorOf(name));
     }
-    if (url.startsWith('../'))
-        return url.slice(3);
-    return 'math/' + url;
+    return documentLink(url, 'docs/math/' + from, 'docs/notebook.html') ?? '#';
 }
 
 function chapterHTML({ file, text, kind }) {
@@ -193,10 +193,20 @@ const body = NOTEBOOK.front.map(f => rendered.get(f).html).join('\n') +
     NOTEBOOK.parts.map(p => `<div id="${p.id}" class="notebook-part"><h2>${escape(p.title)}</h2>${p.chapters.map(f => rendered.get(f).html).join('\n')}</div>`).join('\n') +
     `<div id="appendices" class="notebook-part"><h2>Appendices</h2>${NOTEBOOK.appendices.map(f => rendered.get(f).html).join('\n')}</div>`;
 const build = (label, value) => figure(data, value, 'version').value ?? (() => { throw new Error(`Notebook header: no ${label}.`); })();
-const nav = [['../#quant', 'Convert'], ['../#screenshot', 'Screenshot'], ['../#corpus', 'Settings data']].map(([u, l]) => `<a href="${u}">${l}</a>`).join('') +
-    '<a href="notebook.html" aria-current="page">Mathematics</a><a href="../#evidence">Audit archive</a>';
+const { header, footer } = await siteChrome('docs/notebook.html', './docs/notebook.html');
 const pendingMeta = unresolved.length ? `<meta name="sicc-notebook-pending" content="${unresolved.length}">` : '';
-const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self'; font-src 'self'; base-uri 'none'; form-action 'none'">${pendingMeta}<title>Mathematics · Small Indie Crosshair Company</title><link rel="stylesheet" href="../app/styles.css"><link rel="stylesheet" href="../app/notebook.css"></head><body><header class="notebook-top"><a class="notebook-brand" href="../#quant">Small Indie Crosshair Company</a><nav aria-label="Pages">${nav}</nav></header><main class="notebook"><h1>The mathematics of the converter</h1><p class="notebook-build">Model <code>${escape(build('model version', 'model.version'))}</code> · build ${escape(build('build', 'model.build'))} · release ${escape(build('release', 'package.version'))}</p><nav class="notebook-toc" aria-label="Contents">${toc}</nav>${body}</main><footer><p>Independent parody project. Not affiliated with Valve or Volvo.</p></footer></body></html>`;
+const csp = "default-src 'none'; style-src 'self'; font-src 'self'; img-src 'self'; base-uri 'none'; form-action 'none'";
+const html = `<!doctype html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="${csp}">${pendingMeta}
+<title>Mathematics · Small Indie Crosshair Company</title>
+<link rel="icon" href="../public/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../app/styles.css"><link rel="stylesheet" href="../app/notebook.css">
+</head><body><a href="#main" class="skip">Skip to content</a>${header}
+<main id="main" class="notebook" tabindex="-1"><h1>The mathematics of the converter</h1>
+<p class="notebook-build">Model <code>${escape(build('model version', 'model.version'))}</code>
+ · build ${escape(build('build', 'model.build'))} · release ${escape(build('release', 'package.version'))}</p>
+<nav class="notebook-toc" aria-label="Contents">${toc}</nav>${body}</main>${footer}</body></html>`;
 await writeFile(new URL('docs/notebook.html', root), html);
 const chapterCount = files.filter(f => f.kind === 'chapter').length;
 console.log(`Built readable notebook: ${chapterCount} chapters in ${NOTEBOOK.parts.length} parts, ${files.length - chapterCount} other sections, ${count} expressions, ${Buffer.byteLength(html)} bytes.`);

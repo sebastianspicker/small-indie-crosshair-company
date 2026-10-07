@@ -35,6 +35,7 @@ given input? Snapshot {{fig:summary.dataset.snapshot|date}};
 | Pinned ProCrosshairs-derived GitHub archive | 100 | published player, code and HLTV id; no dates or resolutions |
 | ProCrosshairs index on the snapshot date | 30 | shares the archive's upstream |
 | Original dated xhair.pro fixtures | 8 | frozen research records |
+| xhair.pro directory, retrieved October 7, 2026 | {{fig:summary.dataset.expansion.addedRecords|int}} | new legacy associations; provider-reported dates |
 
 In total {{fig:summary.dataset.records|int}} records from
 {{fig:summary.dataset.players|int}} players,
@@ -42,7 +43,8 @@ In total {{fig:summary.dataset.records|int}} records from
 {{fig:summary.dataset.uniqueGeometrySignatures|int}} geometry signatures and
 {{fig:summary.dataset.datedRecords|int}} dated records, from
 {{fig:summary.dataset.sourceProviders|int}} source families (the archive and the
-index are not independent). Every code decodes as legacy version 1 with a valid
+index share ProCrosshairs; the dated fixtures and new harvest share xhair.pro).
+Every code decodes as legacy version 1 with a valid
 checksum. The archive transcription reproduces Git blob
 `{{fig:summary.dataset.sourceArchiveGitBlob|version}}`; that proves the
 transcription, not player usage or game pixels. Player names are fixture
@@ -51,14 +53,21 @@ labels.
 ### Cases
 
 The historical study keeps static style 4 without weapon gap:
-{{fig:summary.dataset.staticSupported|int}} records (excluded: one style-5
-preset and two weapon-gap records, which the current converter does convert).
+{{fig:summary.dataset.staticSupported|int}} records. Records with other styles
+or weapon-dependent gap are excluded from this controlled static study, even
+where the converter can offer an approximate conversion.
 Each is evaluated at $\mathcal H=\{720,768,960,1024,1080,1440,2160\}$, giving
 {{fig:summary.eligibleRows|int}} record-height cases over
 {{fig:summary.eligibleGeometrySignatures|int}} signatures. These heights are
 controlled inputs, not the players' resolutions. A signature (size, thickness,
 gap, dot, T, style, weapon gap) ignores colour and outline; different signatures
 can still draw the same pixels at one height.
+
+The Settings data page also evaluates the actual v11 exports against the old
+appearance, including colour and outline, with corrections on and off. That
+separate comparison is in `data/pro-conversions.json`; its
+[source and evaluation method](../research/pro-data-expansion-2026-10-07.md)
+explain the difference between same-position and shift-aligned matches.
 
 ### Target and methods
 

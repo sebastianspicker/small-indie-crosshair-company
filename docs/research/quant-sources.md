@@ -1,9 +1,22 @@
-# Quant research source ledger — updated 2026-09-28
+# Quant research source ledger — updated 2026-10-07
 
 All dates below describe retrieval/snapshot unless an observation date is
 explicitly supplied. Factual data transcription is not independently
 verified native rendering evidence. Original sources and the v0.1.0 frozen
 research archive remain intact.
+
+## Q24 — Expanded xhair.pro player directory
+
+- Source: https://www.xhair.pro/en/players ; public directory response:
+  https://www.xhair.pro/api/seo/player-directory?v=team-context-v2 .
+- Retrieved 2026-10-07. Snapshot: `research/corpus/xhair-2026-10-07.json`.
+- 1,002 directory entries: 964 new legacy player/code associations retained,
+  28 existing associations skipped, 10 unsupported-format entries excluded.
+- Provider observation timestamps are retained separately from retrieval.
+  Resolutions and independently verified demo/capture evidence are absent.
+- Same provider as Q03, not independent corroboration. The snapshot records
+  SHA-256 fingerprints of response bytes and retained factual fields.
+- [Inclusion rules, conversion evaluation and limitations](pro-data-expansion-2026-10-07.md).
 
 ## Q01 — Pinned 100-player archive
 

@@ -1,6 +1,14 @@
-/** Single place that fetches bundled runtime data (data/*.json), relative to this module. */
+/** Single place that fetches bundled runtime data and published Markdown, relative to this module. */
+import { documentPath } from './ui/document-links.js';
 
 const url = name => new URL('../data/' + name, import.meta.url);
+
+export async function loadDocument(path) {
+  if (!documentPath(path)) throw new Error('That document path is not public Markdown.');
+  const response = await fetch(new URL('../' + path, import.meta.url));
+  if (!response.ok) throw new Error(`The document could not load (${response.status}).`);
+  return response.text();
+}
 
 async function fetchJSON(name, errorMessage) {
   const response = await fetch(url(name));
@@ -39,5 +47,6 @@ export function loadCrossCheck() {
 
 /** Corpus records, metadata and the quant study summary, as used by the corpus page (#corpus). */
 export function loadCorpusPage() {
-  return Promise.all(['corpus.json', 'corpus-meta.json', 'quant-summary.json'].map(name => fetchJSON(name, 'Research data unavailable.')));
+  return Promise.all(['corpus.json', 'corpus-meta.json', 'quant-summary.json', 'pro-conversions.json']
+    .map(name => fetchJSON(name, 'Research data unavailable.')));
 }

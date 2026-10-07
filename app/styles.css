@@ -103,15 +103,15 @@
   --ease: cubic-bezier(.2, 0, 0, 1);
 }
 
-/* Preview background (Convert and Screenshot pages, `data-plate` on #quant or #screenshot): scoped overrides of the plate tokens. Grey is the default, a
+/* Preview backgrounds (Convert, Screenshot and Settings data): scoped overrides of the plate tokens. Grey is the default, a
    middle tone where a black 1 px outline (4:1), white (5:1) and pure green (4:1) all read; Light is for black outlines
    (13:1; white and green are faint there on purpose). --plate-light equals the plate so the sample plates need no lighter one. */
-:is(#quant, #screenshot)[data-plate=grey] {
+:is(#quant, #screenshot, #corpus-detail)[data-plate=grey] {
   --plate: #656b74; --plate-light: #656b74; --plate-grid: #727882; --plate-axis: #868d98;
   --plate-ink: #f0f2f5; --plate-label: #ffffff; --plate-annot: #ffe3b0;
   --diff-extra: #ffc27a; --diff-missing: #a9dbff;
 }
-:is(#quant, #screenshot)[data-plate=light] {
+:is(#quant, #screenshot, #corpus-detail)[data-plate=light] {
   --plate: #c8ccd2; --plate-light: #c8ccd2; --plate-grid: #b6bbc3; --plate-axis: #8a919b;
   --plate-ink: #3a414b; --plate-label: #161a1f; --plate-annot: #7a3f00;
   --diff-shared: #20252c; --diff-extra: #8a3d00; --diff-missing: #0b4f8a;
@@ -119,37 +119,37 @@
 /* Generated scenes (`data-plate-kind=scene`, see app/convert/scenes.js): --plate is the scene's average colour (the plate
    element and scale strip); --plate-scene names the composition the canvas paints; --plate-halo outlines text and ticks
    laid over the picture. Grid lines are translucent so they never fight the crosshair. Flat plates set none of these. */
-:is(#quant, #screenshot)[data-plate=desert] {
+:is(#quant, #screenshot, #corpus-detail)[data-plate=desert] {
   --plate-scene: desert; --plate: #beb7a4; --plate-light: #beb7a4;
   --plate-grid: rgba(0, 0, 0, .18); --plate-axis: #1c1f22; --plate-ink: #1b1f24; --plate-label: #14181d;
   --plate-annot: #6b3300; --plate-halo: rgba(255, 255, 255, .78);
   --diff-shared: #20252c; --diff-extra: #8a3d00; --diff-missing: #0b4f8a;
 }
-:is(#quant, #screenshot)[data-plate=stone] {
+:is(#quant, #screenshot, #corpus-detail)[data-plate=stone] {
   --plate-scene: stone; --plate: #b1b6b2; --plate-light: #b1b6b2;
   --plate-grid: rgba(0, 0, 0, .18); --plate-axis: #1c1f22; --plate-ink: #1b1f24; --plate-label: #14181d;
   --plate-annot: #6b3300; --plate-halo: rgba(255, 255, 255, .78);
   --diff-shared: #20252c; --diff-extra: #8a3d00; --diff-missing: #0b4f8a;
 }
-:is(#quant, #screenshot)[data-plate=terracotta] {
+:is(#quant, #screenshot, #corpus-detail)[data-plate=terracotta] {
   --plate-scene: terracotta; --plate: #beafa3; --plate-light: #beafa3;
   --plate-grid: rgba(0, 0, 0, .18); --plate-axis: #1c1f22; --plate-ink: #1b1f24; --plate-label: #14181d;
   --plate-annot: #6b3300; --plate-halo: rgba(255, 255, 255, .78);
   --diff-shared: #20252c; --diff-extra: #8a3d00; --diff-missing: #0b4f8a;
 }
-:is(#quant, #screenshot)[data-plate=industrial] {
+:is(#quant, #screenshot, #corpus-detail)[data-plate=industrial] {
   --plate-scene: industrial; --plate: #7c868c; --plate-light: #7c868c;
   --plate-grid: rgba(0, 0, 0, .18); --plate-axis: #1c1f22; --plate-ink: #1b1f24; --plate-label: #14181d;
   --plate-annot: #6b3300; --plate-halo: rgba(255, 255, 255, .7);
   --diff-shared: #20252c; --diff-extra: #8a3d00; --diff-missing: #0b4f8a;
 }
-:is(#quant, #screenshot)[data-plate=jungle] {
+:is(#quant, #screenshot, #corpus-detail)[data-plate=jungle] {
   --plate-scene: jungle; --plate: #677b5d; --plate-light: #677b5d;
   --plate-grid: rgba(255, 255, 255, .14); --plate-axis: #e4e8ee; --plate-ink: #f5f7f9; --plate-label: #ffffff;
   --plate-annot: #ffd9a0; --plate-halo: rgba(0, 0, 0, .72);
   --diff-shared: #f0f2f5; --diff-extra: #ffc27a; --diff-missing: #a9dbff;
 }
-:is(#quant, #screenshot)[data-plate=night] {
+:is(#quant, #screenshot, #corpus-detail)[data-plate=night] {
   --plate-scene: night; --plate: #22262a; --plate-light: #22262a;
   --plate-grid: rgba(255, 255, 255, .14); --plate-axis: #e4e8ee; --plate-ink: #f5f7f9; --plate-label: #ffffff;
   --plate-annot: #ffd9a0; --plate-halo: rgba(0, 0, 0, .72);
@@ -474,9 +474,50 @@ td .small { font-size: var(--fs-xs); margin-top: 2px; }
 .index { font: 500 var(--fs-2xs)/1 var(--font-mono); font-stretch: var(--mono-stretch); color: var(--signal-ink); letter-spacing: var(--track-caps); }
 
 /* Settings data */
-#corpus-search { max-width: 420px; margin: var(--s-4) 0; }
+#corpus-search { width: 100%; margin: 0; }
 #corpus-page-status { margin-top: var(--s-3); }
 #corpus table code { font-size: var(--fs-2xs); }
+.corpus-intro { max-width: 80ch; color: var(--ink-2); margin: var(--s-4) 0 var(--s-6); }
+.corpus-workbench { border-top: var(--hair); padding: var(--s-5) 0 var(--s-6); }
+.corpus-controls { display: grid; grid-template-columns: minmax(240px, 2fr) 1fr 1fr minmax(200px, 1.4fr); gap: var(--s-3); margin: var(--s-4) 0; }
+.corpus-controls label { min-width: 0; display: grid; gap: var(--s-2); }
+.corpus-controls label > span { font-size: var(--fs-sm); color: var(--ink-2); }
+.corpus-controls select { width: 100%; min-width: 0; }
+#corpus-results { margin-bottom: var(--s-3); }
+#corpus-comparison th { white-space: normal; }
+#corpus-selection { margin-bottom: var(--s-3); }
+.corpus-method { max-width: 100ch; margin-bottom: var(--s-5); }
+.corpus-browser { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: var(--s-5); align-items: start; }
+.corpus-browser > * { min-width: 0; }
+.corpus-player { appearance: none; border: 0; padding: var(--s-2) 0; background: none; color: var(--ink); text-align: left; font-weight: 650; }
+.corpus-player[aria-pressed="true"] { color: var(--signal-ink); text-decoration: underline; text-underline-offset: 5px; }
+.corpus-tuple { font-family: var(--font-mono); font-size: var(--fs-xs); white-space: nowrap; }
+#corpus-detail { border-left: var(--hair); padding-left: var(--s-5); position: sticky; top: var(--s-4); }
+#corpus-detail h3 { font-size: var(--fs-xl); }
+#corpus-detail > p, #corpus-detail > .table-scroll, #corpus-detail > details { margin: var(--s-3) 0; }
+#corpus-detail > a:not(.button) { font-size: var(--fs-sm); }
+#corpus-detail table { font-size: var(--fs-xs); }
+#corpus-detail th { white-space: normal; }
+#corpus-detail li { margin: var(--s-2) 0; }
+#corpus-detail .plate-choice { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-2); margin: var(--s-3) 0; }
+#corpus-detail .plate-choice label { margin: 0; }
+.corpus-code { display: block; overflow-wrap: anywhere; margin-top: var(--s-3); font-size: var(--fs-xs); }
+.corpus-previews { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--edge); }
+.corpus-previews figure { min-width: 0; background: var(--sheet); }
+.corpus-previews canvas { height: 160px; }
+.corpus-previews figcaption { padding: var(--s-2); font: 400 var(--fs-xs)/1.5 var(--font-mono); }
+.corpus-notice { padding: var(--s-3); border: var(--hair); }
+.corpus-reconstruction { padding: var(--s-5) 0; border-bottom: var(--hair); }
+.corpus-reconstruction > p { margin: var(--s-4) 0; max-width: 90ch; }
+@media (max-width: 1000px) {
+  .corpus-controls { grid-template-columns: 1fr 1fr; }
+  .corpus-browser { grid-template-columns: 1fr; }
+  #corpus-detail { position: static; border-left: 0; border-top: var(--hair); padding: var(--s-4) 0 0; }
+}
+@media (max-width: 520px) {
+  .corpus-controls { grid-template-columns: minmax(0, 1fr); }
+  .corpus-previews canvas { height: 140px; }
+}
 
 /* ── 11. Shared canvas ─────────────────────────────────────────────────────── */
 canvas { display: block; width: 100%; height: 300px; touch-action: manipulation; }

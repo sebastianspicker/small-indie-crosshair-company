@@ -1,3 +1,5 @@
+import { documentLink } from './document-links.js';
+
 export const $ = id => document.getElementById(id);
 export function el(tag, attrs={}, ...children) {
   const node=document.createElement(tag);
@@ -40,7 +42,9 @@ export function sheetHead({ title, lede, fields = [] }) {
 export function heading(title, description, { fields } = {}) {
   return sheetHead({ title, lede: description, fields: fields ?? [['Build', SNAPSHOT.build], ['Snapshot', SNAPSHOT.date]] });
 }
-export function docLink(path,label) {const chapter=/^math\/(\d{2})-/.exec(path);return el('a',{href:chapter?'./docs/notebook.html#chapter-'+Number(chapter[1]):'./docs/'+path,target:'_blank',rel:'noopener noreferrer'},label+' ↗');}
+export function docLink(path, label) {
+  return el('a', { href: documentLink('docs/' + path), target: '_blank', rel: 'noopener noreferrer' }, label + ' ↗');
+}
 export function table(headers,rows) {
   return el('div',{class:'table-scroll'},el('table',{},el('thead',{},el('tr',{},headers.map(h=>el('th',{scope:'col'},h)))),
     el('tbody',{},rows.map(row=>el('tr',{},row.map(cell=>el('td',{},String(cell))))))));

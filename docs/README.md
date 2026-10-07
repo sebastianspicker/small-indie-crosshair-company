@@ -6,12 +6,14 @@ would be needed to check them in CS2.
 
 The default converter is the community static reconstruction for inspected
 build **2000922**; the rendered notebook prints the current model id and release
-at the top. The historical 27-model study (corpus snapshot **2026-09-23**) and the
+at the top. The current corpus snapshot is **2026-10-07**. The original archive
+(**2026-09-23**), historical 27-model study and the
 library-only manual model (`conditional-static-v4`, no app page since 0.17.0) are kept separately. None of them is a
 verified native renderer, and no original old/new game capture pairs are
 included.
 
-Research notes, newest first: the [oracle sweeps](research/oracle-sweeps-2026-10-05.md),
+Research notes, newest first: the [October 7 pro-data expansion](research/pro-data-expansion-2026-10-07.md),
+the [oracle sweeps](research/oracle-sweeps-2026-10-05.md),
 the [October 2 learner findings](research/learners-2026-10-02.md) and
 [capture protocol](research/capture-protocol-2026-10-02.md), the
 [build 2000922 note](research/build-2000922-update-2026-10-01.md), the
@@ -79,13 +81,17 @@ provenance.
 | User-entered observation | A supplied measurement has recorded conditions; its provenance is user-attested. |
 | Native validation | Original captures and controlled game execution support a scoped claim, reviewed separately. |
 
-The shipped evidence covers the first five labels. Import tools accept observations,
-but do not automatically turn them into native validation. A perfect synthetic fit
-is insufficient to estimate native match probability.
+The app's "Checked in game: Partial" refers to two user-supplied current-game
+captures used during development, not independent holdouts or paired old/new
+validation. Import tools accept observations, but do not automatically turn them
+into native validation. A perfect synthetic fit is insufficient to estimate
+native match probability.
 
-The corpus has 138 records, but only eight have known observation dates. The study
-uses 135 eligible records at seven heights. These 945 cases test calculations;
-they are not 945 independent game observations.
+The corpus has 1,102 records, including 964 additions in the latest harvest;
+972 have provider-reported observation dates. The conversion comparison uses
+1,061 eligible records at seven heights. These 7,427 cases test calculations;
+they are not independent game observations. The original 138-record learner
+cohorts remain frozen.
 
 ## Build the site
 

@@ -27,7 +27,7 @@
     "emulator:train": "node research/scripts/train-quant-emulator.mjs",
     "modulator:train": "node research/scripts/train-residual-modulator.mjs",
     "preview": "node scripts/serve.mjs --dist",
-    "research:quant": "node research/scripts/corpus.mjs && node research/scripts/converter-comparison.mjs && node research/scripts/quant-study.mjs && node research/scripts/quality-study.mjs && node research/scripts/conversion-accuracy.mjs && node research/scripts/additive-alpha.mjs && node research/scripts/edge-case-audit.mjs",
+    "research:quant": "node research/scripts/corpus.mjs && node research/scripts/pro-conversions.mjs && node research/scripts/converter-comparison.mjs && node research/scripts/quant-study.mjs && node research/scripts/quality-study.mjs && node research/scripts/conversion-accuracy.mjs && node research/scripts/additive-alpha.mjs && node research/scripts/edge-case-audit.mjs",
     "research:reproduce": "python3 research/scripts/reproduce.py",
     "start": "node scripts/serve.mjs",
     "study:converters": "node research/scripts/converter-comparison.mjs",

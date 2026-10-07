@@ -1,0 +1,25 @@
+.document-reader { width: min(100% - 2 * var(--gutter), 1000px); margin: var(--s-6) auto var(--s-8); }
+.document-meta { display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-4); align-items: baseline; margin-bottom: var(--s-6); }
+.document-meta p { flex: 1; overflow-wrap: anywhere; color: var(--ink-2); font: var(--fs-xs)/1.7 var(--font-mono); }
+.document-meta a { font-size: var(--fs-sm); }
+#document-body { line-height: 1.75; overflow-wrap: anywhere; }
+#document-body > h1 { margin-bottom: var(--s-5); font-size: clamp(2rem, 5vw, 3.2rem); line-height: 1.1; }
+#document-body h2 { margin-top: var(--s-7); padding-top: var(--s-4); border-top: var(--hair); }
+#document-body h3, #document-body h4 { margin-top: var(--s-5); }
+#document-body :is(h1, h2, h3, h4, h5, h6) { scroll-margin-top: var(--s-5); }
+#document-body p, #document-body ul, #document-body ol, #document-body pre, #document-body blockquote { margin: var(--s-3) 0; }
+#document-body li { margin: var(--s-2) 0; }
+#document-body li > p:first-child { margin-top: 0; }
+#document-body li > p:last-child { margin-bottom: 0; }
+#document-body blockquote { border-left: 2px solid var(--signal-ink); padding-left: var(--s-4); color: var(--ink-2); }
+#document-body pre { padding: var(--s-4); background: var(--sheet); border: var(--hair); overflow: auto; white-space: pre; }
+#document-body pre code { padding: 0; border: 0; background: none; }
+#document-body img { display: block; max-width: 100%; height: auto; margin: var(--s-4) 0; }
+#document-body .table-scroll { margin: var(--s-5) 0; }
+#document-body table { font-size: var(--fs-sm); }
+#document-body th { white-space: normal; }
+#document-body hr { border: 0; border-top: var(--hair); margin: var(--s-6) 0; }
+@media (max-width: 600px) {
+  .document-meta { display: block; }
+  .document-meta p { margin-bottom: var(--s-2); }
+}

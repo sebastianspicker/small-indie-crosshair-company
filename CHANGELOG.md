@@ -2,6 +2,25 @@
 
 ## 0.17.0 (unreleased)
 
+- Expand Settings data by 964 sourced xhair.pro legacy records: 1,102 records,
+  998 players and 334 geometry groups. Preserve reported dates, source links,
+  retrieval fingerprints and explicit duplicate/format exclusions.
+- Compare v11 defaults and corrections off on all 7,427 eligible record/height
+  cases. Browse by player, team, country, collection and result; inspect the
+  old/new preview and open a record in the converter. Downloads retain the
+  evaluation scope. These are model shape comparisons, not native accuracy.
+- Settings data previews default to Grey, with the shared flat and generated
+  background choices applied to both sides. The choice survives record changes.
+- Read the converter's corpus date from its bundled metadata (2026-10-07).
+  Label in-game checks "Partial" on Convert and Screenshot, distinguishing
+  existing development captures from unmeasured end-to-end accuracy.
+- Unify the app, Mathematics and document-reader header/footer. Research links
+  open readable local documentation instead of raw Markdown, with source
+  downloads kept separate. Refresh current corpus counts and navigation wording.
+- Keep the public `community-static-v11` model and learned parameters unchanged.
+  Original learner cohorts remain frozen; worker messages carry geometry
+  fields without the larger source metadata.
+
 - Remove the Manual tool (`#workbench`) and the Measurements page
   (`#calibration`): the converter's options and model cover them. Their old links
   open the new Screenshot page. `lib/manual/` stays for its tests.
