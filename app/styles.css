@@ -408,6 +408,14 @@ details > :not(summary) { margin-bottom: var(--s-3); }
   background: var(--signal-wash); color: var(--ink); font-size: var(--fs-sm); line-height: 1.5;
 }
 .warnings p.blocked, .warnings p[role=alert] { border-left-color: var(--alarm); background: var(--alarm-wash); }
+/* Under the preview: an approximate export, and the way to the per-setting reasons. */
+.exact-notice {
+  margin-top: var(--s-3); padding: var(--s-2) var(--s-3); border-left: 2px solid var(--signal-ink);
+  background: var(--signal-wash); color: var(--ink); font-size: var(--fs-sm); line-height: 1.5;
+}
+.exact-notice[hidden] { display: none; }
+.exact-notice p { color: inherit; max-width: 72ch; }
+.exact-notice .text-button { white-space: normal; text-align: left; }
 
 #boot-error { margin-top: var(--s-6); padding: var(--s-5); border: 1px solid var(--alarm); border-left-width: 3px; background: var(--alarm-wash); }
 #boot-error h2 { font-size: var(--fs-lg); color: var(--ink); }

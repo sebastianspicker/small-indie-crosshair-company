@@ -6,8 +6,10 @@ how the current game turns each setting into pixels. At the same resolution this
 is three short formulas; at another resolution it searches all legal values of
 each setting. When several choices are equally accurate it takes the one whose
 whole shape matches best, and a small search around the result then looks for a
-neighbour that draws the old crosshair strictly better. No step can make the
-match worse than the plain conversion.
+neighbour that improves the selected objective. Visible dot cores prioritize
+the aiming pixels before outline coverage; other shapes prioritize the full
+appearance. Corrections do not worsen that objective versus the plain conversion,
+but preserving a dot can reduce total outline coverage.
 :::
 
 ::: key
@@ -114,7 +116,7 @@ draw outlines in fixed pixels.
 
 After the dimension-first choice $v_0$, `refineAppearance`
 (`lib/solver/community-refine.js`) scores a bounded window of tuples by the
-shape check's aligned colour overlap and replaces $v_0$ only on a strict gain
+selected visible-aim/appearance objective and replaces $v_0$ only on a strict gain
 (more than $10^{-9}$). It runs for legacy inputs with the corrections on, at
 either goal (ADR-0024) and for every old outline width (ADR-0019), unless the
 shape check of $v_0$ is already exact, shifted or empty.
@@ -132,13 +134,22 @@ $$
 $$
 
   and the width reach is $\min(\rho_g, 8)$ when that exceeds 3. The caps keep
-  the worst input (size 0, thickness 6, gap −30, dot, $u=3$) at 6,848
-  evaluations; the cap of 8 changed no export in either oracle sweep (ADR-0019).
+  the previously audited input (size 0, thickness 6, gap −30, dot, $u=3$) at 6,848
+  local-window evaluations before additional visible-stroke proposals; the cap of 8 changed no export in either oracle sweep (ADR-0019).
 - **Outer edge.** For every gap $g$ a second length window $\pm3$ is centred on
   $\ell_0+g_0-g$, which keeps the outer end of the bars where $v_0$ put it.
+- **Visible strokes (0.19.0).** Additional candidates fit horizontal and vertical
+  runs of each final visible colour and of the whole silhouette. Each run tries
+  both bar orientations, its measured length/width and inner edges, and a
+  half-length/zero-gap proposal when it spans the centre. Axes fit those sizes
+  and their ±1 px neighbours to legal native integers. These proposals may
+  lie beyond the local window; exact full-appearance matches still skip search.
+  The report counts proposals separately. This finite search is not exhaustive.
 - **Score.** $\operatorname{IoU}_{\pm1}$ of old core and outline (old draw
   order) against new core and outline with the outline mode actually exported,
-  including a hand choice; ties go to raw IoU, then to the preference order.
+  including a hand choice. A visible solid-square core instead prioritizes core
+  IoU, then total appearance at that same shift (ADR-0026). Remaining ties go
+  to raw appearance IoU, then to the preference order.
 - **T flag.** Under the T option `auto`, a flippable T shape also tries every
   tuple with the other flag, which must win strictly
   ([T shapes](13-what-decides-the-export.md#t-shapes)). Under `keep`, `on` and
@@ -148,10 +159,11 @@ $$
 
 Whenever an appearance rule or the window changed the export, the plain
 dimension-first conversion (corrections off) is solved as well and exported
-instead if its aligned shape check is strictly higher, scored with the actual
-exported outline (`corrections-fallback`). Corrections therefore never score
-below the plain conversion; a hand-chosen outline can change the final tuple or
-T flag through this comparison (ADR-0022).
+instead if its selected aiming/appearance objective is strictly higher, scored
+with the actual exported outline (`corrections-fallback`). Corrections never
+score below the plain conversion on that objective; total appearance overlap
+may decrease to preserve a dot. A hand-chosen outline can change the final tuple
+or T flag through this comparison (ADR-0022, superseded in objective by ADR-0026).
 
 ## Result
 
@@ -165,7 +177,9 @@ T flag through this comparison (ADR-0022).
   {{fig:generated.conversion-accuracy.totals.exactAfter|int}};
   {{fig:generated.conversion-accuracy.totals.edgeCasesExcluded|int}} edge cases
   with another target are excluded.
-- **Search completeness.** A brute-force oracle scores every tuple in a bounded
+- **Earlier appearance objective.** These oracle/window/cost figures predate
+  the visible-aim revision below and are not certificates for its objective.
+  A brute-force oracle scores every tuple in a bounded
   box with the converter's own measure
   ([oracle sweeps](../research/oracle-sweeps-2026-10-05.md)). At 1080 it finds
   0 better tuples on 5,000 plain inputs and 18 on 2,000 exotic ones; nine
@@ -191,3 +205,33 @@ game shows is the open question of the [Introduction](intro.md). The six
 converter choices on the page are this model, the historical hedge and four
 authored-height controls; reports use schema `sicc-quant-report-v6`.
 :::
+
+
+## Visible aiming shapes (v11 implementation revision)
+
+The public name remains `community-static-v11`. Implementation revision
+`visible-aim-shape-2026-10-07` recognizes the final visible core after old
+outline overpaint. A square visible core is treated as a dot even when the
+input still has nonzero arms. Regular and crossed crosses, T families, bars,
+outline-only shapes, monochrome silhouettes and empty targets retain separate
+mechanism and visibility facts.
+
+A distinguishable dot core now takes priority over outline coverage in the
+bounded refinement and plain fallback. Candidates maximize core IoU first,
+then full appearance IoU at the same shift (at most one pixel), with stable
+existing tie preferences. Other families retain the appearance objective.
+The shape check is still the full-appearance score: the reported 900p example
+changes from five green pixels to one, raising aligned core overlap from 20%
+to 100% while reducing full appearance from 81% to 43%. This is an explicit
+outline tradeoff, not a claim of exact native rendering. Zero-alpha layers do
+not count as visible matches. See [ADR-0026](../engineering/decisions/0026-visible-aiming-shape.md).
+
+
+The `visible-stroke-fit-2026-10-07` revision also recognizes exact unions of two
+horizontal and two vertical strokes. A frame touching its outer corners is a
+hollow square/rectangle; protruding strokes form a hash (`#`). Enclosed empty
+regions and their area are counted by edge connectivity on compressed cells.
+These are separate from the old cvar mechanism (outline-only, crossed arms,
+etc.). Adding a dot or removing a T arm can close or open the hole and changes
+the visible classification accordingly. See
+[ADR-0027](../engineering/decisions/0027-visible-stroke-fitting.md).

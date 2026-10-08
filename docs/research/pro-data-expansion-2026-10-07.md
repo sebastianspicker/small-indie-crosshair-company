@@ -1,8 +1,9 @@
 # Pro settings expansion — October 7, 2026
 
-The app remains **0.17.0**, with public converter model **community-static-v11**.
-This change expands the published-input database and its evaluation. It does not
-change the solver, train a new learner, or establish native renderer accuracy.
+The corpus expansion was introduced in **0.17.0**, with public converter model
+**community-static-v11**. The comparison below is regenerated for **0.19.0**,
+revision `visible-stroke-fit-2026-10-07`. The data expansion itself does not
+change the solver or establish native renderer accuracy.
 
 ## Source and inclusion
 
@@ -63,7 +64,10 @@ same selected records and test height; changing filters changes the denominator.
 
 Across all heights, the default is exact in 3,507 cases, shifted in 3,449,
 approximate in 469 and empty in two. Corrections improve aligned overlap in
-196 cases and reduce it in none. The full rows, tuples, exclusions and summary
+98 cases and reduce it in 20. The visible-aim revision improves aiming-core
+overlap in 28 cases; all 20 appearance decreases are explicit aiming-core
+tradeoffs. The public model name remains v11; the artifact also records its
+implementation revision. The full rows, tuples, exclusions and summary
 are generated in `data/pro-conversions.json`, bound to the corpus SHA-256.
 Native old/new capture pairs for these player inputs: **zero**. The separate
 issue #11 captures are development checks and do not validate these conversions.
@@ -73,7 +77,8 @@ issue #11 captures are development checks and do not validate these conversions.
 The new data are evaluation inputs only. The export and cross-check trainers
 select their original three cohorts through `research/lib/frozen-corpus.js`.
 This preserves their prespecified exclusions, training partitions and shipped
-parameters when the browseable database expands. The new data may share
+parameters when only the browseable database expands. The separate visible-aim and visible-stroke
+revisions refit changed solver labels while retaining those cohorts and seeds. The new data may share
 geometry with prior training or evaluation inputs; no independent-holdout claim
 is made. The old-reconstruction study is regenerated over the expanded corpus.
 

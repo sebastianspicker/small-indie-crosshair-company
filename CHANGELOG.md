@@ -1,5 +1,64 @@
 # Changelog
 
+## 0.19.1 (unreleased)
+
+- Warn when no setting of the current game can draw the old crosshair exactly
+  (`old-shape-not-drawable`, ADR-0028): an old outline reaching more than 1 px
+  past the colour or covering it, or a visible shape that is not mirror-symmetric
+  left to right. The proof uses the build 2000922 renderer model; the crosshair
+  cvars are unchanged in build 2000927. Reports carry `drawability`; the
+  converter and Settings data show it. Solver choices and learned artifacts are
+  unchanged.
+- Show a notice under the converter preview whenever the export is not an exact
+  copy (shape check approximate): aligned pixel overlap between the two shapes,
+  why (the proof above when there is one), and a button to "What happened to each
+  setting". An approximate selected conversion does not claim that no exact
+  conversion exists; overlap includes added pixels as well as missing ones.
+
+## 0.19.0 (unreleased)
+
+- Recognize hashes (`#`), hollow squares and hollow rectangles from composited
+  pixels; report connected parts, enclosed openings and their area separately
+  from whether the old shape was drawn entirely by outlines.
+- Fit visible horizontal and vertical strokes as additional finite conversion
+  candidates, including shapes beyond the dimension-first search window.
+  Keep the existing aiming/appearance objective, explicit outline mode and T/dot
+  choices; exact matches remain unchanged.
+- Show exotic shape names and enclosed-opening counts in the converter,
+  including visible crosses drawn by short/wide arms while retaining the T flag.
+- Automatically detect clear dark hash/frame screenshot masks when no usable
+  bright core is found; keep the existing clipping, stability and fit gates.
+- Retain public `community-static-v11` with revision
+  `visible-stroke-fit-2026-10-07`; regenerate research comparisons and ML checks.
+- Recheck live issues #11, #15 and #16. Add model regressions for the outline-only
+  hash, hollow centres and 10 previously missed synthetic conversions. Native
+  capture alignment and photometric differences remain unverified.
+
+## 0.18.1 (unreleased)
+
+- Presentation only; public `community-static-v11` and solver revision
+  `visible-aim-shape-2026-10-07` unchanged, so no learned artifact is retrained.
+- The converter's shape chip names a visible dot, bar or solid rectangle instead
+  of the T flag's "cross" (issue #11 now reads "dot · full outline").
+- A size refined to keep a visible dot says so, and that outline pixels paid for
+  it, instead of claiming the old visible pixels are drawn better.
+- A crossed-arm gap no longer claims "the same pixels" when the shape check is
+  approximate; it says the gap accounts for the crossing.
+
+## 0.18.0 (unreleased)
+
+- Keep the public `community-static-v11` name; distinguish this implementation
+  by `visible-aim-shape-2026-10-07` in reports and learned-parameter provenance.
+- Recognize visible shapes after old outline overpaint, including dots hidden
+  inside crossed arms, regular crosses, T families, corners, surviving fragments,
+  bars and outline-only shapes. Report sampled parity, opacity and motion separately.
+- Render exported outline opacity separately from fill opacity, including
+  additive-mode conversions. Transparent pixels do not count as visible matches.
+- Preserve dot-like aiming cores before outline coverage. Report aiming overlap
+  separately from total appearance overlap, including deliberate tradeoffs.
+- Reproduce the independent ML mirror and corpus comparisons against the new
+  objective; reused evaluation sets remain regression evidence, not native accuracy.
+
 ## 0.17.0 (unreleased)
 
 - Expand Settings data by 964 sourced xhair.pro legacy records: 1,102 records,

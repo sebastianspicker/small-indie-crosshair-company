@@ -32,6 +32,10 @@ export function showRecord(root, entry, height) {
     el('figure', {}, oldCanvas, el('figcaption', {}, `Old · ${height}p`)),
     el('figure', {}, newCanvas, el('figcaption', {}, `v11 · ${height}p`))),
   previewNote,
+  el('p', { class: 'small' }, `Recognized shape: ${report.taxonomy.source.label} → ${report.taxonomy.converted.label}.` +
+    (report.aimingShape.prioritized ? ` Aiming core: ${percent(report.aimingShape.alignedIou)} after alignment; ` +
+      'prioritized before outline coverage.' : '') +
+    (report.drawability?.impossible ? ` No current setting draws the old look exactly (build ${report.drawability.build.model}).` : '')),
   table(['Conversion', 'Length / thickness / gap', 'Result'], [
     ['v11 default', score.current.tuple.join(' / '), resultLabel(score.current.status)],
     ['Corrections off', score.plain.tuple.join(' / '), resultLabel(score.plain.status)]]),
@@ -49,7 +53,8 @@ export function showRecord(root, entry, height) {
     previewNote.textContent = 'Model previews at equal magnification. ' +
       (root.dataset.plateKind === 'scene' ? 'Generated background, not a game capture.' : 'No game capture.');
     paintQuant(oldCanvas, report.target, r, rgba(r), zoom, null, { legacy: true, outline: oldOutline });
-    paintQuant(newCanvas, report.converted, look.settings, look.color, zoom, null, { outline: newOutline });
+    paintQuant(newCanvas, report.converted, look.settings, look.color, zoom, null,
+      { outline: newOutline, outlineAlpha: look.outlineAlpha });
   }
   choice.onchange = () => {
     root.dataset.plate = choice.value;

@@ -1,7 +1,7 @@
 import { $, el, download, docLink, table, sheetHead } from '../ui/dom.js';
 import { loadCorpusPage } from '../data.js';
 import { summarizeConversions } from '../../lib/solver/corpus-metrics.js';
-import { COMMUNITY_MODEL } from '../../lib/geometry/community.js';
+import { COMMUNITY_MODEL, COMMUNITY_REVISION } from '../../lib/geometry/community.js';
 import { selectRecords, percent, resultLabel } from './corpus-data.js';
 import { showRecord } from './corpus-detail.js';
 
@@ -13,7 +13,8 @@ const names = { source_f32: 'Source reconstruction (target)', round_scaled: 'Rou
 export async function initCorpus() {
   const [records, meta, study, evaluation] = await loadCorpusPage();
   if (evaluation.schema !== 'sicc-pro-conversions-v1' || evaluation.model !== COMMUNITY_MODEL.version ||
-    evaluation.build !== COMMUNITY_MODEL.build) throw new Error('Conversion results do not match the current model.');
+    evaluation.build !== COMMUNITY_MODEL.build || evaluation.implementationRevision !== COMMUNITY_REVISION)
+    throw new Error('Conversion results do not match the current model revision.');
   if (evaluation.corpusSha256 !== meta.sha256) throw new Error('Conversion results do not match the bundled settings.');
   let page = 0, selected = null, filtered = [];
   const pageSize = 20, root = $('corpus'), expansion = meta.expansion;
@@ -22,7 +23,7 @@ export async function initCorpus() {
   height.value = '1080';
   const cohort = el('select', { id: 'corpus-cohort' }, option('all', 'All records'),
     option('new', 'New harvest'), option('original', 'Original 138'));
-  const result = el('select', { id: 'corpus-result' }, option('all', 'All results'), option('improved', 'Improved by corrections'),
+  const result = el('select', { id: 'corpus-result' }, option('all', 'All results'), option('improved', 'More appearance overlap'),
     ...['exact', 'shifted', 'approximate', 'empty', 'excluded'].map(key => option(key, resultLabel(key))));
   const rows = el('tbody', { id: 'corpus-rows' }), detail = el('aside', { id: 'corpus-detail', 'aria-label': 'Selected record' });
   const status = el('p', { id: 'corpus-page-status', role: 'status', class: 'small' });
@@ -63,7 +64,8 @@ export async function initCorpus() {
           percent(s.meanIou), percent(s.meanAlignedIou), percent(s.geometryMacroAlignedIou)];
       })));
     selection.textContent = `${scored.length} scored records at ${height.value}p · ${summary.current.geometryGroups} ` +
-      `visible geometry groups · ${summary.improved} improved · ${summary.regressed} worse · ` +
+      `visible geometry groups · ${summary.improved} more / ${summary.regressed} less appearance overlap · ` +
+      `${summary.aimImproved} aiming-core gains (${summary.aimTradeoffs} outline tradeoffs) · ` +
       `${summary.current.empty} empty targets · ${filtered.length - scored.length} not scored. Filters apply to both methods.`;
     status.textContent = `${filtered.length} records, page ${page + 1} of ${Math.max(1, Math.ceil(filtered.length / pageSize))}.`;
     previous.disabled = page === 0;

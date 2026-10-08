@@ -5,7 +5,8 @@ Some old crosshairs drew shapes the current game cannot draw from the same
 settings: arms that crossed through the centre, a `#` made only of outline, a
 dot made by size 0, or a T whose stem pointed up. For each of these the converter
 uses a fixed rule that draws the same pixels another way, and it tells you when
-it cannot. An old T stays a T by default; you can let the converter choose a
+it cannot. A visible dot core takes priority over outline coverage, with both
+scores reported separately. An old T stays a T by default; you can let the converter choose a
 full cross where that looks closer, or force either shape. Every exported line
 group that your old settings did not set can be left out, so the game keeps your
 current value.
@@ -176,9 +177,10 @@ together with `nativeCommands` reproduces the export.
 | T plan and `tShape` option | rule | yes | ADR-0020, ADR-0025 |
 | Dimension-first inverse | closed form and exact search | yes | declared reconstruction |
 | Tie-break | rule | yes, at cross heights | tie audit (ADR-0013) |
-| Appearance window and plain fallback | bounded exact search | yes, in scope | geometry audit (ADR-0017, ADR-0019, ADR-0024) |
+| Visible shape and aiming objective | deterministic classification and comparison | yes, preserves distinguishable dot cores first | ADR-0026 |
+| Appearance window and plain fallback | bounded exact search | yes, in scope | geometry audit (ADR-0017, ADR-0019, ADR-0024); revised objective (ADR-0026) |
 | Export groups | rule | which lines appear | ADR-0022 |
-| Shape check | closed-form comparison | no: it scores the window and reports a status | declared models |
+| Shape check | closed-form comparison | no: reports full appearance overlap and status | declared models |
 | ML cross-check | learned | no: a second opinion | [Learned emulators](10-learned-emulator.md) |
 
 ## Result

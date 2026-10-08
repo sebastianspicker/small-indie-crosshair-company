@@ -59,8 +59,8 @@ full outline and the style family are unverified in game): `options.outlineMode`
 cvar text only through `nativeCommands(settings, native, { outlineMode, style, color, t_style })` in
 `lib/settings/native.js` (helpers `styleTarget`, `effectiveOutlineMode`, `optionWarnings`);
 the manual lab accepts the outline option only. Model ids stay unchanged. The
-automatic refinement window uses the Auto outline; its subsequent fallback checks
-the chosen outline and can select the plain geometry or T flag when it scores better.
+automatic refinement window and its fallback both score the chosen outline
+and can select the plain geometry or T flag when the selected objective improves.
 Reports record options and add the warnings
 `outline-user-override` and `style-family-experimental`; outcome rows use the status
 `user-choice`. The `color` override is not a user option: the community solver sets it in
@@ -93,7 +93,7 @@ uses source arithmetic and learned trees and never calls the solver, but it shar
 converter's rendering models and re-implements the appearance refinement rule, so
 agreement is partly by construction. The row says whether
 the learner's predicted export for this input agrees with the converter's export, and its
-note gives the fresh held-out rate. A parameter file for another solver version, or one
+note gives the reused held-out regression rate. A parameter file for another solver version or implementation revision, or one
 edited by hand, shows "not retrained for this version". None is a probability that the
 export is correct.
 
@@ -126,16 +126,17 @@ converter. See the [study](../research/structured-learning-2026-09-29.md).
 
 `community-refine.js` runs after the dimension-first search for legacy inputs
 at either goal, for every old outline width. When the shape check is neither
-exact nor shifted, it scores a bounded window by colour-aware aligned overlap
-and switches only on a strict gain (`decision.refinement`, warning
+exact nor shifted, it scores a bounded window by the selected aiming/appearance
+objective and switches only on a strict gain (`decision.refinement`, warning
 `appearance-refined`). Length reach is 3; gap reach follows the old edges from
 4 up to 32; thickness reach grows from 3 up to 8. These are current pixels or
 native steps, whichever reaches further (`pixelWindow`). A second length
 window preserves the outer edge, and flippable T families try the other flag.
 The window scores the actual exported outline mode, including hand choices. When an edge-case redraw, T change
 or the window applied, `solveCommunity` also solves the plain path (corrections
-off) and exports it only if its aligned shape check is strictly higher under
-the actual exported outline. A hand-selected outline can therefore change the
+off) and exports it only if the same selected objective is strictly higher under
+the actual exported outline. Visible dot cores prioritize aiming pixels, then
+appearance at that same shift; total outline coverage may decrease (ADR-0026). A hand-selected outline can therefore change the
 final tuple or T flag
 (`decision.correctionsFallback`, warning `corrections-fallback`). A screen goal
 applies the edge-case rules in whole current pixels (`snapToCells`). Since v9,
@@ -342,9 +343,11 @@ helpers in `lib/solver/structural.js` and `lib/solver/migration.js`.
 | `legacy-rounding-disagreement` | C | Old round-to-even and truncation give different pixels | Two readings of the old game (rounding, dropping the fraction) disagree; the converter rounds, as other converters and community measurements do. |
 | `pixel-centering-shift` | C | Odd width and the shape check is not exact, or the shape check is shifted | Old and new pixel centres differ, or rounding to whole current pixels moved the shape; a 1 px shift may remain. |
 | `dimension-limit` | C | Converted length, width or radius differs from the target, no appearance refinement, shape check not exact | Integer steps or limits prevent keeping every dimension. |
-| `corrections-fallback` | C | An edge-case redraw or the appearance window applied, and the plain conversion (corrections off) has a strictly higher aligned shape check | The plain conversion matched the old crosshair better here, so it is exported; `decision.correctionsFallback` records both scores. |
+| `corrections-fallback` | C | An edge-case redraw or the appearance window applied, and the plain conversion (corrections off) has a strictly higher selected aiming/appearance objective | The plain conversion matched the old crosshair better here, so it is exported; `decision.correctionsFallback` records both scores. |
 | `shape-approximate` | C | Shape check approximate and no other loss-explaining warning (`LOSS_WARNINGS` in `community.js`) | States the aligned overlap; integer steps and whole-pixel rounding change the shape. |
-| `appearance-refined` | C | The appearance window replaced the dimension-first tuple | A nearby length, thickness or gap draws the old visible pixels better. |
+| `old-shape-not-drawable` | C | `drawability.impossible`: the old visible look fails the outline-reach or mirror-symmetry proof for every colour assignment | No current setting draws the old crosshair exactly under the build 2000922 model (cvars unchanged in 2000927); the export is the closest drawable shape (ADR-0028). |
+| `aim-shape-preserved` | C | A visible dot is prioritized and total appearance remains approximate | Separates aiming-core overlap from sacrificed outline coverage; model evidence only. |
+| `appearance-refined` | C | The appearance window replaced the dimension-first tuple | A different length, thickness or gap improves the selected aiming/appearance objective. |
 | `negative-gap-static-unverified` | C | The ideal new gap is negative (crossed arms fold to a non-negative gap unless the corrections are off) | Gap is clamped to 0; Static Cross with a negative gap is unverified. |
 | `corrections-off` | C | Expert option `corrections: false`, legacy input | No crossed-arm fold, outline-only or dot-only redraw, or appearance window; the plain dimension-first export, whose loss the shape check shows. |
 | `negative-gap-unrepresentable` | migration | Pixel-copy gap outside the new range | The overlap cannot be stored; the gap is clamped. |
@@ -449,3 +452,46 @@ hash manifest for the deployed tree.
   instead of importing sideways.
 - DOM, canvas and worker code goes in `app/`, in the route's folder.
   Bundled data fetches go through `app/data.js`.
+
+
+### v11 visible aiming-shape revision
+
+ADR-0026 adds optional `implementationRevision`, `taxonomy` and `aimingShape`
+fields to community schema-v6 reports; existing field meanings are unchanged.
+`shape-taxonomy.js` recognizes composited visible pixels, recording family,
+core/outline/silhouette area and bounds, connectivity, crossing, T, parity,
+opacity and motion facts. Dot-like cores with distinct ink use core-first
+refinement and fallback with a shared alignment shift. The full `shapeCheck`
+may be lower to preserve the aiming point; `aimingShape` and warnings expose
+that tradeoff. Measured/image targets have no inferred legacy taxonomy.
+`community-static-v11` remains the public model name; the app is 0.19.1 and
+`visible-stroke-fit-2026-10-07` distinguishes implementation provenance (unchanged
+by presentation-only releases). ML
+parameters and summary compatibility require the same revision. Reused
+holdouts remain model regression evidence, never native accuracy.
+
+
+ADR-0027 extends this taxonomy with exact hash and hollow-frame recognition,
+`material`, `silhouetteFamily`, and `holes` / `holeArea` on each region's facts.
+`region-structure.js` computes enclosed background components and horizontal /
+vertical runs on compressed edges. An outline-only hash is named by its shape;
+its material still records that no old coloured core was visible. The visible
+source fill is measured with the source renderer, including screen endpoints.
+
+`visible-candidates.js` adds proposals from visible runs in each colour and the
+whole silhouette: both orientations, measured dimensions and inner edges,
+plus centre-spanning half-length proposals. Each axis fits the measured size
+and its ±1 px neighbours to legal native integers. These candidates can lie
+outside the local window and must strictly improve the same objective; the
+report records their count in `decision.refinement.window.visibleStrokeProposals`.
+The ML mirror derives its own candidates with a native-axis scan and shares
+only low-level compositing and run extraction. Neither search is a global
+optimum or a native-renderer accuracy claim.
+
+
+Screenshot colour discovery retains bright/saturated cores first. When that
+path fails, it tests up to five neutral/dark colours, and only exact measured
+hash/frame masks qualify for that fallback. This adds optional `detectedFrame`
+to image-fit diagnostics without inferring legacy flags or changing measured
+solver targets. The Screenshot page names the detected foreground and the
+visible converted family; unsupported frames retain the existing quality gate.

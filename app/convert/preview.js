@@ -42,10 +42,10 @@ function centreMark(context, ox, oy, colors) {
   }
 }
 
-/** Outline layer: black at the crosshair opacity, drawn beneath the core like the game does. */
-function drawOutline(context, mask, width, height, zoom, color) {
+/** Outline layer: black at its own exported opacity, drawn beneath the core like the game does. */
+function drawOutline(context, mask, width, height, zoom, alpha) {
   const ox = Math.floor(width / 2), oy = Math.floor(height / 2), half = (mask.side - 1) / 2;
-  context.fillStyle = '#000'; context.globalAlpha = color.alpha / 255;
+  context.fillStyle = '#000'; context.globalAlpha = alpha / 255;
   for (let i = 0; i < mask.data.length; i++)
     if (mask.data[i]) context.fillRect(ox + (i % mask.side - half) * zoom, oy + (Math.floor(i / mask.side) - half) * zoom, zoom, zoom);
   context.globalAlpha = 1;
@@ -154,7 +154,8 @@ export function paintQuant(canvas, geometry, settings, color, zoom = 6, differen
   registration(context, width, height, ox, oy, colors);
   if (zoom >= 4) centreMark(context, ox, oy, colors);
   if (options.outline && !reference && !options.mask)
-    drawOutline(context, legacy?.outline ?? outlineRaster(geometry, settings, options.outline), width, height, zoom, color);
+    drawOutline(context, legacy?.outline ?? outlineRaster(geometry, settings, options.outline), width, height, zoom,
+      options.outlineAlpha ?? color.alpha);
   drawCells(context, mask, reference, width, height, zoom, color, colors);
   if (options.annotate && !reference && !options.mask)
     dimensions(context, geometry, settings, width, height, zoom, colors, options.outline);

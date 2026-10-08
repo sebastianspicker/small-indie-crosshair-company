@@ -8,6 +8,7 @@ import { PLATES, SCENE_PLATES, DEFAULT_PLATE, syncHeight } from '../convert/inpu
 import { expertParts, heightField, plateChoice, plate, readout } from '../convert/view.js';
 import { paintQuant, fitZoom } from '../convert/preview.js';
 import { exportedLook } from '../convert/evidence.js';
+import { tShapeFlag } from '../convert/presentation.js';
 import { shownWarnings, warningItem } from '../convert/outcomes.js';
 import { pngDimensions, sourceBoundaryClipped } from '../../lib/image/screenshot.js';
 import { parseLegacyText } from '../../lib/settings/import.js';
@@ -16,6 +17,7 @@ import { defaultExportGroups, nativeOutlineExtent } from '../../lib/settings/nat
 import { exportQuantCFG, mergedExportOverrides } from '../../lib/solver/export.js';
 import { resolveModelChoice } from '../../lib/solver/selection.js';
 import { COMMUNITY_MODEL } from '../../lib/geometry/community.js';
+import { classifyShape } from '../../lib/geometry/shape-taxonomy.js';
 
 export const SIDE = 129;
 export const MAX_BYTES = 16 * 1024 * 1024;
@@ -72,7 +74,9 @@ export function assess(fit, report, clipped = false) {
     empty: 'The new crosshair would draw nothing visible.', missing: 'No shape check is available for this conversion.' }[shape];
   const imageText = `Mask agreement ${pct(fit.templateIou)} (needs ${pct(RULE.mask)}). ` +
     `Colour-threshold stability ${pct(stability)} (needs ${pct(RULE.stability)}). ` +
-    (edge ? 'The crosshair reaches the image edge: use a complete, uncropped screenshot.' : 'Not cropped.');
+    (edge ? 'The crosshair reaches the image edge: use a complete, uncropped screenshot.' : 'Not cropped.') +
+    (fit.detectedFrame ? ` Detected ${fit.detectedFrame === 'hash' ? 'hash (#)' : fit.detectedFrame.replace('-', ' ')} ` +
+      'foreground; an image cannot tell whether these pixels came from a fill or an outline.' : '');
   const ambiguity = 'Several old settings can draw these pixels: ' +
     `size ${span(b.size)}, thickness ${span(b.thickness)}, gap ${span(b.gap)} at the old height. ` +
     `The new values follow the pixels.${ties}`;
@@ -394,8 +398,11 @@ export class ScreenshotPage {
     get('ss-crosscheck').setAttribute('href', converterLink(text, this.used?.oldHeight, this.used?.newHeight));
     if (report) {
       const look = exportedLook(report);
+      const visible = classifyShape(report.converted, { ...look.settings, color: 5, rgb: look.color.rgb,
+        alpha: look.color.alpha, alpha_enabled: true }, { legacy: false, outlineMode: look.outlineMode });
       // Chips as on the Convert page; visually hidden separators keep the text content one line ("a · b") when copied.
-      const flags = [look.settings.t_style ? 'T' : 'cross', ['no outline', 'full outline', 'half outline'][look.outlineMode]];
+      const flags = [tShapeFlag(report.settings, look.settings, report.options, visible),
+        ['no outline', 'full outline', 'half outline'][look.outlineMode]];
       get('ss-flags').replaceChildren(...flags.flatMap((flag, index) => [
         ...(index ? [el('span', { class: 'flag-sep', 'aria-hidden': 'true' }, ' · ')] : []), el('span', { class: 'flag' }, flag)]));
       get('ss-commands').replaceChildren(...(offered ? this.commands().split(';').filter(Boolean).map(line => {
@@ -431,7 +438,8 @@ export class ScreenshotPage {
     const outline = nativeOutlineExtent(look.settings, look.outlineMode);
     const canvas = get('ss-new-canvas');
     const zoom = fitZoom(canvas, [fit.mask, report.converted], [s, look.settings], [null, outline]);
-    paintQuant(canvas, report.converted, look.settings, look.color, zoom, null, { grid: zoom >= 6, annotate: true, outline });
+    paintQuant(canvas, report.converted, look.settings, look.color, zoom, null,
+      { grid: zoom >= 6, annotate: true, outline, outlineAlpha: look.outlineAlpha });
     this.layout = this.images.paint(get('ss-crop-canvas'), this.rgba, fit.mask, zoom);
     get('ss-scale').textContent = `×${zoom}, 1 cell = 1 game pixel, outline = measured pixels, ring = screen centre.`;
   }

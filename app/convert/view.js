@@ -173,6 +173,20 @@ function differenceView() {
     el('p', { id: 'q-renderer-note', class: 'small' }));
 }
 
+/** Moves to the per-setting table. A button, not an `#id` link: the hash is the page route. */
+function showReport() {
+  const heading = document.getElementById('q-report-title');
+  if (!heading) return;
+  heading.setAttribute('tabindex', '-1');
+  heading.scrollIntoView({ block: 'start', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+  heading.focus({ preventScroll: true });
+}
+/** Below the plates when the export is not an exact copy: why in one line, and the way to the per-setting reasons. */
+const exactnessNotice = () => el('div', { id: 'qs-exactness', class: 'exact-notice', role: 'status', hidden: true },
+  el('p', { id: 'qs-exactness-text' }),
+  el('button', { id: 'qs-exactness-link', type: 'button', class: 'text-button', onclick: showReport },
+    'See what happened to each setting'));
+
 /** Preview: the old and new plates and the background choice; the difference view behind Expert. */
 function previewSection() {
   return el('section', { class: 'qs-reading qs-preview', 'aria-labelledby': 'q-preview-title' },
@@ -182,6 +196,7 @@ function previewSection() {
       plate('qs-new-canvas', 'New game', 'Proposed crosshair candidate simulation'),
       el('p', { id: 'qs-scale', class: 'plate-scale', 'aria-hidden': 'true' }),
       el('p', { id: 'qs-plate-note', class: 'plate-scale plate-note', hidden: true }, 'Generated scene, not a game image.')),
+    exactnessNotice(),
     expertPanel('preview', differenceView()));
 }
 

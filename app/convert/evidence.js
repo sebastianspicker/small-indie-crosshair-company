@@ -1,20 +1,21 @@
 import { el } from '../ui/dom.js';
 import { rgba, effectiveOutlineMode, exportFillAlpha } from '../../lib/settings/native.js';
 import { shapeCheck } from '../../lib/solver/community-edge.js';
-import { COMMUNITY_MODEL } from '../../lib/geometry/community.js';
+import { COMMUNITY_MODEL, COMMUNITY_REVISION } from '../../lib/geometry/community.js';
 import { crossCheck } from '../../lib/solver/ml-crosscheck.js';
 import { mergedExportOverrides } from '../../lib/solver/export.js';
 
 const pct = (value, digits = 1) => `${(100 * value).toFixed(digits)}%`;
 
 /** What the export draws: the report's colour, outline mode and T flag overrides, else the old settings with the
- * exported fill opacity (usealpha 0 exports the closest normal blend). */
+ * exported fill opacity (usealpha 0 exports the closest normal blend) and separate outline opacity. */
 export function exportedLook(r) {
   // Merged: a T flag forced by the T option (ADR-0025) reaches historical reports through the scope, not `exportOverrides`.
-  const o = r.exportOverrides ?? {}, t = mergedExportOverrides(r).t_style;
+  const o = r.exportOverrides ?? {}, t = mergedExportOverrides(r).t_style, old = rgba(r.settings);
+  const outlineMode = effectiveOutlineMode(r.settings, o.outlineMode ?? r.options.outlineMode);
   return { settings: t === undefined ? r.settings : { ...r.settings, t_style: t },
-    color: o.color ?? { ...rgba(r.settings), alpha: exportFillAlpha(r.settings) },
-    outlineMode: effectiveOutlineMode(r.settings, o.outlineMode ?? r.options.outlineMode) };
+    color: o.color ?? { ...old, alpha: exportFillAlpha(r.settings) },
+    outlineMode, outlineAlpha: outlineMode ? o.color?.alpha ?? old.alpha : 255 };
 }
 
 /** Old against new visible pixels by colour. Reports carry it; older historical reports without one are computed here. */
@@ -66,7 +67,8 @@ export function mlScopeGaps(options, scope) {
 function communityRows(r, evidence) {
   if (!evidence) return [];
   const { captures: c, crossTool: x, mlCrossCheck: m, mlParams } = evidence;
-  const mlCurrent = m?.targetVersion === COMMUNITY_MODEL.version, gaps = mlScopeGaps(r.options, m?.scope);
+  const mlCurrent = m?.targetVersion === COMMUNITY_MODEL.version && m?.targetRevision === COMMUNITY_REVISION;
+  const gaps = mlScopeGaps(r.options, m?.scope);
   const heldOut = m?.evaluationKind === 'reused-holdout-regression' ? 'reused held-out' : 'held-out';
   // The stated rate holds for the evaluated design only; the per-input agreement still shows outside it.
   const rate = !mlCurrent ? '' : gaps.length
@@ -93,6 +95,17 @@ export function confidenceRows(r, evidence, percent) {
   const check = shapeCheckOf(r);
   // The shape check supersedes the core-only, unshifted overlap; that stays only where no shape check exists (images).
   return [
+    ...(r.taxonomy ? [['Recognized shape', `${r.taxonomy.source.label} → ${r.taxonomy.converted.label}`,
+      r.taxonomy.source.hiddenCorePixels ? 'Classified after old outlines cover parts of the coloured arms'
+        : 'Visible pixels, not just the dot and T settings']] : []),
+    ...(r.drawability?.impossible ? [['Exact copy', `Not drawable (build ${r.drawability.build.model})`,
+      r.drawability.reasons.includes('outline-reach') ? 'Old outline reaches past 1 px or covers colour; see Limits'
+        : 'Old shape is not mirror-symmetric; see Limits']] : []),
+    ...(r.aimingShape?.prioritized ? [['Aiming core', percent(r.aimingShape.alignedIou),
+      'Dot pixels after up to a 1 px shift; prioritized before outline coverage']] : []),
+    ...(r.taxonomy?.source.silhouette.holes > 0 ? [['Enclosed openings',
+      `${r.taxonomy.source.silhouette.holes} → ${r.taxonomy.converted.silhouette.holes}`,
+      'Empty regions inside the visible shape; overlap also measures their size and position']] : []),
     ...(check ? [['Shape check', shapeValue(check), 'Old vs converted pixels, colours and outline, under the model']]
       : [['Core overlap (no shift)', percent(r.convertedFit.iou), 'Coloured core only, under the selected rendering model']]),
     ...(r.provenance ? communityRows(r, evidence) : [['Captures, cross-tool, ML', 'Automatic model only',

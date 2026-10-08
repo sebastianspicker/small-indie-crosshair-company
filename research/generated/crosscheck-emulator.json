@@ -2,6 +2,7 @@
   "schema": "sicc-export-emulator-v2",
   "targetVersion": "community-static-v11",
   "targetBuild": "2000922",
+  "targetRevision": "visible-stroke-fit-2026-10-07",
   "design": {
     "schema": "sicc-export-emulator-v2",
     "developmentSeed": 2026100211,
@@ -115,29 +116,29 @@
       "train": {
         "rows": 23012,
         "groups": 523,
-        "labelsSha256": "472d8f13ba257f095fb4b0be8b3d2432009d82fb6037104ec2618192f5106a05"
+        "labelsSha256": "87d77adfd494c8b12fa939b273e02b0fe2b2afe36fa12af2e05638103992880a"
       },
       "validation": {
         "rows": 5148,
         "groups": 117,
-        "labelsSha256": "dfa8c0beac6ed25715085e5c6cc3bf64b0c3acacf48cdfa5bc2aecc93c771c00"
+        "labelsSha256": "de9ea6faabc4c47df5c5a841f001ada7194bf0055505dd2e99f35ffc640d4f66"
       },
       "fresh": {
         "rows": 5632,
         "groups": 128,
-        "labelsSha256": "81608ef97c65b3743d3fa7dd11fac38e457f93241fc55eb268a89f888c7d6120"
+        "labelsSha256": "afdb12b29f8587190c840a90c5827986b663083c9ed17c53b4162f18c4c7d4c5"
       },
       "edgeChallenge": {
         "rows": 3520,
         "groups": 80,
-        "labelsSha256": "2825acf2ec97e8b995eb196cf7fbacc1d8bfbaf32603f400ff93ea43014afd26"
+        "labelsSha256": "de60fabe967956d14ec2fc450e861d4a5b3e6e0835e70194318a062973cb37fb"
       }
     },
     "freshInputsSha256": "baef9124b2ae7854f5b6ca6bfccd188ead80dae79eccc586ab0a3e31a2e0e4d2",
     "freeze": {
       "featureFiles": {
-        "lib/solver/ml-crosscheck.js": "78f7734363b2abceb0cda3f78c749d3395a8baff13ab5b38eb6d44f0595a51b9",
-        "research/lib/crosscheck-emulator.js": "10978ab77fad3c8b7ea68ea7ff7b5e66d7b383141d42077fd2484359491c8a8e"
+        "lib/solver/ml-crosscheck.js": "c1357b61259afb9c863d78ec23889a1d3faa858022032549685dbf4cd515b4ed",
+        "research/lib/crosscheck-emulator.js": "3fed8a8f76415889489277d1cf2a9a84b5fbb1be1cc25cf7a4644420840a0340"
       },
       "capacitiesSha256": "aab41d884568b6bfb5d4bd96ac6f08fbb3ab6acebf10156d7e219b9468750f07",
       "rule": "The trainer refuses to run when these hashes differ from the committed artifact; npm run emulator:crosscheck -- --refreeze records a deliberate change of the feature code or capacity lists."
@@ -191,7 +192,7 @@
           "maxDepth": 3,
           "learningRate": 0.2
         },
-        "validationCoreExact": 0.6204351204351204
+        "validationCoreExact": 0.6697746697746698
       },
       {
         "config": {
@@ -199,7 +200,7 @@
           "maxDepth": 4,
           "learningRate": 0.2
         },
-        "validationCoreExact": 0.6182983682983683
+        "validationCoreExact": 0.6808469308469308
       },
       {
         "config": {
@@ -207,7 +208,7 @@
           "maxDepth": 5,
           "learningRate": 0.2
         },
-        "validationCoreExact": 0.6262626262626263
+        "validationCoreExact": 0.6783216783216783
       }
     ],
     "heads": [
@@ -254,8 +255,8 @@
   },
   "selected": {
     "ranker": {
-      "rounds": 64,
-      "maxDepth": 5,
+      "rounds": 48,
+      "maxDepth": 4,
       "learningRate": 0.2
     },
     "heads": {
@@ -283,10 +284,10 @@
   },
   "parameters": {
     "file": "data/ml-crosscheck.json",
-    "parametersHash": 3446794792,
-    "bytes": 80697,
+    "parametersHash": 1361745395,
+    "bytes": 37453,
     "parityRows": 9152,
-    "freshPredictionsSha256": "d2c177a69ed6394b972db3f519e1b61790a1a5f654d5a7db48c6329a1f73da10"
+    "freshPredictionsSha256": "29fc5d6965b8b3edc50775ee211ca62e8df9192b48b86cbe37fc2a87693f82e0"
   },
   "evaluations": {
     "regression": {
@@ -305,13 +306,13 @@
               "fillAlpha",
               "t_style"
             ],
-            "coreExact": 0.6057082452431289,
+            "coreExact": 0.642706131078224,
             "appearanceExact": 0.9349894291754757,
-            "exportExact": 0.5544397463002114,
+            "exportExact": 0.5914376321353065,
             "perKeyExact": {
-              "length": 0.7312367864693446,
-              "thickness": 0.766384778012685,
-              "gap": 0.7616279069767442,
+              "length": 0.7518498942917548,
+              "thickness": 0.7814482029598309,
+              "gap": 0.7912262156448203,
               "drawoutline": 0.9349894291754757,
               "outlineAlpha": 0.9656448202959831,
               "color": 0.9349894291754757,
@@ -319,8 +320,8 @@
               "t_style": 1
             },
             "groupStability": {
-              "lower": 0.4833443446088793,
-              "upper": 0.6215843023255812,
+              "lower": 0.5282769556025368,
+              "upper": 0.6532901691331922,
               "clusters": 86
             }
           },
@@ -335,13 +336,13 @@
               "fillAlpha",
               "t_style"
             ],
-            "coreExact": 0.9989429175475687,
+            "coreExact": 0.9973572938689218,
             "appearanceExact": 1,
-            "exportExact": 0.9989429175475687,
+            "exportExact": 0.9973572938689218,
             "perKeyExact": {
-              "length": 1,
-              "thickness": 0.9994714587737844,
-              "gap": 0.9994714587737844,
+              "length": 0.9994714587737844,
+              "thickness": 0.9989429175475687,
+              "gap": 0.9986786469344608,
               "drawoutline": 1,
               "outlineAlpha": 1,
               "color": 1,
@@ -349,8 +350,8 @@
               "t_style": 1
             },
             "groupStability": {
-              "lower": 0.9973572938689217,
-              "upper": 1,
+              "lower": 0.9944503171247356,
+              "upper": 0.999735729386892,
               "clusters": 86
             }
           },
@@ -362,19 +363,19 @@
               "drawoutline",
               "outlineAlpha"
             ],
-            "coreExact": 0.6511627906976745,
+            "coreExact": 0.688953488372093,
             "appearanceExact": 1,
-            "exportExact": 0.6511627906976745,
+            "exportExact": 0.688953488372093,
             "perKeyExact": {
-              "length": 0.7473572938689218,
-              "thickness": 0.7970401691331924,
-              "gap": 0.7822410147991543,
+              "length": 0.7679704016913319,
+              "thickness": 0.8097251585623678,
+              "gap": 0.811046511627907,
               "drawoutline": 1,
               "outlineAlpha": 1
             },
             "groupStability": {
-              "lower": 0.5832386363636364,
-              "upper": 0.7143300739957715,
+              "lower": 0.6191794397463002,
+              "upper": 0.7518498942917545,
               "clusters": 86
             }
           }
@@ -383,16 +384,16 @@
           "all": {
             "rows": 3784,
             "ruleBaseline": {
-              "coreExact": 0.6057082452431289,
-              "exportExact": 0.5544397463002114
+              "coreExact": 0.642706131078224,
+              "exportExact": 0.5914376321353065
             },
             "crosscheck": {
-              "coreExact": 0.9989429175475687,
-              "exportExact": 0.9989429175475687
+              "coreExact": 0.9973572938689218,
+              "exportExact": 0.9973572938689218
             },
             "exportV1": {
-              "coreExact": 0.6511627906976745,
-              "exportExact": 0.6511627906976745
+              "coreExact": 0.688953488372093,
+              "exportExact": 0.688953488372093
             }
           },
           "size0-outline-only": {
@@ -428,61 +429,61 @@
           "usealpha-0": {
             "rows": 1408,
             "ruleBaseline": {
-              "coreExact": 0.5795454545454546,
-              "exportExact": 0.5504261363636364
+              "coreExact": 0.5987215909090909,
+              "exportExact": 0.5696022727272727
             },
             "crosscheck": {
-              "coreExact": 0.9971590909090909,
-              "exportExact": 0.9971590909090909
+              "coreExact": 0.9957386363636364,
+              "exportExact": 0.9957386363636364
             },
             "exportV1": {
-              "coreExact": 0.6292613636363636,
-              "exportExact": 0.6292613636363636
+              "coreExact": 0.6484375,
+              "exportExact": 0.6484375
             }
           },
           "equal-height": {
             "rows": 1720,
             "ruleBaseline": {
-              "coreExact": 0.7156976744186047,
-              "exportExact": 0.6517441860465116
+              "coreExact": 0.7540697674418605,
+              "exportExact": 0.6901162790697675
             },
             "crosscheck": {
-              "coreExact": 1,
-              "exportExact": 1
+              "coreExact": 0.9988372093023256,
+              "exportExact": 0.9988372093023256
             },
             "exportV1": {
-              "coreExact": 0.7308139534883721,
-              "exportExact": 0.7308139534883721
+              "coreExact": 0.7715116279069767,
+              "exportExact": 0.7715116279069767
             }
           },
           "size0-dot-outline": {
             "rows": 246,
             "ruleBaseline": {
-              "coreExact": 0.36585365853658536,
-              "exportExact": 0.36585365853658536
+              "coreExact": 0.943089430894309,
+              "exportExact": 0.943089430894309
             },
             "crosscheck": {
               "coreExact": 1,
               "exportExact": 1
             },
             "exportV1": {
-              "coreExact": 0.3821138211382114,
-              "exportExact": 0.3821138211382114
+              "coreExact": 0.975609756097561,
+              "exportExact": 0.975609756097561
             }
           },
           "cross-height": {
             "rows": 2064,
             "ruleBaseline": {
-              "coreExact": 0.5140503875968992,
-              "exportExact": 0.4733527131782946
+              "coreExact": 0.5499031007751938,
+              "exportExact": 0.5092054263565892
             },
             "crosscheck": {
-              "coreExact": 0.998062015503876,
-              "exportExact": 0.998062015503876
+              "coreExact": 0.9961240310077519,
+              "exportExact": 0.9961240310077519
             },
             "exportV1": {
-              "coreExact": 0.5847868217054264,
-              "exportExact": 0.5847868217054264
+              "coreExact": 0.6201550387596899,
+              "exportExact": 0.6201550387596899
             }
           },
           "regular-odd": {
@@ -492,27 +493,27 @@
               "exportExact": 0.6105398457583547
             },
             "crosscheck": {
-              "coreExact": 1,
-              "exportExact": 1
+              "coreExact": 0.9967866323907455,
+              "exportExact": 0.9967866323907455
             },
             "exportV1": {
-              "coreExact": 0.6516709511568124,
-              "exportExact": 0.6516709511568124
+              "coreExact": 0.6529562982005142,
+              "exportExact": 0.6529562982005142
             }
           },
           "regular-even": {
             "rows": 1516,
             "ruleBaseline": {
-              "coreExact": 0.558047493403694,
-              "exportExact": 0.558047493403694
+              "coreExact": 0.5567282321899736,
+              "exportExact": 0.5567282321899736
             },
             "crosscheck": {
-              "coreExact": 0.9973614775725593,
-              "exportExact": 0.9973614775725593
+              "coreExact": 0.9967018469656992,
+              "exportExact": 0.9967018469656992
             },
             "exportV1": {
-              "coreExact": 0.6226912928759895,
-              "exportExact": 0.6226912928759895
+              "coreExact": 0.6193931398416886,
+              "exportExact": 0.6193931398416886
             }
           },
           "size0-empty": {
@@ -567,12 +568,12 @@
               "exportExact": 0.49148418491484186
             },
             "crosscheck": {
-              "coreExact": 1,
-              "exportExact": 1
+              "coreExact": 0.9975669099756691,
+              "exportExact": 0.9975669099756691
             },
             "exportV1": {
-              "coreExact": 0.5279805352798054,
-              "exportExact": 0.5279805352798054
+              "coreExact": 0.5231143552311436,
+              "exportExact": 0.5231143552311436
             }
           },
           "inverted-t": {
@@ -593,16 +594,16 @@
           "zero-length": {
             "rows": 184,
             "ruleBaseline": {
-              "coreExact": 0.6956521739130435,
-              "exportExact": 0.29347826086956524
+              "coreExact": 0.8913043478260869,
+              "exportExact": 0.4891304347826087
             },
             "crosscheck": {
               "coreExact": 1,
               "exportExact": 1
             },
             "exportV1": {
-              "coreExact": 0.7282608695652174,
-              "exportExact": 0.7282608695652174
+              "coreExact": 0.9239130434782609,
+              "exportExact": 0.9239130434782609
             }
           }
         }
@@ -622,13 +623,13 @@
               "fillAlpha",
               "t_style"
             ],
-            "coreExact": 0.4890625,
+            "coreExact": 0.525,
             "appearanceExact": 0.934375,
-            "exportExact": 0.44583333333333336,
+            "exportExact": 0.4817708333333333,
             "perKeyExact": {
-              "length": 0.6239583333333333,
-              "thickness": 0.6885416666666667,
-              "gap": 0.66875,
+              "length": 0.64375,
+              "thickness": 0.6989583333333333,
+              "gap": 0.7020833333333333,
               "drawoutline": 0.934375,
               "outlineAlpha": 0.959375,
               "color": 0.934375,
@@ -636,8 +637,8 @@
               "t_style": 1
             },
             "groupStability": {
-              "lower": 0.3718750000000003,
-              "upper": 0.5203125,
+              "lower": 0.41455729166666677,
+              "upper": 0.5489583333333333,
               "clusters": 80
             }
           },
@@ -652,11 +653,11 @@
               "fillAlpha",
               "t_style"
             ],
-            "coreExact": 0.9979166666666667,
+            "coreExact": 0.9989583333333333,
             "appearanceExact": 1,
-            "exportExact": 0.9979166666666667,
+            "exportExact": 0.9989583333333333,
             "perKeyExact": {
-              "length": 0.9979166666666667,
+              "length": 0.9989583333333333,
               "thickness": 1,
               "gap": 1,
               "drawoutline": 1,
@@ -666,7 +667,7 @@
               "t_style": 1
             },
             "groupStability": {
-              "lower": 0.9937499999999998,
+              "lower": 0.996875,
               "upper": 1,
               "clusters": 80
             }
@@ -679,19 +680,19 @@
               "drawoutline",
               "outlineAlpha"
             ],
-            "coreExact": 0.5125,
+            "coreExact": 0.5609375,
             "appearanceExact": 1,
-            "exportExact": 0.5125,
+            "exportExact": 0.5609375,
             "perKeyExact": {
-              "length": 0.6401041666666667,
-              "thickness": 0.6979166666666666,
-              "gap": 0.6807291666666667,
+              "length": 0.6609375,
+              "thickness": 0.7145833333333333,
+              "gap": 0.7203125,
               "drawoutline": 1,
               "outlineAlpha": 1
             },
             "groupStability": {
-              "lower": 0.4458203125,
-              "upper": 0.5791796875,
+              "lower": 0.4911458333333334,
+              "upper": 0.6322916666666668,
               "clusters": 80
             }
           }
@@ -700,16 +701,16 @@
           "all": {
             "rows": 1920,
             "ruleBaseline": {
-              "coreExact": 0.4890625,
-              "exportExact": 0.44583333333333336
+              "coreExact": 0.525,
+              "exportExact": 0.4817708333333333
             },
             "crosscheck": {
-              "coreExact": 0.9979166666666667,
-              "exportExact": 0.9979166666666667
+              "coreExact": 0.9989583333333333,
+              "exportExact": 0.9989583333333333
             },
             "exportV1": {
-              "coreExact": 0.5125,
-              "exportExact": 0.5125
+              "coreExact": 0.5609375,
+              "exportExact": 0.5609375
             }
           },
           "size0-outline-only": {
@@ -723,8 +724,8 @@
               "exportExact": 1
             },
             "exportV1": {
-              "coreExact": 0.7222222222222222,
-              "exportExact": 0.7222222222222222
+              "coreExact": 0.7142857142857143,
+              "exportExact": 0.7142857142857143
             }
           },
           "outline-only-override": {
@@ -738,68 +739,68 @@
               "exportExact": 1
             },
             "exportV1": {
-              "coreExact": 0.7222222222222222,
-              "exportExact": 0.7222222222222222
+              "coreExact": 0.7142857142857143,
+              "exportExact": 0.7142857142857143
             }
           },
           "usealpha-0": {
             "rows": 456,
             "ruleBaseline": {
-              "coreExact": 0.3333333333333333,
-              "exportExact": 0.2719298245614035
+              "coreExact": 0.3991228070175439,
+              "exportExact": 0.33771929824561403
             },
             "crosscheck": {
               "coreExact": 1,
               "exportExact": 1
             },
             "exportV1": {
-              "coreExact": 0.3618421052631579,
-              "exportExact": 0.3618421052631579
+              "coreExact": 0.43640350877192985,
+              "exportExact": 0.43640350877192985
             }
           },
           "equal-height": {
             "rows": 640,
             "ruleBaseline": {
-              "coreExact": 0.6328125,
-              "exportExact": 0.5671875
+              "coreExact": 0.6890625,
+              "exportExact": 0.6234375
             },
             "crosscheck": {
               "coreExact": 1,
               "exportExact": 1
             },
             "exportV1": {
-              "coreExact": 0.6359375,
-              "exportExact": 0.6359375
+              "coreExact": 0.6921875,
+              "exportExact": 0.6921875
             }
           },
           "size0-dot-outline": {
             "rows": 126,
             "ruleBaseline": {
-              "coreExact": 0.19047619047619047,
-              "exportExact": 0.19047619047619047
+              "coreExact": 0.746031746031746,
+              "exportExact": 0.746031746031746
             },
             "crosscheck": {
               "coreExact": 1,
               "exportExact": 1
             },
             "exportV1": {
-              "coreExact": 0.23809523809523808,
-              "exportExact": 0.23809523809523808
+              "coreExact": 0.9365079365079365,
+              "exportExact": 0.9365079365079365
             }
           },
           "cross-height": {
             "rows": 1280,
             "ruleBaseline": {
-              "coreExact": 0.4171875,
-              "exportExact": 0.38515625
+              "coreExact": 0.44296875,
+              "exportExact": 0.4109375
             },
             "crosscheck": {
-              "coreExact": 0.996875,
-              "exportExact": 0.996875
+              "coreExact": 0.9984375,
+              "exportExact": 0.9984375
             },
             "exportV1": {
-              "coreExact": 0.45078125,
-              "exportExact": 0.45078125
+              "coreExact": 0.4953125,
+              "exportExact": 0.4953125
             }
           },
           "regular-odd": {
@@ -813,38 +814,38 @@
               "exportExact": 1
             },
             "exportV1": {
-              "coreExact": 0.44693396226415094,
-              "exportExact": 0.44693396226415094
+              "coreExact": 0.4516509433962264,
+              "exportExact": 0.4516509433962264
             }
           },
           "regular-even": {
             "rows": 748,
             "ruleBaseline": {
-              "coreExact": 0.5802139037433155,
-              "exportExact": 0.5802139037433155
+              "coreExact": 0.5788770053475936,
+              "exportExact": 0.5788770053475936
             },
             "crosscheck": {
-              "coreExact": 0.9946524064171123,
-              "exportExact": 0.9946524064171123
+              "coreExact": 0.9973262032085561,
+              "exportExact": 0.9973262032085561
             },
             "exportV1": {
-              "coreExact": 0.5909090909090909,
-              "exportExact": 0.5909090909090909
+              "coreExact": 0.589572192513369,
+              "exportExact": 0.589572192513369
             }
           },
           "overpaint": {
             "rows": 617,
             "ruleBaseline": {
-              "coreExact": 0.4619124797406807,
-              "exportExact": 0.4619124797406807
+              "coreExact": 0.46029173419773095,
+              "exportExact": 0.46029173419773095
             },
             "crosscheck": {
               "coreExact": 1,
               "exportExact": 1
             },
             "exportV1": {
-              "coreExact": 0.4829821717990275,
-              "exportExact": 0.4829821717990275
+              "coreExact": 0.4813614262560778,
+              "exportExact": 0.4813614262560778
             }
           },
           "outline-3": {
@@ -895,16 +896,16 @@
           "zero-length": {
             "rows": 36,
             "ruleBaseline": {
-              "coreExact": 0.75,
-              "exportExact": 0.5833333333333334
+              "coreExact": 0.8888888888888888,
+              "exportExact": 0.7222222222222222
             },
             "crosscheck": {
               "coreExact": 1,
               "exportExact": 1
             },
             "exportV1": {
-              "coreExact": 0.6666666666666666,
-              "exportExact": 0.6666666666666666
+              "coreExact": 0.8888888888888888,
+              "exportExact": 0.8888888888888888
             }
           },
           "size0-empty": {
@@ -933,8 +934,8 @@
               "exportExact": 1
             },
             "exportV1": {
-              "coreExact": 0.6666666666666666,
-              "exportExact": 0.6666666666666666
+              "coreExact": 0.9166666666666666,
+              "exportExact": 0.9166666666666666
             }
           }
         }
@@ -954,13 +955,13 @@
               "fillAlpha",
               "t_style"
             ],
-            "coreExact": 0.9925925925925926,
+            "coreExact": 1,
             "appearanceExact": 1,
-            "exportExact": 0.9925925925925926,
+            "exportExact": 1,
             "perKeyExact": {
               "length": 1,
               "thickness": 1,
-              "gap": 0.9925925925925926,
+              "gap": 1,
               "drawoutline": 1,
               "outlineAlpha": 1,
               "color": 1,
@@ -968,7 +969,7 @@
               "t_style": 1
             },
             "groupStability": {
-              "lower": 0.9347826086956522,
+              "lower": 1,
               "upper": 1,
               "clusters": 46
             }
@@ -1011,18 +1012,18 @@
               "drawoutline",
               "outlineAlpha"
             ],
-            "coreExact": 0.9925925925925926,
+            "coreExact": 1,
             "appearanceExact": 1,
-            "exportExact": 0.9925925925925926,
+            "exportExact": 1,
             "perKeyExact": {
               "length": 1,
               "thickness": 1,
-              "gap": 0.9925925925925926,
+              "gap": 1,
               "drawoutline": 1,
               "outlineAlpha": 1
             },
             "groupStability": {
-              "lower": 0.9347826086956522,
+              "lower": 1,
               "upper": 1,
               "clusters": 46
             }
@@ -1032,16 +1033,16 @@
           "all": {
             "rows": 945,
             "ruleBaseline": {
-              "coreExact": 0.9925925925925926,
-              "exportExact": 0.9925925925925926
+              "coreExact": 1,
+              "exportExact": 1
             },
             "crosscheck": {
               "coreExact": 1,
               "exportExact": 1
             },
             "exportV1": {
-              "coreExact": 0.9925925925925926,
-              "exportExact": 0.9925925925925926
+              "coreExact": 1,
+              "exportExact": 1
             }
           },
           "regular-even": {
@@ -1077,16 +1078,16 @@
           "equal-height": {
             "rows": 945,
             "ruleBaseline": {
-              "coreExact": 0.9925925925925926,
-              "exportExact": 0.9925925925925926
+              "coreExact": 1,
+              "exportExact": 1
             },
             "crosscheck": {
               "coreExact": 1,
               "exportExact": 1
             },
             "exportV1": {
-              "coreExact": 0.9925925925925926,
-              "exportExact": 0.9925925925925926
+              "coreExact": 1,
+              "exportExact": 1
             }
           },
           "regular-odd": {
@@ -1137,16 +1138,16 @@
           "size0-dot-outline": {
             "rows": 7,
             "ruleBaseline": {
-              "coreExact": 0,
-              "exportExact": 0
+              "coreExact": 1,
+              "exportExact": 1
             },
             "crosscheck": {
               "coreExact": 1,
               "exportExact": 1
             },
             "exportV1": {
-              "coreExact": 0,
-              "exportExact": 0
+              "coreExact": 1,
+              "exportExact": 1
             }
           },
           "size0-dot": {
@@ -1211,13 +1212,13 @@
               "fillAlpha",
               "t_style"
             ],
-            "coreExact": 0.591358024691358,
+            "coreExact": 0.5987654320987654,
             "appearanceExact": 1,
-            "exportExact": 0.591358024691358,
+            "exportExact": 0.5987654320987654,
             "perKeyExact": {
               "length": 0.7234567901234568,
               "thickness": 0.7913580246913581,
-              "gap": 0.754320987654321,
+              "gap": 0.7592592592592593,
               "drawoutline": 1,
               "outlineAlpha": 1,
               "color": 1,
@@ -1225,8 +1226,8 @@
               "t_style": 1
             },
             "groupStability": {
-              "lower": 0.5869565217391305,
-              "upper": 0.6895561594202895,
+              "lower": 0.6126721014492753,
+              "upper": 0.7101449275362322,
               "clusters": 46
             }
           },
@@ -1241,13 +1242,13 @@
               "fillAlpha",
               "t_style"
             ],
-            "coreExact": 0.9703703703703703,
+            "coreExact": 0.9950617283950617,
             "appearanceExact": 1,
-            "exportExact": 0.9703703703703703,
+            "exportExact": 0.9950617283950617,
             "perKeyExact": {
-              "length": 0.9938271604938271,
-              "thickness": 0.9925925925925926,
-              "gap": 0.9703703703703703,
+              "length": 0.9950617283950617,
+              "thickness": 0.9950617283950617,
+              "gap": 0.9962962962962963,
               "drawoutline": 1,
               "outlineAlpha": 1,
               "color": 1,
@@ -1255,8 +1256,8 @@
               "t_style": 1
             },
             "groupStability": {
-              "lower": 0.9420289855072466,
-              "upper": 0.9818840579710146,
+              "lower": 0.9728260869565217,
+              "upper": 0.9981884057971014,
               "clusters": 46
             }
           },
@@ -1268,19 +1269,19 @@
               "drawoutline",
               "outlineAlpha"
             ],
-            "coreExact": 0.6259259259259259,
+            "coreExact": 0.6333333333333333,
             "appearanceExact": 1,
-            "exportExact": 0.6259259259259259,
+            "exportExact": 0.6333333333333333,
             "perKeyExact": {
-              "length": 0.654320987654321,
+              "length": 0.6530864197530865,
               "thickness": 0.8111111111111111,
-              "gap": 0.7567901234567901,
+              "gap": 0.7641975308641975,
               "drawoutline": 1,
               "outlineAlpha": 1
             },
             "groupStability": {
-              "lower": 0.6454710144927537,
-              "upper": 0.7439039855072462,
+              "lower": 0.6739130434782612,
+              "upper": 0.7644927536231882,
               "clusters": 46
             }
           }
@@ -1289,16 +1290,16 @@
           "all": {
             "rows": 810,
             "ruleBaseline": {
-              "coreExact": 0.591358024691358,
-              "exportExact": 0.591358024691358
+              "coreExact": 0.5987654320987654,
+              "exportExact": 0.5987654320987654
             },
             "crosscheck": {
-              "coreExact": 0.9703703703703703,
-              "exportExact": 0.9703703703703703
+              "coreExact": 0.9950617283950617,
+              "exportExact": 0.9950617283950617
             },
             "exportV1": {
-              "coreExact": 0.6259259259259259,
-              "exportExact": 0.6259259259259259
+              "coreExact": 0.6333333333333333,
+              "exportExact": 0.6333333333333333
             }
           },
           "regular-even": {
@@ -1308,8 +1309,8 @@
               "exportExact": 0.5136612021857924
             },
             "crosscheck": {
-              "coreExact": 0.9836065573770492,
-              "exportExact": 0.9836065573770492
+              "coreExact": 0.9918032786885246,
+              "exportExact": 0.9918032786885246
             },
             "exportV1": {
               "coreExact": 0.5546448087431693,
@@ -1323,8 +1324,8 @@
               "exportExact": 0.5555555555555556
             },
             "crosscheck": {
-              "coreExact": 0.9814814814814815,
-              "exportExact": 0.9814814814814815
+              "coreExact": 1,
+              "exportExact": 1
             },
             "exportV1": {
               "coreExact": 0.5555555555555556,
@@ -1334,16 +1335,16 @@
           "cross-height": {
             "rows": 810,
             "ruleBaseline": {
-              "coreExact": 0.591358024691358,
-              "exportExact": 0.591358024691358
+              "coreExact": 0.5987654320987654,
+              "exportExact": 0.5987654320987654
             },
             "crosscheck": {
-              "coreExact": 0.9703703703703703,
-              "exportExact": 0.9703703703703703
+              "coreExact": 0.9950617283950617,
+              "exportExact": 0.9950617283950617
             },
             "exportV1": {
-              "coreExact": 0.6259259259259259,
-              "exportExact": 0.6259259259259259
+              "coreExact": 0.6333333333333333,
+              "exportExact": 0.6333333333333333
             }
           },
           "regular-odd": {
@@ -1353,8 +1354,8 @@
               "exportExact": 0.6674876847290641
             },
             "crosscheck": {
-              "coreExact": 0.9556650246305419,
-              "exportExact": 0.9556650246305419
+              "coreExact": 1,
+              "exportExact": 1
             },
             "exportV1": {
               "coreExact": 0.6945812807881774,
@@ -1368,8 +1369,8 @@
               "exportExact": 0.4444444444444444
             },
             "crosscheck": {
-              "coreExact": 1,
-              "exportExact": 1
+              "coreExact": 0.9444444444444444,
+              "exportExact": 0.9444444444444444
             },
             "exportV1": {
               "coreExact": 0.5555555555555556,
@@ -1383,8 +1384,8 @@
               "exportExact": 0.5555555555555556
             },
             "crosscheck": {
-              "coreExact": 0.9722222222222222,
-              "exportExact": 0.9722222222222222
+              "coreExact": 1,
+              "exportExact": 1
             },
             "exportV1": {
               "coreExact": 0.6944444444444444,
@@ -1394,16 +1395,16 @@
           "size0-dot-outline": {
             "rows": 6,
             "ruleBaseline": {
-              "coreExact": 0,
-              "exportExact": 0
+              "coreExact": 1,
+              "exportExact": 1
             },
             "crosscheck": {
               "coreExact": 1,
               "exportExact": 1
             },
             "exportV1": {
-              "coreExact": 0,
-              "exportExact": 0
+              "coreExact": 1,
+              "exportExact": 1
             }
           },
           "size0-dot": {
@@ -1664,16 +1665,16 @@
               "thickness",
               "gap"
             ],
-            "coreExact": 0.7923728813559322,
-            "exportExact": 0.7923728813559322,
+            "coreExact": 0.7906779661016949,
+            "exportExact": 0.7906779661016949,
             "perKeyExact": {
-              "length": 0.847457627118644,
-              "thickness": 0.9559322033898305,
-              "gap": 0.872457627118644
+              "length": 0.8470338983050848,
+              "thickness": 0.9538135593220339,
+              "gap": 0.8572033898305085
             },
             "groupStability": {
-              "lower": 0.7610063559322032,
-              "upper": 0.8228919491525425,
+              "lower": 0.7584639830508474,
+              "upper": 0.8228813559322035,
               "clusters": 59
             }
           },
@@ -1683,16 +1684,16 @@
               "thickness",
               "gap"
             ],
-            "coreExact": 0.9622881355932204,
-            "exportExact": 0.9622881355932204,
+            "coreExact": 0.9563559322033899,
+            "exportExact": 0.9563559322033899,
             "perKeyExact": {
-              "length": 0.9949152542372881,
-              "thickness": 0.9940677966101695,
-              "gap": 0.9677966101694915
+              "length": 0.9957627118644068,
+              "thickness": 0.9932203389830508,
+              "gap": 0.961864406779661
             },
             "groupStability": {
-              "lower": 0.9474470338983048,
-              "upper": 0.976271186440678,
+              "lower": 0.9432203389830507,
+              "upper": 0.9686440677966103,
               "clusters": 59
             }
           },
@@ -1762,12 +1763,12 @@
               "exportExact": 0.9241525423728814
             },
             "crosscheck": {
-              "coreExact": 0.7923728813559322,
-              "exportExact": 0.7923728813559322
+              "coreExact": 0.7906779661016949,
+              "exportExact": 0.7906779661016949
             },
             "exportV1": {
-              "coreExact": 0.9622881355932204,
-              "exportExact": 0.9622881355932204
+              "coreExact": 0.9563559322033899,
+              "exportExact": 0.9563559322033899
             },
             "accuracyRegime": {
               "coreExact": 0.9775423728813559,
@@ -1789,12 +1790,12 @@
               "exportExact": 0.925
             },
             "crosscheck": {
-              "coreExact": 0.76328125,
-              "exportExact": 0.76328125
+              "coreExact": 0.759375,
+              "exportExact": 0.759375
             },
             "exportV1": {
-              "coreExact": 0.97109375,
-              "exportExact": 0.97109375
+              "coreExact": 0.95625,
+              "exportExact": 0.95625
             },
             "accuracyRegime": {
               "coreExact": 0.97734375,
@@ -1816,12 +1817,12 @@
               "exportExact": 0.9241525423728814
             },
             "crosscheck": {
-              "coreExact": 0.7923728813559322,
-              "exportExact": 0.7923728813559322
+              "coreExact": 0.7906779661016949,
+              "exportExact": 0.7906779661016949
             },
             "exportV1": {
-              "coreExact": 0.9622881355932204,
-              "exportExact": 0.9622881355932204
+              "coreExact": 0.9563559322033899,
+              "exportExact": 0.9563559322033899
             },
             "accuracyRegime": {
               "coreExact": 0.9775423728813559,
@@ -1870,12 +1871,12 @@
               "exportExact": 0.9126059322033898
             },
             "crosscheck": {
-              "coreExact": 0.7521186440677966,
-              "exportExact": 0.7521186440677966
+              "coreExact": 0.75,
+              "exportExact": 0.75
             },
             "exportV1": {
-              "coreExact": 0.958156779661017,
-              "exportExact": 0.958156779661017
+              "coreExact": 0.9507415254237288,
+              "exportExact": 0.9507415254237288
             },
             "accuracyRegime": {
               "coreExact": 0.9729872881355932,
@@ -1897,12 +1898,12 @@
               "exportExact": 0.913563829787234
             },
             "crosscheck": {
-              "coreExact": 0.7898936170212766,
-              "exportExact": 0.7898936170212766
+              "coreExact": 0.785904255319149,
+              "exportExact": 0.785904255319149
             },
             "exportV1": {
-              "coreExact": 0.9414893617021277,
-              "exportExact": 0.9414893617021277
+              "coreExact": 0.9534574468085106,
+              "exportExact": 0.9534574468085106
             },
             "accuracyRegime": {
               "coreExact": 0.9707446808510638,
@@ -1928,8 +1929,8 @@
               "exportExact": 1
             },
             "exportV1": {
-              "coreExact": 1,
-              "exportExact": 1
+              "coreExact": 0.9516129032258065,
+              "exportExact": 0.9516129032258065
             },
             "accuracyRegime": {
               "coreExact": 1,
@@ -1951,12 +1952,12 @@
               "exportExact": 0.8870967741935484
             },
             "crosscheck": {
-              "coreExact": 0.8790322580645161,
-              "exportExact": 0.8790322580645161
+              "coreExact": 0.9112903225806451,
+              "exportExact": 0.9112903225806451
             },
             "exportV1": {
-              "coreExact": 0.9354838709677419,
-              "exportExact": 0.9354838709677419
+              "coreExact": 0.9516129032258065,
+              "exportExact": 0.9516129032258065
             },
             "accuracyRegime": {
               "coreExact": 0.9838709677419355,
@@ -2083,16 +2084,16 @@
               "thickness",
               "gap"
             ],
-            "coreExact": 0.8015625,
-            "exportExact": 0.8015625,
+            "coreExact": 0.8,
+            "exportExact": 0.8,
             "perKeyExact": {
-              "length": 0.84375,
-              "thickness": 0.96484375,
-              "gap": 0.91640625
+              "length": 0.8421875,
+              "thickness": 0.96328125,
+              "gap": 0.89609375
             },
             "groupStability": {
-              "lower": 0.76013671875,
-              "upper": 0.84140625,
+              "lower": 0.75703125,
+              "upper": 0.840625,
               "clusters": 80
             }
           },
@@ -2102,16 +2103,16 @@
               "thickness",
               "gap"
             ],
-            "coreExact": 0.92421875,
-            "exportExact": 0.92421875,
+            "coreExact": 0.92265625,
+            "exportExact": 0.92265625,
             "perKeyExact": {
-              "length": 0.96953125,
-              "thickness": 0.9765625,
-              "gap": 0.9640625
+              "length": 0.9734375,
+              "thickness": 0.975,
+              "gap": 0.9578125
             },
             "groupStability": {
-              "lower": 0.896875,
-              "upper": 0.9492382812499999,
+              "lower": 0.9,
+              "upper": 0.94609375,
               "clusters": 80
             }
           },
@@ -2181,12 +2182,12 @@
               "exportExact": 0.76953125
             },
             "crosscheck": {
-              "coreExact": 0.8015625,
-              "exportExact": 0.8015625
+              "coreExact": 0.8,
+              "exportExact": 0.8
             },
             "exportV1": {
-              "coreExact": 0.92421875,
-              "exportExact": 0.92421875
+              "coreExact": 0.92265625,
+              "exportExact": 0.92265625
             },
             "accuracyRegime": {
               "coreExact": 0.77578125,
@@ -2212,8 +2213,8 @@
               "exportExact": 1
             },
             "exportV1": {
-              "coreExact": 0.875,
-              "exportExact": 0.875
+              "coreExact": 0.8958333333333334,
+              "exportExact": 0.8958333333333334
             },
             "accuracyRegime": {
               "coreExact": 0.75,
@@ -2235,12 +2236,12 @@
               "exportExact": 0.76953125
             },
             "crosscheck": {
-              "coreExact": 0.8015625,
-              "exportExact": 0.8015625
+              "coreExact": 0.8,
+              "exportExact": 0.8
             },
             "exportV1": {
-              "coreExact": 0.92421875,
-              "exportExact": 0.92421875
+              "coreExact": 0.92265625,
+              "exportExact": 0.92265625
             },
             "accuracyRegime": {
               "coreExact": 0.77578125,
@@ -2262,12 +2263,12 @@
               "exportExact": 0.76953125
             },
             "crosscheck": {
-              "coreExact": 0.8015625,
-              "exportExact": 0.8015625
+              "coreExact": 0.8,
+              "exportExact": 0.8
             },
             "exportV1": {
-              "coreExact": 0.92421875,
-              "exportExact": 0.92421875
+              "coreExact": 0.92265625,
+              "exportExact": 0.92265625
             },
             "accuracyRegime": {
               "coreExact": 0.77578125,
@@ -2293,8 +2294,8 @@
               "exportExact": 0.9583333333333334
             },
             "exportV1": {
-              "coreExact": 0.8541666666666666,
-              "exportExact": 0.8541666666666666
+              "coreExact": 0.9375,
+              "exportExact": 0.9375
             },
             "accuracyRegime": {
               "coreExact": 0.8333333333333334,
@@ -2320,8 +2321,8 @@
               "exportExact": 0.7901785714285714
             },
             "exportV1": {
-              "coreExact": 0.9642857142857143,
-              "exportExact": 0.9642857142857143
+              "coreExact": 0.9583333333333334,
+              "exportExact": 0.9583333333333334
             },
             "accuracyRegime": {
               "coreExact": 0.7872023809523809,
@@ -2343,12 +2344,12 @@
               "exportExact": 0.75
             },
             "crosscheck": {
-              "coreExact": 0.7379807692307693,
-              "exportExact": 0.7379807692307693
+              "coreExact": 0.7331730769230769,
+              "exportExact": 0.7331730769230769
             },
             "exportV1": {
-              "coreExact": 0.8870192307692307,
-              "exportExact": 0.8870192307692307
+              "coreExact": 0.8677884615384616,
+              "exportExact": 0.8677884615384616
             },
             "accuracyRegime": {
               "coreExact": 0.75,
@@ -2421,15 +2422,15 @@
               "thickness",
               "gap"
             ],
-            "coreExact": 0.71484375,
-            "exportExact": 0.71484375,
+            "coreExact": 0.71328125,
+            "exportExact": 0.71328125,
             "perKeyExact": {
-              "length": 0.78359375,
-              "thickness": 0.94140625,
-              "gap": 0.8328125
+              "length": 0.7828125,
+              "thickness": 0.9421875,
+              "gap": 0.83203125
             },
             "groupStability": {
-              "lower": 0.659375,
+              "lower": 0.65625,
               "upper": 0.7703320312499998,
               "clusters": 80
             }
@@ -2440,16 +2441,16 @@
               "thickness",
               "gap"
             ],
-            "coreExact": 0.93359375,
-            "exportExact": 0.93359375,
+            "coreExact": 0.92890625,
+            "exportExact": 0.92890625,
             "perKeyExact": {
-              "length": 0.9703125,
-              "thickness": 0.990625,
-              "gap": 0.97109375
+              "length": 0.984375,
+              "thickness": 0.9859375,
+              "gap": 0.95390625
             },
             "groupStability": {
-              "lower": 0.91015625,
-              "upper": 0.95546875,
+              "lower": 0.90234375,
+              "upper": 0.953125,
               "clusters": 80
             }
           },
@@ -2519,12 +2520,12 @@
               "exportExact": 0.92578125
             },
             "crosscheck": {
-              "coreExact": 0.71484375,
-              "exportExact": 0.71484375
+              "coreExact": 0.71328125,
+              "exportExact": 0.71328125
             },
             "exportV1": {
-              "coreExact": 0.93359375,
-              "exportExact": 0.93359375
+              "coreExact": 0.92890625,
+              "exportExact": 0.92890625
             },
             "accuracyRegime": {
               "coreExact": 0.71875,
@@ -2550,8 +2551,8 @@
               "exportExact": 1
             },
             "exportV1": {
-              "coreExact": 0.9431818181818182,
-              "exportExact": 0.9431818181818182
+              "coreExact": 0.9090909090909091,
+              "exportExact": 0.9090909090909091
             },
             "accuracyRegime": {
               "coreExact": 0.7954545454545454,
@@ -2573,12 +2574,12 @@
               "exportExact": 0.92578125
             },
             "crosscheck": {
-              "coreExact": 0.71484375,
-              "exportExact": 0.71484375
+              "coreExact": 0.71328125,
+              "exportExact": 0.71328125
             },
             "exportV1": {
-              "coreExact": 0.93359375,
-              "exportExact": 0.93359375
+              "coreExact": 0.92890625,
+              "exportExact": 0.92890625
             },
             "accuracyRegime": {
               "coreExact": 0.71875,
@@ -2600,12 +2601,12 @@
               "exportExact": 0.92578125
             },
             "crosscheck": {
-              "coreExact": 0.71484375,
-              "exportExact": 0.71484375
+              "coreExact": 0.71328125,
+              "exportExact": 0.71328125
             },
             "exportV1": {
-              "coreExact": 0.93359375,
-              "exportExact": 0.93359375
+              "coreExact": 0.92890625,
+              "exportExact": 0.92890625
             },
             "accuracyRegime": {
               "coreExact": 0.71875,
@@ -2627,12 +2628,12 @@
               "exportExact": 0.9772727272727273
             },
             "crosscheck": {
-              "coreExact": 0.9545454545454546,
-              "exportExact": 0.9545454545454546
+              "coreExact": 0.9772727272727273,
+              "exportExact": 0.9772727272727273
             },
             "exportV1": {
-              "coreExact": 0.8522727272727273,
-              "exportExact": 0.8522727272727273
+              "coreExact": 0.9772727272727273,
+              "exportExact": 0.9772727272727273
             },
             "accuracyRegime": {
               "coreExact": 0.4772727272727273,
@@ -2658,8 +2659,8 @@
               "exportExact": 0.7609375
             },
             "exportV1": {
-              "coreExact": 0.959375,
-              "exportExact": 0.959375
+              "coreExact": 0.965625,
+              "exportExact": 0.965625
             },
             "accuracyRegime": {
               "coreExact": 0.74375,
@@ -2681,12 +2682,12 @@
               "exportExact": 0.8383620689655172
             },
             "crosscheck": {
-              "coreExact": 0.5517241379310345,
-              "exportExact": 0.5517241379310345
+              "coreExact": 0.5431034482758621,
+              "exportExact": 0.5431034482758621
             },
             "exportV1": {
-              "coreExact": 0.9116379310344828,
-              "exportExact": 0.9116379310344828
+              "coreExact": 0.8728448275862069,
+              "exportExact": 0.8728448275862069
             },
             "accuracyRegime": {
               "coreExact": 0.7155172413793104,
@@ -2712,8 +2713,8 @@
               "exportExact": 1
             },
             "exportV1": {
-              "coreExact": 0.875,
-              "exportExact": 0.875
+              "coreExact": 1,
+              "exportExact": 1
             },
             "accuracyRegime": {
               "coreExact": 1,
@@ -2759,16 +2760,16 @@
               "thickness",
               "gap"
             ],
-            "coreExact": 0.81375,
-            "exportExact": 0.81375,
+            "coreExact": 0.8129166666666666,
+            "exportExact": 0.8129166666666666,
             "perKeyExact": {
-              "length": 0.8666666666666667,
-              "thickness": 0.95375,
-              "gap": 0.88875
+              "length": 0.8675,
+              "thickness": 0.9525,
+              "gap": 0.8783333333333333
             },
             "groupStability": {
-              "lower": 0.77665625,
-              "upper": 0.8508437500000002,
+              "lower": 0.7750000000000002,
+              "upper": 0.8516666666666662,
               "clusters": 60
             }
           },
@@ -2778,16 +2779,16 @@
               "thickness",
               "gap"
             ],
-            "coreExact": 0.9629166666666666,
-            "exportExact": 0.9629166666666666,
+            "coreExact": 0.9595833333333333,
+            "exportExact": 0.9595833333333333,
             "perKeyExact": {
-              "length": 0.9858333333333333,
-              "thickness": 0.995,
-              "gap": 0.9695833333333334
+              "length": 0.9866666666666667,
+              "thickness": 0.9916666666666667,
+              "gap": 0.9670833333333333
             },
             "groupStability": {
-              "lower": 0.9495833333333332,
-              "upper": 0.9741770833333336,
+              "lower": 0.9450000000000001,
+              "upper": 0.9720833333333335,
               "clusters": 60
             }
           },
@@ -2857,12 +2858,12 @@
               "exportExact": 0.9216666666666666
             },
             "crosscheck": {
-              "coreExact": 0.81375,
-              "exportExact": 0.81375
+              "coreExact": 0.8129166666666666,
+              "exportExact": 0.8129166666666666
             },
             "exportV1": {
-              "coreExact": 0.9629166666666666,
-              "exportExact": 0.9629166666666666
+              "coreExact": 0.9595833333333333,
+              "exportExact": 0.9595833333333333
             },
             "accuracyRegime": {
               "coreExact": 0.97625,
@@ -2884,12 +2885,12 @@
               "exportExact": 0.9230769230769231
             },
             "crosscheck": {
-              "coreExact": 0.7814685314685315,
-              "exportExact": 0.7814685314685315
+              "coreExact": 0.7762237762237763,
+              "exportExact": 0.7762237762237763
             },
             "exportV1": {
-              "coreExact": 0.9842657342657343,
-              "exportExact": 0.9842657342657343
+              "coreExact": 0.9825174825174825,
+              "exportExact": 0.9825174825174825
             },
             "accuracyRegime": {
               "coreExact": 0.9825174825174825,
@@ -2911,12 +2912,12 @@
               "exportExact": 0.9216666666666666
             },
             "crosscheck": {
-              "coreExact": 0.81375,
-              "exportExact": 0.81375
+              "coreExact": 0.8129166666666666,
+              "exportExact": 0.8129166666666666
             },
             "exportV1": {
-              "coreExact": 0.9629166666666666,
-              "exportExact": 0.9629166666666666
+              "coreExact": 0.9595833333333333,
+              "exportExact": 0.9595833333333333
             },
             "accuracyRegime": {
               "coreExact": 0.97625,
@@ -2992,12 +2993,12 @@
               "exportExact": 0.90625
             },
             "crosscheck": {
-              "coreExact": 0.7734375,
-              "exportExact": 0.7734375
+              "coreExact": 0.7723958333333333,
+              "exportExact": 0.7723958333333333
             },
             "exportV1": {
-              "coreExact": 0.9536458333333333,
-              "exportExact": 0.9536458333333333
+              "coreExact": 0.9494791666666667,
+              "exportExact": 0.9494791666666667
             },
             "accuracyRegime": {
               "coreExact": 0.9703125,
@@ -3023,8 +3024,8 @@
               "exportExact": 1
             },
             "exportV1": {
-              "coreExact": 1,
-              "exportExact": 1
+              "coreExact": 0.975,
+              "exportExact": 0.975
             },
             "accuracyRegime": {
               "coreExact": 1,
@@ -3046,8 +3047,8 @@
               "exportExact": 0.875
             },
             "crosscheck": {
-              "coreExact": 0.8916666666666667,
-              "exportExact": 0.8916666666666667
+              "coreExact": 0.9083333333333333,
+              "exportExact": 0.9083333333333333
             },
             "exportV1": {
               "coreExact": 0.9333333333333333,
@@ -3077,8 +3078,8 @@
               "exportExact": 0.95
             },
             "exportV1": {
-              "coreExact": 1,
-              "exportExact": 1
+              "coreExact": 0.95,
+              "exportExact": 0.95
             },
             "accuracyRegime": {
               "coreExact": 0.95,
@@ -3178,16 +3179,16 @@
               "thickness",
               "gap"
             ],
-            "coreExact": 0.7515625,
-            "exportExact": 0.7515625,
+            "coreExact": 0.74609375,
+            "exportExact": 0.74609375,
             "perKeyExact": {
-              "length": 0.81875,
-              "thickness": 0.94765625,
-              "gap": 0.8640625
+              "length": 0.81640625,
+              "thickness": 0.94453125,
+              "gap": 0.85546875
             },
             "groupStability": {
-              "lower": 0.71015625,
-              "upper": 0.79140625,
+              "lower": 0.70390625,
+              "upper": 0.78671875,
               "clusters": 80
             }
           },
@@ -3197,16 +3198,16 @@
               "thickness",
               "gap"
             ],
-            "coreExact": 0.9109375,
-            "exportExact": 0.9109375,
+            "coreExact": 0.9,
+            "exportExact": 0.9,
             "perKeyExact": {
-              "length": 0.95625,
-              "thickness": 0.96953125,
-              "gap": 0.96640625
+              "length": 0.9671875,
+              "thickness": 0.96796875,
+              "gap": 0.9390625
             },
             "groupStability": {
-              "lower": 0.88125,
-              "upper": 0.9375,
+              "lower": 0.87109375,
+              "upper": 0.92734375,
               "clusters": 80
             }
           },
@@ -3276,12 +3277,12 @@
               "exportExact": 0.72578125
             },
             "crosscheck": {
-              "coreExact": 0.7515625,
-              "exportExact": 0.7515625
+              "coreExact": 0.74609375,
+              "exportExact": 0.74609375
             },
             "exportV1": {
-              "coreExact": 0.9109375,
-              "exportExact": 0.9109375
+              "coreExact": 0.9,
+              "exportExact": 0.9
             },
             "accuracyRegime": {
               "coreExact": 0.74921875,
@@ -3307,8 +3308,8 @@
               "exportExact": 1
             },
             "exportV1": {
-              "coreExact": 0.875,
-              "exportExact": 0.875
+              "coreExact": 0.8653846153846154,
+              "exportExact": 0.8653846153846154
             },
             "accuracyRegime": {
               "coreExact": 0.8076923076923077,
@@ -3330,12 +3331,12 @@
               "exportExact": 0.72578125
             },
             "crosscheck": {
-              "coreExact": 0.7515625,
-              "exportExact": 0.7515625
+              "coreExact": 0.74609375,
+              "exportExact": 0.74609375
             },
             "exportV1": {
-              "coreExact": 0.9109375,
-              "exportExact": 0.9109375
+              "coreExact": 0.9,
+              "exportExact": 0.9
             },
             "accuracyRegime": {
               "coreExact": 0.74921875,
@@ -3357,12 +3358,12 @@
               "exportExact": 0.72578125
             },
             "crosscheck": {
-              "coreExact": 0.7515625,
-              "exportExact": 0.7515625
+              "coreExact": 0.74609375,
+              "exportExact": 0.74609375
             },
             "exportV1": {
-              "coreExact": 0.9109375,
-              "exportExact": 0.9109375
+              "coreExact": 0.9,
+              "exportExact": 0.9
             },
             "accuracyRegime": {
               "coreExact": 0.74921875,
@@ -3388,8 +3389,8 @@
               "exportExact": 0.9326923076923077
             },
             "exportV1": {
-              "coreExact": 0.7788461538461539,
-              "exportExact": 0.7788461538461539
+              "coreExact": 1,
+              "exportExact": 1
             },
             "accuracyRegime": {
               "coreExact": 0.8173076923076923,
@@ -3465,12 +3466,12 @@
               "exportExact": 0.6733870967741935
             },
             "crosscheck": {
-              "coreExact": 0.7163978494623656,
-              "exportExact": 0.7163978494623656
+              "coreExact": 0.7083333333333334,
+              "exportExact": 0.7083333333333334
             },
             "exportV1": {
-              "coreExact": 0.9220430107526881,
-              "exportExact": 0.9220430107526881
+              "coreExact": 0.8844086021505376,
+              "exportExact": 0.8844086021505376
             },
             "accuracyRegime": {
               "coreExact": 0.7365591397849462,
@@ -3492,12 +3493,12 @@
               "exportExact": 0.6666666666666666
             },
             "crosscheck": {
-              "coreExact": 0.6923076923076923,
-              "exportExact": 0.6923076923076923
+              "coreExact": 0.6891025641025641,
+              "exportExact": 0.6891025641025641
             },
             "exportV1": {
-              "coreExact": 0.9358974358974359,
-              "exportExact": 0.9358974358974359
+              "coreExact": 0.9102564102564102,
+              "exportExact": 0.9102564102564102
             },
             "accuracyRegime": {
               "coreExact": 0.7371794871794872,
@@ -3523,8 +3524,8 @@
               "exportExact": 0.9375
             },
             "exportV1": {
-              "coreExact": 0.7083333333333334,
-              "exportExact": 0.7083333333333334
+              "coreExact": 0.9166666666666666,
+              "exportExact": 0.9166666666666666
             },
             "accuracyRegime": {
               "coreExact": 0.7291666666666666,
@@ -3570,16 +3571,16 @@
               "thickness",
               "gap"
             ],
-            "coreExact": 0.7609375,
-            "exportExact": 0.7609375,
+            "coreExact": 0.76328125,
+            "exportExact": 0.76328125,
             "perKeyExact": {
-              "length": 0.81171875,
-              "thickness": 0.96484375,
-              "gap": 0.83984375
+              "length": 0.8109375,
+              "thickness": 0.96796875,
+              "gap": 0.84140625
             },
             "groupStability": {
-              "lower": 0.71638671875,
-              "upper": 0.80546875,
+              "lower": 0.7171875,
+              "upper": 0.8078320312499999,
               "clusters": 80
             }
           },
@@ -3592,13 +3593,13 @@
             "coreExact": 0.93125,
             "exportExact": 0.93125,
             "perKeyExact": {
-              "length": 0.96796875,
-              "thickness": 0.99296875,
-              "gap": 0.9609375
+              "length": 0.97109375,
+              "thickness": 0.98984375,
+              "gap": 0.959375
             },
             "groupStability": {
-              "lower": 0.909375,
-              "upper": 0.9515625,
+              "lower": 0.90859375,
+              "upper": 0.953125,
               "clusters": 80
             }
           },
@@ -3668,8 +3669,8 @@
               "exportExact": 0.93984375
             },
             "crosscheck": {
-              "coreExact": 0.7609375,
-              "exportExact": 0.7609375
+              "coreExact": 0.76328125,
+              "exportExact": 0.76328125
             },
             "exportV1": {
               "coreExact": 0.93125,
@@ -3722,8 +3723,8 @@
               "exportExact": 0.93984375
             },
             "crosscheck": {
-              "coreExact": 0.7609375,
-              "exportExact": 0.7609375
+              "coreExact": 0.76328125,
+              "exportExact": 0.76328125
             },
             "exportV1": {
               "coreExact": 0.93125,
@@ -3749,8 +3750,8 @@
               "exportExact": 0.93984375
             },
             "crosscheck": {
-              "coreExact": 0.7609375,
-              "exportExact": 0.7609375
+              "coreExact": 0.76328125,
+              "exportExact": 0.76328125
             },
             "exportV1": {
               "coreExact": 0.93125,
@@ -3776,12 +3777,12 @@
               "exportExact": 0.9166666666666666
             },
             "crosscheck": {
-              "coreExact": 0.90625,
-              "exportExact": 0.90625
+              "coreExact": 0.9375,
+              "exportExact": 0.9375
             },
             "exportV1": {
-              "coreExact": 0.8645833333333334,
-              "exportExact": 0.8645833333333334
+              "coreExact": 0.90625,
+              "exportExact": 0.90625
             },
             "accuracyRegime": {
               "coreExact": 0.625,
@@ -3861,8 +3862,8 @@
               "exportExact": 0.7710526315789473
             },
             "exportV1": {
-              "coreExact": 0.975,
-              "exportExact": 0.975
+              "coreExact": 0.9723684210526315,
+              "exportExact": 0.9723684210526315
             },
             "accuracyRegime": {
               "coreExact": 0.7065789473684211,
@@ -3888,8 +3889,8 @@
               "exportExact": 0.6057692307692307
             },
             "exportV1": {
-              "coreExact": 0.8653846153846154,
-              "exportExact": 0.8653846153846154
+              "coreExact": 0.8589743589743589,
+              "exportExact": 0.8589743589743589
             },
             "accuracyRegime": {
               "coreExact": 0.7916666666666666,
@@ -3949,13 +3950,13 @@
             "fillAlpha",
             "t_style"
           ],
-          "coreExact": 0.6479048295454546,
+          "coreExact": 0.6823508522727273,
           "appearanceExact": 0.9453125,
-          "exportExact": 0.6036931818181818,
+          "exportExact": 0.6381392045454546,
           "perKeyExact": {
-            "length": 0.7544389204545454,
-            "thickness": 0.7926136363636364,
-            "gap": 0.7604758522727273,
+            "length": 0.7723721590909091,
+            "thickness": 0.8148082386363636,
+            "gap": 0.7974076704545454,
             "drawoutline": 0.9453125,
             "outlineAlpha": 0.9623579545454546,
             "color": 0.9453125,
@@ -3963,8 +3964,8 @@
             "t_style": 1
           },
           "groupStability": {
-            "lower": 0.5440340909090907,
-            "upper": 0.6631791548295457,
+            "lower": 0.5868164062499995,
+            "upper": 0.6898126775568184,
             "clusters": 128
           }
         },
@@ -3979,13 +3980,13 @@
             "fillAlpha",
             "t_style"
           ],
-          "coreExact": 0.9992897727272727,
+          "coreExact": 0.9985795454545454,
           "appearanceExact": 1,
-          "exportExact": 0.9992897727272727,
+          "exportExact": 0.9985795454545454,
           "perKeyExact": {
-            "length": 0.9992897727272727,
-            "thickness": 1,
-            "gap": 0.9992897727272727,
+            "length": 0.9985795454545454,
+            "thickness": 0.9998224431818182,
+            "gap": 0.9987571022727273,
             "drawoutline": 1,
             "outlineAlpha": 1,
             "color": 1,
@@ -3993,8 +3994,8 @@
             "t_style": 1
           },
           "groupStability": {
-            "lower": 0.998224431818182,
-            "upper": 1,
+            "lower": 0.9971590909090908,
+            "upper": 0.9996448863636364,
             "clusters": 128
           }
         },
@@ -4006,19 +4007,19 @@
             "drawoutline",
             "outlineAlpha"
           ],
-          "coreExact": 0.6867897727272727,
+          "coreExact": 0.7251420454545454,
           "appearanceExact": 1,
-          "exportExact": 0.6867897727272727,
+          "exportExact": 0.7251420454545454,
           "perKeyExact": {
-            "length": 0.7743252840909091,
-            "thickness": 0.8146306818181818,
-            "gap": 0.7732599431818182,
+            "length": 0.7915482954545454,
+            "thickness": 0.8364701704545454,
+            "gap": 0.8091264204545454,
             "drawoutline": 1,
             "outlineAlpha": 1
           },
           "groupStability": {
-            "lower": 0.6321022727272726,
-            "upper": 0.7416548295454544,
+            "lower": 0.6702725497159092,
+            "upper": 0.7761097301136358,
             "clusters": 128
           }
         },
@@ -4028,16 +4029,16 @@
             "thickness",
             "gap"
           ],
-          "coreExact": 0.6370738636363636,
-          "exportExact": 0.6370738636363636,
+          "coreExact": 0.6709872159090909,
+          "exportExact": 0.6709872159090909,
           "perKeyExact": {
-            "length": 0.7503551136363636,
-            "thickness": 0.7794744318181818,
-            "gap": 0.7409446022727273
+            "length": 0.7686434659090909,
+            "thickness": 0.7984730113636364,
+            "gap": 0.77734375
           },
           "groupStability": {
-            "lower": 0.5861061789772724,
-            "upper": 0.6875133167613632,
+            "lower": 0.6207341974431817,
+            "upper": 0.7198197798295455,
             "clusters": 128
           }
         },
@@ -4047,16 +4048,16 @@
             "thickness",
             "gap"
           ],
-          "coreExact": 0.5257457386363636,
-          "exportExact": 0.5257457386363636,
+          "coreExact": 0.5516690340909091,
+          "exportExact": 0.5516690340909091,
           "perKeyExact": {
-            "length": 0.6772017045454546,
-            "thickness": 0.7397017045454546,
-            "gap": 0.6525213068181818
+            "length": 0.6930042613636364,
+            "thickness": 0.7592329545454546,
+            "gap": 0.6867897727272727
           },
           "groupStability": {
-            "lower": 0.4646661931818181,
-            "upper": 0.5912642045454545,
+            "lower": 0.49627130681818193,
+            "upper": 0.6123934659090909,
             "clusters": 128
           }
         },
@@ -4066,16 +4067,16 @@
             "thickness",
             "gap"
           ],
-          "coreExact": 0.6789772727272727,
-          "exportExact": 0.6789772727272727,
+          "coreExact": 0.7134232954545454,
+          "exportExact": 0.7134232954545454,
           "perKeyExact": {
-            "length": 0.7691761363636364,
-            "thickness": 0.8055752840909091,
-            "gap": 0.7560369318181818
+            "length": 0.7865767045454546,
+            "thickness": 0.8279474431818182,
+            "gap": 0.7945667613636364
           },
           "groupStability": {
-            "lower": 0.6242720170454542,
-            "upper": 0.7333140980113636,
+            "lower": 0.6596235795454551,
+            "upper": 0.7650967684659091,
             "clusters": 128
           }
         }
@@ -4084,97 +4085,97 @@
         "all": {
           "rows": 5632,
           "ruleBaseline": {
-            "coreExact": 0.6479048295454546,
-            "exportExact": 0.6036931818181818
+            "coreExact": 0.6823508522727273,
+            "exportExact": 0.6381392045454546
           },
           "crosscheck": {
-            "coreExact": 0.9992897727272727,
-            "exportExact": 0.9992897727272727
+            "coreExact": 0.9985795454545454,
+            "exportExact": 0.9985795454545454
           },
           "exportV1": {
-            "coreExact": 0.6867897727272727,
-            "exportExact": 0.6867897727272727
+            "coreExact": 0.7251420454545454,
+            "exportExact": 0.7251420454545454
           },
           "accuracyRegime": {
-            "coreExact": 0.6370738636363636,
-            "exportExact": 0.6370738636363636
+            "coreExact": 0.6709872159090909,
+            "exportExact": 0.6709872159090909
           },
           "accuracyQuantized": {
-            "coreExact": 0.5257457386363636,
-            "exportExact": 0.5257457386363636
+            "coreExact": 0.5516690340909091,
+            "exportExact": 0.5516690340909091
           },
           "structuredRanker": {
-            "coreExact": 0.6789772727272727,
-            "exportExact": 0.6789772727272727
+            "coreExact": 0.7134232954545454,
+            "exportExact": 0.7134232954545454
           }
         },
         "regular-even": {
           "rows": 1676,
           "ruleBaseline": {
-            "coreExact": 0.6497613365155132,
-            "exportExact": 0.6497613365155132
+            "coreExact": 0.6473747016706444,
+            "exportExact": 0.6473747016706444
           },
           "crosscheck": {
-            "coreExact": 0.9982100238663485,
-            "exportExact": 0.9982100238663485
+            "coreExact": 0.9988066825775657,
+            "exportExact": 0.9988066825775657
           },
           "exportV1": {
-            "coreExact": 0.6891408114558473,
-            "exportExact": 0.6891408114558473
+            "coreExact": 0.6968973747016707,
+            "exportExact": 0.6968973747016707
           },
           "accuracyRegime": {
-            "coreExact": 0.6485680190930787,
-            "exportExact": 0.6485680190930787
+            "coreExact": 0.64618138424821,
+            "exportExact": 0.64618138424821
           },
           "accuracyQuantized": {
-            "coreExact": 0.6712410501193318,
-            "exportExact": 0.6712410501193318
+            "coreExact": 0.6682577565632458,
+            "exportExact": 0.6682577565632458
           },
           "structuredRanker": {
-            "coreExact": 0.6831742243436754,
-            "exportExact": 0.6831742243436754
+            "coreExact": 0.6807875894988067,
+            "exportExact": 0.6807875894988067
           }
         },
         "equal-height": {
           "rows": 2560,
           "ruleBaseline": {
-            "coreExact": 0.765234375,
-            "exportExact": 0.711328125
+            "coreExact": 0.803515625,
+            "exportExact": 0.749609375
           },
           "crosscheck": {
             "coreExact": 1,
             "exportExact": 1
           },
           "exportV1": {
-            "coreExact": 0.77109375,
-            "exportExact": 0.77109375
+            "coreExact": 0.809375,
+            "exportExact": 0.809375
           },
           "accuracyRegime": {
-            "coreExact": 0.7609375,
-            "exportExact": 0.7609375
+            "coreExact": 0.79921875,
+            "exportExact": 0.79921875
           },
           "accuracyQuantized": {
-            "coreExact": 0.621484375,
-            "exportExact": 0.621484375
+            "coreExact": 0.65625,
+            "exportExact": 0.65625
           },
           "structuredRanker": {
-            "coreExact": 0.76796875,
-            "exportExact": 0.76796875
+            "coreExact": 0.80625,
+            "exportExact": 0.80625
           }
         },
         "regular-odd": {
           "rows": 1872,
           "ruleBaseline": {
-            "coreExact": 0.6784188034188035,
-            "exportExact": 0.6784188034188035
+            "coreExact": 0.6789529914529915,
+            "exportExact": 0.6789529914529915
           },
           "crosscheck": {
-            "coreExact": 0.999465811965812,
-            "exportExact": 0.999465811965812
+            "coreExact": 0.9978632478632479,
+            "exportExact": 0.9978632478632479
           },
           "exportV1": {
-            "coreExact": 0.7366452991452992,
-            "exportExact": 0.7366452991452992
+            "coreExact": 0.7313034188034188,
+            "exportExact": 0.7313034188034188
           },
           "accuracyRegime": {
             "coreExact": 0.6805555555555556,
@@ -4185,62 +4186,62 @@
             "exportExact": 0.6778846153846154
           },
           "structuredRanker": {
-            "coreExact": 0.7232905982905983,
-            "exportExact": 0.7232905982905983
+            "coreExact": 0.7238247863247863,
+            "exportExact": 0.7238247863247863
           }
         },
         "cross-height": {
           "rows": 3072,
           "ruleBaseline": {
-            "coreExact": 0.5501302083333334,
-            "exportExact": 0.5139973958333334
+            "coreExact": 0.5813802083333334,
+            "exportExact": 0.5452473958333334
           },
           "crosscheck": {
-            "coreExact": 0.9986979166666666,
-            "exportExact": 0.9986979166666666
+            "coreExact": 0.9973958333333334,
+            "exportExact": 0.9973958333333334
           },
           "exportV1": {
-            "coreExact": 0.6165364583333334,
-            "exportExact": 0.6165364583333334
+            "coreExact": 0.6549479166666666,
+            "exportExact": 0.6549479166666666
           },
           "accuracyRegime": {
-            "coreExact": 0.5338541666666666,
-            "exportExact": 0.5338541666666666
+            "coreExact": 0.5641276041666666,
+            "exportExact": 0.5641276041666666
           },
           "accuracyQuantized": {
-            "coreExact": 0.4459635416666667,
-            "exportExact": 0.4459635416666667
+            "coreExact": 0.4645182291666667,
+            "exportExact": 0.4645182291666667
           },
           "structuredRanker": {
-            "coreExact": 0.6048177083333334,
-            "exportExact": 0.6048177083333334
+            "coreExact": 0.6360677083333334,
+            "exportExact": 0.6360677083333334
           }
         },
         "usealpha-0": {
           "rows": 1496,
           "ruleBaseline": {
-            "coreExact": 0.6664438502673797,
-            "exportExact": 0.6036096256684492
+            "coreExact": 0.69451871657754,
+            "exportExact": 0.6316844919786097
           },
           "crosscheck": {
-            "coreExact": 1,
-            "exportExact": 1
+            "coreExact": 0.9993315508021391,
+            "exportExact": 0.9993315508021391
           },
           "exportV1": {
-            "coreExact": 0.6931818181818182,
-            "exportExact": 0.6931818181818182
+            "coreExact": 0.7266042780748663,
+            "exportExact": 0.7266042780748663
           },
           "accuracyRegime": {
-            "coreExact": 0.6524064171122995,
-            "exportExact": 0.6524064171122995
+            "coreExact": 0.6798128342245989,
+            "exportExact": 0.6798128342245989
           },
           "accuracyQuantized": {
-            "coreExact": 0.5340909090909091,
-            "exportExact": 0.5340909090909091
+            "coreExact": 0.5621657754010695,
+            "exportExact": 0.5621657754010695
           },
           "structuredRanker": {
-            "coreExact": 0.6905080213903744,
-            "exportExact": 0.6905080213903744
+            "coreExact": 0.7179144385026738,
+            "exportExact": 0.7179144385026738
           }
         },
         "overpaint": {
@@ -4250,24 +4251,24 @@
             "exportExact": 0.35135135135135137
           },
           "crosscheck": {
-            "coreExact": 0.998256320836966,
-            "exportExact": 0.998256320836966
+            "coreExact": 0.995640802092415,
+            "exportExact": 0.995640802092415
           },
           "exportV1": {
-            "coreExact": 0.37053182214472535,
-            "exportExact": 0.37053182214472535
+            "coreExact": 0.3687881429816914,
+            "exportExact": 0.3687881429816914
           },
           "accuracyRegime": {
-            "coreExact": 0.34524847428073235,
-            "exportExact": 0.34524847428073235
+            "coreExact": 0.34176111595466435,
+            "exportExact": 0.34176111595466435
           },
           "accuracyQuantized": {
-            "coreExact": 0.31386224934612034,
-            "exportExact": 0.31386224934612034
+            "coreExact": 0.31734960767218834,
+            "exportExact": 0.31734960767218834
           },
           "structuredRanker": {
-            "coreExact": 0.36355710549258935,
-            "exportExact": 0.36355710549258935
+            "coreExact": 0.36268526591107236,
+            "exportExact": 0.36268526591107236
           }
         },
         "crossed-full": {
@@ -4277,132 +4278,132 @@
             "exportExact": 0.5581395348837209
           },
           "crosscheck": {
-            "coreExact": 1,
-            "exportExact": 1
+            "coreExact": 0.998062015503876,
+            "exportExact": 0.998062015503876
           },
           "exportV1": {
-            "coreExact": 0.5930232558139535,
-            "exportExact": 0.5930232558139535
+            "coreExact": 0.5891472868217055,
+            "exportExact": 0.5891472868217055
           },
           "accuracyRegime": {
-            "coreExact": 0.5387596899224806,
-            "exportExact": 0.5387596899224806
+            "coreExact": 0.5348837209302325,
+            "exportExact": 0.5348837209302325
           },
           "accuracyQuantized": {
-            "coreExact": 0,
-            "exportExact": 0
+            "coreExact": 0.007751937984496124,
+            "exportExact": 0.007751937984496124
           },
           "structuredRanker": {
-            "coreExact": 0.5968992248062015,
-            "exportExact": 0.5968992248062015
+            "coreExact": 0.5930232558139535,
+            "exportExact": 0.5930232558139535
           }
         },
         "inverted-t": {
           "rows": 492,
           "ruleBaseline": {
-            "coreExact": 0.4796747967479675,
-            "exportExact": 0.4796747967479675
+            "coreExact": 0.47764227642276424,
+            "exportExact": 0.47764227642276424
           },
           "crosscheck": {
             "coreExact": 1,
             "exportExact": 1
           },
           "exportV1": {
-            "coreExact": 0.4878048780487805,
-            "exportExact": 0.4878048780487805
+            "coreExact": 0.491869918699187,
+            "exportExact": 0.491869918699187
           },
           "accuracyRegime": {
-            "coreExact": 0.4065040650406504,
-            "exportExact": 0.4065040650406504
+            "coreExact": 0.4024390243902439,
+            "exportExact": 0.4024390243902439
           },
           "accuracyQuantized": {
-            "coreExact": 0.11788617886178862,
-            "exportExact": 0.11788617886178862
+            "coreExact": 0.12398373983739837,
+            "exportExact": 0.12398373983739837
           },
           "structuredRanker": {
-            "coreExact": 0.4898373983739837,
-            "exportExact": 0.4898373983739837
+            "coreExact": 0.4878048780487805,
+            "exportExact": 0.4878048780487805
           }
         },
         "crossed-at-zero": {
           "rows": 56,
           "ruleBaseline": {
-            "coreExact": 0.26785714285714285,
-            "exportExact": 0.26785714285714285
+            "coreExact": 0.23214285714285715,
+            "exportExact": 0.23214285714285715
           },
           "crosscheck": {
             "coreExact": 1,
             "exportExact": 1
           },
           "exportV1": {
-            "coreExact": 0.30357142857142855,
-            "exportExact": 0.30357142857142855
+            "coreExact": 0.23214285714285715,
+            "exportExact": 0.23214285714285715
           },
           "accuracyRegime": {
-            "coreExact": 0.25,
-            "exportExact": 0.25
+            "coreExact": 0.21428571428571427,
+            "exportExact": 0.21428571428571427
           },
           "accuracyQuantized": {
-            "coreExact": 0.17857142857142858,
-            "exportExact": 0.17857142857142858
+            "coreExact": 0.21428571428571427,
+            "exportExact": 0.21428571428571427
           },
           "structuredRanker": {
-            "coreExact": 0.26785714285714285,
-            "exportExact": 0.26785714285714285
+            "coreExact": 0.23214285714285715,
+            "exportExact": 0.23214285714285715
           }
         },
         "crossed-partial": {
           "rows": 412,
           "ruleBaseline": {
-            "coreExact": 0.46359223300970875,
-            "exportExact": 0.46359223300970875
+            "coreExact": 0.4684466019417476,
+            "exportExact": 0.4684466019417476
           },
           "crosscheck": {
-            "coreExact": 1,
-            "exportExact": 1
+            "coreExact": 0.9975728155339806,
+            "exportExact": 0.9975728155339806
           },
           "exportV1": {
-            "coreExact": 0.46359223300970875,
-            "exportExact": 0.46359223300970875
+            "coreExact": 0.49271844660194175,
+            "exportExact": 0.49271844660194175
           },
           "accuracyRegime": {
-            "coreExact": 0.3932038834951456,
-            "exportExact": 0.3932038834951456
+            "coreExact": 0.39805825242718446,
+            "exportExact": 0.39805825242718446
           },
           "accuracyQuantized": {
             "coreExact": 0.279126213592233,
             "exportExact": 0.279126213592233
           },
           "structuredRanker": {
-            "coreExact": 0.46359223300970875,
-            "exportExact": 0.46359223300970875
+            "coreExact": 0.4733009708737864,
+            "exportExact": 0.4733009708737864
           }
         },
         "outline-3": {
           "rows": 616,
           "ruleBaseline": {
-            "coreExact": 0.12012987012987013,
-            "exportExact": 0.025974025974025976
+            "coreExact": 0.237012987012987,
+            "exportExact": 0.14285714285714285
           },
           "crosscheck": {
-            "coreExact": 1,
-            "exportExact": 1
+            "coreExact": 0.9983766233766234,
+            "exportExact": 0.9983766233766234
           },
           "exportV1": {
-            "coreExact": 0.1396103896103896,
-            "exportExact": 0.1396103896103896
+            "coreExact": 0.2597402597402597,
+            "exportExact": 0.2597402597402597
           },
           "accuracyRegime": {
-            "coreExact": 0.11363636363636363,
-            "exportExact": 0.11363636363636363
+            "coreExact": 0.2288961038961039,
+            "exportExact": 0.2288961038961039
           },
           "accuracyQuantized": {
-            "coreExact": 0.01948051948051948,
-            "exportExact": 0.01948051948051948
+            "coreExact": 0.09415584415584416,
+            "exportExact": 0.09415584415584416
           },
           "structuredRanker": {
-            "coreExact": 0.1331168831168831,
-            "exportExact": 0.1331168831168831
+            "coreExact": 0.2532467532467532,
+            "exportExact": 0.2532467532467532
           }
         },
         "size0-outline-only": {
@@ -4416,8 +4417,8 @@
             "exportExact": 1
           },
           "exportV1": {
-            "coreExact": 0.8376623376623377,
-            "exportExact": 0.8376623376623377
+            "coreExact": 0.8441558441558441,
+            "exportExact": 0.8441558441558441
           },
           "accuracyRegime": {
             "coreExact": 0.7824675324675324,
@@ -4443,8 +4444,8 @@
             "exportExact": 1
           },
           "exportV1": {
-            "coreExact": 0.8376623376623377,
-            "exportExact": 0.8376623376623377
+            "coreExact": 0.8441558441558441,
+            "exportExact": 0.8441558441558441
           },
           "accuracyRegime": {
             "coreExact": 0.7824675324675324,
@@ -4462,28 +4463,28 @@
         "size0-dot-outline": {
           "rows": 308,
           "ruleBaseline": {
-            "coreExact": 0.2824675324675325,
-            "exportExact": 0.2824675324675325
+            "coreExact": 0.922077922077922,
+            "exportExact": 0.922077922077922
           },
           "crosscheck": {
             "coreExact": 1,
             "exportExact": 1
           },
           "exportV1": {
-            "coreExact": 0.3051948051948052,
-            "exportExact": 0.3051948051948052
+            "coreExact": 0.9707792207792207,
+            "exportExact": 0.9707792207792207
           },
           "accuracyRegime": {
-            "coreExact": 0.2987012987012987,
-            "exportExact": 0.2987012987012987
+            "coreExact": 0.9383116883116883,
+            "exportExact": 0.9383116883116883
           },
           "accuracyQuantized": {
-            "coreExact": 0.2077922077922078,
-            "exportExact": 0.2077922077922078
+            "coreExact": 0.6785714285714286,
+            "exportExact": 0.6785714285714286
           },
           "structuredRanker": {
-            "coreExact": 0.2987012987012987,
-            "exportExact": 0.2987012987012987
+            "coreExact": 0.9383116883116883,
+            "exportExact": 0.9383116883116883
           }
         },
         "size0-empty": {
@@ -4543,28 +4544,28 @@
         "zero-length": {
           "rows": 396,
           "ruleBaseline": {
-            "coreExact": 0.6641414141414141,
-            "exportExact": 0.3560606060606061
+            "coreExact": 0.8737373737373737,
+            "exportExact": 0.5656565656565656
           },
           "crosscheck": {
             "coreExact": 1,
             "exportExact": 1
           },
           "exportV1": {
-            "coreExact": 0.6893939393939394,
-            "exportExact": 0.6893939393939394
+            "coreExact": 0.9191919191919192,
+            "exportExact": 0.9191919191919192
           },
           "accuracyRegime": {
-            "coreExact": 0.6414141414141414,
-            "exportExact": 0.6414141414141414
+            "coreExact": 0.851010101010101,
+            "exportExact": 0.851010101010101
           },
           "accuracyQuantized": {
-            "coreExact": 0.29292929292929293,
-            "exportExact": 0.29292929292929293
+            "coreExact": 0.4393939393939394,
+            "exportExact": 0.4393939393939394
           },
           "structuredRanker": {
-            "coreExact": 0.6818181818181818,
-            "exportExact": 0.6818181818181818
+            "coreExact": 0.9141414141414141,
+            "exportExact": 0.9141414141414141
           }
         },
         "weapon-gap": {
@@ -4574,24 +4575,24 @@
             "exportExact": 0.75
           },
           "crosscheck": {
-            "coreExact": 0.9971590909090909,
-            "exportExact": 0.9971590909090909
+            "coreExact": 0.9943181818181818,
+            "exportExact": 0.9943181818181818
           },
           "exportV1": {
-            "coreExact": 0.8409090909090909,
-            "exportExact": 0.8409090909090909
+            "coreExact": 0.8380681818181818,
+            "exportExact": 0.8380681818181818
           },
           "accuracyRegime": {
+            "coreExact": 0.8068181818181818,
+            "exportExact": 0.8068181818181818
+          },
+          "accuracyQuantized": {
             "coreExact": 0.8096590909090909,
             "exportExact": 0.8096590909090909
           },
-          "accuracyQuantized": {
-            "coreExact": 0.8125,
-            "exportExact": 0.8125
-          },
           "structuredRanker": {
-            "coreExact": 0.8181818181818182,
-            "exportExact": 0.8181818181818182
+            "coreExact": 0.8153409090909091,
+            "exportExact": 0.8153409090909091
           }
         }
       }
@@ -4611,13 +4612,13 @@
             "fillAlpha",
             "t_style"
           ],
-          "coreExact": 0.5625,
+          "coreExact": 0.6409090909090909,
           "appearanceExact": 0.8761363636363636,
-          "exportExact": 0.4661931818181818,
+          "exportExact": 0.5446022727272727,
           "perKeyExact": {
-            "length": 0.6803977272727273,
-            "thickness": 0.73125,
-            "gap": 0.6829545454545455,
+            "length": 0.7323863636363637,
+            "thickness": 0.7678977272727273,
+            "gap": 0.7730113636363637,
             "drawoutline": 0.8761363636363636,
             "outlineAlpha": 0.9136363636363637,
             "color": 0.8761363636363636,
@@ -4625,8 +4626,8 @@
             "t_style": 1
           },
           "groupStability": {
-            "lower": 0.3880681818181818,
-            "upper": 0.5426278409090909,
+            "lower": 0.48408380681818164,
+            "upper": 0.6042684659090908,
             "clusters": 80
           }
         },
@@ -4641,13 +4642,13 @@
             "fillAlpha",
             "t_style"
           ],
-          "coreExact": 0.9977272727272727,
+          "coreExact": 0.9985795454545454,
           "appearanceExact": 1,
-          "exportExact": 0.9977272727272727,
+          "exportExact": 0.9985795454545454,
           "perKeyExact": {
             "length": 0.9988636363636364,
-            "thickness": 0.9991477272727273,
-            "gap": 0.9977272727272727,
+            "thickness": 0.9994318181818181,
+            "gap": 0.9991477272727273,
             "drawoutline": 1,
             "outlineAlpha": 1,
             "color": 1,
@@ -4655,8 +4656,8 @@
             "t_style": 1
           },
           "groupStability": {
-            "lower": 0.9954545454545455,
-            "upper": 0.9994318181818181,
+            "lower": 0.996875,
+            "upper": 0.9997159090909091,
             "clusters": 80
           }
         },
@@ -4668,19 +4669,19 @@
             "drawoutline",
             "outlineAlpha"
           ],
-          "coreExact": 0.5838068181818182,
+          "coreExact": 0.6650568181818182,
           "appearanceExact": 1,
-          "exportExact": 0.5838068181818182,
+          "exportExact": 0.6650568181818182,
           "perKeyExact": {
-            "length": 0.6971590909090909,
-            "thickness": 0.7477272727272727,
-            "gap": 0.6869318181818181,
+            "length": 0.7474431818181818,
+            "thickness": 0.7786931818181818,
+            "gap": 0.7789772727272727,
             "drawoutline": 1,
             "outlineAlpha": 1
           },
           "groupStability": {
-            "lower": 0.5102201704545453,
-            "upper": 0.6545454545454545,
+            "lower": 0.5880681818181819,
+            "upper": 0.7357954545454541,
             "clusters": 80
           }
         },
@@ -4690,16 +4691,16 @@
             "thickness",
             "gap"
           ],
-          "coreExact": 0.5397727272727273,
-          "exportExact": 0.5397727272727273,
+          "coreExact": 0.6178977272727273,
+          "exportExact": 0.6178977272727273,
           "perKeyExact": {
-            "length": 0.665340909090909,
-            "thickness": 0.7215909090909091,
-            "gap": 0.6579545454545455
+            "length": 0.7176136363636364,
+            "thickness": 0.7528409090909091,
+            "gap": 0.7494318181818181
           },
           "groupStability": {
-            "lower": 0.47270596590909086,
-            "upper": 0.6059730113636361,
+            "lower": 0.5485653409090908,
+            "upper": 0.6832599431818178,
             "clusters": 80
           }
         },
@@ -4709,16 +4710,16 @@
             "thickness",
             "gap"
           ],
-          "coreExact": 0.28664772727272725,
-          "exportExact": 0.28664772727272725,
+          "coreExact": 0.34602272727272726,
+          "exportExact": 0.34602272727272726,
           "perKeyExact": {
-            "length": 0.49176136363636364,
-            "thickness": 0.61875,
-            "gap": 0.4642045454545455
+            "length": 0.5389204545454546,
+            "thickness": 0.6502840909090909,
+            "gap": 0.5454545454545454
           },
           "groupStability": {
-            "lower": 0.21448863636363638,
-            "upper": 0.3619531249999998,
+            "lower": 0.2755610795454545,
+            "upper": 0.41477982954545456,
             "clusters": 80
           }
         },
@@ -4728,16 +4729,16 @@
             "thickness",
             "gap"
           ],
-          "coreExact": 0.5815340909090909,
-          "exportExact": 0.5815340909090909,
+          "coreExact": 0.6588068181818182,
+          "exportExact": 0.6588068181818182,
           "perKeyExact": {
-            "length": 0.6911931818181818,
-            "thickness": 0.7355113636363636,
-            "gap": 0.6732954545454546
+            "length": 0.7428977272727273,
+            "thickness": 0.7724431818181818,
+            "gap": 0.7678977272727273
           },
           "groupStability": {
-            "lower": 0.5107670454545453,
-            "upper": 0.6505823863636365,
+            "lower": 0.582365056818182,
+            "upper": 0.7292684659090909,
             "clusters": 80
           }
         }
@@ -4746,290 +4747,290 @@
         "all": {
           "rows": 3520,
           "ruleBaseline": {
-            "coreExact": 0.5625,
-            "exportExact": 0.4661931818181818
+            "coreExact": 0.6409090909090909,
+            "exportExact": 0.5446022727272727
           },
           "crosscheck": {
-            "coreExact": 0.9977272727272727,
-            "exportExact": 0.9977272727272727
+            "coreExact": 0.9985795454545454,
+            "exportExact": 0.9985795454545454
           },
           "exportV1": {
-            "coreExact": 0.5838068181818182,
-            "exportExact": 0.5838068181818182
+            "coreExact": 0.6650568181818182,
+            "exportExact": 0.6650568181818182
           },
           "accuracyRegime": {
-            "coreExact": 0.5397727272727273,
-            "exportExact": 0.5397727272727273
+            "coreExact": 0.6178977272727273,
+            "exportExact": 0.6178977272727273
           },
           "accuracyQuantized": {
-            "coreExact": 0.28664772727272725,
-            "exportExact": 0.28664772727272725
+            "coreExact": 0.34602272727272726,
+            "exportExact": 0.34602272727272726
           },
           "structuredRanker": {
-            "coreExact": 0.5815340909090909,
-            "exportExact": 0.5815340909090909
+            "coreExact": 0.6588068181818182,
+            "exportExact": 0.6588068181818182
           }
         },
         "crossed-at-zero": {
           "rows": 96,
           "ruleBaseline": {
-            "coreExact": 0.4791666666666667,
-            "exportExact": 0.4791666666666667
+            "coreExact": 0.4166666666666667,
+            "exportExact": 0.4166666666666667
           },
           "crosscheck": {
             "coreExact": 1,
             "exportExact": 1
           },
           "exportV1": {
-            "coreExact": 0.4895833333333333,
-            "exportExact": 0.4895833333333333
+            "coreExact": 0.40625,
+            "exportExact": 0.40625
           },
           "accuracyRegime": {
-            "coreExact": 0.4791666666666667,
-            "exportExact": 0.4791666666666667
+            "coreExact": 0.4166666666666667,
+            "exportExact": 0.4166666666666667
           },
           "accuracyQuantized": {
-            "coreExact": 0.07291666666666667,
-            "exportExact": 0.07291666666666667
+            "coreExact": 0.125,
+            "exportExact": 0.125
           },
           "structuredRanker": {
-            "coreExact": 0.4895833333333333,
-            "exportExact": 0.4895833333333333
+            "coreExact": 0.4270833333333333,
+            "exportExact": 0.4270833333333333
           }
         },
         "overpaint": {
           "rows": 1215,
           "ruleBaseline": {
-            "coreExact": 0.3868312757201646,
-            "exportExact": 0.3868312757201646
+            "coreExact": 0.38353909465020575,
+            "exportExact": 0.38353909465020575
           },
           "crosscheck": {
-            "coreExact": 0.9950617283950617,
-            "exportExact": 0.9950617283950617
+            "coreExact": 0.9958847736625515,
+            "exportExact": 0.9958847736625515
           },
           "exportV1": {
-            "coreExact": 0.39670781893004115,
-            "exportExact": 0.39670781893004115
+            "coreExact": 0.3893004115226337,
+            "exportExact": 0.3893004115226337
           },
           "accuracyRegime": {
-            "coreExact": 0.36049382716049383,
-            "exportExact": 0.36049382716049383
+            "coreExact": 0.35555555555555557,
+            "exportExact": 0.35555555555555557
           },
           "accuracyQuantized": {
-            "coreExact": 0.25267489711934155,
-            "exportExact": 0.25267489711934155
+            "coreExact": 0.2559670781893004,
+            "exportExact": 0.2559670781893004
           },
           "structuredRanker": {
-            "coreExact": 0.39423868312757204,
-            "exportExact": 0.39423868312757204
+            "coreExact": 0.38765432098765434,
+            "exportExact": 0.38765432098765434
           }
         },
         "equal-height": {
           "rows": 1600,
           "ruleBaseline": {
-            "coreExact": 0.6825,
-            "exportExact": 0.5625
+            "coreExact": 0.760625,
+            "exportExact": 0.640625
           },
           "crosscheck": {
             "coreExact": 1,
             "exportExact": 1
           },
           "exportV1": {
-            "coreExact": 0.6825,
-            "exportExact": 0.6825
+            "coreExact": 0.760625,
+            "exportExact": 0.760625
           },
           "accuracyRegime": {
-            "coreExact": 0.669375,
-            "exportExact": 0.669375
+            "coreExact": 0.7475,
+            "exportExact": 0.7475
           },
           "accuracyQuantized": {
-            "coreExact": 0.360625,
-            "exportExact": 0.360625
+            "coreExact": 0.433125,
+            "exportExact": 0.433125
           },
           "structuredRanker": {
-            "coreExact": 0.6825,
-            "exportExact": 0.6825
+            "coreExact": 0.760625,
+            "exportExact": 0.760625
           }
         },
         "inverted-t": {
           "rows": 596,
           "ruleBaseline": {
-            "coreExact": 0.5687919463087249,
-            "exportExact": 0.5687919463087249
+            "coreExact": 0.5671140939597316,
+            "exportExact": 0.5671140939597316
           },
           "crosscheck": {
             "coreExact": 0.9949664429530202,
             "exportExact": 0.9949664429530202
           },
           "exportV1": {
-            "coreExact": 0.5822147651006712,
-            "exportExact": 0.5822147651006712
+            "coreExact": 0.5788590604026845,
+            "exportExact": 0.5788590604026845
           },
           "accuracyRegime": {
-            "coreExact": 0.5033557046979866,
-            "exportExact": 0.5033557046979866
+            "coreExact": 0.5016778523489933,
+            "exportExact": 0.5016778523489933
           },
           "accuracyQuantized": {
-            "coreExact": 0.12248322147651007,
-            "exportExact": 0.12248322147651007
+            "coreExact": 0.13087248322147652,
+            "exportExact": 0.13087248322147652
           },
           "structuredRanker": {
-            "coreExact": 0.5738255033557047,
-            "exportExact": 0.5738255033557047
+            "coreExact": 0.5721476510067114,
+            "exportExact": 0.5721476510067114
           }
         },
         "crossed-partial": {
           "rows": 532,
           "ruleBaseline": {
-            "coreExact": 0.575187969924812,
-            "exportExact": 0.575187969924812
+            "coreExact": 0.599624060150376,
+            "exportExact": 0.599624060150376
           },
           "crosscheck": {
-            "coreExact": 0.9943609022556391,
-            "exportExact": 0.9943609022556391
+            "coreExact": 0.9924812030075187,
+            "exportExact": 0.9924812030075187
           },
           "exportV1": {
-            "coreExact": 0.5789473684210527,
-            "exportExact": 0.5789473684210527
+            "coreExact": 0.6033834586466166,
+            "exportExact": 0.6033834586466166
           },
           "accuracyRegime": {
-            "coreExact": 0.5131578947368421,
-            "exportExact": 0.5131578947368421
+            "coreExact": 0.5375939849624061,
+            "exportExact": 0.5375939849624061
           },
           "accuracyQuantized": {
-            "coreExact": 0.2800751879699248,
-            "exportExact": 0.2800751879699248
+            "coreExact": 0.29135338345864664,
+            "exportExact": 0.29135338345864664
           },
           "structuredRanker": {
-            "coreExact": 0.5733082706766918,
-            "exportExact": 0.5733082706766918
+            "coreExact": 0.5977443609022557,
+            "exportExact": 0.5977443609022557
           }
         },
         "cross-height": {
           "rows": 1920,
           "ruleBaseline": {
-            "coreExact": 0.4625,
-            "exportExact": 0.3859375
+            "coreExact": 0.5411458333333333,
+            "exportExact": 0.46458333333333335
           },
           "crosscheck": {
-            "coreExact": 0.9958333333333333,
-            "exportExact": 0.9958333333333333
+            "coreExact": 0.9973958333333334,
+            "exportExact": 0.9973958333333334
           },
           "exportV1": {
-            "coreExact": 0.5015625,
-            "exportExact": 0.5015625
+            "coreExact": 0.5854166666666667,
+            "exportExact": 0.5854166666666667
           },
           "accuracyRegime": {
-            "coreExact": 0.4317708333333333,
-            "exportExact": 0.4317708333333333
+            "coreExact": 0.5098958333333333,
+            "exportExact": 0.5098958333333333
           },
           "accuracyQuantized": {
-            "coreExact": 0.225,
-            "exportExact": 0.225
+            "coreExact": 0.2734375,
+            "exportExact": 0.2734375
           },
           "structuredRanker": {
-            "coreExact": 0.4973958333333333,
-            "exportExact": 0.4973958333333333
+            "coreExact": 0.5739583333333333,
+            "exportExact": 0.5739583333333333
           }
         },
         "crossed-full": {
           "rows": 564,
           "ruleBaseline": {
-            "coreExact": 0.6737588652482269,
-            "exportExact": 0.6737588652482269
-          },
-          "crosscheck": {
-            "coreExact": 0.9964539007092199,
-            "exportExact": 0.9964539007092199
-          },
-          "exportV1": {
-            "coreExact": 0.6914893617021277,
-            "exportExact": 0.6914893617021277
-          },
-          "accuracyRegime": {
-            "coreExact": 0.6347517730496454,
-            "exportExact": 0.6347517730496454
-          },
-          "accuracyQuantized": {
-            "coreExact": 0,
-            "exportExact": 0
-          },
-          "structuredRanker": {
-            "coreExact": 0.6861702127659575,
-            "exportExact": 0.6861702127659575
-          }
-        },
-        "outline-3": {
-          "rows": 880,
-          "ruleBaseline": {
-            "coreExact": 0.0875,
-            "exportExact": 0
-          },
-          "crosscheck": {
-            "coreExact": 0.9977272727272727,
-            "exportExact": 0.9977272727272727
-          },
-          "exportV1": {
-            "coreExact": 0.09431818181818181,
-            "exportExact": 0.09431818181818181
-          },
-          "accuracyRegime": {
-            "coreExact": 0.08409090909090909,
-            "exportExact": 0.08409090909090909
-          },
-          "accuracyQuantized": {
-            "coreExact": 0,
-            "exportExact": 0
-          },
-          "structuredRanker": {
-            "coreExact": 0.09886363636363636,
-            "exportExact": 0.09886363636363636
-          }
-        },
-        "regular-even": {
-          "rows": 820,
-          "ruleBaseline": {
-            "coreExact": 0.47073170731707314,
-            "exportExact": 0.47073170731707314
-          },
-          "crosscheck": {
-            "coreExact": 0.9963414634146341,
-            "exportExact": 0.9963414634146341
-          },
-          "exportV1": {
-            "coreExact": 0.4951219512195122,
-            "exportExact": 0.4951219512195122
-          },
-          "accuracyRegime": {
-            "coreExact": 0.4560975609756098,
-            "exportExact": 0.4560975609756098
-          },
-          "accuracyQuantized": {
-            "coreExact": 0.4634146341463415,
-            "exportExact": 0.4634146341463415
-          },
-          "structuredRanker": {
-            "coreExact": 0.4878048780487805,
-            "exportExact": 0.4878048780487805
-          }
-        },
-        "regular-odd": {
-          "rows": 548,
-          "ruleBaseline": {
-            "coreExact": 0.5237226277372263,
-            "exportExact": 0.5237226277372263
+            "coreExact": 0.6719858156028369,
+            "exportExact": 0.6719858156028369
           },
           "crosscheck": {
             "coreExact": 1,
             "exportExact": 1
           },
           "exportV1": {
-            "coreExact": 0.5383211678832117,
-            "exportExact": 0.5383211678832117
+            "coreExact": 0.6843971631205674,
+            "exportExact": 0.6843971631205674
           },
           "accuracyRegime": {
-            "coreExact": 0.5182481751824818,
-            "exportExact": 0.5182481751824818
+            "coreExact": 0.6329787234042553,
+            "exportExact": 0.6329787234042553
+          },
+          "accuracyQuantized": {
+            "coreExact": 0,
+            "exportExact": 0
+          },
+          "structuredRanker": {
+            "coreExact": 0.6843971631205674,
+            "exportExact": 0.6843971631205674
+          }
+        },
+        "outline-3": {
+          "rows": 880,
+          "ruleBaseline": {
+            "coreExact": 0.24204545454545454,
+            "exportExact": 0.15454545454545454
+          },
+          "crosscheck": {
+            "coreExact": 0.9988636363636364,
+            "exportExact": 0.9988636363636364
+          },
+          "exportV1": {
+            "coreExact": 0.24772727272727274,
+            "exportExact": 0.24772727272727274
+          },
+          "accuracyRegime": {
+            "coreExact": 0.2375,
+            "exportExact": 0.2375
+          },
+          "accuracyQuantized": {
+            "coreExact": 0.10227272727272728,
+            "exportExact": 0.10227272727272728
+          },
+          "structuredRanker": {
+            "coreExact": 0.25113636363636366,
+            "exportExact": 0.25113636363636366
+          }
+        },
+        "regular-even": {
+          "rows": 820,
+          "ruleBaseline": {
+            "coreExact": 0.4853658536585366,
+            "exportExact": 0.4853658536585366
+          },
+          "crosscheck": {
+            "coreExact": 0.998780487804878,
+            "exportExact": 0.998780487804878
+          },
+          "exportV1": {
+            "coreExact": 0.5182926829268293,
+            "exportExact": 0.5182926829268293
+          },
+          "accuracyRegime": {
+            "coreExact": 0.4695121951219512,
+            "exportExact": 0.4695121951219512
+          },
+          "accuracyQuantized": {
+            "coreExact": 0.474390243902439,
+            "exportExact": 0.474390243902439
+          },
+          "structuredRanker": {
+            "coreExact": 0.5024390243902439,
+            "exportExact": 0.5024390243902439
+          }
+        },
+        "regular-odd": {
+          "rows": 548,
+          "ruleBaseline": {
+            "coreExact": 0.5273722627737226,
+            "exportExact": 0.5273722627737226
+          },
+          "crosscheck": {
+            "coreExact": 1,
+            "exportExact": 1
+          },
+          "exportV1": {
+            "coreExact": 0.541970802919708,
+            "exportExact": 0.541970802919708
+          },
+          "accuracyRegime": {
+            "coreExact": 0.5218978102189781,
+            "exportExact": 0.5218978102189781
           },
           "accuracyQuantized": {
             "coreExact": 0.5145985401459854,
@@ -5097,109 +5098,109 @@
         "size0-dot-outline": {
           "rows": 436,
           "ruleBaseline": {
-            "coreExact": 0.3532110091743119,
-            "exportExact": 0.3532110091743119
+            "coreExact": 0.9403669724770642,
+            "exportExact": 0.9403669724770642
           },
           "crosscheck": {
             "coreExact": 1,
             "exportExact": 1
           },
           "exportV1": {
-            "coreExact": 0.37844036697247707,
-            "exportExact": 0.37844036697247707
+            "coreExact": 0.9839449541284404,
+            "exportExact": 0.9839449541284404
           },
           "accuracyRegime": {
-            "coreExact": 0.36926605504587157,
-            "exportExact": 0.36926605504587157
+            "coreExact": 0.9564220183486238,
+            "exportExact": 0.9564220183486238
           },
           "accuracyQuantized": {
-            "coreExact": 0.27293577981651373,
-            "exportExact": 0.27293577981651373
+            "coreExact": 0.7064220183486238,
+            "exportExact": 0.7064220183486238
           },
           "structuredRanker": {
-            "coreExact": 0.37844036697247707,
-            "exportExact": 0.37844036697247707
+            "coreExact": 0.9610091743119266,
+            "exportExact": 0.9610091743119266
           }
         },
         "zero-length": {
           "rows": 520,
           "ruleBaseline": {
-            "coreExact": 0.6230769230769231,
-            "exportExact": 0.33076923076923076
+            "coreExact": 0.8461538461538461,
+            "exportExact": 0.5538461538461539
           },
           "crosscheck": {
             "coreExact": 1,
             "exportExact": 1
           },
           "exportV1": {
-            "coreExact": 0.6403846153846153,
-            "exportExact": 0.6403846153846153
+            "coreExact": 0.8653846153846154,
+            "exportExact": 0.8653846153846154
           },
           "accuracyRegime": {
-            "coreExact": 0.5961538461538461,
-            "exportExact": 0.5961538461538461
+            "coreExact": 0.8192307692307692,
+            "exportExact": 0.8192307692307692
           },
           "accuracyQuantized": {
-            "coreExact": 0.2653846153846154,
-            "exportExact": 0.2653846153846154
+            "coreExact": 0.4461538461538462,
+            "exportExact": 0.4461538461538462
           },
           "structuredRanker": {
-            "coreExact": 0.6423076923076924,
-            "exportExact": 0.6423076923076924
+            "coreExact": 0.8538461538461538,
+            "exportExact": 0.8538461538461538
           }
         },
         "weapon-gap": {
           "rows": 440,
           "ruleBaseline": {
-            "coreExact": 0.575,
-            "exportExact": 0.5386363636363637
+            "coreExact": 0.5840909090909091,
+            "exportExact": 0.5477272727272727
           },
           "crosscheck": {
             "coreExact": 1,
             "exportExact": 1
           },
           "exportV1": {
-            "coreExact": 0.6181818181818182,
-            "exportExact": 0.6181818181818182
+            "coreExact": 0.6295454545454545,
+            "exportExact": 0.6295454545454545
           },
           "accuracyRegime": {
-            "coreExact": 0.5727272727272728,
-            "exportExact": 0.5727272727272728
+            "coreExact": 0.5818181818181818,
+            "exportExact": 0.5818181818181818
           },
           "accuracyQuantized": {
-            "coreExact": 0.5386363636363637,
-            "exportExact": 0.5386363636363637
+            "coreExact": 0.5431818181818182,
+            "exportExact": 0.5431818181818182
           },
           "structuredRanker": {
-            "coreExact": 0.6068181818181818,
-            "exportExact": 0.6068181818181818
+            "coreExact": 0.615909090909091,
+            "exportExact": 0.615909090909091
           }
         },
         "usealpha-0": {
           "rows": 704,
           "ruleBaseline": {
-            "coreExact": 0.5767045454545454,
-            "exportExact": 0.5767045454545454
+            "coreExact": 0.6008522727272727,
+            "exportExact": 0.6008522727272727
           },
           "crosscheck": {
             "coreExact": 0.9957386363636364,
             "exportExact": 0.9957386363636364
           },
           "exportV1": {
-            "coreExact": 0.5909090909090909,
-            "exportExact": 0.5909090909090909
+            "coreExact": 0.6136363636363636,
+            "exportExact": 0.6136363636363636
           },
           "accuracyRegime": {
-            "coreExact": 0.5553977272727273,
-            "exportExact": 0.5553977272727273
+            "coreExact": 0.5795454545454546,
+            "exportExact": 0.5795454545454546
           },
           "accuracyQuantized": {
-            "coreExact": 0.30823863636363635,
-            "exportExact": 0.30823863636363635
+            "coreExact": 0.3224431818181818,
+            "exportExact": 0.3224431818181818
           },
           "structuredRanker": {
-            "coreExact": 0.5894886363636364,
-            "exportExact": 0.5894886363636364
+            "coreExact": 0.6150568181818182,
+            "exportExact": 0.6150568181818182
           }
         },
         "size0-empty": {
@@ -5265,10 +5266,10 @@
     "labels": "infer() with community-static-2026-10 (community-static-v11), read back through nativeCommands. All design inputs are SYNTHETIC; corpus and presets are published settings labelled by the same solver, not native captures.",
     "inference": "lib/solver/ml-crosscheck.js: source arithmetic for the old shape and the regime transforms, a bracketing candidate set of its own, learned ranker and heads. It never calls solveCommunity, searchCommunity, communityAxis or the edge-case planner (checked by tests/tooling/boundaries.test.mjs).",
     "selection": "Capacities from fixed lists, chosen on validation only (ranker: core exact; each head group: its key exact); refit on train+validation.",
-    "freshEvaluation": "Fresh test (new seed) and edge challenge drawn and hashed (freshInputsSha256) before the first fit. They are scored only after the final refit; capacity selection uses validation only. On 2026-10-02 they were scored, one comparator reporting bug (exportV1 scored on keys it does not predict) was fixed, and they were rescored; the repository cannot prove that no other run happened in between. The v10 screen-refinement and actual-outline fix deliberately refreezes the window on 2026-10-06 after earlier evaluations were observed; the v11 default T rule (ADR-0025) refreezes it again on 2026-10-07. These are reused, prespecified holdouts, not fresh independent validation of community-static-v11. Inputs and capacity lists are unchanged. Reruns reproduce the final run byte for byte.",
+    "freshEvaluation": "Fresh test (new seed) and edge challenge drawn and hashed (freshInputsSha256) before the first fit. They are scored only after the final refit; capacity selection uses validation only. On 2026-10-02 they were scored, one comparator reporting bug (exportV1 scored on keys it does not predict) was fixed, and they were rescored; the repository cannot prove that no other run happened in between. The v10 screen-refinement and actual-outline fix deliberately refreezes the window on 2026-10-06 after earlier evaluations were observed; the v11 default T rule (ADR-0025) and visible aiming-shape objective (ADR-0026) refreeze it again on 2026-10-07. These are reused, prespecified holdouts, not fresh independent validation of community-static-v11. Inputs and capacity lists are unchanged. Reruns reproduce the final run byte for byte.",
     "regression": "evaluations.regression re-scores earlier splits whose labels were already seen (accuracy, structured and export v1 test and challenge splits, corpus, presets). They are regression numbers, not fresh evidence.",
     "evaluated": "2026-10-07",
     "scope": "Agreement with our own converter on designed inputs, never game accuracy. Group intervals are cluster-resampling stability intervals."
   },
-  "fingerprintSha256": "1f5db1347e6b8c6476887e3dc62dc48dd20195932806df98d9c7261f12b0c141"
+  "fingerprintSha256": "7d8f37ab3ea5ff3424df6b64b082ef6dfe7afd90daa0f4802de514a44d7a46ba"
 }

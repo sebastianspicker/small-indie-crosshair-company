@@ -2667,13 +2667,14 @@
       "model": "export-state-learner-v2",
       "learner": "sicc-export-emulator-v2",
       "targetVersion": "community-static-v11",
-      "parametersHash": 3446794792,
+      "targetRevision": "visible-stroke-fit-2026-10-07",
+      "parametersHash": 1361745395,
       "partition": "fresh",
       "evaluated": "2026-10-07",
       "evaluationKind": "reused-holdout-regression",
-      "exactRate": 0.9992897727272727,
-      "lower": 0.998224431818182,
-      "upper": 1,
+      "exactRate": 0.9985795454545454,
+      "lower": 0.9971590909090908,
+      "upper": 0.9996448863636364,
       "cases": 5632,
       "groups": 128,
       "keys": [
@@ -2714,9 +2715,9 @@
         "note": "Evaluated design: equal old, current and screen heights at the pixel goal, plus the listed old/current/screen-height scopes at either goal. The rate is not claimed outside it."
       },
       "edgeChallenge": {
-        "exactRate": 0.9977272727272727,
-        "lower": 0.9954545454545455,
-        "upper": 0.9994318181818181,
+        "exactRate": 0.9985795454545454,
+        "lower": 0.996875,
+        "upper": 0.9997159090909091,
         "cases": 3520,
         "groups": 80
       },
@@ -2766,9 +2767,9 @@
     "exportState": {
       "targetVersion": "community-static-v11",
       "exportExact": {
-        "test": 0.6511627906976745,
-        "challenge": 0.5125,
-        "corpusCrossHeight": 0.6259259259259259
+        "test": 0.688953488372093,
+        "challenge": 0.5609375,
+        "corpusCrossHeight": 0.6333333333333333
       }
     },
     "crosscheck": {
@@ -2777,26 +2778,26 @@
       "reusedHoldout": {
         "rows": 5632,
         "groups": 128,
-        "ruleBaseline": 0.6036931818181818,
+        "ruleBaseline": 0.6381392045454546,
         "learner": {
-          "exactRate": 0.9992897727272727,
-          "lower": 0.998224431818182,
-          "upper": 1
+          "exactRate": 0.9985795454545454,
+          "lower": 0.9971590909090908,
+          "upper": 0.9996448863636364
         }
       },
       "edgeChallenge": {
         "rows": 3520,
         "groups": 80,
-        "ruleBaseline": 0.4661931818181818,
+        "ruleBaseline": 0.5446022727272727,
         "learner": {
-          "exactRate": 0.9977272727272727,
-          "lower": 0.9954545454545455,
-          "upper": 0.9994318181818181
+          "exactRate": 0.9985795454545454,
+          "lower": 0.996875,
+          "upper": 0.9997159090909091
         }
       },
       "corpusCrossHeight": {
         "rows": 810,
-        "exactRate": 0.9703703703703703
+        "exactRate": 0.9950617283950617
       }
     }
   },

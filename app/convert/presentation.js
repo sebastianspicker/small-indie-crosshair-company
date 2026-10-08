@@ -67,7 +67,8 @@ export function renderPreviews(view, r, measuredMask = null) {
   // The converted plate shows what the export draws: its colour, outline mode and T flag, not the old ones.
   const converted = get('q-converted-canvas');
   if (r.blockers?.length) converted.getContext('2d').clearRect(0, 0, converted.width, converted.height);
-  else paintQuant(converted, r.converted, exported.settings, exported.color, zoom, reference, { grid, outline: exportedOutline });
+  else paintQuant(converted, r.converted, exported.settings, exported.color, zoom, reference,
+    { grid, outline: exportedOutline, outlineAlpha: exported.outlineAlpha });
 }
 
 function previewLabels(view, r) {
@@ -87,10 +88,39 @@ function previewLabels(view, r) {
     'without a shift; the shape check also compares outlines and allows a 1 px shift.';
 }
 
+/** Visible shapes the T flag's "cross" or "T" would misname. */
+const SHAPE_NAMES = new Set(['dot', 'horizontal-bar', 'vertical-bar', 'rectangle', 'empty', 'hash',
+  'hollow-square', 'hollow-rectangle', 'outline-only', 'horizontal-fragments', 'vertical-fragments',
+  'sideways-t', 'inverted-t', 'asymmetric-cross', 'corner', 'irregular-core']);
 /** The T chip: the exported shape, and when the best-match option drew a cross for an old T, that it flipped it. */
-export function tShapeFlag(old, exported, options) {
+export function tShapeFlag(old, exported, options, visible = null) {
+  if (SHAPE_NAMES.has(visible?.family)) return visible.label.toLowerCase();
+  if (visible?.family === 'cross' && exported.t_style) return 'cross';
   if (exported.t_style) return 'T';
   return old.t_style && options?.tShape === 'auto' ? 'cross (old T)' : 'cross';
+}
+
+const UNDRAWABLE_WHY = {
+  'outline-reach': 'Its old outline reaches more than 1 px past the colour or covers it; the current outline is at most 1 px wide.',
+  'not-mirror-symmetric': 'Its old shape is lopsided left to right; every current crosshair is mirror-symmetric.',
+};
+/** The notice under the preview: shown only for an approximate export, with the proof (ADR-0028) when there is one. */
+export function exactnessNotice(report, blocked = Boolean(report?.blockers?.length)) {
+  const check = report?.shapeCheck;
+  if (blocked || check?.status !== 'approximate') return null;
+  const impossible = report.drawability?.impossible, pct = `${Math.floor(100 * check.alignedIou)}%`;
+  const notes = [`The old and new shapes have ${pct} pixel overlap after alignment (up to 1 px).`];
+  if (report.aimingShape?.prioritized) notes.push('The conversion prioritizes the aiming dot.');
+  if (impossible) notes.push(...report.drawability.reasons.map(reason => UNDRAWABLE_WHY[reason]));
+  else if (Number.isInteger(report.options?.outlineMode)) notes.push('This comparison includes your selected outline mode.');
+  return { impossible: Boolean(impossible), lead: impossible ? 'The current game cannot draw this old crosshair exactly.'
+    : 'This conversion is approximate.', text: notes.join(' ') };
+}
+function renderExactness(view, report, blocked) {
+  const notice = exactnessNotice(report, blocked), box = view.get('qs-exactness');
+  box.hidden = !notice;
+  box.dataset.impossible = String(Boolean(notice?.impossible));
+  view.get('qs-exactness-text').replaceChildren(...(notice ? [el('strong', {}, notice.lead), ` ${notice.text}`] : []));
 }
 
 /** `status: false` (a resize or font refresh) leaves the status line alone, e.g. "Copied to clipboard.".
@@ -100,12 +130,13 @@ export function renderSimple(view, report, { status = true, include = null } = {
   const { get } = view, s = report.settings, n = report.chosen.native, c = rgba(s), exported = exportedLook(report);
   const exportedOutline = nativeOutlineExtent(exported.settings, exported.outlineMode);
   const blocked = Boolean(report.blockers.length);
+  renderExactness(view, report, blocked);
   // Blocked: nothing is exported, so no values or flags are shown either.
   get('qs-length').textContent = blocked ? '-' : fmt(n.length);
   get('qs-out-thickness').textContent = blocked ? '-' : fmt(n.thickness);
   get('qs-out-gap').textContent = blocked ? '-' : fmt(n.gap);
   // Only what the commands do not show plainly: the exported T (and a flip) and the outline mode, also when its line is left out.
-  const flags = [tShapeFlag(s, exported.settings, report.options), ['no outline', 'full outline', 'half outline'][exported.outlineMode]];
+  const flags = [tShapeFlag(s, exported.settings, report.options, report.taxonomy?.converted), ['no outline', 'full outline', 'half outline'][exported.outlineMode]];
   // Chips; visually hidden separators keep the text content one line ("a · b") when copied.
   get('qs-flags').replaceChildren(...(blocked ? [] : flags.flatMap((flag, index) => [
     ...(index ? [el('span', { class: 'flag-sep', 'aria-hidden': 'true' }, ' · ')] : []), el('span', { class: 'flag' }, flag)])));
@@ -114,7 +145,7 @@ export function renderSimple(view, report, { status = true, include = null } = {
   paintQuant(oldCanvas, report.target, s, c, zoom, null,
     { grid: zoom >= 6, annotate: true, outline: legacyOutlineExtent(s), legacy: true });
   paintQuant(get('qs-new-canvas'), report.converted, exported.settings, exported.color, zoom, null,
-    { grid: zoom >= 6, annotate: true, outline: exportedOutline });
+    { grid: zoom >= 6, annotate: true, outline: exportedOutline, outlineAlpha: exported.outlineAlpha });
   get('qs-scale').textContent = `×${zoom}, 1 cell = 1 game pixel, ring = screen centre.`;
   view.root.dataset.blocked = String(blocked);
   const lines = blocked ? [] : exportQuantCFG(report, include).split(';').filter(Boolean);

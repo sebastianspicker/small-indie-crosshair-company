@@ -11,7 +11,7 @@
 </header>
 <main id="main" class="notebook" tabindex="-1"><h1>The mathematics of the converter</h1>
 <p class="notebook-build">Model <code>community-static-v11</code>
- · build 2000922 · release 0.17.0</p>
+ · build 2000922 · release 0.19.1</p>
 <nav class="notebook-toc" aria-label="Contents"><div class="toc-group"><span>Overview</span><a href="#intro">Introduction</a><a href="#pipeline">How one conversion is decided</a></div><div class="toc-group"><span>Part I. The old crosshair</span><a href="#chapter-1">Legacy geometry: how the old game turned settings into pixels</a><a href="#chapter-4">Pixels, outlines and draw order</a></div><div class="toc-group"><span>Part II. Converting</span><a href="#chapter-2">Conversion goals and identifiability</a><a href="#chapter-12">Community static conversion: solving for the new values</a><a href="#chapter-13">What decides the export: appearance rules, the T flag and export groups</a></div><div class="toc-group"><span>Part III. Evidence and uncertainty</span><a href="#chapter-5">Model families: 27 guesses about the new renderer</a><a href="#chapter-9">Historical joint solver and evidence integrity</a><a href="#chapter-6">Statistical inference: what the data can identify</a><a href="#chapter-7">Screenshot inversion and measurement of the new game</a><a href="#chapter-3">Calibration and capture protocol</a><a href="#chapter-11">Certified inverse, decision rules and a capture plan</a></div><div class="toc-group"><span>Part IV. Learning</span><a href="#chapter-8">The pro-crosshair corpus and the historical benchmark</a><a href="#chapter-10">Learned emulators and the ML cross-check</a></div><div class="toc-group"><span>Appendices</span><a href="#appendix-notation">Appendix A. Notation</a><a href="#appendix-glossary">Appendix B. Glossary</a><a href="#appendix-history">Appendix C. Model history</a></div></nav><section id="intro" class="notebook-chapter notebook-front"><h2>Introduction</h2>
 <p>The converter reads crosshair settings written for Counter-Strike 2 before the crosshair update of September 23, 2026 and writes console commands for the current game, build 2000922. The commands aim to draw the pixels the old crosshair drew, as closely as the current settings allow.</p>
 <p>Three kinds of statement appear in this notebook, and each result says which kind it is.</p>
@@ -21,7 +21,7 @@
 <li><strong>Partial game checks.</strong> The forward model has been checked against 2 user-supplied current-game captures, reused during development, not independent holdouts. The repository holds 0 native capture pairs: no screenshot pair of the old and the current game with the same settings. The corpus and learner agreement figures compare our own implementations with each other, with other converters or with our own models. They do not measure end-to-end conversion accuracy in the game.</li>
 </ul>
 <p>No learned model decides an exported value. Every exported number comes from closed-form arithmetic, an exact bounded search and fixed rules. A separately trained learner predicts the export as a second opinion and never changes it.</p>
-<p>This page describes model <code>community-static-v11</code> of release 0.17.0. Symbols are defined once in the <a href="#appendix-notation">notation appendix</a> and terms in the <a href="#appendix-glossary">glossary</a>.</p></section>
+<p>This page describes model <code>community-static-v11</code> of release 0.19.1. Symbols are defined once in the <a href="#appendix-notation">notation appendix</a> and terms in the <a href="#appendix-glossary">glossary</a>.</p></section>
 <section id="pipeline" class="notebook-chapter notebook-front"><h2>How one conversion is decided</h2>
 <p>One conversion runs seven steps. Steps 1 to 6 decide the exported values; step 7 reports on them and changes nothing.</p>
 <ol>
@@ -2041,7 +2041,7 @@
 </details></section>
 <section id="chapter-12" class="notebook-chapter"><h3>Community static conversion: solving for the new values</h3>
 <div class="chapter-summary">
-<p>The converter first fits the bar length and width, then the gap, using a model of how the current game turns each setting into pixels. At the same resolution this is three short formulas; at another resolution it searches all legal values of each setting. When several choices are equally accurate it takes the one whose whole shape matches best, and a small search around the result then looks for a neighbour that draws the old crosshair strictly better. No step can make the match worse than the plain conversion.</p>
+<p>The converter first fits the bar length and width, then the gap, using a model of how the current game turns each setting into pixels. At the same resolution this is three short formulas; at another resolution it searches all legal values of each setting. When several choices are equally accurate it takes the one whose whole shape matches best, and a small search around the result then looks for a neighbour that improves the selected objective. Visible dot cores prioritize the aiming pixels before outline coverage; other shapes prioritize the full appearance. Corrections do not worsen that objective versus the plain conversion, but preserving a dot can reduce total outline coverage.</p>
 </div>
 <div class="key-result"><span class="key-label">Key result</span>
 <p>Against <code>community-static-v2</code>, the current search improves shift-aligned overlap on 671 of 7,444 synthetic cross-height cases and worsens it on 0 (community-static-v11 study; edge cases with another target excluded).</p>
@@ -2462,7 +2462,7 @@
     <mi>v</mi>
     <mn>0</mn>
   </msub>
-</math>, <code>refineAppearance</code> (<code>lib/solver/community-refine.js</code>) scores a bounded window of tuples by the shape check's aligned colour overlap and replaces <math xmlns="http://www.w3.org/1998/Math/MathML">
+</math>, <code>refineAppearance</code> (<code>lib/solver/community-refine.js</code>) scores a bounded window of tuples by the selected visible-aim/appearance objective and replaces <math xmlns="http://www.w3.org/1998/Math/MathML">
   <msub>
     <mi>v</mi>
     <mn>0</mn>
@@ -2570,11 +2570,11 @@
   <mo>,</mo>
   <mn>8</mn>
   <mo stretchy="false">)</mo>
-</math> when that exceeds 3. The caps keep   the worst input (size 0, thickness 6, gap −30, dot, <math xmlns="http://www.w3.org/1998/Math/MathML">
+</math> when that exceeds 3. The caps keep   the previously audited input (size 0, thickness 6, gap −30, dot, <math xmlns="http://www.w3.org/1998/Math/MathML">
   <mi>u</mi>
   <mo>=</mo>
   <mn>3</mn>
-</math>) at 6,848   evaluations; the cap of 8 changed no export in either oracle sweep (ADR-0019).</p>
+</math>) at 6,848   local-window evaluations before additional visible-stroke proposals; the cap of 8 changed no export in either oracle sweep (ADR-0019).</p>
 <ul>
 <li><strong>Outer edge.</strong> For every gap <math xmlns="http://www.w3.org/1998/Math/MathML">
   <mi>g</mi>
@@ -2599,6 +2599,7 @@
     <mn>0</mn>
   </msub>
 </math> put it.</li>
+<li><strong>Visible strokes (0.19.0).</strong> Additional candidates fit horizontal and vertical runs of each final visible colour and of the whole silhouette. Each run tries both bar orientations, its measured length/width and inner edges, and a half-length/zero-gap proposal when it spans the centre. Axes fit those sizes and their ±1 px neighbours to legal native integers. These proposals may lie beyond the local window; exact full-appearance matches still skip search. The report counts proposals separately. This finite search is not exhaustive.</li>
 <li><strong>Score.</strong> <math xmlns="http://www.w3.org/1998/Math/MathML">
   <msub>
     <mi>IoU</mi>
@@ -2607,15 +2608,15 @@
       <mn>1</mn>
     </mrow>
   </msub>
-</math> of old core and outline (old draw order) against new core and outline with the outline mode actually exported, including a hand choice; ties go to raw IoU, then to the preference order.</li>
+</math> of old core and outline (old draw order) against new core and outline with the outline mode actually exported, including a hand choice. A visible solid-square core instead prioritizes core IoU, then total appearance at that same shift (ADR-0026). Remaining ties go to raw appearance IoU, then to the preference order.</li>
 <li><strong>T flag.</strong> Under the T option <code>auto</code>, a flippable T shape also tries every tuple with the other flag, which must win strictly (<a href="#t-shapes">T shapes</a>). Under <code>keep</code>, <code>on</code> and <code>off</code> the flag is fixed.</li>
 </ul>
 <h5>Plain fallback</h5>
-<p>Whenever an appearance rule or the window changed the export, the plain dimension-first conversion (corrections off) is solved as well and exported instead if its aligned shape check is strictly higher, scored with the actual exported outline (<code>corrections-fallback</code>). Corrections therefore never score below the plain conversion; a hand-chosen outline can change the final tuple or T flag through this comparison (ADR-0022).</p>
+<p>Whenever an appearance rule or the window changed the export, the plain dimension-first conversion (corrections off) is solved as well and exported instead if its selected aiming/appearance objective is strictly higher, scored with the actual exported outline (<code>corrections-fallback</code>). Corrections never score below the plain conversion on that objective; total appearance overlap may decrease to preserve a dot. A hand-chosen outline can change the final tuple or T flag through this comparison (ADR-0022, superseded in objective by ADR-0026).</p>
 <h4>Result</h4>
 <ul>
 <li><strong>Against v2.</strong> Of the 7,444 cross-height cases, 671 gain aligned overlap and none lose it; in plain overlap 436 gain and 96 lose, the trade the aligned tie rule accepts. Exact matches rise from 1,270 to 1,388; 1,196 edge cases with another target are excluded.</li>
-<li><strong>Search completeness.</strong> A brute-force oracle scores every tuple in a bounded box with the converter's own measure (<a href="../docs/read.html?doc=docs%2Fresearch%2Foracle-sweeps-2026-10-05.md">oracle sweeps</a>). At 1080 it finds 0 better tuples on 5,000 plain inputs and 18 on 2,000 exotic ones; nine cross-resolution sweeps (7,200 inputs, 720 to 1440) find 11. Every remaining shortfall is a wide old outline, a stroke beyond the 32 px reach, or a role swap outside the width reach.</li>
+<li><strong>Earlier appearance objective.</strong> These oracle/window/cost figures predate the visible-aim revision below and are not certificates for its objective. A brute-force oracle scores every tuple in a bounded box with the converter's own measure (<a href="../docs/read.html?doc=docs%2Fresearch%2Foracle-sweeps-2026-10-05.md">oracle sweeps</a>). At 1080 it finds 0 better tuples on 5,000 plain inputs and 18 on 2,000 exotic ones; nine cross-resolution sweeps (7,200 inputs, 720 to 1440) find 11. Every remaining shortfall is a wide old outline, a stroke beyond the 32 px reach, or a role swap outside the width reach.</li>
 <li><strong>Window.</strong> On an independent geometry audit of 118,552 cases the window changed 3,211 exports, all better on the audit's measure and none worse (ADR-0017). The v10 screen refinement improved 162 of 400 frozen v9 cases with no aligned-overlap regression (ADR-0024).</li>
 <li><strong>Cost.</strong> A local run over 50 screen cases measured a median of 15.7 ms, a 95th percentile of 119.1 ms and a maximum of 216.0 ms; these are diagnostics, not a contract, and the browser runs the search in a worker.</li>
 </ul>
@@ -2625,10 +2626,14 @@
   <mo>=</mo>
   <mn>1.5</mn>
 </math>, 1, 4 and 7 px), and the lower overlap there is representability under the model, not a search failure. The oracle uses the converter's own objective; whether that objective is what the game shows is the open question of the <a href="#intro">Introduction</a>. The six converter choices on the page are this model, the historical hedge and four authored-height controls; reports use schema <code>sicc-quant-report-v6</code>.</p>
-</details></section>
+</details>
+<h4>Visible aiming shapes (v11 implementation revision)</h4>
+<p>The public name remains <code>community-static-v11</code>. Implementation revision <code>visible-aim-shape-2026-10-07</code> recognizes the final visible core after old outline overpaint. A square visible core is treated as a dot even when the input still has nonzero arms. Regular and crossed crosses, T families, bars, outline-only shapes, monochrome silhouettes and empty targets retain separate mechanism and visibility facts.</p>
+<p>A distinguishable dot core now takes priority over outline coverage in the bounded refinement and plain fallback. Candidates maximize core IoU first, then full appearance IoU at the same shift (at most one pixel), with stable existing tie preferences. Other families retain the appearance objective. The shape check is still the full-appearance score: the reported 900p example changes from five green pixels to one, raising aligned core overlap from 20% to 100% while reducing full appearance from 81% to 43%. This is an explicit outline tradeoff, not a claim of exact native rendering. Zero-alpha layers do not count as visible matches. See <a href="../docs/read.html?doc=docs%2Fengineering%2Fdecisions%2F0026-visible-aiming-shape.md">ADR-0026</a>.</p>
+<p>The <code>visible-stroke-fit-2026-10-07</code> revision also recognizes exact unions of two horizontal and two vertical strokes. A frame touching its outer corners is a hollow square/rectangle; protruding strokes form a hash (<code>#</code>). Enclosed empty regions and their area are counted by edge connectivity on compressed cells. These are separate from the old cvar mechanism (outline-only, crossed arms, etc.). Adding a dot or removing a T arm can close or open the hole and changes the visible classification accordingly. See <a href="../docs/read.html?doc=docs%2Fengineering%2Fdecisions%2F0027-visible-stroke-fitting.md">ADR-0027</a>.</p></section>
 <section id="chapter-13" class="notebook-chapter"><h3>What decides the export: appearance rules, the T flag and export groups</h3>
 <div class="chapter-summary">
-<p>Some old crosshairs drew shapes the current game cannot draw from the same settings: arms that crossed through the centre, a <code>#</code> made only of outline, a dot made by size 0, or a T whose stem pointed up. For each of these the converter uses a fixed rule that draws the same pixels another way, and it tells you when it cannot. An old T stays a T by default; you can let the converter choose a full cross where that looks closer, or force either shape. Every exported line group that your old settings did not set can be left out, so the game keeps your current value.</p>
+<p>Some old crosshairs drew shapes the current game cannot draw from the same settings: arms that crossed through the centre, a <code>#</code> made only of outline, a dot made by size 0, or a T whose stem pointed up. For each of these the converter uses a fixed rule that draws the same pixels another way, and it tells you when it cannot. A visible dot core takes priority over outline coverage, with both scores reported separately. An old T stays a T by default; you can let the converter choose a full cross where that looks closer, or force either shape. Every exported line group that your old settings did not set can be left out, so the game keeps your current value.</p>
 </div>
 <div class="key-result"><span class="key-label">Key result</span>
 <p>Over the published corpus at 768, 1080, 1440 and 2160, the shape check reports 1,921 exact, 2,208 shifted, 278 approximate and 1 empty of 4,408 rows (community-static-v11 edge-case audit).</p>
@@ -3042,7 +3047,7 @@
 <p>The export is console commands only, never a share code (ADR-0003), joined by <code>;</code> with the authored height last (<code>nativeCommands</code> in <code>lib/settings/native.js</code>, <code>exportQuantCFG</code> in <code>lib/solver/export.js</code>). The style is Static Cross 4 unless the experimental family option keeps old styles 2, 3 and 5. The outline alpha is the old crosshair opacity. With <code>cl_crosshairusealpha 0</code> the fill exports alpha 255 and the outline 200 (<code>additive-blend-approximated</code>, ADR-0015): the additive old fill never dimmed the background, a fitted alpha depends on the error measure (<a href="#chapter-4">Pixels, outlines and draw order</a>), and the other five converters surveyed export 255.</p>
 <p>Six optional line groups (ADR-0022) are RGB, fill opacity, outline mode, outline RGBA, follow recoil and authored height. A group is ticked by default only when the old input assigned its values; the authored height is always ticked, because the exported sizes are scaled for it. A redraw that needs black opaque bars or an outline override makes those groups required. An omitted line keeps the player's current game value, which the converter does not know; previews and the shape check assume the displayed values. <code>report.exportedOverrides</code> together with <code>nativeCommands</code> reproduces the export.</p>
 <h5>Components and whether they decide</h5>
-<div class="table-scroll"><table><tr><th>Component</th><th>Kind</th><th>Decides</th><th>Basis</th></tr><tr><td>Old arithmetic (<code>communityLegacy</code>)</td><td>closed form</td><td>yes</td><td>leaked old renderer, source ledger S01</td></tr><tr><td>Appearance rules</td><td>rule</td><td>yes</td><td>issues #11 and #15, their captures</td></tr><tr><td>Old draw order, <code>usealpha 0</code>, outline cap, weapon gap</td><td>rule</td><td>yes</td><td>leaked old renderer (S14 to S18), capture C</td></tr><tr><td>T plan and <code>tShape</code> option</td><td>rule</td><td>yes</td><td>ADR-0020, ADR-0025</td></tr><tr><td>Dimension-first inverse</td><td>closed form and exact search</td><td>yes</td><td>declared reconstruction</td></tr><tr><td>Tie-break</td><td>rule</td><td>yes, at cross heights</td><td>tie audit (ADR-0013)</td></tr><tr><td>Appearance window and plain fallback</td><td>bounded exact search</td><td>yes, in scope</td><td>geometry audit (ADR-0017, ADR-0019, ADR-0024)</td></tr><tr><td>Export groups</td><td>rule</td><td>which lines appear</td><td>ADR-0022</td></tr><tr><td>Shape check</td><td>closed-form comparison</td><td>no: it scores the window and reports a status</td><td>declared models</td></tr><tr><td>ML cross-check</td><td>learned</td><td>no: a second opinion</td><td><a href="#chapter-10">Learned emulators</a></td></tr></table></div>
+<div class="table-scroll"><table><tr><th>Component</th><th>Kind</th><th>Decides</th><th>Basis</th></tr><tr><td>Old arithmetic (<code>communityLegacy</code>)</td><td>closed form</td><td>yes</td><td>leaked old renderer, source ledger S01</td></tr><tr><td>Appearance rules</td><td>rule</td><td>yes</td><td>issues #11 and #15, their captures</td></tr><tr><td>Old draw order, <code>usealpha 0</code>, outline cap, weapon gap</td><td>rule</td><td>yes</td><td>leaked old renderer (S14 to S18), capture C</td></tr><tr><td>T plan and <code>tShape</code> option</td><td>rule</td><td>yes</td><td>ADR-0020, ADR-0025</td></tr><tr><td>Dimension-first inverse</td><td>closed form and exact search</td><td>yes</td><td>declared reconstruction</td></tr><tr><td>Tie-break</td><td>rule</td><td>yes, at cross heights</td><td>tie audit (ADR-0013)</td></tr><tr><td>Visible shape and aiming objective</td><td>deterministic classification and comparison</td><td>yes, preserves distinguishable dot cores first</td><td>ADR-0026</td></tr><tr><td>Appearance window and plain fallback</td><td>bounded exact search</td><td>yes, in scope</td><td>geometry audit (ADR-0017, ADR-0019, ADR-0024); revised objective (ADR-0026)</td></tr><tr><td>Export groups</td><td>rule</td><td>which lines appear</td><td>ADR-0022</td></tr><tr><td>Shape check</td><td>closed-form comparison</td><td>no: reports full appearance overlap and status</td><td>declared models</td></tr><tr><td>ML cross-check</td><td>learned</td><td>no: a second opinion</td><td><a href="#chapter-10">Learned emulators</a></td></tr></table></div>
 <h4>Result</h4>
 <p>Worked examples at 1080, pixel goal, old style 4, white at opacity 230, outline off unless stated; computed with <code>infer()</code> and <code>exportQuantCFG()</code> on <code>community-static-v11</code>. Exports are length / thickness / gap.</p>
 <div class="table-scroll"><table><tr><th>Old settings</th><th>Old pixels <math xmlns="http://www.w3.org/1998/Math/MathML">
@@ -6470,7 +6475,7 @@
   </mrow>
   <mn>2</mn>
   <mo fence="false" stretchy="false">&#x230B;</mo>
-</math> (cursed). It changes 3,499 of 7,427 corpus rows and 432 of 1,061 published crosshairs at 1080 (cases <code>s9-*</code>).</li>
+</math> (cursed). It changes 3,414 of 7,427 corpus rows and 419 of 1,061 published crosshairs at 1080 (cases <code>s9-*</code>).</li>
 <li><strong>Scaling away from 1080</strong>: <math xmlns="http://www.w3.org/1998/Math/MathML">
   <msub>
     <mi>P</mi>
@@ -7253,7 +7258,7 @@
 <p>The project trained small machine-learning models to imitate its own converter. One question was whether a fast learned shortcut could replace the exact search: it cannot, because it gets too many answers wrong. The other use is a second opinion. A separately built learner predicts the whole export for the input on screen, and the page says whether it agrees. It learned from our converter, so agreement means two implementations of our method agree, not that the game agrees, and it never changes what is exported.</p>
 </div>
 <div class="key-result"><span class="key-label">Key result</span>
-<p>The ML cross-check reproduces the whole export on 99.93% of 5,632 reserved synthetic rows (learner trained for <code>community-static-v11</code>); a rule baseline reaches 60.37%.</p>
+<p>The ML cross-check reproduces the whole export on 99.86% of 5,632 reserved synthetic rows (learner trained for <code>community-static-v11</code>); a rule baseline reaches 63.81%.</p>
 </div>
 <details class="technical"><summary>Read the technical chapter</summary>
 <h4>Question</h4>
@@ -7276,7 +7281,7 @@
 <li><strong>Community emulator v2</strong> (frozen, <code>community-static-v2</code> labels): boosted residual corrections to a rounded analytic guess.</li>
 <li><strong>Accuracy emulator</strong>: residual, quantized, regime and scale-free regime variants that predict length, thickness and gap from input features alone.</li>
 <li><strong>Structured ranker</strong>: ranks at most eight legal candidates from <code>lib/solver/community-axis.js</code>; it cannot check the export because its candidates come from the code under check.</li>
-<li><strong>Export-state learner v1</strong>: a ranker over the solver's candidates and an appearance head (outline mode and alpha). Its fixed candidate set cannot reach every export the window chooses: 4,471 training labels fall outside it (<code>labelMisses</code>).</li>
+<li><strong>Export-state learner v1</strong>: a ranker over the solver's candidates and an appearance head (outline mode and alpha). Its fixed candidate set cannot reach every export the window chooses: 4,008 training labels fall outside it (<code>labelMisses</code>).</li>
 </ul>
 <h5 id="crosscheck">The ML cross-check</h5>
 <p>The export-state learner v2 (<code>sicc-export-emulator-v2</code>, inference <code>lib/solver/ml-crosscheck.js</code>, parameters <code>data/ml-crosscheck.json</code>) predicts the whole export: length, thickness, gap, outline mode and alpha, colour, fill alpha and T. It never calls the solver, the axis search, the edge-case planner or <code>infer()</code>; a boundary test checks that it imports only <code>lib/geometry/</code>, <code>lib/settings/</code> and <code>lib/solver/statistics.js</code>.</p>
@@ -7319,16 +7324,16 @@
   <mi>g</mi>
   <mo stretchy="false">)</mo>
 </math> candidates remain.</li>
-<li><strong>Ranker.</strong> Boosted trees (64 rounds, depth 5) score each candidate; features include the exact overlap of its cell boxes with the target, best over shifts of at most one pixel.</li>
+<li><strong>Ranker.</strong> Boosted trees (48 rounds, depth 4) score each candidate; features include the exact overlap of its cell boxes with the target, best over shifts of at most one pixel.</li>
 <li><strong>Heads.</strong> Four small boosted heads predict outline mode, outline alpha, colour and fill alpha. The T flag is not predicted: it is planned and may be moved by the window, as in the converter.</li>
 <li><strong>Window.</strong> An independent re-derivation of the appearance window, the exact screen endpoints and the plain fallback moves the chosen tuple as the converter does. The ranker trains on &quot;the window of this candidate is the label&quot;.</li>
 </ol>
 <p>The trainer records SHA-256 hashes of the feature code and capacity lists and refuses to run when they change without <code>--refreeze</code>. The page row reads &quot;Agrees on this input&quot;, &quot;Differs on this input: predicts …&quot;, &quot;not retrained for this version&quot; (other version, edited file, feature mismatch or stale summary), &quot;Not checked for this input&quot; (image and measured targets), &quot;Not checked: corrections off&quot; or &quot;Not available&quot;. The export is always the solver's.</p>
 <h4>Result</h4>
 <p>Cross-check, scored on October 7, 2026 for <code>community-static-v11</code>:</p>
-<div class="table-scroll"><table><tr><th>Split</th><th>Rows</th><th>Groups</th><th>Learner</th><th>Interval</th><th>Rule baseline</th></tr><tr><td>Reused holdout</td><td>5,632</td><td>128</td><td>99.93%</td><td>99.82%–100.00%</td><td>60.37%</td></tr><tr><td>Edge challenge</td><td>3,520</td><td>80</td><td>99.77%</td><td>99.55%–99.94%</td><td>46.62%</td></tr><tr><td>Corpus, cross heights</td><td>810</td><td></td><td>97.04%</td><td></td><td></td></tr></table></div>
+<div class="table-scroll"><table><tr><th>Split</th><th>Rows</th><th>Groups</th><th>Learner</th><th>Interval</th><th>Rule baseline</th></tr><tr><td>Reused holdout</td><td>5,632</td><td>128</td><td>99.86%</td><td>99.72%–99.96%</td><td>63.81%</td></tr><tr><td>Edge challenge</td><td>3,520</td><td>80</td><td>99.86%</td><td>99.69%–99.97%</td><td>54.46%</td></tr><tr><td>Corpus, cross heights</td><td>810</td><td></td><td>99.51%</td><td></td><td></td></tr></table></div>
 <p>Research learners, exact-tuple agreement with the solver:</p>
-<div class="table-scroll"><table><tr><th>Learner</th><th>Labels</th><th>Test</th><th>Shifted challenges</th></tr><tr><td>Accuracy emulator, regime</td><td><code>community-static-v11</code></td><td>97.75%</td><td>interior 77.58%, exterior 71.88%</td></tr><tr><td>Accuracy emulator, scale-free regime</td><td>same</td><td>97.50%</td><td>interior 80.70%, exterior 74.30%</td></tr><tr><td>Accuracy emulator, quantized</td><td>same</td><td>96.27%</td><td>interior 78.91%, exterior 76.80%</td></tr><tr><td>Accuracy emulator, residual</td><td>same</td><td>93.94%</td><td>interior 65.00%, exterior 53.91%</td></tr><tr><td>Structured ranker</td><td><code>community-static-v11</code></td><td>98.17%</td><td>interior 90.08%, exterior 94.22%</td></tr><tr><td>Export-state learner v1</td><td><code>community-static-v11</code></td><td>65.12%</td><td>challenge 51.25%, corpus cross heights 62.59%</td></tr><tr><td>Community emulator v2, residual</td><td><code>community-static-v2</code> (frozen)</td><td>93.90%</td><td>challenge 72.66% against the analytic guess's 80.12%</td></tr><tr><td>Quant emulator v1</td><td>historical 27-model solver</td><td>35.68%</td><td>naive direct assignment 3.57%</td></tr></table></div>
+<div class="table-scroll"><table><tr><th>Learner</th><th>Labels</th><th>Test</th><th>Shifted challenges</th></tr><tr><td>Accuracy emulator, regime</td><td><code>community-static-v11</code></td><td>97.75%</td><td>interior 77.58%, exterior 71.88%</td></tr><tr><td>Accuracy emulator, scale-free regime</td><td>same</td><td>97.50%</td><td>interior 80.70%, exterior 74.30%</td></tr><tr><td>Accuracy emulator, quantized</td><td>same</td><td>96.27%</td><td>interior 78.91%, exterior 76.80%</td></tr><tr><td>Accuracy emulator, residual</td><td>same</td><td>93.94%</td><td>interior 65.00%, exterior 53.91%</td></tr><tr><td>Structured ranker</td><td><code>community-static-v11</code></td><td>98.17%</td><td>interior 90.08%, exterior 94.22%</td></tr><tr><td>Export-state learner v1</td><td><code>community-static-v11</code></td><td>68.90%</td><td>challenge 56.09%, corpus cross heights 63.33%</td></tr><tr><td>Community emulator v2, residual</td><td><code>community-static-v2</code> (frozen)</td><td>93.90%</td><td>challenge 72.66% against the analytic guess's 80.12%</td></tr><tr><td>Quant emulator v1</td><td>historical 27-model solver</td><td>35.68%</td><td>naive direct assignment 3.57%</td></tr></table></div>
 <p>The quant emulator's per-dimension exact rates are 56.29% (length), 78.30% (thickness) and 64.42% (gap). The verified shortlist contains the solver's tuple in 84.80% of 125 test settings at <math xmlns="http://www.w3.org/1998/Math/MathML">
   <mi>K</mi>
   <mo>=</mo>

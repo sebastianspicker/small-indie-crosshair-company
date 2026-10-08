@@ -36,6 +36,7 @@ export const shownWarnings = report => report.warnings.filter(w => !INTERNAL.has
 
 export function clearOutcomes(view) {
   for (const id of ['qs-outcomes', 'qs-warnings']) view.get(id).replaceChildren();
+  view.get('qs-exactness').hidden = true;
   for (const id of Object.values(CHIP_IDS)) { const chip = view.get(id); chip.textContent = ''; chip.removeAttribute('data-confidence'); }
 }
 
