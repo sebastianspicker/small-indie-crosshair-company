@@ -10,24 +10,32 @@ export async function loadDocument(path) {
   return response.text();
 }
 
+/** One failure message for a network error, a bad status and unparseable JSON alike, naming the file. */
 async function fetchJSON(name, errorMessage) {
-  const response = await fetch(url(name));
-  if (!response.ok) throw new Error(errorMessage);
-  return response.json();
+  const failure = cause => new Error(`${errorMessage.replace(/\.$/, '')} (${name}).`, { cause });
+  let response;
+  try { response = await fetch(url(name)); } catch (error) { throw failure(error); }
+  if (!response.ok) throw failure(new Error(`HTTP ${response.status}`));
+  try { return await response.json(); } catch (error) { throw failure(error); }
 }
 
 let presetsPromise;
 /** Bundled crosshair presets. Memoized so every route sharing them issues one fetch. */
 export function loadPresets() {
-  if (!presetsPromise) presetsPromise = fetchJSON('presets.json', 'Bundled presets could not load.');
+  if (!presetsPromise) presetsPromise = fetchJSON('presets.json', 'Bundled presets could not load.')
+    .catch(error => { presetsPromise = undefined; throw error; });
   return presetsPromise;
 }
 
-/** Corpus records, metadata and study summary (its `evidence` feeds the confidence panel), for the converter (#quant). */
-export function loadQuantCorpus() {
-  const load = name => fetchJSON(name, 'Bundled research data could not load.');
-  // The summary only feeds the confidence panel; the converter still works without it.
-  return Promise.all([load('corpus.json'), load('corpus-meta.json'), load('quant-summary.json').catch(() => null)]);
+/** Corpus metadata only (about 10 KB): enough for the converter page to be drawn before the records arrive. */
+export const loadCorpusMeta = () => fetchJSON('corpus-meta.json', 'Bundled research data could not load.');
+
+let recordsPromise;
+/** Corpus records only: all the Screenshot page's worker needs for geometry coverage. Memoized: the file is 1.4 MB. */
+export function loadCorpusRecords() {
+  if (!recordsPromise) recordsPromise = fetchJSON('corpus.json', 'Bundled research data could not load.')
+    .catch(error => { recordsPromise = undefined; throw error; });
+  return recordsPromise;
 }
 
 let summaryPromise;
@@ -47,6 +55,6 @@ export function loadCrossCheck() {
 
 /** Corpus records, metadata and the quant study summary, as used by the corpus page (#corpus). */
 export function loadCorpusPage() {
-  return Promise.all(['corpus.json', 'corpus-meta.json', 'quant-summary.json', 'pro-conversions.json']
-    .map(name => fetchJSON(name, 'Research data unavailable.')));
+  return Promise.all([loadCorpusRecords(), ...['corpus-meta.json', 'quant-summary.json', 'pro-conversions.json']
+    .map(name => fetchJSON(name, 'Research data unavailable.'))]);
 }

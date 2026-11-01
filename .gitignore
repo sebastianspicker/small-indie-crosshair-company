@@ -68,7 +68,6 @@ scripts/check.mjs
 scripts/import-graph.mjs
 scripts/line-length.mjs
 scripts/line-length-baseline.json
-scripts/notebook-cache.mjs
 scripts/publish-*.sh
 
 # Work-in-progress and internal engineering documents

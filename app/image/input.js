@@ -4,7 +4,7 @@ import { ImageDialog } from './dialog.js';
 
 /** Resolves on dialog close, not initial analysis; callers can prevent overlapping dialogs. */
 export async function imageInput(file, worker, context) {
-  if (!file || file.size > 16 * 1024 * 1024) throw new Error('Use a PNG no larger than 16 MB.');
+  if (!file || file.size > 16 * 1024 * 1024) throw new Error('Use a PNG no larger than 16 MiB.');
   if (!crypto.subtle) throw new Error('Screenshot hashing requires HTTPS or a secure localhost origin.');
   const bytes = new Uint8Array(await file.arrayBuffer()), dimensions = pngDimensions(bytes);
   const digest = await crypto.subtle.digest('SHA-256', bytes);

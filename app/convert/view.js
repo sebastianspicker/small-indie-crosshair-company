@@ -5,10 +5,14 @@ import { COMMUNITY_MODEL } from '../../lib/geometry/community.js';
 import { samplesStrip } from './samples.js';
 import { HEIGHT_PRESETS, PAIRS, COLOUR_PAIRS, OLD_COLOURS, FLAT_PLATES, SCENE_PLATES, DEFAULT_PLATE, toHex } from './inputs.js';
 
-/** The one statement of what the result rests on, in the report column; the sheet head carries the same as data. */
-const LIMITS_LINE = 'Modelled from the old renderer and community measurements; partially checked against current-game captures ' +
-  `(build ${COMMUNITY_MODEL.build}). End-to-end conversion accuracy remains unmeasured. ` +
+/** The one statement of what the result rests on, in the report column; the sheet head carries the same as data.
+ * `captures` is the bundled capture evidence (data/quant-summary.json); without it the shipped statement stands. */
+const limitsLine = captures => 'Modelled from the old renderer and community measurements; ' +
+  `${captures && !captures.total ? 'not' : 'partially'} checked against current-game captures ` +
+  `(${captures?.total ? `${captures.reproduced} of ${captures.total} reproduced, ` : ''}build ${COMMUNITY_MODEL.build}). ` +
+  'End-to-end conversion accuracy remains unmeasured. ' +
   "Save your current crosshair's share code in game before you paste the commands.";
+const checkedInGame = captures => !captures || captures.total ? 'Partial' : 'No';
 const PASTE_HINT = 'Share code, console lines, cs2_user_convars.vcfg or "find crosshair" output.\n' +
   'e.g. CSGO-XXXXX-XXXXX-XXXXX-XXXXX-XXXXX or cl_crosshairsize 2; cl_crosshairgap -3';
 
@@ -257,14 +261,14 @@ function feedbackPanel() {
 }
 
 /** What happened: the per-setting table and the limits; the deep dive as closed rows, and the source footnote, behind Expert. */
-function reportRow(meta) {
+function reportRow(meta, captures) {
   return el('section', { class: 'qs-what', 'aria-label': 'What happened' },
     el('div', { class: 'qs-report' },
       el('div', { class: 'qs-changes' }, sectionHead('report', 'h2', 'What happened to each setting'), el('div', { id: 'qs-outcomes' })),
       el('div', { class: 'qs-limits-col' },
         el('h2', { id: 'qs-warnings-title' }, 'Limits'),
         el('ul', { id: 'qs-warnings', class: 'warn-list', role: 'status', 'aria-labelledby': 'qs-warnings-title' }),
-        el('p', { id: 'qs-limits', class: 'qs-limits' }, LIMITS_LINE))),
+        el('p', { id: 'qs-limits', class: 'qs-limits' }, limitsLine(captures)))),
     expertPanel('report',
       el('div', { class: 'expert-dive' },
         detail('q-derivation-panel', 'Pixel measurements', el('div', { id: 'q-derivation' }),
@@ -280,19 +284,20 @@ function reportRow(meta) {
         el('a', { href: '#corpus' }, 'Browse the records'))));
 }
 
-function simpleLayer(meta) {
+function simpleLayer(meta, captures) {
   return el('div', { id: 'quant-simple', class: 'quant-simple' }, samplesStrip(),
     el('div', { class: 'qs-workbench' }, inputs(meta),
-      el('div', { class: 'qs-results' }, el('div', { class: 'qs-answer' }, previewSection(), settingsSection()), reportRow(meta))));
+      el('div', { class: 'qs-results' }, el('div', { class: 'qs-answer' }, previewSection(), settingsSection()), reportRow(meta, captures))));
 }
 
-export function createView(root, meta) {
+export function createView(root, meta, evidence = null) {
+  const captures = evidence?.captures ?? null;
   root.replaceChildren(
     sheetHead({ title: 'Crosshair conversion',
       lede: 'Old crosshair settings in; new length, thickness and gap out. Compare the old and proposed crosshair in pixel previews.',
       fields: [['Model', COMMUNITY_MODEL.version], ['Build', COMMUNITY_MODEL.build], ['Corpus', meta.snapshot ?? 'Unknown'],
-        ['Checked in game', ['Partial', docLink('math/06-statistical-inference.md', 'Why')], 'tb-flag']] }),
-    simpleLayer(meta));
+        ['Checked in game', [checkedInGame(captures), docLink('math/06-statistical-inference.md', 'Why')], 'tb-flag']] }),
+    simpleLayer(meta, captures));
   root.dataset.plate = DEFAULT_PLATE;
   const refs = Object.fromEntries([...root.querySelectorAll('[id]')].map(node => [node.id, node]));
   return { root, refs, get: id => refs[id] };

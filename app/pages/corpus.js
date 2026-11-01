@@ -1,8 +1,7 @@
 import { $, el, download, docLink, table, sheetHead } from '../ui/dom.js';
 import { loadCorpusPage } from '../data.js';
 import { summarizeConversions } from '../../lib/solver/corpus-metrics.js';
-import { COMMUNITY_MODEL, COMMUNITY_REVISION } from '../../lib/geometry/community.js';
-import { selectRecords, percent, resultLabel } from './corpus-data.js';
+import { selectRecords, percent, resultLabel, MODEL_TAG, checkVersionLock } from './corpus-data.js';
 import { showRecord } from './corpus-detail.js';
 
 const option = (value, label) => el('option', { value }, label);
@@ -12,17 +11,14 @@ const names = { source_f32: 'Source reconstruction (target)', round_scaled: 'Rou
 
 export async function initCorpus() {
   const [records, meta, study, evaluation] = await loadCorpusPage();
-  if (evaluation.schema !== 'sicc-pro-conversions-v1' || evaluation.model !== COMMUNITY_MODEL.version ||
-    evaluation.build !== COMMUNITY_MODEL.build || evaluation.implementationRevision !== COMMUNITY_REVISION)
-    throw new Error('Conversion results do not match the current model revision.');
-  if (evaluation.corpusSha256 !== meta.sha256) throw new Error('Conversion results do not match the bundled settings.');
+  checkVersionLock(evaluation, meta);
   let page = 0, selected = null, filtered = [];
   const pageSize = 20, root = $('corpus'), expansion = meta.expansion;
-  const query = el('input', { id: 'corpus-search', type: 'search', placeholder: 'Player, team, country or code…' });
+  const query = el('input', { id: 'corpus-search', type: 'search', placeholder: 'Find a player' });
   const height = el('select', { id: 'corpus-height' }, meta.heights.map(h => option(String(h), `${h}p`)));
-  height.value = '1080';
+  height.value = '1080'; // the UI default; meta.heights lists the available test heights
   const cohort = el('select', { id: 'corpus-cohort' }, option('all', 'All records'),
-    option('new', 'New harvest'), option('original', 'Original 138'));
+    option('new', 'New harvest'), option('original', `Original ${expansion.previousRecords}`));
   const result = el('select', { id: 'corpus-result' }, option('all', 'All results'), option('improved', 'More appearance overlap'),
     ...['exact', 'shifted', 'approximate', 'empty', 'excluded'].map(key => option(key, resultLabel(key))));
   const rows = el('tbody', { id: 'corpus-rows' }), detail = el('aside', { id: 'corpus-detail', 'aria-label': 'Selected record' });
@@ -38,7 +34,7 @@ export async function initCorpus() {
   }
   function draw() {
     filtered = selectRecords(records, evaluation,
-      { query: query.value, cohort: cohort.value, status: result.value, height: Number(height.value) });
+      { query: query.value, cohort: cohort.value, status: result.value, height: Number(height.value), newCohort: expansion.cohort });
     page = Math.max(0, Math.min(page, Math.ceil(filtered.length / pageSize) - 1));
     const visible = filtered.slice(page * pageSize, (page + 1) * pageSize);
     if (!visible.some(entry => entry.record.id === selected)) selected = visible[0]?.record.id ?? null;
@@ -58,7 +54,7 @@ export async function initCorpus() {
     const scored = filtered.flatMap(entry => entry.score ? [entry.score] : []), summary = summarizeConversions(scored);
     comparison.replaceChildren(table(['Conversion', 'Exact', 'Shifted 1 px', 'Approximate',
       'Mean, same position', 'Mean, aligned', 'Geometry mean'],
-      [['current', 'v11 default'], ['plain', 'Corrections off']].map(([key, name]) => {
+      [['current', `${MODEL_TAG} default`], ['plain', 'Corrections off']].map(([key, name]) => {
         const s = summary[key];
         return [name, s.visible ? `${s.exact} / ${s.visible}` : '—', String(s.shifted), String(s.approximate),
           percent(s.meanIou), percent(s.meanAlignedIou), percent(s.geometryMacroAlignedIou)];
@@ -78,7 +74,7 @@ export async function initCorpus() {
   next.onclick = () => { page++; draw(); };
 
   root.replaceChildren(sheetHead({ title: 'Settings data',
-    lede: 'Published pro crosshairs, tested through v11. Inspect the source, compare the conversion, and open any scored record.',
+    lede: `Published pro crosshairs, tested through ${MODEL_TAG}. Inspect the source, compare the conversion, and open any scored record.`,
     fields: [['Records', String(meta.records)], ['Players', String(meta.players)],
       ['Added', `+${expansion.addedRecords}`], ['Retrieved', meta.snapshot]] }),
   el('p', { class: 'corpus-intro' }, `${expansion.newCodes} new codes and ${expansion.newGeometrySignatures} new geometry groups. ` +
@@ -86,14 +82,14 @@ export async function initCorpus() {
   el('section', { id: 'corpus-records', class: 'corpus-workbench' },
     el('h2', {}, 'Browse and compare'),
     el('div', { class: 'corpus-controls' }, control('Search records', query), control('Test height', height),
-      control('Collection', cohort), control('v11 result', result)),
+      control('Collection', cohort), control(`${MODEL_TAG} result`, result)),
     el('div', { id: 'corpus-results' }, selection, comparison),
     el('p', { class: 'small corpus-method' }, 'Model agreement only; in-game accuracy remains unmeasured. ' +
       'Exact means the same visible pixels at the same position. Shifted means a match ' +
       'after moving the whole shape by at most 1 px. Aligned means include this shift; geometry mean gives each geometry ' +
       'group equal weight. Empty targets are excluded from means and exact-rate denominators.'),
     el('div', { class: 'corpus-browser' }, el('div', {}, el('div', { class: 'table-scroll' }, el('table', {},
-      el('thead', {}, el('tr', {}, ...['Player', 'Observation', 'Old size / width / gap', 'v11 result']
+      el('thead', {}, el('tr', {}, ...['Player', 'Observation', 'Old size / width / gap', `${MODEL_TAG} result`]
         .map(text => el('th', { scope: 'col' }, text)))), rows)),
     el('div', { class: 'export-actions' }, previous, next), status), detail),
     el('div', { class: 'export-actions' },
@@ -112,7 +108,7 @@ export async function initCorpus() {
     el('p', {}, `${expansion.fetchedRecords} directory entries retrieved; ${expansion.addedRecords} added, ` +
       `${expansion.excluded.filter(r => r.reason === 'Existing player/code association').length} existing associations skipped, ` +
       `${expansion.excluded.filter(r => r.reason !== 'Existing player/code association').length} unsupported codes excluded. ` +
-      `${evaluation.excluded.length} stored records are outside this static conversion study. The v11 solver and learners are frozen.`),
+      `${evaluation.excluded.length} stored records are outside this static conversion study. The ${MODEL_TAG} solver and learners are frozen.`),
     docLink('research/pro-data-expansion-2026-10-07.md', 'Source, exclusions and evaluation method')),
   el('details', { class: 'corpus-reconstruction' }, el('summary', {}, 'Old-renderer reconstruction study'),
     el('p', { class: 'small' }, 'This separate benchmark compares ways of reconstructing old geometry. ' +

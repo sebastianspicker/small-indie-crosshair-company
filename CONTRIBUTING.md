@@ -2,7 +2,9 @@
 
 Bug fixes, clearer explanations, and reproducible measurements are welcome.
 For a conversion mismatch, include the input settings, game heights, selected
-model, and exported report so someone else can reproduce it.
+model, and exported report so someone else can reproduce it. The report is the
+**Download research JSON** button: turn on the **Expert** switch next to
+**New settings** on the converter page.
 
 ## Development setup
 
@@ -12,6 +14,11 @@ Use Node.js 22.12+. No npm packages are required.
 npm run dev
 npm run build
 ```
+
+`npm run preview` serves the built `dist/`. The other npm scripts (`test`,
+`check`, `verify`, `research:*`, `emulator:*`, …) need the maintainers' private
+test and research harness, which is not in this repository; on a public
+checkout they stop with a message that says so.
 
 See [architecture](docs/engineering/architecture.md) for where code belongs:
 `lib/` is the pure, layered domain, `app/` handles the DOM and worker,

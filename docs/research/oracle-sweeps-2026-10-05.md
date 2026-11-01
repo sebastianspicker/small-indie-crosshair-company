@@ -1,11 +1,11 @@
 # Oracle sweeps and the v7 retrain, 2026-10-05
 
 Measurement of the automatic converter (`community-static-v7`,
-[ADR-0018](../engineering/decisions/0018-legacy-style-5-rest-gap.md),
-[ADR-0019](../engineering/decisions/0019-shape-derived-window.md)) against a
+ADR-0018,
+ADR-0019) against a
 brute-force oracle on random old crosshairs, before and after the changes of
 2026-10-05, plus the retraining of the ML cross-check
-([ADR-0016](../engineering/decisions/0016-per-input-ml-cross-check.md)).
+(ADR-0016).
 
 Everything here is computed under the declared models (the old renderer
 reconstruction and the new-renderer equations). It is a software comparison:
@@ -14,7 +14,7 @@ whether that measure matches the game. No capture was taken.
 
 ## 1. Method
 
-Script: [`research/scripts/oracle-sweep.mjs`](../../research/scripts/oracle-sweep.mjs)
+Script: `research/scripts/oracle-sweep.mjs` (internal research harness, not in the public repository)
 (not part of `research:quant`; run by hand).
 
 1. Draw a random old crosshair from a grid (below), at old height 1080, style

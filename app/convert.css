@@ -174,7 +174,7 @@
 .status-chip[data-status=approximated], .status-chip[data-status=user-choice] { color: var(--signal-ink); background: var(--signal-wash); }
 .status-chip[data-status=assumed], .confidence-chip[data-confidence=assumed] { color: var(--signal-ink); border-color: var(--signal-ink); }
 .status-chip[data-status=dropped] { color: var(--alarm); border-color: var(--alarm); }
-.status-chip[data-status=ignored] { color: var(--ink-3); }
+.status-chip[data-status=ignored], .status-chip[data-status=blocked] { color: var(--ink-3); }
 .confidence-chip { margin: 2px 0 0; padding-inline: 0; color: var(--ink-2); white-space: normal; }
 .confidence-chip[data-confidence=assumed] { padding-inline: 6px; }
 .confidence-chip:empty { display: none; }
@@ -329,10 +329,11 @@
 
 /* ── Unhappy states: say what happened where the answer would have been ──── */
 #quant:is([data-result=error], [data-blocked=true]) #qs-status { border-left-color: var(--alarm); background: var(--alarm-wash); }
-#quant:is([data-result=error], [data-result=pending]) .simple-value { color: var(--ink-3); }
+#quant:is([data-result=error], [data-result=pending], [data-result=not-needed]) .simple-value { color: var(--ink-3); }
 #quant[data-result=error] .plate::after {
   content: 'No valid input'; position: absolute; inset: 0; display: grid; place-items: center; pointer-events: none;
   font: 500 var(--fs-2xs)/1 var(--font-mono); font-stretch: var(--mono-stretch); text-transform: uppercase; letter-spacing: var(--track-caps); color: var(--plate-ink);
 }
 #quant[data-result=error] .command-list:empty::before { content: 'No commands until the input is accepted.'; color: var(--ink-2); }
+#quant[data-result=not-needed] .command-list:empty::before { content: 'No commands needed: the code already uses the new settings.'; color: var(--ink-2); }
 #qs-copy:disabled, #qs-download:disabled, #q-download-cfg:disabled { background: transparent; border-color: var(--rule-strong); color: var(--ink-2); opacity: 1; }

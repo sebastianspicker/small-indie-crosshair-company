@@ -4,11 +4,13 @@ import { markdownDocument } from '../ui/markdown.js';
 import { el } from '../ui/dom.js';
 
 const root = document.getElementById('document-body'), status = document.getElementById('document-status');
+/** A malformed percent-escape in the hash means no fragment: the document stays shown from the top. */
+const fragment = hash => { try { return decodeURIComponent(hash.slice(1)); } catch { return ''; } };
 const path = documentPath(new URLSearchParams(location.search).get('doc'));
 try {
   if (!path) throw new Error('Choose a published Markdown document from the Sources or Mathematics links.');
   const notebook = documentLink(path + location.hash, 'index.html', 'docs/read.html');
-  if (notebook.includes('notebook.html')) location.replace(notebook);
+  if (notebook?.includes('notebook.html')) location.replace(notebook);
   else {
     const text = await loadDocument(path);
     root.replaceChildren(...markdownDocument(text, path).childNodes);
@@ -18,9 +20,10 @@ try {
     const source = document.getElementById('document-source');
     source.href = '../' + path; source.hidden = false; source.download = path.split('/').at(-1);
     status.textContent = path;
-    if (location.hash) {
+    const anchor = fragment(location.hash);
+    if (anchor) {
       await document.fonts.ready;
-      document.getElementById(decodeURIComponent(location.hash.slice(1)))?.scrollIntoView({ behavior: 'instant', block: 'start' });
+      document.getElementById(anchor)?.scrollIntoView({ behavior: 'instant', block: 'start' });
     }
   }
 } catch (error) {

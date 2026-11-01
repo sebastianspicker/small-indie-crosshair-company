@@ -35,10 +35,10 @@ browser, in the worker and in Node. Five layers, each with one job:
 
 | Layer | Owns | May import |
 |---|---|---|
-| `lib/settings/` | What a setting *is*. Input validation primitives (`validation.js`), native cvar ranges, colour resolution and CFG command formatting (`native.js`), the frozen build-2000914 cvar inventory (`cvars.js`; the community model's native ranges and CFG export follow build 2000922), the legacy v1 share-code codec (`sharecode.js`, MIT-attributed), a read-only decoder for current `CS…` share codes (`sharecode-cs.js`), the per-setting outcome and confidence labels behind the "What changed" table (`outcomes.js`), the allowlisted legacy CFG parser (`cfg.js`, which also clamps outline thickness to the old maximum 3; `legacyOutlineExtent` applies the same bound for direct callers), and the single legacy-text import dispatch (`import.js`). The usealpha-0 fill exports alpha 255, the outline 200. `outcomes.js` also builds the `defaults-filled` warning for partial pastes. | `settings` |
+| `lib/settings/` | What a setting *is*. Input validation primitives (`validation.js`), native cvar ranges, colour resolution and CFG command formatting (`native.js`), the frozen build-2000914 cvar inventory (`cvars.js`; the community model's native ranges and CFG export follow build 2000922), the legacy v1 share-code codec (`sharecode.js`, MIT-attributed), a read-only decoder for current `CS…` share codes (`sharecode-cs.js`), the per-setting outcome and confidence labels behind the "What happened to each setting" table (`outcomes.js`), the allowlisted legacy CFG parser (`cfg.js`, which also clamps outline thickness to the old maximum 3; `legacyOutlineExtent` applies the same bound for direct callers), and the single legacy-text import dispatch (`import.js`). The usealpha-0 fill exports alpha 255, the outline 200. `outcomes.js` also builds the `defaults-filled` warning for partial pastes. | `settings` |
 | `lib/geometry/` | What a crosshair *looks like*. Binary32 legacy geometry (`legacy.js`), the one integer quantizer (`quantize.js`), illustrative rasterization (`raster.js`, including the old per-element draw order `legacyElements` / `legacyRaster`), colour-labelled appearance for the shape check (`appearance.js`: new composite and old draw order), the edge-case targets (`edge-cases.js`), lossless shape and mask compilation (`pixel-shape.js`), and the 56-case legacy audit shared by the #evidence page and the archive reproduction (`audit.js`). | `geometry`, `settings` |
 | `lib/image/` | Reading pixels. Bounded PNG screenshot segmentation and native component measurement (`screenshot.js`, `components.js`). | `image`, `geometry`, `settings` |
-| `lib/solver/` | The default direct converter (`community.js`, `community-static-v11`) and historical 27-model study (`quant-static-v6`). Forward renderers (`renderer.js`), integer inverse (`inverse.js`), visual refinement (`visual.js`) and shift-aligned tie overlap (`alignment.js`), the appearance window after the dimension-first search (`community-refine.js`), decision rules (`selection.js`), opt-in certificates (`certify.js`), the solver-independent per-input ML cross-check evaluator (`ml-crosscheck.js`), measurement evidence (`observations.js`, `evidence.js`, `community-evidence.js`), experiment design (`experiments.js`), corpus coverage (`corpus.js`, `statistics.js`), structural rivals (`structural.js`, `migration.js`), report/CFG export (`report.js`, `export.js`), and entry point `infer()` (`inference.js`). | `solver`, `geometry`, `settings` |
+| `lib/solver/` | The default direct converter (`community.js`, `community-static-v11`) and historical 27-model study (`quant-static-v6`). Forward renderers (`renderer.js`), integer inverse (`inverse.js`), visual refinement (`visual.js`) and shift-aligned tie overlap (`alignment.js`), the appearance window after the dimension-first search (`community-refine.js`), decision rules (`selection.js`), opt-in certificates (`certify.js`), the solver-independent per-input ML cross-check evaluator (`ml-crosscheck.js`), measurement evidence (`observations.js`, `evidence.js`, `community-evidence.js`), experiment design (`experiments.js`), corpus coverage (`corpus.js`, `statistics.js`), structural rivals (`structural.js`, `migration.js`), report/CFG export (`report.js`, `export.js`), and entry point `infer()` (`inference.js`; without a `selectedModelId` it runs the historical hedge, so a library caller that wants the app's conversion passes `COMMUNITY_MODEL.id` or `resolveModelChoice()`). | `solver`, `geometry`, `settings` |
 | `lib/manual/` | The manual lab (`conditional-static-v4`): the `convert()`/`exportCFG()` model with its `measured` gap branch (`conversion.js`) and the affine calibration fit plus `sicc-measurement-v1` schema (`calibration.js`). | `manual`, `geometry`, `settings` |
 
 `solver` and `manual` are deliberately separate conversion models, not two
@@ -63,7 +63,9 @@ automatic refinement window and its fallback both score the chosen outline
 and can select the plain geometry or T flag when the selected objective improves.
 Reports record options and add the warnings
 `outline-user-override` and `style-family-experimental`; outcome rows use the status
-`user-choice`. The `color` override is not a user option: the community solver sets it in
+`user-choice`. A blocked input exports nothing: its rows have status `blocked`, except the
+`dropped` rows that explain why, and the per-value confidence chips stay empty.
+The `color` override is not a user option: the community solver sets it in
 `report.exportOverrides` and the converter previews draw what the export draws.
 `t_style` is set when the exported T flag differs from the old one (ADR-0020: an upside-down or symmetric old T
 exports a full cross; the window may flip other shapes whose stem left the bar), but only with the T option
@@ -79,7 +81,7 @@ pixels. Historical models ignore it, the advanced options disable it for them an
 A pasted CFG block that leaves cvars unset takes the pre-update game defaults. The
 converter adds the `defaults-filled` warning (`defaultsWarning` in
 `lib/settings/outcomes.js`) to the report's warnings, so it shows in both
-warning lists and the downloaded report, and the "What changed" rows of those cvars say
+warning lists and the downloaded report, and the "What happened to each setting" rows of those cvars say
 "added (game default)". Share codes and complete pastes get neither.
 
 The converter's confidence panel (`app/convert/evidence.js`) shows a shape check
@@ -178,7 +180,7 @@ Supporting directories:
   headings, lists, tables, code, links and local images; non-notebook display
   equations retain their TeX notation. External images are not fetched.
 - `app/convert/` is the automatic converter UI. `converter.js` boots the
-  route. `outcomes.js` renders the "What changed" table, confidence chips,
+  route. `outcomes.js` renders the "What happened to each setting" table, confidence chips,
   warnings and limits line from the report. `controller.js` owns the state (settings, result, measurements,
   target override and mask, source), request generations and the 90 ms
   analysis debounce; text import has its own 250 ms debounce in `sources.js`.
@@ -199,7 +201,7 @@ Supporting directories:
   not, and the defaults (automatic model, auto outline, Static Cross, the pixel
   goal, corrections on) are what the page exports until one is changed; a
   hidden Conversion option off its default puts a dot on that section's switch.
-  `samples.js` paints the empty-state "What this handles" plates.
+  `samples.js` paints the empty-state "Examples" plates.
   `presentation.js` renders values, canvases,
   scenario tables and rival rows, `preview.js` paints canvases, and
   `feedback.js` handles native-evidence input. The controller
@@ -220,10 +222,11 @@ Supporting directories:
   and imported by `QuantController.applyRoute`; `main.js` then strips the query
   with `history.replaceState`, so nothing is stored. The old `#workbench` and
   `#calibration` links redirect to `#screenshot`.
-- `app/image/` is image intake for native-capture evidence. `input.js` enforces a 16 MB file cap and
-  hashes the file, `dialog.js` crops, and `view.js` displays. The
-  20-million-pixel / 8192-side decode limit is enforced in
-  `lib/image/screenshot.js`.
+- `app/image/` is image intake for native-capture evidence. `input.js` enforces a 16 MiB file cap and
+  hashes the file, `dialog.js` crops, and `view.js` displays. The Screenshot page
+  does not use it: it enforces its own 16 MiB cap in `browserImages.load` in
+  `app/pages/screenshot.js`. The 20-million-pixel / 8192-side decode limit is
+  enforced in `lib/image/screenshot.js` for both.
 
 ### The worker boundary (`app/worker/`)
 
@@ -252,7 +255,8 @@ There is no localStorage, IndexedDB, cookie or service worker. Mode lives only
 in the DOM, and state lives in one tab; anything durable is an explicit
 download. Invalid or empty input disables export. A legacy import replaces
 source state only after parsing and validation succeed; a rejected crosshair
-leaves the previous valid one in place. A pasted CFG block is complete on its
+leaves the previous valid values in the fields, but the result and the export
+stay blank until valid input or an edited value replaces it. A pasted CFG block is complete on its
 own: in the automatic converter and the library default
 (`parseLegacyText(text, base = GAME_DEFAULTS_2000908)`), every cvar the paste
 does not set takes the documented pre-update game default (build 2000908,
@@ -285,7 +289,8 @@ them is a product change and needs a CHANGELOG entry.
     `crosshair-quant-report.json` (schema `sicc-quant-report-v6`, model
     `version` `community-static-v11` or `quant-static-v6`, `targetBuild`).
     The app's download adds `exportedCommands`, the exact one-line export
-    (null while blocked). Every report (community and historical) carries
+    (null while blocked), and `importNotes`, the importer's notes on the input
+    (clamped values, repeated cvars, skipped lines, game defaults used). Every report (community and historical) carries
     `exportedOverrides`, the full override set the export passes to
     `nativeCommands` (`style`, a hand-chosen `outlineMode`, and the edge-case
     `color` and `outlineMode` of `exportOverrides`, which win), and
@@ -313,7 +318,8 @@ them is a product change and needs a CHANGELOG entry.
     the converter app for partial pastes, `defaults-filled`. Old styles 2, 3 and 5 export `cl_crosshairstyle 4`
     by default; old styles 0 and 1 are blockers, and a weapon gap no longer is.
     Every CFG export (automatic and manual) also emits
-    `cl_crosshairoutline_r 0`, `_g 0`, `_b 0` and `_a 255`.
+    `cl_crosshairoutline_r 0`, `_g 0`, `_b 0` and `_a`: the exported crosshair
+    opacity when an outline is drawn (the old outline followed it), 255 when none is.
   - Screenshot page: `small-indie-crosshair.cfg`.
   - Other routes: `crosshair-audit.json` and `native-measurements.json`.
   - Reports carry model ids and schema ids. The `package.json` version
@@ -402,6 +408,16 @@ helpers in `lib/solver/structural.js` and `lib/solver/migration.js`.
   outputs derived from the published corpus and model study;
   `ml-crosscheck.json` holds the cross-check parameters written by the
   research training pipeline.
+- The Settings data page (`#corpus`) refuses to start unless `pro-conversions.json`
+  matches the app's model revision and the bundled `corpus.json` fingerprint
+  (`checkVersionLock` in `app/pages/corpus-data.js`); the error says to reload
+  and report a release mismatch. Its **Download selection** button saves
+  `crosshair-selection.json` with one line per field: `model` (the model id),
+  `height` (the selected test height), `nativeAccuracy` (always `null`: no native
+  measurement exists), `scope` (the study scope from `pro-conversions.json`),
+  `corpusSha256` (the corpus fingerprint) and `records` (the filtered rows, each
+  `{ record, score, exclusion }`: the source record, its conversion scores at
+  that height or `null`, and the reason it is outside the study or `null`).
 - `research/generated/` holds committed study outputs and research artifacts
   (`quant-emulator.json`, `quant-modulator.json`). Benchmarks with timing
   fields are dated records rather than deterministic build outputs.
@@ -464,7 +480,7 @@ opacity and motion facts. Dot-like cores with distinct ink use core-first
 refinement and fallback with a shared alignment shift. The full `shapeCheck`
 may be lower to preserve the aiming point; `aimingShape` and warnings expose
 that tradeoff. Measured/image targets have no inferred legacy taxonomy.
-`community-static-v11` remains the public model name; the app is 0.19.1 and
+`community-static-v11` remains the public model name; the app is 0.19.2 and
 `visible-stroke-fit-2026-10-07` distinguishes implementation provenance (unchanged
 by presentation-only releases). ML
 parameters and summary compatibility require the same revision. Reused

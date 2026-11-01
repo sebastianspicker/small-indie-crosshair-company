@@ -64,8 +64,9 @@ ready to paste (the console takes up to 510 characters per line).
 A pasted current `CS…` share code is read-only: the app lists its values and says
 it already uses the new settings.
 
-Beside the answer, a **What changed** table gives each setting a status
-(converted, approximated, assumed, dropped, ignored or user choice) and its
+Beside the answer, a **What happened to each setting** table gives each setting a status
+(converted, approximated, assumed, dropped, ignored, user choice, or blocked
+when nothing can be exported) and its
 reason. Per-value confidence chips, a warnings list, a limits line next to
 Copy/Download and the checked build (2000922, convar dump 2026-10-01) sit with it.
 

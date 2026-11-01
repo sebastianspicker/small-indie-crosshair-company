@@ -1,4 +1,5 @@
 import { documentLink } from './document-links.js';
+import { COMMUNITY_MODEL } from '../../lib/geometry/community.js';
 
 export const $ = id => document.getElementById(id);
 export function el(tag, attrs={}, ...children) {
@@ -28,7 +29,7 @@ export async function copy(text,status,note='') {
   catch {status.textContent='Clipboard is unavailable. Select the command text, or use the download button.';}
 }
 /** Snapshot facts shared by every sheet's title block. */
-export const SNAPSHOT = { build: '2000914', date: '2026-09-23' };
+export const SNAPSHOT = { build: COMMUNITY_MODEL.build, date: '2026-09-23' };
 
 /**
  * Page header: title, lede, and a title block of [term, value] fields. A field may be [term, value, 'tb-flag'].

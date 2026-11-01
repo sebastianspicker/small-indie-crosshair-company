@@ -31,7 +31,7 @@ game be measured without assuming the renderer it is meant to test? Code:
 The user gives the old game height and a PNG, and may move the centre and pick
 a colour. A crop's size is not the game resolution: a 129 px crop of a 1440p
 game is a 1440p observation. PNG headers are checked before decoding; sides
-above 8192, more than 20 million pixels or files above 16 MB are refused. These
+above 8192, more than 20 million pixels or files above 16 MiB are refused. These
 are resource limits, not a malware check. Bytes stay in the tab; reports carry
 geometry, provenance and hashes, not the image.
 

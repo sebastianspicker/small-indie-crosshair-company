@@ -224,7 +224,7 @@ The shape check is still the full-appearance score: the reported 900p example
 changes from five green pixels to one, raising aligned core overlap from 20%
 to 100% while reducing full appearance from 81% to 43%. This is an explicit
 outline tradeoff, not a claim of exact native rendering. Zero-alpha layers do
-not count as visible matches. See [ADR-0026](../engineering/decisions/0026-visible-aiming-shape.md).
+not count as visible matches. See ADR-0026.
 
 
 The `visible-stroke-fit-2026-10-07` revision also recognizes exact unions of two
@@ -234,4 +234,4 @@ regions and their area are counted by edge connectivity on compressed cells.
 These are separate from the old cvar mechanism (outline-only, crossed arms,
 etc.). Adding a dot or removing a T arm can close or open the hole and changes
 the visible classification accordingly. See
-[ADR-0027](../engineering/decisions/0027-visible-stroke-fitting.md).
+ADR-0027.

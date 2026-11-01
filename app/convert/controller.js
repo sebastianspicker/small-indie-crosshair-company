@@ -75,7 +75,7 @@ export class QuantController {
       // The exact one-line export, so the report needs no re-derivation (null while blocked).
       const exportedCommands = this.state.result.blockers.length ? null : exportQuantCFG(this.state.result, this.include());
       download('crosshair-quant-report.json', JSON.stringify({ ...this.state.result, exportedCommands,
-        exportGroups: this.effectiveGroups(), corpus: this.meta,
+        exportGroups: this.effectiveGroups(), corpus: this.meta, importNotes: this.state.importNotes,
         source: this.state.source, screenshotProvenance: this.state.screenshotMeta, nativeMeasurements: this.state.measurements }, null, 2));
     });
   }
@@ -183,7 +183,10 @@ export class QuantController {
     // A rejected import keeps its error, and no export, until valid input or an edited value replaces it.
     if (this.state.rejected) return this.fail(this.state.rejected);
     this.timer = setTimeout(() => this.analyze(), 90); }
-  fail(error) { this.state.result = null; clearResult(this.view, 'error', error.message); }
+  /** A current CS2 code needs no conversion: shown as such, not as a rejected input. */
+  fail(error) {
+    this.state.result = null; clearResult(this.view, error?.code === 'current-share-code' ? 'not-needed' : 'error', error.message);
+  }
 
   async analyze() {
     const ticket = this.generation;
@@ -306,6 +309,8 @@ export class QuantController {
     clearTimeout(this.importTimer); this.invalidate();
     try {
       const text = this.get('qs-import').value.trim();
+      // An emptied paste box is not an import: the last accepted crosshair stays and a rejected paste stops blocking it.
+      if (!text) { this.state.rejected = null; this.setInputStatus(''); return this.schedule(); }
       // A pasted block is complete on its own: unspecified cvars take the pre-update game defaults, not the last crosshair.
       const { config: values, notes, assigned } = parseLegacyTextWithNotes(text);
       this.setSettings(values, assigned); this.state.source = { type: 'user-input' }; this.state.importNotes = notes;

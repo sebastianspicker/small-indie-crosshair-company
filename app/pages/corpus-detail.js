@@ -6,7 +6,7 @@ import { exportedLook } from '../convert/evidence.js';
 import { paintQuant, fitZoom } from '../convert/preview.js';
 import { plateChoice } from '../convert/view.js';
 import { DEFAULT_PLATE, SCENE_PLATES } from '../convert/inputs.js';
-import { percent, resultLabel } from './corpus-data.js';
+import { percent, resultLabel, MODEL_TAG } from './corpus-data.js';
 
 export function showRecord(root, entry, height) {
   root.replaceChildren();
@@ -24,22 +24,22 @@ export function showRecord(root, entry, height) {
   const report = inferCommunity({ settings: r, options: { oldHeight: height, currentHeight: height, authoredHeight: height,
     goal: 'pixels', tShape: 'keep' }, records: [], measurements: [] });
   const oldCanvas = el('canvas', { 'aria-label': `${r.player}: reconstructed old crosshair` });
-  const newCanvas = el('canvas', { 'aria-label': `${r.player}: v11 converted crosshair` });
+  const newCanvas = el('canvas', { 'aria-label': `${r.player}: ${MODEL_TAG} converted crosshair` });
   const background = plateChoice('corpus-plate'), choice = background.querySelector('select');
   choice.value = root.dataset.plate;
   const previewNote = el('p', { class: 'small' });
   root.append(background, el('div', { class: 'corpus-previews' },
     el('figure', {}, oldCanvas, el('figcaption', {}, `Old · ${height}p`)),
-    el('figure', {}, newCanvas, el('figcaption', {}, `v11 · ${height}p`))),
+    el('figure', {}, newCanvas, el('figcaption', {}, `${MODEL_TAG} · ${height}p`))),
   previewNote,
   el('p', { class: 'small' }, `Recognized shape: ${report.taxonomy.source.label} → ${report.taxonomy.converted.label}.` +
     (report.aimingShape.prioritized ? ` Aiming core: ${percent(report.aimingShape.alignedIou)} after alignment; ` +
       'prioritized before outline coverage.' : '') +
     (report.drawability?.impossible ? ` No current setting draws the old look exactly (build ${report.drawability.build.model}).` : '')),
   table(['Conversion', 'Length / thickness / gap', 'Result'], [
-    ['v11 default', score.current.tuple.join(' / '), resultLabel(score.current.status)],
+    [`${MODEL_TAG} default`, score.current.tuple.join(' / '), resultLabel(score.current.status)],
     ['Corrections off', score.plain.tuple.join(' / '), resultLabel(score.plain.status)]]),
-  table(['Appearance overlap', 'v11 default', 'Corrections off'], [
+  table(['Appearance overlap', `${MODEL_TAG} default`, 'Corrections off'], [
     ['Same position', percent(score.current.iou), percent(score.plain.iou)],
     ['Best within 1 px', percent(score.current.alignedIou), percent(score.plain.alignedIou)]]),
   el('a', { class: 'button', href: converterLink(r.code, height, height), id: 'corpus-open-converter' }, 'Open in converter'));

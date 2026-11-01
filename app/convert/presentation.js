@@ -10,6 +10,7 @@ import { clearOutcomes, shownWarnings, warningItem } from './outcomes.js';
 import { exportedLook, confidenceRows, metricNode } from './evidence.js';
 export const percent = value => value == null ? 'Undefined' : `${(100 * value).toFixed(1)}%`;
 
+const NOTES = { error: 'Input not accepted.', 'not-needed': 'No conversion needed.' };
 export function clearResult(view, state = 'pending', message = 'Calculating…') {
   const { root, get } = view;
   root.dataset.result = state; root.dataset.busy = String(state === 'pending'); root.dataset.blocked = 'false';
@@ -22,7 +23,7 @@ export function clearResult(view, state = 'pending', message = 'Calculating…')
   get('q-discriminating').textContent = ''; get('q-renderer-note').textContent = ''; get('q-experiment').textContent = '';
   for (const id of ['old', 'naive', 'converted']) {
     get(`q-${id}-values`).textContent = '';
-    get(`q-${id}-note`).textContent = state === 'error' ? 'Input not accepted.' : 'Waiting for valid input.';
+    get(`q-${id}-note`).textContent = NOTES[state] ?? 'Waiting for valid input.';
     const canvas = get(`q-${id}-canvas`);
     canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
   }
@@ -30,7 +31,7 @@ export function clearResult(view, state = 'pending', message = 'Calculating…')
   clearOutcomes(view);
   get('qs-flags').replaceChildren(); get('qs-commands').replaceChildren(); get('qs-scale').textContent = '';
   get('qs-live').textContent = '';
-  get('qs-status').textContent = state === 'error' ? message : '';
+  get('qs-status').textContent = state === 'error' || state === 'not-needed' ? message : '';
   get('qs-copy').disabled = get('qs-download').disabled = true;
   for (const [id] of Object.values(GROUP_CHECKS)) get(id).disabled = true;
   for (const id of ['qs-old-canvas', 'qs-new-canvas']) {

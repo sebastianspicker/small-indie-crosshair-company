@@ -1,6 +1,27 @@
 # Changelog
 
-## 0.19.1 (unreleased)
+## 0.19.2 (unreleased)
+
+Alpha-readiness fixes. No solver, model, report schema or export change.
+
+- A blocked input (old style 0, 1 or an unknown style) no longer lists length,
+  thickness and gap as "converted" in "What happened": those rows say nothing
+  is exported until the issue is resolved, and the confidence chips stay
+  empty. The blocked-export error names the blocker once.
+- Typing a setting by hand no longer flashes the console-script error: a cvar
+  without a value or an unfinished name says what is missing, empty or unusable
+  text shows an example, and a lower-cased share code says that codes are
+  case-sensitive.
+- The published-settings list starts on "Choose a player", so the first player,
+  or the only match of a search, can be chosen.
+- Screenshot page: a failed measurement opens the centre, tolerance and colour
+  controls instead of asking for a click on the hidden plate; an image shorter
+  than 240 px says that old height 240 was assumed; a PNG dropped anywhere on
+  the page opens there instead of replacing the page.
+- Changelog headings carry their publication dates; `package-lock.json` carries
+  the package version again.
+
+## 0.19.1 — 2026-10-08
 
 - Warn when no setting of the current game can draw the old crosshair exactly
   (`old-shape-not-drawable`, ADR-0028): an old outline reaching more than 1 px
@@ -15,7 +36,7 @@
   setting". An approximate selected conversion does not claim that no exact
   conversion exists; overlap includes added pixels as well as missing ones.
 
-## 0.19.0 (unreleased)
+## 0.19.0 — 2026-10-08 (published with 0.19.1)
 
 - Recognize hashes (`#`), hollow squares and hollow rectangles from composited
   pixels; report connected parts, enclosed openings and their area separately
@@ -34,7 +55,7 @@
   hash, hollow centres and 10 previously missed synthetic conversions. Native
   capture alignment and photometric differences remain unverified.
 
-## 0.18.1 (unreleased)
+## 0.18.1 — 2026-10-08 (published with 0.19.1)
 
 - Presentation only; public `community-static-v11` and solver revision
   `visible-aim-shape-2026-10-07` unchanged, so no learned artifact is retrained.
@@ -45,7 +66,7 @@
 - A crossed-arm gap no longer claims "the same pixels" when the shape check is
   approximate; it says the gap accounts for the crossing.
 
-## 0.18.0 (unreleased)
+## 0.18.0 — 2026-10-08 (published with 0.19.1)
 
 - Keep the public `community-static-v11` name; distinguish this implementation
   by `visible-aim-shape-2026-10-07` in reports and learned-parameter provenance.
@@ -59,7 +80,7 @@
 - Reproduce the independent ML mirror and corpus comparisons against the new
   objective; reused evaluation sets remain regression evidence, not native accuracy.
 
-## 0.17.0 (unreleased)
+## 0.17.0 — 2026-10-07
 
 - Expand Settings data by 964 sourced xhair.pro legacy records: 1,102 records,
   998 players and 334 geometry groups. Preserve reported dates, source links,
@@ -138,7 +159,7 @@
 - The `find` column stripping refuses a tail that holds a quote or another
   `cl_` name, so a second assignment cannot ride along silently.
 
-## 0.16.0 (unreleased)
+## 0.16.0 — 2026-10-07 (published with 0.17.0)
 
 - Advance the automatic converter to `community-static-v10`. Bounded appearance
   refinement now covers screen-relative goals using exact sampled endpoints;
@@ -157,7 +178,7 @@
   and PNG comparison with hashes, raw/aligned overlap and quality flags.
   Native accuracy still awaits real, independently reviewed captures.
 
-## 0.15.0 (unreleased)
+## 0.15.0 — 2026-10-07 (published with 0.17.0)
 
 - Advance the automatic converter to `community-static-v9`, keeping its model
   id, build and report schema. Screen-relative targets sample original integer
@@ -185,7 +206,7 @@
   and change the exported tuple or T flag. The guarantee remains that
   corrections do not score worse than plain conversion for that outline.
 
-## 0.14.0 (unreleased)
+## 0.14.0 — 2026-10-07 (published with 0.17.0)
 
 - Advance the automatic converter to `community-static-v8`; model id, build and
   report schema are unchanged.
@@ -207,7 +228,7 @@
 - The "T shape with crossed arms" example is replaced by an upside-down T that
   sets its outline explicitly.
 
-## 0.13.0
+## 0.13.0 — 2026-10-05
 
 - Advance the automatic converter to `community-static-v7`
   (`lib/solver/community.js`); model id, build and report schema are unchanged.
@@ -255,7 +276,7 @@
   pre-update game default, which for the outline means on; the table marks
   those rows as added.
 
-## 0.12.0
+## 0.12.0 — 2026-10-03
 
 - Advance to `community-static-v6`: the automatic converter
   reproduces the old visible appearance in three edge cases. Crossed arms

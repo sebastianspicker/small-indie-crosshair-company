@@ -1,12 +1,17 @@
 import { el } from '../ui/dom.js';
+import { withoutDefaulted } from '../../lib/settings/outcomes.js';
 import { HEIGHT_IDS, PAIRS, COLOUR_PAIRS, OLD_COLOURS, hexToRgb, readChannels, writeColour, colourSourceText, syncHeight,
   syncPair, syncSwatches } from './inputs.js';
 
 export function fillPresets(controller) {
   const select = controller.get('q-preset'), selected = select.value, query = controller.get('q-preset-search').value.toLowerCase();
   const records = controller.records.filter(record => record.player.toLowerCase().includes(query));
-  select.replaceChildren(...records.map(record => el('option', { value: record.id }, `${record.player}, ${record.observed_date ?? 'date unknown'}`)));
-  if (records.some(record => record.id === selected)) select.value = selected;
+  // The placeholder comes first and stays selected unless the chosen player still matches, so choosing any player,
+  // also the first one or the only match of a search, is a change that loads it.
+  const placeholder = el('option', { value: '' }, records.length ? 'Choose a player' : 'No player matches');
+  select.replaceChildren(placeholder,
+    ...records.map(record => el('option', { value: record.id }, `${record.player}, ${record.observed_date ?? 'date unknown'}`)));
+  select.value = records.some(record => record.id === selected) ? selected : '';
 }
 
 function usePreset(controller) {
@@ -20,7 +25,9 @@ function usePreset(controller) {
   controller.get('q-provenance').replaceChildren(...children); controller.schedule();
 }
 
-function manualEdit(controller) {
+/** `labels`: the defaults-note labels of the edited value, which is no longer a game default. */
+function manualEdit(controller, labels = []) {
+  controller.state.importNotes = withoutDefaulted(controller.state.importNotes, labels);
   controller.clearImageTarget(); controller.state.source = { type: 'manual-values' };
   controller.get('q-provenance').replaceChildren(); controller.get('qs-import').value = ''; controller.state.rejected = null;
   controller.setInputStatus('Using your edited values.');
@@ -37,7 +44,7 @@ function tickAppearance(c, group, keys) {
 
 /** Any colour edit (wheel, R/G/B, slider or swatch) arrives here with its RGB: it becomes the custom colour and its group ticks. */
 function colourEdit(c, rgb) {
-  c.state.rejected = null; c.state.settings.color = 5; c.state.settings.rgb = rgb; c.state.colourEdited = true;
+  c.state.importNotes = withoutDefaulted(c.state.importNotes, ['colour', 'rgb']); c.state.rejected = null; c.state.settings.color = 5; c.state.settings.rgb = rgb; c.state.colourEdited = true;
   syncSwatches(c.view.get); tickAppearance(c, 'color', ['color', 'r', 'g', 'b']); c.schedule();
 }
 export function renderColourSource(c) { c.get('qs-colour-source').textContent = colourSourceText(c.state); }
@@ -50,6 +57,7 @@ function rgbTyped(c, index) {
   writeColour(c.view.get, rgb, false); colourEdit(c, rgb);
 }
 function alphaEdit(c) {
+  c.state.importNotes = withoutDefaulted(c.state.importNotes, ['alpha', 'usealpha']);
   c.state.rejected = null; c.state.settings.alpha_enabled = true; c.state.settings.alpha = c.get('qs-alpha').valueAsNumber;
   tickAppearance(c, 'opacity', ['alpha', 'alpha_enabled']); c.schedule();
 }
@@ -64,8 +72,9 @@ function bindHeights(c) {
       if (select.value === 'custom') return number.focus?.();
       number.value = select.value; c.schedule();
     });
-    c.on(id, 'input', () => c.schedule());
-    c.on(id, 'change', () => syncHeight(c.view.get, id, globalThis.document?.activeElement === number));
+    // Typing 1440 passes 1, 14 and 144: a number below the lowest height waits for more digits or the commit (change).
+    c.on(id, 'input', () => { if (!(number.valueAsNumber < 240)) c.schedule(); });
+    c.on(id, 'change', () => { syncHeight(c.view.get, id, globalThis.document?.activeElement === number); c.schedule(); });
     c.on(id, 'blur', () => syncHeight(c.view.get, id));
   }
 }
@@ -75,13 +84,14 @@ export function bindSources(c) {
   c.on('qs-import', 'input', () => { clearTimeout(c.importTimer); c.invalidate(); c.importTimer = setTimeout(() => c.importText(), 250); });
   c.on('qs-import', 'keydown', event => { if (event.key === 'Enter' && (event.ctrlKey || event.metaKey)) { event.preventDefault(); c.importText(); } });
   // A slider writes its number input and runs the number's own handler, so both paths edit the same way.
-  const edits = { 'qs-size': manualEdit, 'qs-thickness': manualEdit, 'qs-gap': manualEdit, 'qs-alpha': alphaEdit };
+  const edits = { 'qs-size': c => manualEdit(c, ['size']), 'qs-thickness': c => manualEdit(c, ['thickness']),
+    'qs-gap': c => manualEdit(c, ['gap']), 'qs-alpha': alphaEdit };
   for (const pair of PAIRS) {
     const [numberId, rangeId] = pair, edit = () => edits[numberId](c);
     c.on(numberId, 'input', () => { syncPair(c.view.get, pair); edit(); });
     c.on(rangeId, 'input', () => { c.get(numberId).value = c.get(rangeId).value; edit(); });
   }
-  for (const id of ['qs-dot', 'qs-t']) c.on(id, 'change', () => manualEdit(c));
+  c.on('qs-dot', 'change', () => manualEdit(c, ['dot'])); c.on('qs-t', 'change', () => manualEdit(c, ['T']));
   bindHeights(c);
   c.on('q-preset-search', 'input', () => fillPresets(c)); c.on('q-preset', 'change', () => usePreset(c));
   c.on('qs-color', 'input', () => { const rgb = hexToRgb(c.get('qs-color').value); writeColour(c.view.get, rgb); colourEdit(c, rgb); });

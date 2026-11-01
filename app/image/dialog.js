@@ -1,6 +1,5 @@
-import { sourceBoundaryClipped } from '../../lib/image/screenshot.js';
+import { sourceBoundaryClipped, SCREENSHOT_SIDE as SIDE } from '../../lib/image/screenshot.js';
 
-const SIDE = 129;
 export class ImageDialog {
   constructor(view, bitmap, worker, context) {
     Object.assign(this, { view, bitmap, worker, context, seed: null, fit: null, rgba: null, token: 0, closed: false });

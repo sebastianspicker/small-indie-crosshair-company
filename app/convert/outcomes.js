@@ -1,5 +1,6 @@
 import { el } from '../ui/dom.js';
 import { settingOutcomes, confidenceLabel, CONFIDENCE_LABELS } from '../../lib/settings/outcomes.js';
+import { DEFAULTS_NOTE_PREFIX } from '../../lib/settings/cfg.js';
 
 const INTERNAL = new Set(['community-reconstruction', 'shape-loss-excludes-appearance']);
 const CHIP_IDS = { length: 'qs-conf-length', thickness: 'qs-conf-thickness', gap: 'qs-conf-gap' };
@@ -44,12 +45,18 @@ export function clearOutcomes(view) {
 export function renderOutcomes(view, report, importNotes = [], include = null) {
   if (!report) return;
   const rows = settingOutcomes(report.settings, report, importNotes, include), confidence = confidenceLabel(report);
+  const blocked = Boolean(report.blockers?.length);
   view.get('qs-outcomes').replaceChildren(outcomeTable(rows));
+  // Blocked: no value is exported, so no value has a confidence.
   for (const [key, id] of Object.entries(CHIP_IDS)) {
     const chip = view.get(id);
-    chip.textContent = CONFIDENCE_LABELS[confidence[key]]; chip.dataset.confidence = confidence[key];
+    chip.textContent = blocked ? '' : CONFIDENCE_LABELS[confidence[key]];
+    if (blocked) delete chip.dataset.confidence; else chip.dataset.confidence = confidence[key];
   }
-  const shown = shownWarnings(report);
+  // Import notes (clamped values, repeated cvars, skipped lines) stay listed after the status line moves on; the defaults
+  // note and the ignored-cvars note have their own warning and outcome row.
+  const notes = importNotes.map(String).filter(note => !note.startsWith(DEFAULTS_NOTE_PREFIX) && !/^Ignored \d+ cvar\(s\)/.test(note));
+  const shown = [...shownWarnings(report), ...notes];
   view.get('qs-warnings').replaceChildren(...(shown.length ? shown : ['No other limits for this crosshair.'])
     .map(text => warningItem(text)));
 }

@@ -420,6 +420,12 @@ details > :not(summary) { margin-bottom: var(--s-3); }
 #boot-error { margin-top: var(--s-6); padding: var(--s-5); border: 1px solid var(--alarm); border-left-width: 3px; background: var(--alarm-wash); }
 #boot-error h2 { font-size: var(--fs-lg); color: var(--ink); }
 #boot-error p { color: var(--ink); margin-top: var(--s-2); }
+/* Static fallback for a module script that never runs (file://, blocked JavaScript). Revealed after a delay so a normal
+   start never flashes it, and hidden once a page or the boot error is shown. */
+#no-app { margin-top: var(--s-6); padding: var(--s-5); border: 1px solid var(--alarm); border-left-width: 3px; color: var(--ink);
+  opacity: 0; animation: no-app-in 0s 2s forwards; }
+main:has(> section:not([hidden]), > #boot-error:not([hidden])) > #no-app { display: none; }
+@keyframes no-app-in { to { opacity: 1; } }
 
 /* ── 9. Tables and code ────────────────────────────────────────────────────── */
 .table-scroll { width: 100%; overflow: auto; border-top: var(--hair-strong); overscroll-behavior-x: contain; }

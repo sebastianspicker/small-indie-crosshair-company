@@ -26,11 +26,13 @@
 </header>
 <main id="main" tabindex="-1">
   <div id="boot-error" role="alert" hidden></div>
+  <p id="no-app">The app did not start. It needs JavaScript and must be served over HTTP(S), not opened as a file: run <code>npm run dev</code> and open the address it prints.</p>
   <section id="quant" class="page-section" hidden></section>
   <section id="screenshot" class="page-section" hidden></section>
   <section id="corpus" class="page-section" hidden></section>
   <section id="evidence" class="page-section" hidden></section>
 </main>
+<!-- 56 cases = 8 dated presets x 7 controlled heights (data/presets.json, lib/geometry/audit.js); tests/app/corpus-data.test.mjs checks it. -->
 <footer>
   <div><span class="footer-name">Small Indie Crosshair Company</span>
     <nav class="footer-links" aria-label="Resources">
@@ -43,5 +45,5 @@
   </div>
   <small>Independent parody project. Not affiliated with Valve or Volvo.<br>Runs in this tab. No accounts, uploads or game-process access.</small>
 </footer>
-<noscript><p class="disclosure">JavaScript is needed for the local calculator. The full derivation is in <a href="./docs/notebook.html">the mathematical notebook</a>.</p></noscript>
+<noscript><p class="disclosure">JavaScript is needed for the local calculator, and the page must be served over HTTP(S) (for example with <code>npm run dev</code>), not opened as a file. The full derivation is in <a href="./docs/notebook.html">the mathematical notebook</a>.</p></noscript>
 </body></html>

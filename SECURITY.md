@@ -18,7 +18,7 @@ CFG imports accept a fixed set of numeric and boolean assignments. The app never
 executes imported commands or renders imported HTML. Measurement JSON is validated;
 unused metadata is discarded, and exported values must be finite and in range.
 
-The converter's PNG input checks the signature, a 16 MiB file limit, 8192-pixel side
+The Screenshot page's PNG input (and the converter's native-capture image input) checks the signature, a 16 MiB file limit, 8192-pixel side
 limit, and 20-million-pixel limit before decoding. Decoded dimensions must match the
 header. The manual inspector uses stricter limits. Browser image decoding remains
 part of the trusted platform. Capture hashes detect identity; they do not prove

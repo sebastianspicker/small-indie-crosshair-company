@@ -59,7 +59,7 @@ function chapterHTML({ file, text, kind }) {
     const placeholders = [], figures = [];
     text = mathTokens(text, (tex, display) => { const found = cache[key(tex, display)]; if (tex.includes('{{fig:'))
         throw new Error(`Figure token inside TeX in docs/math/${file}: ${tex}`); if (!found || found.tex !== tex || found.display !== display || !found.mathml.startsWith('<math ') || /<(?:script|iframe|img)\b|\bon\w+=|\bhref=/i.test(found.mathml))
-        throw new Error('Missing/invalid cached equation. Run the optional notebook-cache tool after TeX edits.'); count++; const token = 'SICCMATH' + placeholders.length + 'END'; placeholders.push(found.mathml); return token; });
+        throw new Error('Missing/invalid cached equation. After TeX edits run npm install --prefix .notebook-tools --no-save mathjax-full@3.2.2 and node scripts/notebook-cache.mjs (docs/README.md).'); count++; const token = 'SICCMATH' + placeholders.length + 'END'; placeholders.push(found.mathml); return token; });
     text = text.replace(FIGURE_PATTERN, (token, path, format = 'text') => {
         const result = figure(data, path, format);
         if (result.error)
