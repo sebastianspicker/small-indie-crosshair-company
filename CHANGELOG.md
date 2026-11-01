@@ -4,6 +4,13 @@
 
 Alpha-readiness fixes. No solver, model, report schema or export change.
 
+- Maintenance builds run automatically only for Dependabot-authored PRs; Pages
+  publication is manual on main. Automatic dependency and private-file security
+  checks retain read-only repository access.
+- Local agent guides, maintenance ledgers and scratch files are excluded by the
+  shared build/server publication filter; authored research and frozen evidence
+  remain available. README status and deployment instructions reflect these limits.
+
 - A blocked input (old style 0, 1 or an unknown style) no longer lists length,
   thickness and gap as "converted" in "What happened": those rows say nothing
   is exported until the issue is resolved, and the confidence chips stay

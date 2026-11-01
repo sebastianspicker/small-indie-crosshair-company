@@ -30,7 +30,9 @@ and keep the app usable without accounts, remote services, or persistence.
 - Describe the problem and the resulting behavior. Include a small reproducible case.
 - For changes to formula families, update the model ID, affected derivations, and
   [formula history](docs/research/formula-evolution.md). Explain the source or measurements.
-- Run `npm run build`. For UI work, include screenshots.
+- Run `npm run build`. For UI work, include screenshots. Generic hosted builds
+  run automatically for Dependabot-authored PRs; maintainers can dispatch them
+  manually for other contributions. Security checks also run for other PRs.
 - Do not hand-edit generated reports. Leave the frozen archive and its hash
   manifest unchanged.
 

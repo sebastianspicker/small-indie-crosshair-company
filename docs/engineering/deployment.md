@@ -25,7 +25,8 @@ npm run preview
 
 Upload the **contents of `dist/`** to an HTTPS static host, preserving paths.
 For GitHub, use the [Pages guide](github-pages.md). The included workflow deploys
-on pushes to `main` once Pages is configured.
+only after a manual run from `main` once Pages is configured. Pushes and pull
+requests never deploy.
 
 The build includes a file hash manifest and `.nojekyll`. It excludes hidden files,
 local dependency directories, credentials, logs, and temporary output. Rebuild after

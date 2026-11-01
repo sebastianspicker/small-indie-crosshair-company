@@ -5,7 +5,8 @@ the runtime is layered, and which files are published.
 
 The project is a static, dependency-free, client-only web app plus the
 research that justifies it. There is no server component, bundler, account,
-network call or persistence at runtime.
+external service call or automatic persistence at runtime. Bundled modules,
+JSON data and documentation are loaded from the same static origin.
 
 ## The repository in one picture
 
@@ -27,6 +28,14 @@ docs/       math, research notes, evidence policy, engineering docs, generated n
 Arrows point from importer to imported module. Nothing points back: `lib/`
 never imports `app/`; retained research files are evidence and data, not
 runtime modules.
+
+The build and local server share `scripts/site-files.mjs` as their publication
+boundary. Private agent document names, local maintenance/audit ledgers,
+credentials and scratch paths are excluded even when nested under a public
+source directory; authored research ledgers and frozen provenance remain public.
+The automatic security workflow exercises this boundary without the private
+research/test harness. Generic builds are Dependabot-PR or manual only; Pages
+publication requires a manual run on `main` (see [Pages](github-pages.md)).
 
 ## `lib/`: the pure domain
 
@@ -123,8 +132,10 @@ build-scoped holdouts. Image fitting scores exact rectangle unions and rejects
 cropped, unstable or inconsistent measurements.
 
 Structured learning remains offline. Public generated artifacts record candidate
-ranking and constrained residual experiments; no learned model is loaded by the
-converter. See the [study](../research/structured-learning-2026-09-29.md).
+ranking and constrained residual experiments; those study models do not select
+exported values. The separately labelled per-input cross-check described above
+evaluates learned parameters only to compare its prediction with the solver.
+See the [study](../research/structured-learning-2026-09-29.md).
 
 `community-refine.js` runs after the dimension-first search for legacy inputs
 at either goal, for every old outline width. When the shape check is neither

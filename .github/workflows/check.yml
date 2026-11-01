@@ -1,6 +1,5 @@
 name: Build
 on:
-  push:
   pull_request:
   workflow_dispatch:
 permissions:
@@ -10,6 +9,7 @@ concurrency:
   cancel-in-progress: true
 jobs:
   verify:
+    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request' && github.event.pull_request.user.login == 'dependabot[bot]')
     runs-on: ubuntu-latest
     timeout-minutes: 10
     strategy:

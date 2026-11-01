@@ -45,6 +45,7 @@ artifacts/
 AGENTS.md
 CLAUDE.md
 GEMINI.md
+CODEX.md
 .cursorrules
 .github/copilot-instructions.md
 .github/prompts/
@@ -93,3 +94,15 @@ Thumbs.db
 *.swp
 *.swo
 *~
+
+# Local maintenance and audit records; authored research ledgers remain public.
+/THINGS_TO_DO_LEDGER.md
+/THINGS_TO_DO_INDEX.md
+/THINGS_TO_DO_*.md
+/ALPHA_AUDIT_LEDGER.md
+/ALPHA_IMPLEMENTATION_LEDGER.md
+/ALPHA_AUDIT_REPORT.md
+.private/
+local-tests/
+scratch/
+private/

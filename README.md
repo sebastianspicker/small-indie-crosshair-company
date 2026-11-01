@@ -5,13 +5,27 @@ settings. The app runs in your browser without an account or backend. A separate
 Screenshot page converts a screenshot of the old game, with confidence checks and a
 link to cross-check the answer in the converter.
 
+<details>
+<summary>Status and limitations</summary>
+
+Independent experimental project combining browser software and exploratory
+research into CS2 crosshair rendering. Developed independently alongside my main
+professional work. This work in progress provides proposed settings and a
+research template; it is not a validated replacement for checking the result
+in the game.
+
+**Disclaimer.** The old renderer is a community reconstruction and the new
+renderers are hypotheses. Two current-game captures informed development; no
+independent old/new capture pairs establish end-to-end accuracy. Synthetic
+solver-imitation scores and perfect preview overlap do not prove an in-game
+match. Save your current crosshair settings before trying an export and verify
+the result yourself. Not affiliated with Valve or Volvo.
+
+</details>
+
 [Try the live demo](https://sebastianspicker.github.io/small-indie-crosshair-company/) ·
 [Run locally](#run-locally) · [Screenshot tour](#screenshot-tour) ·
 [Documentation](docs/README.md) · [GitHub Pages setup](docs/engineering/github-pages.md)
-
-> **Before you use the result:** the old renderer is a community reconstruction;
-> the new renderers are hypotheses. No original old/new game capture pairs are
-> included. A perfect preview match does not establish an in-game match.
 
 Default model **`community-static-v11`** · inspected build **2000922** ·
 [settings expansion, October 7](docs/research/pro-data-expansion-2026-10-07.md) ·
@@ -27,6 +41,21 @@ The original September 23 archive, historical `quant-static-v6` family and the l
 The current corpus was updated on **2026-10-07**: 1,102 records from 998 players.
 In-game checking is **partial**: two current-game captures informed development;
 there are no independent old/new capture pairs establishing conversion accuracy.
+
+## From input to a proposed export
+
+```mermaid
+flowchart LR
+    I[Old settings or PNG] --> V[Bounded local import]
+    V --> M[Declared renderer and converter]
+    M --> P[Pixel previews and limitations]
+    P --> E[Proposed commands and JSON report]
+    E --> G[User checks the result in CS2]
+    R[Research evidence and synthetic studies] -. inform the model .-> M
+```
+
+The app processes input locally. Research and learned experiments remain separate
+from the conversion decision; agreement with a declared model is not game validation.
 
 ## Run locally
 
@@ -141,7 +170,8 @@ and [formula history](docs/research/formula-evolution.md) for details.
 ## GitHub Pages demo
 
 The [live demo](https://sebastianspicker.github.io/small-indie-crosshair-company/)
-is built and deployed by the repository's Pages workflow. It supports repository
+is built and deployed by a manual run of the repository's Pages workflow on
+`main`. Pushes and pull requests do not deploy. It supports repository
 subpaths without changing asset URLs.
 
 Follow the [deployment guide](docs/engineering/github-pages.md) to connect a
@@ -163,7 +193,8 @@ all 596 groups from earlier experiments. Its legal-shape ranker reaches
 **98.75%** exact tuple fidelity on the test set and **84.22% / 96.02%** on
 interior/exterior resolution challenges. A residual model fitted on the same
 data reaches **97.33% / 66.02% / 80.63%**, respectively. These are synthetic
-solver-imitation scores; learning remains outside runtime. The retained
+solver-imitation scores; training stays offline and these study models do not
+select exported values. The retained
 [study](docs/research/structured-learning-2026-09-29.md) records the protocol,
 paired regressions, calibration abstention and limits.
 
