@@ -5,6 +5,8 @@ settings. The app runs in your browser without an account or backend. A separate
 Screenshot page converts a screenshot of the old game, with confidence checks and a
 link to cross-check the answer in the converter.
 
+> _Claude was used to polish and proof-read the code and documentation of this repository._
+
 <details>
 <summary>Status and limitations</summary>
 
@@ -232,7 +234,8 @@ For changes and review guidance, see [CONTRIBUTING](CONTRIBUTING.md) and the
 | `research/` | Frozen sources, comparisons, corpora, generated results, and archive |
 | `scripts/` | Build, serve, and notebook tooling |
 
-The layering and its rules are described in [architecture](docs/engineering/architecture.md).
+The layering and its rules are described in [architecture](docs/engineering/architecture.md), with diagrams of
+what runs where, the convert and screenshot journeys, and the build and release path.
 
 Imports and screenshots stay in the browser unless you export them. There is no
 tracking, persistence, or game-process access. See [security and privacy](SECURITY.md).

@@ -8,16 +8,76 @@ research that justifies it. There is no server component, bundler, account,
 external service call or automatic persistence at runtime. Bundled modules,
 JSON data and documentation are loaded from the same static origin.
 
+## What runs where
+
+Everything runs in one browser tab. The static origin only serves files; the
+main thread owns the DOM, and one module worker per page does the solving.
+
+```mermaid
+flowchart LR
+  user((User))
+  subgraph origin [Static origin: GitHub Pages or scripts/serve.mjs]
+    files["index.html, app/, lib/"]
+    json[("data/*.json")]
+  end
+  subgraph tab [Browser tab]
+    subgraph mainthread [Main thread]
+      router["app/main.js router"]
+      page["Route module<br/>convert/ or pages/"]
+      datajs["app/data.js"]
+    end
+    subgraph workerrealm [Worker realm]
+      worker["app/worker/worker.js"]
+      lib["lib/ solver, image"]
+    end
+  end
+  user -->|"paste, PNG, clicks"| page
+  files -->|"GET ES modules"| router
+  router -->|"lazy import()"| page
+  page -->|"loadCorpusRecords() …"| datajs
+  datajs -->|"fetch JSON"| json
+  page -->|"ResearchWorker.call()"| worker
+  worker -->|"infer, analyzeScreenshot"| lib
+  page -.->|"download .cfg / .json"| user
+  classDef focus fill:#fde68a,stroke:#b45309,color:#1f2937
+  class worker focus
+```
+
+The only network traffic is same-origin `GET`s for modules, `data/*.json` and
+public Markdown; nothing is sent back. `app/data.js` is the single fetcher. The
+worker is a bounded serial transport (8 queued tasks, 30 s deadline, 1 MiB
+payloads) and the main thread never solves itself. Results leave the tab only
+as explicit downloads.
+
+Where in the code: [app/main.js](../../app/main.js),
+[app/data.js](../../app/data.js),
+[app/worker/client.js](../../app/worker/client.js),
+[app/worker/worker.js](../../app/worker/worker.js),
+[scripts/serve.mjs](../../scripts/serve.mjs).
+
+## How `lib/` is layered
+
+```mermaid
+flowchart RL
+  geometry["lib/geometry"] --> settings["lib/settings"]
+  image["lib/image"] --> geometry
+  solver["lib/solver"] --> geometry
+  manual["lib/manual"] --> geometry
+  app["app/"] --> image
+  app --> solver
+```
+
+Arrows point from importer to imported layer (transitive imports of
+`settings` are left out). `image`, `solver` and `manual` are siblings and do
+not import each other; `manual` has no page since 0.17.0. The table is enforced
+by [tests/tooling/boundaries.test.mjs](../../tests/tooling/boundaries.test.mjs).
+
 ## The repository in one picture
 
 ```text
 index.html, public/, licenses/         static shell (published as-is)
 app/        browser runtime            DOM, canvases, routing, worker transport
-  └─ imports ─▶ lib/
 lib/        pure domain                no DOM, no worker globals, no network
-  settings ◀─ geometry ◀─┬─ image
-                         ├─ solver     (community-static-v11; historical quant-static-v6)
-                         └─ manual     (library only, conditional-static-v4)
 data/       runtime data               bundled JSON files the app fetches
 research/   evidence, never runtime    generated/, corpus/, comparisons/,
                                         measurements/, archive/ (frozen)
@@ -25,7 +85,7 @@ scripts/    repository tooling         build, serve, notebook
 docs/       math, research notes, evidence policy, engineering docs, generated notebook
 ```
 
-Arrows point from importer to imported module. Nothing points back: `lib/`
+Nothing points back: `lib/`
 never imports `app/`; retained research files are evidence and data, not
 runtime modules.
 
@@ -260,6 +320,75 @@ only the seven fields used by geometry coverage cross the worker boundary.
 Player/source metadata remains on the main thread; expanding provenance does
 not raise the 1 MiB payload limit or change coverage weights.
 
+## User journeys
+
+### Converting pasted settings (`#quant`)
+
+```mermaid
+sequenceDiagram
+  autonumber
+  actor U as User
+  participant ctl as QuantController
+  participant cli as ResearchWorker
+  participant wk as worker.js
+  participant inf as lib/solver infer()
+  U->>ctl: Paste old settings or edit a value
+  Note over ctl: sources.js 250 ms, then schedule() 90 ms
+  ctl->>ctl: readSettings(), resolveModelChoice()
+  ctl->>cli: call('infer', settings, options)
+  cli->>wk: postMessage {id, type, payload}
+  wk->>inf: infer({...payload, records})
+  inf-->>wk: report (sicc-quant-report-v6)
+  wk-->>cli: result
+  cli-->>ctl: report
+  ctl-->>U: renderResult, renderOutcomes, plates
+  U->>ctl: Click "Download .cfg"
+  ctl-->>U: exportQuantCFG() as small-indie-crosshair.cfg
+```
+
+Every edit bumps a request generation (step 3); a report that returns for an
+older generation is dropped, so only the latest input is shown. A newer
+`infer` also supersedes queued ones in the client (step 4). The worker was
+initialised once with the corpus rows projected by `app/worker/corpus.js`,
+which `infer` uses for coverage (step 6). The `.cfg` and the JSON report are
+built from the stored report on the main thread, without another solve.
+
+Where in the code: [app/convert/sources.js](../../app/convert/sources.js),
+[app/convert/controller.js](../../app/convert/controller.js) (`schedule`,
+`analyze`), [lib/solver/selection.js](../../lib/solver/selection.js),
+[lib/solver/inference.js](../../lib/solver/inference.js),
+[lib/solver/export.js](../../lib/solver/export.js).
+
+### Converting a screenshot (`#screenshot`)
+
+```mermaid
+sequenceDiagram
+  autonumber
+  actor U as User
+  participant pg as screenshot.js
+  participant cli as ResearchWorker
+  participant wk as worker.js
+  U->>pg: Choose an old-game PNG
+  pg->>pg: browserImages.load: decode, crop 129 px
+  pg->>cli: call('screenshot', rgba, side, seed)
+  cli->>wk: analyzeScreenshot()
+  wk-->>pg: fit (mask, colour, quality checks)
+  pg->>cli: call('infer', inferredSettings(fit), targetMask)
+  cli->>wk: infer() at converter defaults
+  wk-->>pg: report
+  pg-->>U: Crop vs new plate, commands, High/Medium/Low
+```
+
+Decoding happens on the main thread with `createImageBitmap` (step 2), capped
+at 16 MiB; the pixel limit is enforced again in `lib/image/screenshot.js`. The
+measured mask, not the inferred legacy settings, is the solver's target
+(step 5), so the confidence rating combines image checks with the shape check.
+The page's worker is created on the first image.
+
+Where in the code: [app/pages/screenshot.js](../../app/pages/screenshot.js),
+[lib/image/screenshot.js](../../lib/image/screenshot.js),
+[app/ui/route.js](../../app/ui/route.js) (the `#quant?paste=` cross-check link).
+
 ## State and failure behavior
 
 There is no localStorage, IndexedDB, cookie or service worker. Mode lives only
@@ -447,6 +576,26 @@ CI runs `npm run build` on the supported Node versions and fails if generation
 changes `docs/notebook.html` or the reader's shared chrome.
 
 ## Build and deployment
+
+```mermaid
+flowchart LR
+  src["Source tree"] -->|"npm run verify"| local["Local checks"]
+  src -->|"npm run build"| build["scripts/build.mjs"]
+  allow["scripts/site-files.mjs"] -->|"public allowlist"| build
+  build --> dist[("dist/ + build-manifest.json")]
+  pr["Pull request"] -->|"check.yml, security.yml"| ci["CI build + drift check"]
+  dist -->|"pages.yml, manual on main"| pages["GitHub Pages"]
+```
+
+Publication is manual: `pages.yml` runs only on a `workflow_dispatch` from
+`main`. `check.yml` builds Dependabot PRs and manual runs and fails if the
+generated notebook or reader changed; `security.yml` runs on every push and PR.
+`npm run verify` (check, research regeneration, tests, archive reproduction,
+build) is the local gate.
+
+Where in the code: [.github/workflows/](../../.github/workflows/),
+[scripts/build.mjs](../../scripts/build.mjs),
+[scripts/site-files.mjs](../../scripts/site-files.mjs).
 
 `scripts/site-files.mjs` is the single definition of what is public: the
 published top-level documents, the published root directories (`app`, `lib`,
